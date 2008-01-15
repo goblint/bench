@@ -1652,7 +1652,7 @@ void dumpData(char const   *prefix , unsigned char *data , unsigned short size )
 }
 }
 #line 1102
-extern int ( /* missing proto */  __builtin_bzero)() ;
+//extern int ( /* missing proto */  __builtin_bzero)() ;
 #line 1084 "zebedee.c"
 int readData(int fd , unsigned char *buffer___0 , unsigned short size ) 
 { int num ;
