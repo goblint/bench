@@ -288,7 +288,7 @@ struct fd_set {
 #line 184 "/usr/include/sys/_structs.h"
 typedef struct fd_set fd_set;
 #line 322 "/usr/include/sys/types.h"
-typedef __darwin_pthread_cond_t pthread_cond_t;
+//typedef __darwin_pthread_cond_t pthread_cond_t;
 #line 326 "/usr/include/sys/types.h"
 typedef __darwin_pthread_condattr_t pthread_condattr_t;
 #line 330 "/usr/include/sys/types.h"
@@ -483,6 +483,74 @@ typedef unsigned long long twodigits;
 #line 40 "huge.h"
 typedef long long stwodigits;
 #line 1 "zebedee.o"
+
+
+
+
+
+/* mypthr */
+
+
+void *my_realloc(void *ptr, int size){
+  return ptr; 
+}
+
+#define realloc my_realloc
+
+
+pthread_t my_pthread_self(void){
+  pthread_t x;
+  return x;
+}
+
+#define pthread_self my_pthread_self
+
+
+struct _my_pthread_cond_t {
+  pthread_mutex_t mut;
+  int             val;
+};
+
+typedef struct _my_pthread_cond_t my_pthread_cond_t;
+
+void my_pthread_cond_wait(my_pthread_cond_t *cond,pthread_mutex_t *mut){
+  int b = 0;
+  pthread_mutex_unlock(mut);
+  while (b != 1){
+    pthread_mutex_lock(&cond->mut);
+    b = cond->val;
+    pthread_mutex_unlock(&cond->mut);
+  }
+  pthread_mutex_lock(&cond->mut);
+  cond->val = 0;
+  pthread_mutex_unlock(&cond->mut);
+  pthread_mutex_lock(mut);
+}
+
+void my_pthread_cond_signal(my_pthread_cond_t *cond){
+  pthread_mutex_lock(&cond->mut);
+  cond->val = 1;
+  pthread_mutex_unlock(&cond->mut);
+}
+
+void my_pthread_cond_init(my_pthread_cond_t * cond, void  * ca){
+  pthread_mutex_lock(&cond->mut);
+  cond->val = 0;
+  pthread_mutex_unlock(&cond->mut);
+}
+
+#define pthread_cond_t         my_pthread_cond_t
+#define pthread_cond_init      my_pthread_cond_init
+#define pthread_cond_wait      my_pthread_cond_wait
+#define pthread_cond_signal    my_pthread_cond_signal
+#define pthread_cond_broadcast my_pthread_cond_signal
+
+
+/* mypthr */
+
+
+
+
 #pragma merger(0,"/var/folders/3v/3vE4RtlEGkGI18-fANNMsk+++TI/-Tmp-/cil-qbA37saF.i","-O3")
 #line 24 "zebedee.c"
 char *zebedee_c_rcsid  =    (char *)"$Id: zebedee.c,v 1.25 2002/05/28 06:31:15 ndwinton Exp $";
@@ -532,13 +600,17 @@ __inline static __uint16_t _OSSwapInt16(__uint16_t _data )
 #line 53 "/usr/include/libkern/i386/_OSByteOrder.h"
 __inline static __uint32_t _OSSwapInt32(__uint32_t _data ) 
 { 
-
-  {
+  return ((i >> 24) &       0xff) |
+         ((i >>  8) &     0xff00) |
+         ((i <<  8) &   0xff0000) |
+         ((i << 24) & 0xff000000) ;
+/*  {
 #line 59
   __asm__  ("bswap   %0": "+r" (_data));
 #line 60
   return (_data);
 }
+*/
 }
 #line 256 "/usr/include/sys/wait.h"
 extern pid_t waitpid(pid_t  , int * , int  )  __asm__("_waitpid$UNIX2003")  ;
@@ -555,7 +627,7 @@ extern void *malloc(size_t  ) ;
 #line 175
 extern int rand(void) ;
 #line 176
-extern void *realloc(void * , size_t  ) ;
+//extern void *realloc(void * , size_t  ) ;
 #line 177
 extern void srand(unsigned int  ) ;
 #line 187
@@ -839,11 +911,11 @@ extern int pthread_attr_setdetachstate(pthread_attr_t * , int  ) ;
 #line 279
 extern int pthread_attr_setstacksize(pthread_attr_t * , size_t  ) ;
 #line 282
-extern int pthread_cond_broadcast(pthread_cond_t * ) ;
+//extern int pthread_cond_broadcast(pthread_cond_t * ) ;
 #line 284
-extern int pthread_cond_init(pthread_cond_t * , pthread_condattr_t const   * )  __asm__("_pthread_cond_init$UNIX2003")  ;
+//extern int pthread_cond_init(pthread_cond_t * , pthread_condattr_t const   * )  __asm__("_pthread_cond_init$UNIX2003")  ;
 #line 290
-extern int pthread_cond_wait(pthread_cond_t * , pthread_mutex_t * )  __asm__("_pthread_cond_wait$UNIX2003")  ;
+//extern int pthread_cond_wait(pthread_cond_t * , pthread_mutex_t * )  __asm__("_pthread_cond_wait$UNIX2003")  ;
 #line 298
 extern int pthread_create(pthread_t * , pthread_attr_t const   * , void *(*)(void * ) ,
                           void * ) ;
@@ -854,7 +926,7 @@ extern int pthread_mutex_lock(pthread_mutex_t * ) ;
 #line 318
 extern int pthread_mutex_unlock(pthread_mutex_t * ) ;
 #line 343
-extern pthread_t pthread_self(void) ;
+//extern pthread_t pthread_self(void) ;
 #line 156 "zebedee.c"
 pthread_mutex_t Mutex[5]  ;
 #line 157 "zebedee.c"
