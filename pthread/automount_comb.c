@@ -608,7 +608,7 @@ struct pending_args {
    unsigned long wait_queue_token ;
 };
 #line 113 "/usr/include/bits/pthreadtypes.h"
-typedef int pthread_once_t;
+//typedef int pthread_once_t;
 #line 45 "direct.c"
 struct mnt_params {
    char *options ;
@@ -792,8 +792,9 @@ extern  __attribute__((__nothrow__)) int __xstat(int __ver , char const   *__fil
 extern  __attribute__((__nothrow__)) int __lxstat(int __ver , char const   *__filename ,
                                                   struct stat *__stat_buf )  __attribute__((__nonnull__(2,3))) ;
 #line 450
-__inline static  __attribute__((__nothrow__)) int stat__extinline(char const   *__path ,
+/*__inline static  __attribute__((__nothrow__)) int stat__extinline(char const   *__path ,
                                                                   struct stat *__statbuf ) ;
+*/
 #line 450 "/usr/include/sys/stat.h"
 __inline static int stat__extinline(char const   *__path , struct stat *__statbuf ) 
 { int tmp ;
@@ -806,8 +807,9 @@ __inline static int stat__extinline(char const   *__path , struct stat *__statbu
 }
 }
 #line 457
-__inline static  __attribute__((__nothrow__)) int lstat__extinline(char const   *__path ,
+/*__inline static  __attribute__((__nothrow__)) int lstat__extinline(char const   *__path ,
                                                                    struct stat *__statbuf ) ;
+*/
 #line 457 "/usr/include/sys/stat.h"
 __inline static int lstat__extinline(char const   *__path , struct stat *__statbuf ) 
 { int tmp ;
@@ -871,9 +873,10 @@ extern  __attribute__((__nothrow__)) unsigned long __strtoul_internal(char const
                                                                       int __base ,
                                                                       int __group )  __attribute__((__nonnull__(1))) ;
 #line 332
-__inline static  __attribute__((__nothrow__)) long strtol__extinline(char const   * __restrict  __nptr ,
+/*__inline static  __attribute__((__nothrow__)) long strtol__extinline(char const   * __restrict  __nptr ,
                                                                      char ** __restrict  __endptr ,
                                                                      int __base ) ;
+*/
 #line 332 "/usr/include/stdlib.h"
 __inline static long strtol__extinline(char const   * __restrict  __nptr , char ** __restrict  __endptr ,
                                        int __base ) 
@@ -887,9 +890,10 @@ __inline static long strtol__extinline(char const   * __restrict  __nptr , char 
 }
 }
 #line 338
-__inline static  __attribute__((__nothrow__)) unsigned long strtoul__extinline(char const   * __restrict  __nptr ,
+/*__inline static  __attribute__((__nothrow__)) unsigned long strtoul__extinline(char const   * __restrict  __nptr ,
                                                                                char ** __restrict  __endptr ,
                                                                                int __base ) ;
+*/
 #line 338 "/usr/include/stdlib.h"
 __inline static unsigned long strtoul__extinline(char const   * __restrict  __nptr ,
                                                  char ** __restrict  __endptr , int __base ) 
@@ -903,7 +907,7 @@ __inline static unsigned long strtoul__extinline(char const   * __restrict  __np
 }
 }
 #line 401
-__inline static  __attribute__((__nothrow__)) int atoi__extinline(char const   *__nptr ) ;
+//__inline static  __attribute__((__nothrow__)) int atoi__extinline(char const   *__nptr ) ;
 #line 401 "/usr/include/stdlib.h"
 __inline static int atoi__extinline(char const   *__nptr ) 
 { int tmp ;
@@ -5447,7 +5451,7 @@ int main(int argc , char **argv )
 #line 397 "/usr/include/sys/stat.h"
 extern  __attribute__((__nothrow__)) int __fxstat(int __ver , int __fildes , struct stat *__stat_buf )  __attribute__((__nonnull__(3))) ;
 #line 464
-__inline static  __attribute__((__nothrow__)) int fstat__extinline(int __fd , struct stat *__statbuf ) ;
+//__inline static  __attribute__((__nothrow__)) int fstat__extinline(int __fd , struct stat *__statbuf ) ;
 #line 464 "/usr/include/sys/stat.h"
 __inline static int fstat__extinline(int __fd , struct stat *__statbuf ) 
 { int tmp ;
@@ -8319,7 +8323,37 @@ int handle_packet_missing_indirect(struct autofs_point *ap , autofs_packet_missi
 #line 1 "direct.o"
 #pragma merger(0,"/tmp/cil-n2xqQPXz.i","-O2,-Wall,-fPIE")
 #line 463 "/usr/include/pthread.h"
-extern int pthread_once(pthread_once_t *__once_control , void (*__init_routine)(void) )  __attribute__((__nonnull__(1,2))) ;
+
+/*pthread_once_impl*/
+
+typedef struct {
+  pthread_mutex_t mut;
+  int             val;
+} my_pthread_once_t;
+
+#define MY_PTHREAD_ONCE_INIT     {0,0}
+
+int my_pthread_once(my_pthread_once_t *m , void (*func)(void) )  {
+
+  pthread_mutex_lock(&m->mut);
+
+  if (!(m->val)){
+    m->val = 1;
+    func();
+  }
+
+  pthread_mutex_unlock(&m->mut);
+
+  return 0;
+}
+
+#define pthread_once_t    my_pthread_once_t
+#define pthread_once      my_pthread_once
+#define PTHREAD_ONCE_INIT MY_PTHREAD_ONCE_INIT
+
+/*pthread_once_impl*/
+
+//extern int pthread_once(pthread_once_t *__once_control , void (*__init_routine)(void) )  __attribute__((__nonnull__(1,2))) ;
 #line 1074
 extern  __attribute__((__nothrow__)) void *pthread_getspecific(pthread_key_t __key ) ;
 #line 92 "../include/master.h"
@@ -8357,7 +8391,7 @@ pthread_key_t key_mnt_direct_params  ;
 #line 50 "direct.c"
 pthread_key_t key_mnt_offset_params  ;
 #line 51 "direct.c"
-int key_mnt_params_once  =    0;
+pthread_once_t key_mnt_params_once  =    PTHREAD_ONCE_INIT;
 #line 53 "direct.c"
 static union __anonunion_pthread_mutex_t_6 ma_mutex___0  =    {{0, 0U, 0, 0, 0U, {0}}};
 #line 54 "direct.c"
@@ -20580,3 +20614,11 @@ int st_start_handler(void)
   return (1);
 }
 }
+
+
+
+
+
+
+
+
