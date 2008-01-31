@@ -490,14 +490,6 @@ typedef long long stwodigits;
 
 /* mypthr */
 
-
-void *my_realloc(void *ptr, int size){
-  return ptr; 
-}
-
-#define realloc my_realloc
-
-
 pthread_t my_pthread_self(void){
   pthread_t x;
   return x;
@@ -600,10 +592,10 @@ __inline static __uint16_t _OSSwapInt16(__uint16_t _data )
 #line 53 "/usr/include/libkern/i386/_OSByteOrder.h"
 __inline static __uint32_t _OSSwapInt32(__uint32_t _data ) 
 { 
-  return ((i >> 24) &       0xff) |
-         ((i >>  8) &     0xff00) |
-         ((i <<  8) &   0xff0000) |
-         ((i << 24) & 0xff000000) ;
+  return ((_data >> 24) &       0xff) |
+         ((_data >>  8) &     0xff00) |
+         ((_data <<  8) &   0xff0000) |
+         ((_data << 24) & 0xff000000) ;
 /*  {
 #line 59
   __asm__  ("bswap   %0": "+r" (_data));
@@ -627,7 +619,7 @@ extern void *malloc(size_t  ) ;
 #line 175
 extern int rand(void) ;
 #line 176
-//extern void *realloc(void * , size_t  ) ;
+extern void *realloc(void * , size_t  ) ;
 #line 177
 extern void srand(unsigned int  ) ;
 #line 187
