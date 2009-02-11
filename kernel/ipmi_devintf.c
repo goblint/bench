@@ -12,7 +12,6 @@ typedef int __kernel_clockid_t;
 typedef unsigned int __kernel_uid32_t;
 typedef unsigned int __kernel_gid32_t;
 typedef long long __kernel_loff_t;
-typedef unsigned short umode_t;
 typedef signed char __s8;
 typedef short __s16;
 typedef unsigned short __u16;
@@ -21,9 +20,12 @@ typedef unsigned int __u32;
 typedef long long __s64;
 typedef unsigned long long __u64;
 typedef signed char s8;
+typedef unsigned char u8;
+typedef unsigned short u16;
 typedef unsigned int u32;
 typedef long long s64;
 typedef unsigned long long u64;
+typedef unsigned short umode_t;
 typedef __u32 __kernel_dev_t;
 typedef __kernel_dev_t dev_t;
 typedef __kernel_mode_t mode_t;
@@ -38,8 +40,12 @@ typedef __kernel_ssize_t ssize_t;
 typedef __kernel_time_t time_t;
 typedef __kernel_clock_t clock_t;
 typedef u64 sector_t;
-typedef unsigned long blkcnt_t;
+typedef u64 blkcnt_t;
 typedef unsigned int gfp_t;
+struct task_struct;
+struct task_struct;
+struct mm_struct;
+struct mm_struct;
 struct vm86_regs {
    long ebx ;
    long ecx ;
@@ -82,7 +88,6 @@ struct vm86_struct {
 };
 struct task_struct;
 struct task_struct;
-struct task_struct;
 struct info {
    long ___orig_eip ;
    long ___ebx ;
@@ -106,18 +111,11 @@ struct info {
    long ___vm86_fs ;
    long ___vm86_gs ;
 };
-struct __anonstruct_pgd_t_5 {
-   unsigned long pgd ;
-};
-typedef struct __anonstruct_pgd_t_5 pgd_t;
-struct __anonstruct_pgprot_t_6 {
-   unsigned long pgprot ;
-};
-typedef struct __anonstruct_pgprot_t_6 pgprot_t;
-struct vm_area_struct;
-struct vm_area_struct;
+struct task_struct;
 struct module;
 struct module;
+typedef __builtin_va_list __gnuc_va_list;
+typedef __gnuc_va_list va_list;
 struct bug_entry {
    unsigned long bug_addr ;
    char const   *file ;
@@ -128,99 +126,149 @@ struct completion;
 struct completion;
 struct pid;
 struct pid;
-struct __anonstruct_cpumask_t_12 {
-   unsigned long bits[1] ;
+typedef unsigned long pgdval_t;
+typedef unsigned long pgprotval_t;
+struct page;
+struct __anonstruct_pgd_t_11 {
+   pgdval_t pgd ;
 };
-typedef struct __anonstruct_cpumask_t_12 cpumask_t;
+typedef struct __anonstruct_pgd_t_11 pgd_t;
+struct __anonstruct_pgprot_t_12 {
+   pgprotval_t pgprot ;
+};
+typedef struct __anonstruct_pgprot_t_12 pgprot_t;
 struct page;
-struct page;
-struct thread_struct;
-struct thread_struct;
 struct mm_struct;
-struct mm_struct;
-struct desc_struct;
-struct desc_struct;
-struct task_struct;
+struct __anonstruct_cpumask_t_15 {
+   unsigned long bits[((64U + 8U * sizeof(long )) - 1U) / (8U * sizeof(long ))] ;
+};
+typedef struct __anonstruct_cpumask_t_15 cpumask_t;
+struct __anonstruct____missing_field_name_17 {
+   unsigned int a ;
+   unsigned int b ;
+};
+struct __anonstruct____missing_field_name_18 {
+   u16 limit0 ;
+   u16 base0 ;
+   unsigned int base1 : 8 ;
+   unsigned int type : 4 ;
+   unsigned int s : 1 ;
+   unsigned int dpl : 2 ;
+   unsigned int p : 1 ;
+   unsigned int limit : 4 ;
+   unsigned int avl : 1 ;
+   unsigned int l : 1 ;
+   unsigned int d : 1 ;
+   unsigned int g : 1 ;
+   unsigned int base2 : 8 ;
+};
+union __anonunion____missing_field_name_16 {
+   struct __anonstruct____missing_field_name_17 __annonCompField1 ;
+   struct __anonstruct____missing_field_name_18 __annonCompField2 ;
+};
 struct desc_struct {
-   unsigned long a ;
-   unsigned long b ;
-};
+   union __anonunion____missing_field_name_16 __annonCompField3 ;
+} __attribute__((__packed__)) ;
+struct page;
+struct thread_struct;
+struct thread_struct;
+struct mm_struct;
+struct desc_struct;
+struct raw_spinlock;
+struct raw_spinlock;
+struct task_struct;
 struct i387_fsave_struct {
-   long cwd ;
-   long swd ;
-   long twd ;
-   long fip ;
-   long fcs ;
-   long foo ;
-   long fos ;
-   long st_space[20] ;
-   long status ;
+   u32 cwd ;
+   u32 swd ;
+   u32 twd ;
+   u32 fip ;
+   u32 fcs ;
+   u32 foo ;
+   u32 fos ;
+   u32 st_space[20] ;
+   u32 status ;
+};
+struct __anonstruct____missing_field_name_24 {
+   u64 rip ;
+   u64 rdp ;
+};
+struct __anonstruct____missing_field_name_25 {
+   u32 fip ;
+   u32 fcs ;
+   u32 foo ;
+   u32 fos ;
+};
+union __anonunion____missing_field_name_23 {
+   struct __anonstruct____missing_field_name_24 __annonCompField4 ;
+   struct __anonstruct____missing_field_name_25 __annonCompField5 ;
 };
 struct i387_fxsave_struct {
-   unsigned short cwd ;
-   unsigned short swd ;
-   unsigned short twd ;
-   unsigned short fop ;
-   long fip ;
-   long fcs ;
-   long foo ;
-   long fos ;
-   long mxcsr ;
-   long mxcsr_mask ;
-   long st_space[32] ;
-   long xmm_space[32] ;
-   long padding[56] ;
+   u16 cwd ;
+   u16 swd ;
+   u16 twd ;
+   u16 fop ;
+   union __anonunion____missing_field_name_23 __annonCompField6 ;
+   u32 mxcsr ;
+   u32 mxcsr_mask ;
+   u32 st_space[32] ;
+   u32 xmm_space[64] ;
+   u32 padding[24] ;
 } __attribute__((__aligned__(16))) ;
 struct i387_soft_struct {
-   long cwd ;
-   long swd ;
-   long twd ;
-   long fip ;
-   long fcs ;
-   long foo ;
-   long fos ;
-   long st_space[20] ;
-   unsigned char ftop ;
-   unsigned char changed ;
-   unsigned char lookahead ;
-   unsigned char no_update ;
-   unsigned char rm ;
-   unsigned char alimit ;
+   u32 cwd ;
+   u32 swd ;
+   u32 twd ;
+   u32 fip ;
+   u32 fcs ;
+   u32 foo ;
+   u32 fos ;
+   u32 st_space[20] ;
+   u8 ftop ;
+   u8 changed ;
+   u8 lookahead ;
+   u8 no_update ;
+   u8 rm ;
+   u8 alimit ;
    struct info *info ;
-   unsigned long entry_eip ;
+   u32 entry_eip ;
 };
-union i387_union {
+union thread_xstate {
    struct i387_fsave_struct fsave ;
    struct i387_fxsave_struct fxsave ;
    struct i387_soft_struct soft ;
 };
-struct thread_struct;
+struct kmem_cache;
 struct thread_struct {
    struct desc_struct tls_array[3] ;
-   unsigned long esp0 ;
+   unsigned long sp0 ;
+   unsigned long sp ;
    unsigned long sysenter_cs ;
-   unsigned long eip ;
-   unsigned long esp ;
+   unsigned long ip ;
    unsigned long fs ;
    unsigned long gs ;
-   unsigned long debugreg[8] ;
+   unsigned long debugreg0 ;
+   unsigned long debugreg1 ;
+   unsigned long debugreg2 ;
+   unsigned long debugreg3 ;
+   unsigned long debugreg6 ;
+   unsigned long debugreg7 ;
    unsigned long cr2 ;
    unsigned long trap_no ;
    unsigned long error_code ;
-   union i387_union i387 ;
+   union thread_xstate *xstate ;
    struct vm86_struct *vm86_info ;
    unsigned long screen_bitmap ;
    unsigned long v86flags ;
    unsigned long v86mask ;
-   unsigned long saved_esp0 ;
+   unsigned long saved_sp0 ;
    unsigned int saved_fs ;
    unsigned int saved_gs ;
    unsigned long *io_bitmap_ptr ;
    unsigned long iopl ;
-   unsigned long io_bitmap_max ;
+   unsigned int io_bitmap_max ;
+   unsigned long debugctlmsr ;
+   unsigned long ds_area_msr ;
 };
-struct task_struct;
-struct mm_struct;
 struct list_head {
    struct list_head *next ;
    struct list_head *prev ;
@@ -233,30 +281,33 @@ struct hlist_node {
    struct hlist_node *next ;
    struct hlist_node **pprev ;
 };
-struct __anonstruct_raw_spinlock_t_17 {
+struct timespec;
+struct timespec;
+struct task_struct;
+struct raw_spinlock {
    unsigned int slock ;
 };
-typedef struct __anonstruct_raw_spinlock_t_17 raw_spinlock_t;
-struct __anonstruct_raw_rwlock_t_18 {
+typedef struct raw_spinlock raw_spinlock_t;
+struct __anonstruct_raw_rwlock_t_31 {
    unsigned int lock ;
 };
-typedef struct __anonstruct_raw_rwlock_t_18 raw_rwlock_t;
+typedef struct __anonstruct_raw_rwlock_t_31 raw_rwlock_t;
 struct task_struct;
 struct lock_class_key {
 
 };
-struct __anonstruct_spinlock_t_19 {
+struct __anonstruct_spinlock_t_32 {
    raw_spinlock_t raw_lock ;
 };
-typedef struct __anonstruct_spinlock_t_19 spinlock_t;
-struct __anonstruct_rwlock_t_20 {
+typedef struct __anonstruct_spinlock_t_32 spinlock_t;
+struct __anonstruct_rwlock_t_33 {
    raw_rwlock_t raw_lock ;
 };
-typedef struct __anonstruct_rwlock_t_20 rwlock_t;
-struct __anonstruct_atomic_t_21 {
+typedef struct __anonstruct_rwlock_t_33 rwlock_t;
+struct __anonstruct_atomic_t_34 {
    int counter ;
 };
-typedef struct __anonstruct_atomic_t_21 atomic_t;
+typedef struct __anonstruct_atomic_t_34 atomic_t;
 typedef atomic_t atomic_long_t;
 struct seqcount {
    unsigned int sequence ;
@@ -281,24 +332,6 @@ struct kstat {
    unsigned long blksize ;
    unsigned long long blocks ;
 };
-struct key;
-struct key;
-struct file;
-struct file;
-struct file;
-struct device;
-struct device;
-struct pm_message {
-   int event ;
-};
-typedef struct pm_message pm_message_t;
-struct dev_pm_info {
-   pm_message_t power_state ;
-   unsigned int can_wakeup : 1 ;
-   unsigned int should_wakeup : 1 ;
-   struct list_head entry ;
-};
-struct task_struct;
 struct __wait_queue;
 typedef struct __wait_queue wait_queue_t;
 struct __wait_queue {
@@ -313,10 +346,10 @@ struct __wait_queue_head {
 };
 typedef struct __wait_queue_head wait_queue_head_t;
 struct task_struct;
-struct __anonstruct_nodemask_t_77 {
-   unsigned long bits[1] ;
+struct __anonstruct_nodemask_t_36 {
+   unsigned long bits[((1U + 8U * sizeof(long )) - 1U) / (8U * sizeof(long ))] ;
 };
-typedef struct __anonstruct_nodemask_t_77 nodemask_t;
+typedef struct __anonstruct_nodemask_t_36 nodemask_t;
 struct page;
 struct mutex {
    atomic_t count ;
@@ -330,31 +363,195 @@ struct rw_semaphore {
    spinlock_t wait_lock ;
    struct list_head wait_list ;
 };
-struct notifier_block {
-   int (*notifier_call)(struct notifier_block * , unsigned long  , void * ) ;
-   struct notifier_block *next ;
-   int priority ;
-};
-struct blocking_notifier_head {
-   struct rw_semaphore rwsem ;
-   struct notifier_block *head ;
-};
 struct page;
 struct file;
+struct file;
+struct device;
+struct device;
+struct pm_message {
+   int event ;
+};
+typedef struct pm_message pm_message_t;
+struct pm_ops {
+   int (*prepare)(struct device *dev ) ;
+   void (*complete)(struct device *dev ) ;
+   int (*suspend)(struct device *dev ) ;
+   int (*resume)(struct device *dev ) ;
+   int (*freeze)(struct device *dev ) ;
+   int (*thaw)(struct device *dev ) ;
+   int (*poweroff)(struct device *dev ) ;
+   int (*restore)(struct device *dev ) ;
+};
+struct pm_ext_ops {
+   struct pm_ops base ;
+   int (*suspend_noirq)(struct device *dev ) ;
+   int (*resume_noirq)(struct device *dev ) ;
+   int (*freeze_noirq)(struct device *dev ) ;
+   int (*thaw_noirq)(struct device *dev ) ;
+   int (*poweroff_noirq)(struct device *dev ) ;
+   int (*restore_noirq)(struct device *dev ) ;
+};
+enum dpm_state {
+    DPM_INVALID = 0,
+    DPM_ON = 1,
+    DPM_PREPARING = 2,
+    DPM_RESUMING = 3,
+    DPM_SUSPENDING = 4,
+    DPM_OFF = 5,
+    DPM_OFF_IRQ = 6
+} ;
+struct dev_pm_info {
+   pm_message_t power_state ;
+   unsigned int can_wakeup : 1 ;
+   unsigned int should_wakeup : 1 ;
+   enum dpm_state status ;
+   struct list_head entry ;
+};
+struct __anonstruct_mm_context_t_38 {
+   void *ldt ;
+   int size ;
+   struct mutex lock ;
+   void *vdso ;
+};
+typedef struct __anonstruct_mm_context_t_38 mm_context_t;
 struct vm_area_struct;
-struct kmem_cache;
+struct vm_area_struct;
+struct key;
+struct key;
+struct file;
+struct file;
+struct task_struct;
+struct file;
+typedef __u32 Elf32_Addr;
+typedef __u16 Elf32_Half;
+typedef __u32 Elf32_Word;
+struct elf32_sym {
+   Elf32_Word st_name ;
+   Elf32_Addr st_value ;
+   Elf32_Word st_size ;
+   unsigned char st_info ;
+   unsigned char st_other ;
+   Elf32_Half st_shndx ;
+};
+typedef struct elf32_sym Elf32_Sym;
+struct kobject;
+struct kobject;
+struct module;
+struct attribute {
+   char const   *name ;
+   struct module *owner ;
+   mode_t mode ;
+};
+struct attribute_group {
+   char const   *name ;
+   mode_t (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+   struct attribute **attrs ;
+};
+struct vm_area_struct;
+struct sysfs_ops {
+   ssize_t (*show)(struct kobject * , struct attribute * , char * ) ;
+   ssize_t (*store)(struct kobject * , struct attribute * , char const   * , size_t  ) ;
+};
+struct kref {
+   atomic_t refcount ;
+};
+struct kset;
+struct kobj_type;
+struct sysfs_dirent;
+struct kobject {
+   char const   *name ;
+   struct list_head entry ;
+   struct kobject *parent ;
+   struct kset *kset ;
+   struct kobj_type *ktype ;
+   struct sysfs_dirent *sd ;
+   struct kref kref ;
+   unsigned int state_initialized : 1 ;
+   unsigned int state_in_sysfs : 1 ;
+   unsigned int state_add_uevent_sent : 1 ;
+   unsigned int state_remove_uevent_sent : 1 ;
+};
+struct kobj_type {
+   void (*release)(struct kobject *kobj ) ;
+   struct sysfs_ops *sysfs_ops ;
+   struct attribute **default_attrs ;
+};
+struct kobj_uevent_env {
+   char *envp[32] ;
+   int envp_idx ;
+   char buf[2048] ;
+   int buflen ;
+};
+struct kset_uevent_ops {
+   int (*filter)(struct kset *kset , struct kobject *kobj ) ;
+   char const   *(*name)(struct kset *kset , struct kobject *kobj ) ;
+   int (*uevent)(struct kset *kset , struct kobject *kobj , struct kobj_uevent_env *env ) ;
+};
+struct kset {
+   struct list_head list ;
+   spinlock_t list_lock ;
+   struct kobject kobj ;
+   struct kset_uevent_ops *uevent_ops ;
+};
+struct kernel_param;
+struct kernel_param;
+struct kparam_string;
+struct kparam_array;
+union __anonunion____missing_field_name_97 {
+   void *arg ;
+   struct kparam_string  const  *str ;
+   struct kparam_array  const  *arr ;
+};
+struct kernel_param {
+   char const   *name ;
+   unsigned int perm ;
+   int (*set)(char const   *val , struct kernel_param *kp ) ;
+   int (*get)(char *buffer , struct kernel_param *kp ) ;
+   union __anonunion____missing_field_name_97 __annonCompField9 ;
+};
+struct kparam_string {
+   unsigned int maxlen ;
+   char *string ;
+};
+struct kparam_array {
+   unsigned int max ;
+   unsigned int *num ;
+   int (*set)(char const   *val , struct kernel_param *kp ) ;
+   int (*get)(char *buffer , struct kernel_param *kp ) ;
+   unsigned int elemsize ;
+   void *elem ;
+};
+struct module;
+struct module;
+struct marker;
+struct marker;
+typedef void marker_probe_func(void *probe_private , void *call_private , char const   *fmt ,
+                               va_list *args );
+struct marker_probe_closure {
+   marker_probe_func *func ;
+   void *probe_private ;
+};
+struct marker {
+   char const   *name ;
+   char const   *format ;
+   char state ;
+   char ptype ;
+   void (*call)(struct marker  const  *mdata , void *call_private  , ...) ;
+   struct marker_probe_closure single ;
+   struct marker_probe_closure *multi ;
+} __attribute__((__aligned__(8))) ;
 union ktime {
    s64 tv64 ;
 };
 typedef union ktime ktime_t;
-struct tvec_t_base_s;
-struct tvec_t_base_s;
+struct tvec_base;
+struct tvec_base;
 struct timer_list {
    struct list_head entry ;
    unsigned long expires ;
    void (*function)(unsigned long  ) ;
    unsigned long data ;
-   struct tvec_t_base_s *base ;
+   struct tvec_base *base ;
    void *start_site ;
    char start_comm[16] ;
    int start_pid ;
@@ -373,61 +570,6 @@ struct delayed_work {
    struct work_struct work ;
    struct timer_list timer ;
 };
-struct kobject;
-struct kobject;
-struct module;
-struct attribute {
-   char const   *name ;
-   struct module *owner ;
-   mode_t mode ;
-};
-struct attribute_group {
-   char const   *name ;
-   struct attribute **attrs ;
-};
-struct vm_area_struct;
-struct sysfs_ops {
-   ssize_t (*show)(struct kobject * , struct attribute * , char * ) ;
-   ssize_t (*store)(struct kobject * , struct attribute * , char const   * , size_t  ) ;
-};
-struct kref {
-   atomic_t refcount ;
-};
-struct kset;
-struct kobj_type;
-struct sysfs_dirent;
-struct kobject {
-   char const   *k_name ;
-   struct kref kref ;
-   struct list_head entry ;
-   struct kobject *parent ;
-   struct kset *kset ;
-   struct kobj_type *ktype ;
-   struct sysfs_dirent *sd ;
-};
-struct kobj_type {
-   void (*release)(struct kobject * ) ;
-   struct sysfs_ops *sysfs_ops ;
-   struct attribute **default_attrs ;
-};
-struct kobj_uevent_env {
-   char *envp[32] ;
-   int envp_idx ;
-   char buf[2048] ;
-   int buflen ;
-};
-struct kset_uevent_ops {
-   int (*filter)(struct kset *kset , struct kobject *kobj ) ;
-   char const   *(*name)(struct kset *kset , struct kobject *kobj ) ;
-   int (*uevent)(struct kset *kset , struct kobject *kobj , struct kobj_uevent_env *env ) ;
-};
-struct kset {
-   struct kobj_type *ktype ;
-   struct list_head list ;
-   spinlock_t list_lock ;
-   struct kobject kobj ;
-   struct kset_uevent_ops *uevent_ops ;
-};
 struct kmem_cache_cpu {
    void **freelist ;
    struct page *page ;
@@ -438,82 +580,38 @@ struct kmem_cache_cpu {
 struct kmem_cache_node {
    spinlock_t list_lock ;
    unsigned long nr_partial ;
-   atomic_long_t nr_slabs ;
+   unsigned long min_partial ;
    struct list_head partial ;
+   atomic_long_t nr_slabs ;
+   atomic_long_t total_objects ;
    struct list_head full ;
+};
+struct kmem_cache_order_objects {
+   unsigned long x ;
 };
 struct kmem_cache {
    unsigned long flags ;
    int size ;
    int objsize ;
    int offset ;
-   int order ;
+   struct kmem_cache_order_objects oo ;
    struct kmem_cache_node local_node ;
-   int objects ;
+   struct kmem_cache_order_objects max ;
+   struct kmem_cache_order_objects min ;
+   gfp_t allocflags ;
    int refcount ;
-   void (*ctor)(struct kmem_cache * , void * ) ;
+   void (*ctor)(void * ) ;
    int inuse ;
    int align ;
    char const   *name ;
    struct list_head list ;
    struct kobject kobj ;
-   struct kmem_cache_cpu *cpu_slab[8] ;
+   struct kmem_cache_cpu *cpu_slab[64] ;
 };
-struct __anonstruct_mm_context_t_79 {
-   void *ldt ;
-   int size ;
-   struct mutex lock ;
-   void *vdso ;
-};
-typedef struct __anonstruct_mm_context_t_79 mm_context_t;
-struct task_struct;
-struct file;
-typedef __u32 Elf32_Addr;
-typedef __u16 Elf32_Half;
-typedef __u32 Elf32_Word;
-struct elf32_sym {
-   Elf32_Word st_name ;
-   Elf32_Addr st_value ;
-   Elf32_Word st_size ;
-   unsigned char st_info ;
-   unsigned char st_other ;
-   Elf32_Half st_shndx ;
-};
-typedef struct elf32_sym Elf32_Sym;
-struct kernel_param;
-struct kernel_param;
-struct kparam_string;
-struct kparam_array;
-union __anonunion____missing_field_name_84 {
-   void *arg ;
-   struct kparam_string  const  *str ;
-   struct kparam_array  const  *arr ;
-};
-struct kernel_param {
-   char const   *name ;
-   unsigned int perm ;
-   int (*set)(char const   *val , struct kernel_param *kp ) ;
-   int (*get)(char *buffer , struct kernel_param *kp ) ;
-   union __anonunion____missing_field_name_84 __annonCompField3 ;
-};
-struct kparam_string {
-   unsigned int maxlen ;
-   char *string ;
-};
-struct kparam_array {
-   unsigned int max ;
-   unsigned int *num ;
-   int (*set)(char const   *val , struct kernel_param *kp ) ;
-   int (*get)(char *buffer , struct kernel_param *kp ) ;
-   unsigned int elemsize ;
-   void *elem ;
-};
-struct module;
-struct module;
-struct __anonstruct_local_t_85 {
+struct __anonstruct_local_t_98 {
    atomic_long_t a ;
 };
-typedef struct __anonstruct_local_t_85 local_t;
+typedef struct __anonstruct_local_t_98 local_t;
 struct mod_arch_specific {
 
 };
@@ -538,7 +636,6 @@ struct module_kobject {
 };
 struct exception_table_entry;
 struct exception_table_entry;
-struct notifier_block;
 struct module_ref {
    local_t count ;
 } __attribute__((__aligned__((1) <<  (7) ))) ;
@@ -547,18 +644,8 @@ enum module_state {
     MODULE_STATE_COMING = 1,
     MODULE_STATE_GOING = 2
 } ;
-struct module_sect_attr {
-   struct module_attribute mattr ;
-   char *name ;
-   unsigned long address ;
-};
-struct module_sect_attrs {
-   struct attribute_group grp ;
-   int nsections ;
-   struct module_sect_attr attrs[0] ;
-};
 struct module_param_attrs;
-struct module_param_attrs;
+struct module_sect_attrs;
 struct module_notes_attrs;
 struct module {
    enum module_state state ;
@@ -571,56 +658,64 @@ struct module {
    char const   *srcversion ;
    struct kobject *holders_dir ;
    struct kernel_symbol  const  *syms ;
-   unsigned int num_syms ;
    unsigned long const   *crcs ;
-   struct kernel_symbol  const  *gpl_syms ;
+   unsigned int num_syms ;
    unsigned int num_gpl_syms ;
+   struct kernel_symbol  const  *gpl_syms ;
    unsigned long const   *gpl_crcs ;
    struct kernel_symbol  const  *unused_syms ;
-   unsigned int num_unused_syms ;
    unsigned long const   *unused_crcs ;
-   struct kernel_symbol  const  *unused_gpl_syms ;
+   unsigned int num_unused_syms ;
    unsigned int num_unused_gpl_syms ;
+   struct kernel_symbol  const  *unused_gpl_syms ;
    unsigned long const   *unused_gpl_crcs ;
    struct kernel_symbol  const  *gpl_future_syms ;
-   unsigned int num_gpl_future_syms ;
    unsigned long const   *gpl_future_crcs ;
+   unsigned int num_gpl_future_syms ;
    unsigned int num_exentries ;
    struct exception_table_entry  const  *extable ;
    int (*init)(void) ;
    void *module_init ;
    void *module_core ;
-   unsigned long init_size ;
-   unsigned long core_size ;
-   unsigned long init_text_size ;
-   unsigned long core_text_size ;
+   unsigned int init_size ;
+   unsigned int core_size ;
+   unsigned int init_text_size ;
+   unsigned int core_text_size ;
    void *unwind_info ;
    struct mod_arch_specific arch ;
    unsigned int taints ;
+   unsigned int num_bugs ;
    struct list_head bug_list ;
    struct bug_entry *bug_table ;
-   unsigned int num_bugs ;
-   struct module_ref ref[8] ;
-   struct list_head modules_which_use_me ;
-   struct task_struct *waiter ;
-   void (*exit)(void) ;
    Elf32_Sym *symtab ;
-   unsigned long num_symtab ;
+   unsigned int num_symtab ;
    char *strtab ;
    struct module_sect_attrs *sect_attrs ;
    struct module_notes_attrs *notes_attrs ;
    void *percpu ;
    char *args ;
+   struct marker *markers ;
+   unsigned int num_markers ;
+   struct list_head modules_which_use_me ;
+   struct task_struct *waiter ;
+   void (*exit)(void) ;
+   struct module_ref ref[64] ;
 };
 struct device_driver;
 struct device_driver;
 struct module;
+struct completion {
+   unsigned int done ;
+   wait_queue_head_t wait ;
+};
 struct rcu_head {
    struct rcu_head *next ;
    void (*func)(struct rcu_head *head ) ;
 };
 struct nameidata;
 struct nameidata;
+struct path;
+struct path;
 struct vfsmount;
 struct vfsmount;
 struct qstr {
@@ -631,7 +726,7 @@ struct qstr {
 struct dcookie_struct;
 struct dcookie_struct;
 struct inode;
-union __anonunion_d_u_86 {
+union __anonunion_d_u_99 {
    struct list_head d_child ;
    struct rcu_head d_rcu ;
 };
@@ -646,7 +741,7 @@ struct dentry {
    struct dentry *d_parent ;
    struct qstr d_name ;
    struct list_head d_lru ;
-   union __anonunion_d_u_86 d_u ;
+   union __anonunion_d_u_99 d_u ;
    struct list_head d_subdirs ;
    struct list_head d_alias ;
    unsigned long d_time ;
@@ -666,25 +761,8 @@ struct dentry_operations {
    void (*d_iput)(struct dentry * , struct inode * ) ;
    char *(*d_dname)(struct dentry * , char * , int  ) ;
 };
+struct dentry;
 struct vfsmount;
-struct open_intent {
-   int flags ;
-   int create_mode ;
-   struct file *file ;
-};
-union __anonunion_intent_88 {
-   struct open_intent open ;
-};
-struct nameidata {
-   struct dentry *dentry ;
-   struct vfsmount *mnt ;
-   struct qstr last ;
-   unsigned int flags ;
-   int last_type ;
-   unsigned int depth ;
-   char *saved_names[9] ;
-   union __anonunion_intent_88 intent ;
-};
 struct path {
    struct vfsmount *mnt ;
    struct dentry *dentry ;
@@ -727,9 +805,9 @@ struct upid {
 };
 struct pid {
    atomic_t count ;
+   unsigned int level ;
    struct hlist_head tasks[3] ;
    struct rcu_head rcu ;
-   int level ;
    struct upid numbers[1] ;
 };
 struct pid_link {
@@ -738,11 +816,14 @@ struct pid_link {
 };
 struct pid_namespace;
 struct task_struct;
-typedef __u32 kernel_cap_t;
+struct kernel_cap_struct {
+   __u32 cap[2] ;
+};
+typedef struct kernel_cap_struct kernel_cap_t;
 struct semaphore {
-   atomic_t count ;
-   int sleepers ;
-   wait_queue_head_t wait ;
+   spinlock_t lock ;
+   unsigned int count ;
+   struct list_head wait_list ;
 };
 struct export_operations;
 struct export_operations;
@@ -768,9 +849,8 @@ struct iattr {
    struct timespec ia_atime ;
    struct timespec ia_mtime ;
    struct timespec ia_ctime ;
+   struct file *ia_file ;
 };
-typedef __kernel_uid32_t qid_t;
-typedef __u64 qsize_t;
 struct if_dqblk {
    __u64 dqb_bhardlimit ;
    __u64 dqb_bsoftlimit ;
@@ -839,6 +919,8 @@ struct v2_mem_dqinfo {
    unsigned int dqi_free_blk ;
    unsigned int dqi_free_entry ;
 };
+typedef __kernel_uid32_t qid_t;
+typedef __u64 qsize_t;
 struct mem_dqblk {
    __u32 dqb_bhardlimit ;
    __u32 dqb_bsoftlimit ;
@@ -851,17 +933,20 @@ struct mem_dqblk {
 };
 struct quota_format_type;
 struct quota_format_type;
-union __anonunion_u_92 {
+union __anonunion_u_103 {
    struct v1_mem_dqinfo v1_i ;
    struct v2_mem_dqinfo v2_i ;
 };
 struct mem_dqinfo {
    struct quota_format_type *dqi_format ;
+   int dqi_fmt_id ;
    struct list_head dqi_dirty_list ;
    unsigned long dqi_flags ;
    unsigned int dqi_bgrace ;
    unsigned int dqi_igrace ;
-   union __anonunion_u_92 u ;
+   qsize_t dqi_maxblimit ;
+   qsize_t dqi_maxilimit ;
+   union __anonunion_u_103 u ;
 };
 struct super_block;
 struct dquot {
@@ -903,8 +988,8 @@ struct dquot_operations {
    int (*write_info)(struct super_block * , int  ) ;
 };
 struct quotactl_ops {
-   int (*quota_on)(struct super_block * , int  , int  , char * ) ;
-   int (*quota_off)(struct super_block * , int  ) ;
+   int (*quota_on)(struct super_block * , int  , int  , char * , int  ) ;
+   int (*quota_off)(struct super_block * , int  , int  ) ;
    int (*quota_sync)(struct super_block * , int  ) ;
    int (*get_info)(struct super_block * , int  , struct if_dqinfo * ) ;
    int (*set_info)(struct super_block * , int  , struct if_dqinfo * ) ;
@@ -935,6 +1020,17 @@ struct address_space;
 struct address_space;
 struct writeback_control;
 struct writeback_control;
+union __anonunion_arg_105 {
+   char *buf ;
+   void *data ;
+};
+struct __anonstruct_read_descriptor_t_104 {
+   size_t written ;
+   size_t count ;
+   union __anonunion_arg_105 arg ;
+   int error ;
+};
+typedef struct __anonstruct_read_descriptor_t_104 read_descriptor_t;
 struct address_space_operations {
    int (*writepage)(struct page *page , struct writeback_control *wbc ) ;
    int (*readpage)(struct file * , struct page * ) ;
@@ -955,16 +1051,17 @@ struct address_space_operations {
    int (*releasepage)(struct page * , gfp_t  ) ;
    ssize_t (*direct_IO)(int  , struct kiocb * , struct iovec  const  *iov , loff_t offset ,
                         unsigned long nr_segs ) ;
-   struct page *(*get_xip_page)(struct address_space * , sector_t  , int  ) ;
+   int (*get_xip_mem)(struct address_space * , unsigned long  , int  , void ** , unsigned long * ) ;
    int (*migratepage)(struct address_space * , struct page * , struct page * ) ;
    int (*launder_page)(struct page * ) ;
+   int (*is_partially_uptodate)(struct page * , read_descriptor_t * , unsigned long  ) ;
 };
 struct backing_dev_info;
 struct backing_dev_info;
 struct address_space {
    struct inode *host ;
    struct radix_tree_root page_tree ;
-   rwlock_t tree_lock ;
+   spinlock_t tree_lock ;
    unsigned int i_mmap_writable ;
    struct prio_tree_root i_mmap ;
    struct list_head i_mmap_nonlinear ;
@@ -1005,7 +1102,7 @@ struct inode_operations;
 struct file_operations;
 struct file_lock;
 struct cdev;
-union __anonunion____missing_field_name_93 {
+union __anonunion____missing_field_name_106 {
    struct pipe_inode_info *i_pipe ;
    struct block_device *i_bdev ;
    struct cdev *i_cdev ;
@@ -1022,7 +1119,7 @@ struct inode {
    uid_t i_uid ;
    gid_t i_gid ;
    dev_t i_rdev ;
-   unsigned long i_version ;
+   u64 i_version ;
    loff_t i_size ;
    seqcount_t i_size_seqcount ;
    struct timespec i_atime ;
@@ -1043,7 +1140,7 @@ struct inode {
    struct address_space i_data ;
    struct dquot *i_dquot[2] ;
    struct list_head i_devices ;
-   union __anonunion____missing_field_name_93 __annonCompField4 ;
+   union __anonunion____missing_field_name_106 __annonCompField10 ;
    int i_cindex ;
    __u32 i_generation ;
    unsigned long i_dnotify_mask ;
@@ -1073,15 +1170,15 @@ struct file_ra_state {
    int mmap_miss ;
    loff_t prev_pos ;
 };
-union __anonunion_f_u_94 {
+union __anonunion_f_u_107 {
    struct list_head fu_list ;
    struct rcu_head fu_rcuhead ;
 };
 struct file {
-   union __anonunion_f_u_94 f_u ;
+   union __anonunion_f_u_107 f_u ;
    struct path f_path ;
    struct file_operations  const  *f_op ;
-   atomic_t f_count ;
+   atomic_long_t f_count ;
    unsigned int f_flags ;
    mode_t f_mode ;
    loff_t f_pos ;
@@ -1099,8 +1196,6 @@ struct file {
 struct files_struct;
 typedef struct files_struct *fl_owner_t;
 struct file_lock_operations {
-   void (*fl_insert)(struct file_lock * ) ;
-   void (*fl_remove)(struct file_lock * ) ;
    void (*fl_copy_lock)(struct file_lock * , struct file_lock * ) ;
    void (*fl_release_private)(struct file_lock * ) ;
 };
@@ -1127,32 +1222,33 @@ struct nfs4_lock_info {
    struct nfs4_lock_state *owner ;
 };
 struct fasync_struct;
-struct __anonstruct_afs_96 {
+struct __anonstruct_afs_109 {
    struct list_head link ;
    int state ;
 };
-union __anonunion_fl_u_95 {
+union __anonunion_fl_u_108 {
    struct nfs_lock_info nfs_fl ;
    struct nfs4_lock_info nfs4_fl ;
-   struct __anonstruct_afs_96 afs ;
+   struct __anonstruct_afs_109 afs ;
 };
 struct file_lock {
    struct file_lock *fl_next ;
    struct list_head fl_link ;
    struct list_head fl_block ;
    fl_owner_t fl_owner ;
-   unsigned int fl_pid ;
-   wait_queue_head_t fl_wait ;
-   struct file *fl_file ;
    unsigned char fl_flags ;
    unsigned char fl_type ;
+   unsigned int fl_pid ;
+   struct pid *fl_nspid ;
+   wait_queue_head_t fl_wait ;
+   struct file *fl_file ;
    loff_t fl_start ;
    loff_t fl_end ;
    struct fasync_struct *fl_fasync ;
    unsigned long fl_break_time ;
    struct file_lock_operations *fl_ops ;
    struct lock_manager_operations *fl_lmops ;
-   union __anonunion_fl_u_95 fl_u ;
+   union __anonunion_fl_u_108 fl_u ;
 };
 struct fasync_struct {
    int magic ;
@@ -1193,6 +1289,8 @@ struct super_block {
    struct list_head s_more_io ;
    struct hlist_head s_anon ;
    struct list_head s_files ;
+   struct list_head s_dentry_lru ;
+   int s_nr_dentry_unused ;
    struct block_device *s_bdev ;
    struct mtd_info *s_mtd ;
    struct list_head s_instances ;
@@ -1204,6 +1302,7 @@ struct super_block {
    struct mutex s_vfs_rename_mutex ;
    u32 s_time_gran ;
    char *s_subtype ;
+   char *s_options ;
 };
 struct file_operations {
    struct module *owner ;
@@ -1240,7 +1339,6 @@ struct file_operations {
    ssize_t (*splice_read)(struct file * , loff_t * , struct pipe_inode_info * , size_t  ,
                           unsigned int  ) ;
    int (*setlease)(struct file * , long  , struct file_lock ** ) ;
-   int (*fgetattr)(struct file * , struct kstat * ) ;
    int (*fsetattr)(struct file * , struct iattr * ) ;
 };
 struct inode_operations {
@@ -1257,7 +1355,7 @@ struct inode_operations {
    void *(*follow_link)(struct dentry * , struct nameidata * ) ;
    void (*put_link)(struct dentry * , struct nameidata * , void * ) ;
    void (*truncate)(struct inode * ) ;
-   int (*permission)(struct inode * , int  , struct nameidata * ) ;
+   int (*permission)(struct inode * , int  ) ;
    int (*setattr)(struct dentry * , struct iattr * ) ;
    int (*getattr)(struct vfsmount *mnt , struct dentry * , struct kstat * ) ;
    int (*setxattr)(struct dentry * , char const   * , void const   * , size_t  , int  ) ;
@@ -1272,10 +1370,8 @@ struct seq_file;
 struct super_operations {
    struct inode *(*alloc_inode)(struct super_block *sb ) ;
    void (*destroy_inode)(struct inode * ) ;
-   void (*read_inode)(struct inode * ) ;
    void (*dirty_inode)(struct inode * ) ;
    int (*write_inode)(struct inode * , int  ) ;
-   void (*put_inode)(struct inode * ) ;
    void (*drop_inode)(struct inode * ) ;
    void (*delete_inode)(struct inode * ) ;
    void (*put_super)(struct super_block * ) ;
@@ -1286,7 +1382,7 @@ struct super_operations {
    int (*statfs)(struct dentry * , struct kstatfs * ) ;
    int (*remount_fs)(struct super_block * , int * , char * ) ;
    void (*clear_inode)(struct inode * ) ;
-   void (*umount_begin)(struct vfsmount * , int  ) ;
+   void (*umount_begin)(struct super_block * ) ;
    int (*show_options)(struct seq_file * , struct vfsmount * ) ;
    int (*show_stats)(struct seq_file * , struct vfsmount * ) ;
    ssize_t (*quota_read)(struct super_block * , int  , char * , size_t  , loff_t  ) ;
@@ -1318,45 +1414,46 @@ struct rb_node {
 struct rb_root {
    struct rb_node *rb_node ;
 };
-struct completion {
-   unsigned int done ;
-   wait_queue_head_t wait ;
-};
 struct address_space;
 typedef atomic_long_t mm_counter_t;
-union __anonunion____missing_field_name_101 {
-   atomic_t _mapcount ;
-   unsigned int inuse ;
+struct __anonstruct____missing_field_name_113 {
+   u16 inuse ;
+   u16 objects ;
 };
-struct __anonstruct____missing_field_name_103 {
+union __anonunion____missing_field_name_112 {
+   atomic_t _mapcount ;
+   struct __anonstruct____missing_field_name_113 __annonCompField11 ;
+};
+struct __anonstruct____missing_field_name_115 {
    unsigned long private ;
    struct address_space *mapping ;
 };
-union __anonunion____missing_field_name_102 {
-   struct __anonstruct____missing_field_name_103 __annonCompField6 ;
+union __anonunion____missing_field_name_114 {
+   struct __anonstruct____missing_field_name_115 __annonCompField13 ;
    spinlock_t ptl ;
    struct kmem_cache *slab ;
    struct page *first_page ;
 };
-union __anonunion____missing_field_name_104 {
+union __anonunion____missing_field_name_116 {
    unsigned long index ;
    void *freelist ;
 };
 struct page {
    unsigned long flags ;
    atomic_t _count ;
-   union __anonunion____missing_field_name_101 __annonCompField5 ;
-   union __anonunion____missing_field_name_102 __annonCompField7 ;
-   union __anonunion____missing_field_name_104 __annonCompField8 ;
+   union __anonunion____missing_field_name_112 __annonCompField12 ;
+   union __anonunion____missing_field_name_114 __annonCompField14 ;
+   union __anonunion____missing_field_name_116 __annonCompField15 ;
    struct list_head lru ;
+   unsigned long page_cgroup ;
 };
-struct __anonstruct_vm_set_106 {
+struct __anonstruct_vm_set_118 {
    struct list_head list ;
    void *parent ;
    struct vm_area_struct *head ;
 };
-union __anonunion_shared_105 {
-   struct __anonstruct_vm_set_106 vm_set ;
+union __anonunion_shared_117 {
+   struct __anonstruct_vm_set_118 vm_set ;
    struct raw_prio_tree_node prio_tree_node ;
 };
 struct anon_vma;
@@ -1369,7 +1466,7 @@ struct vm_area_struct {
    pgprot_t vm_page_prot ;
    unsigned long vm_flags ;
    struct rb_node vm_rb ;
-   union __anonunion_shared_105 shared ;
+   union __anonunion_shared_117 shared ;
    struct list_head anon_vma_node ;
    struct anon_vma *anon_vma ;
    struct vm_operations_struct *vm_ops ;
@@ -1378,7 +1475,17 @@ struct vm_area_struct {
    void *vm_private_data ;
    unsigned long vm_truncate_count ;
 };
+struct core_thread {
+   struct task_struct *task ;
+   struct core_thread *next ;
+};
+struct core_state {
+   atomic_t nr_threads ;
+   struct core_thread dumper ;
+   struct completion startup ;
+};
 struct kioctx;
+struct mmu_notifier_mm;
 struct mm_struct {
    struct vm_area_struct *mmap ;
    struct rb_root mm_rb ;
@@ -1420,42 +1527,38 @@ struct mm_struct {
    unsigned long arg_end ;
    unsigned long env_start ;
    unsigned long env_end ;
-   unsigned long saved_auxv[38] ;
+   unsigned long saved_auxv[40] ;
    cpumask_t cpu_vm_mask ;
    mm_context_t context ;
    unsigned int faultstamp ;
    unsigned int token_priority ;
    unsigned int last_interval ;
    unsigned long flags ;
-   int core_waiters ;
-   struct completion *core_startup_done ;
-   struct completion core_done ;
+   struct core_state *core_state ;
    rwlock_t ioctx_list_lock ;
    struct kioctx *ioctx_list ;
+   struct task_struct *owner ;
+   struct file *exe_file ;
+   unsigned long num_exe_file_vmas ;
+   struct mmu_notifier_mm *mmu_notifier_mm ;
 };
 typedef unsigned long cputime_t;
-struct sem_undo;
 struct task_struct;
-struct sem_undo {
-   struct sem_undo *proc_next ;
-   struct sem_undo *id_next ;
-   int semid ;
-   short *semadj ;
-};
+struct sem_undo_list;
 struct sem_undo_list {
    atomic_t refcnt ;
    spinlock_t lock ;
-   struct sem_undo *proc_list ;
+   struct list_head list_proc ;
 };
 struct sysv_sem {
    struct sem_undo_list *undo_list ;
 };
 struct siginfo;
 struct siginfo;
-struct __anonstruct_sigset_t_107 {
+struct __anonstruct_sigset_t_119 {
    unsigned long sig[2] ;
 };
-typedef struct __anonstruct_sigset_t_107 sigset_t;
+typedef struct __anonstruct_sigset_t_119 sigset_t;
 typedef void __signalfn_t(int  );
 typedef __signalfn_t *__sighandler_t;
 typedef void __restorefn_t(void);
@@ -1474,50 +1577,50 @@ union sigval {
    void *sival_ptr ;
 };
 typedef union sigval sigval_t;
-struct __anonstruct__kill_109 {
+struct __anonstruct__kill_121 {
    pid_t _pid ;
    uid_t _uid ;
 };
-struct __anonstruct__timer_110 {
+struct __anonstruct__timer_122 {
    timer_t _tid ;
    int _overrun ;
    char _pad[sizeof(uid_t ) - sizeof(int )] ;
    sigval_t _sigval ;
    int _sys_private ;
 };
-struct __anonstruct__rt_111 {
+struct __anonstruct__rt_123 {
    pid_t _pid ;
    uid_t _uid ;
    sigval_t _sigval ;
 };
-struct __anonstruct__sigchld_112 {
+struct __anonstruct__sigchld_124 {
    pid_t _pid ;
    uid_t _uid ;
    int _status ;
    clock_t _utime ;
    clock_t _stime ;
 };
-struct __anonstruct__sigfault_113 {
+struct __anonstruct__sigfault_125 {
    void *_addr ;
 };
-struct __anonstruct__sigpoll_114 {
+struct __anonstruct__sigpoll_126 {
    long _band ;
    int _fd ;
 };
-union __anonunion__sifields_108 {
+union __anonunion__sifields_120 {
    int _pad[(128U - 3U * sizeof(int )) / sizeof(int )] ;
-   struct __anonstruct__kill_109 _kill ;
-   struct __anonstruct__timer_110 _timer ;
-   struct __anonstruct__rt_111 _rt ;
-   struct __anonstruct__sigchld_112 _sigchld ;
-   struct __anonstruct__sigfault_113 _sigfault ;
-   struct __anonstruct__sigpoll_114 _sigpoll ;
+   struct __anonstruct__kill_121 _kill ;
+   struct __anonstruct__timer_122 _timer ;
+   struct __anonstruct__rt_123 _rt ;
+   struct __anonstruct__sigchld_124 _sigchld ;
+   struct __anonstruct__sigfault_125 _sigfault ;
+   struct __anonstruct__sigpoll_126 _sigpoll ;
 };
 struct siginfo {
    int si_signo ;
    int si_errno ;
    int si_code ;
-   union __anonunion__sifields_108 _sifields ;
+   union __anonunion__sifields_120 _sifields ;
 };
 typedef struct siginfo siginfo_t;
 struct siginfo;
@@ -1526,18 +1629,12 @@ struct sigpending {
    struct list_head list ;
    sigset_t signal ;
 };
-struct dentry;
-struct vfsmount;
 struct fs_struct {
    atomic_t count ;
    rwlock_t lock ;
    int umask ;
-   struct dentry *root ;
-   struct dentry *pwd ;
-   struct dentry *altroot ;
-   struct vfsmount *rootmnt ;
-   struct vfsmount *pwdmnt ;
-   struct vfsmount *altrootmnt ;
+   struct path root ;
+   struct path pwd ;
 };
 struct prop_local_single {
    unsigned long events ;
@@ -1545,19 +1642,10 @@ struct prop_local_single {
    unsigned long period ;
    spinlock_t lock ;
 };
-struct __anonstruct_seccomp_t_117 {
+struct __anonstruct_seccomp_t_129 {
    int mode ;
 };
-typedef struct __anonstruct_seccomp_t_117 seccomp_t;
-union ktime;
-struct robust_list {
-   struct robust_list *next ;
-};
-struct robust_list_head {
-   struct robust_list list ;
-   long futex_offset ;
-   struct robust_list *list_op_pending ;
-};
+typedef struct __anonstruct_seccomp_t_129 seccomp_t;
 struct plist_head {
    struct list_head prio_list ;
    struct list_head node_list ;
@@ -1581,7 +1669,8 @@ enum hrtimer_cb_mode {
     HRTIMER_CB_SOFTIRQ = 0,
     HRTIMER_CB_IRQSAFE = 1,
     HRTIMER_CB_IRQSAFE_NO_RESTART = 2,
-    HRTIMER_CB_IRQSAFE_NO_SOFTIRQ = 3
+    HRTIMER_CB_IRQSAFE_PERCPU = 3,
+    HRTIMER_CB_IRQSAFE_UNLOCKED = 4
 } ;
 struct hrtimer {
    struct rb_node node ;
@@ -1609,20 +1698,32 @@ struct hrtimer_clock_base {
 };
 struct hrtimer_cpu_base {
    spinlock_t lock ;
-   struct lock_class_key lock_key ;
    struct hrtimer_clock_base clock_base[2] ;
+   struct list_head cb_pending ;
    ktime_t expires_next ;
    int hres_active ;
-   struct list_head cb_pending ;
    unsigned long nr_events ;
 };
 struct task_io_accounting {
+   u64 rchar ;
+   u64 wchar ;
+   u64 syscr ;
+   u64 syscw ;
    u64 read_bytes ;
    u64 write_bytes ;
    u64 cancelled_write_bytes ;
 };
+struct latency_record {
+   unsigned long backtrace[12] ;
+   unsigned int count ;
+   unsigned long time ;
+   unsigned long max ;
+};
+struct task_struct;
 struct futex_pi_state;
 struct futex_pi_state;
+struct robust_list_head;
+struct robust_list_head;
 struct bio;
 struct seq_file;
 struct cfs_rq;
@@ -1641,7 +1742,7 @@ struct iovec {
    __kernel_size_t iov_len ;
 };
 struct kioctx;
-union __anonunion_ki_obj_122 {
+union __anonunion_ki_obj_131 {
    void *user ;
    struct task_struct *tsk ;
 };
@@ -1655,11 +1756,10 @@ struct kiocb {
    int (*ki_cancel)(struct kiocb * , struct io_event * ) ;
    ssize_t (*ki_retry)(struct kiocb * ) ;
    void (*ki_dtor)(struct kiocb * ) ;
-   union __anonunion_ki_obj_122 ki_obj ;
+   union __anonunion_ki_obj_131 ki_obj ;
    __u64 ki_user_data ;
    wait_queue_t ki_wait ;
    loff_t ki_pos ;
-   atomic_t ki_bio_count ;
    void *private ;
    unsigned short ki_opcode ;
    size_t ki_nbytes ;
@@ -1713,11 +1813,11 @@ struct pacct_struct {
    unsigned long ac_minflt ;
    unsigned long ac_majflt ;
 };
-union __anonunion____missing_field_name_123 {
+union __anonunion____missing_field_name_132 {
    pid_t pgrp ;
    pid_t __pgrp ;
 };
-union __anonunion____missing_field_name_124 {
+union __anonunion____missing_field_name_133 {
    pid_t session ;
    pid_t __session ;
 };
@@ -1737,15 +1837,15 @@ struct signal_struct {
    unsigned int flags ;
    struct list_head posix_timers ;
    struct hrtimer real_timer ;
-   struct task_struct *tsk ;
+   struct pid *leader_pid ;
    ktime_t it_real_incr ;
    cputime_t it_prof_expires ;
    cputime_t it_virt_expires ;
    cputime_t it_prof_incr ;
    cputime_t it_virt_incr ;
-   union __anonunion____missing_field_name_123 __annonCompField9 ;
+   union __anonunion____missing_field_name_132 __annonCompField16 ;
    struct pid *tty_old_pgrp ;
-   union __anonunion____missing_field_name_124 __annonCompField10 ;
+   union __anonunion____missing_field_name_133 __annonCompField17 ;
    int leader ;
    struct tty_struct *tty ;
    cputime_t utime ;
@@ -1766,8 +1866,9 @@ struct signal_struct {
    unsigned long oublock ;
    unsigned long cinblock ;
    unsigned long coublock ;
+   struct task_io_accounting ioac ;
    unsigned long long sum_sched_runtime ;
-   struct rlimit rlim[15] ;
+   struct rlimit rlim[16] ;
    struct list_head cpu_timers[3] ;
    struct key *session_keyring ;
    struct key *process_keyring ;
@@ -1783,6 +1884,8 @@ struct user_struct {
    atomic_t sigpending ;
    atomic_t inotify_watches ;
    atomic_t inotify_devs ;
+   atomic_t epoll_devs ;
+   atomic_t epoll_watches ;
    unsigned long mq_bytes ;
    unsigned long locked_shm ;
    struct key *uid_keyring ;
@@ -1793,6 +1896,14 @@ struct user_struct {
 struct backing_dev_info;
 struct reclaim_state;
 struct reclaim_state;
+struct sched_info {
+   unsigned long pcount ;
+   unsigned long long cpu_time ;
+   unsigned long long run_delay ;
+   unsigned long long last_arrival ;
+   unsigned long long last_queued ;
+   unsigned int bkl_count ;
+};
 enum cpu_idle_type {
     CPU_IDLE = 0,
     CPU_NOT_IDLE = 1,
@@ -1805,6 +1916,15 @@ struct sched_group {
    unsigned int __cpu_power ;
    u32 reciprocal_cpu_power ;
 };
+enum sched_domain_level {
+    SD_LV_NONE = 0,
+    SD_LV_SIBLING = 1,
+    SD_LV_MC = 2,
+    SD_LV_CPU = 3,
+    SD_LV_NODE = 4,
+    SD_LV_ALLNODES = 5,
+    SD_LV_MAX = 6
+} ;
 struct sched_domain {
    struct sched_domain *parent ;
    struct sched_domain *child ;
@@ -1821,9 +1941,31 @@ struct sched_domain {
    unsigned int wake_idx ;
    unsigned int forkexec_idx ;
    int flags ;
+   enum sched_domain_level level ;
    unsigned long last_balance ;
    unsigned int balance_interval ;
    unsigned int nr_balance_failed ;
+   u64 last_update ;
+   unsigned int lb_count[3] ;
+   unsigned int lb_failed[3] ;
+   unsigned int lb_balanced[3] ;
+   unsigned int lb_imbalance[3] ;
+   unsigned int lb_gained[3] ;
+   unsigned int lb_hot_gained[3] ;
+   unsigned int lb_nobusyg[3] ;
+   unsigned int lb_nobusyq[3] ;
+   unsigned int alb_count ;
+   unsigned int alb_failed ;
+   unsigned int alb_pushed ;
+   unsigned int sbe_count ;
+   unsigned int sbe_balanced ;
+   unsigned int sbe_pushed ;
+   unsigned int sbf_count ;
+   unsigned int sbf_balanced ;
+   unsigned int sbf_pushed ;
+   unsigned int ttwu_wake_remote ;
+   unsigned int ttwu_move_affine ;
+   unsigned int ttwu_move_balance ;
 };
 struct io_context;
 struct io_context;
@@ -1845,6 +1987,7 @@ struct sched_class {
    void (*enqueue_task)(struct rq *rq , struct task_struct *p , int wakeup ) ;
    void (*dequeue_task)(struct rq *rq , struct task_struct *p , int sleep ) ;
    void (*yield_task)(struct rq *rq ) ;
+   int (*select_task_rq)(struct task_struct *p , int sync ) ;
    void (*check_preempt_curr)(struct rq *rq , struct task_struct *p ) ;
    struct task_struct *(*pick_next_task)(struct rq *rq ) ;
    void (*put_prev_task)(struct rq *rq , struct task_struct *p ) ;
@@ -1853,9 +1996,19 @@ struct sched_class {
                                  enum cpu_idle_type idle , int *all_pinned , int *this_best_prio ) ;
    int (*move_one_task)(struct rq *this_rq , int this_cpu , struct rq *busiest , struct sched_domain *sd ,
                         enum cpu_idle_type idle ) ;
+   void (*pre_schedule)(struct rq *this_rq , struct task_struct *task ) ;
+   void (*post_schedule)(struct rq *this_rq ) ;
+   void (*task_wake_up)(struct rq *this_rq , struct task_struct *task ) ;
    void (*set_curr_task)(struct rq *rq ) ;
-   void (*task_tick)(struct rq *rq , struct task_struct *p ) ;
+   void (*task_tick)(struct rq *rq , struct task_struct *p , int queued ) ;
    void (*task_new)(struct rq *rq , struct task_struct *p ) ;
+   void (*set_cpus_allowed)(struct task_struct *p , cpumask_t const   *newmask ) ;
+   void (*rq_online)(struct rq *rq ) ;
+   void (*rq_offline)(struct rq *rq ) ;
+   void (*switched_from)(struct rq *this_rq , struct task_struct *task , int running ) ;
+   void (*switched_to)(struct rq *this_rq , struct task_struct *task , int running ) ;
+   void (*prio_changed)(struct rq *this_rq , struct task_struct *task , int oldprio ,
+                        int running ) ;
    void (*moved_group)(struct task_struct *p ) ;
 };
 struct load_weight {
@@ -1865,14 +2018,55 @@ struct load_weight {
 struct sched_entity {
    struct load_weight load ;
    struct rb_node run_node ;
+   struct list_head group_node ;
    unsigned int on_rq ;
    u64 exec_start ;
    u64 sum_exec_runtime ;
    u64 vruntime ;
    u64 prev_sum_exec_runtime ;
+   u64 last_wakeup ;
+   u64 avg_overlap ;
+   u64 wait_start ;
+   u64 wait_max ;
+   u64 wait_count ;
+   u64 wait_sum ;
+   u64 sleep_start ;
+   u64 sleep_max ;
+   s64 sum_sleep_runtime ;
+   u64 block_start ;
+   u64 block_max ;
+   u64 exec_max ;
+   u64 slice_max ;
+   u64 nr_migrations ;
+   u64 nr_migrations_cold ;
+   u64 nr_failed_migrations_affine ;
+   u64 nr_failed_migrations_running ;
+   u64 nr_failed_migrations_hot ;
+   u64 nr_forced_migrations ;
+   u64 nr_forced2_migrations ;
+   u64 nr_wakeups ;
+   u64 nr_wakeups_sync ;
+   u64 nr_wakeups_migrate ;
+   u64 nr_wakeups_local ;
+   u64 nr_wakeups_remote ;
+   u64 nr_wakeups_affine ;
+   u64 nr_wakeups_affine_attempts ;
+   u64 nr_wakeups_passive ;
+   u64 nr_wakeups_idle ;
    struct sched_entity *parent ;
    struct cfs_rq *cfs_rq ;
    struct cfs_rq *my_q ;
+};
+struct rt_rq;
+struct sched_rt_entity {
+   struct list_head run_list ;
+   unsigned int time_slice ;
+   unsigned long timeout ;
+   int nr_cpus_allowed ;
+   struct sched_rt_entity *back ;
+   struct sched_rt_entity *parent ;
+   struct rt_rq *rt_rq ;
+   struct rt_rq *my_q ;
 };
 struct linux_binfmt;
 struct css_set;
@@ -1886,20 +2080,18 @@ struct task_struct {
    int prio ;
    int static_prio ;
    int normal_prio ;
-   struct list_head run_list ;
+   unsigned int rt_priority ;
    struct sched_class  const  *sched_class ;
    struct sched_entity se ;
+   struct sched_rt_entity rt ;
    struct hlist_head preempt_notifiers ;
-   unsigned short ioprio ;
    unsigned char fpu_counter ;
    s8 oomkilladj ;
    unsigned int btrace_seq ;
    unsigned int policy ;
    cpumask_t cpus_allowed ;
-   unsigned int time_slice ;
+   struct sched_info sched_info ;
    struct list_head tasks ;
-   struct list_head ptrace_children ;
-   struct list_head ptrace_list ;
    struct mm_struct *mm ;
    struct mm_struct *active_mm ;
    struct linux_binfmt *binfmt ;
@@ -1916,12 +2108,13 @@ struct task_struct {
    struct list_head children ;
    struct list_head sibling ;
    struct task_struct *group_leader ;
+   struct list_head ptraced ;
+   struct list_head ptrace_entry ;
    struct pid_link pids[3] ;
    struct list_head thread_group ;
    struct completion *vfork_done ;
    int *set_child_tid ;
    int *clear_child_tid ;
-   unsigned int rt_priority ;
    cputime_t utime ;
    cputime_t stime ;
    cputime_t utimescaled ;
@@ -1951,15 +2144,18 @@ struct task_struct {
    kernel_cap_t cap_effective ;
    kernel_cap_t cap_inheritable ;
    kernel_cap_t cap_permitted ;
-   unsigned int keep_capabilities : 1 ;
+   kernel_cap_t cap_bset ;
    struct user_struct *user ;
+   unsigned int securebits ;
+   unsigned char jit_keyring ;
    struct key *request_key_auth ;
    struct key *thread_keyring ;
-   unsigned char jit_keyring ;
    char comm[16] ;
    int link_count ;
    int total_link_count ;
    struct sysv_sem sysvsem ;
+   unsigned long last_switch_timestamp ;
+   unsigned long last_switch_count ;
    struct thread_struct thread ;
    struct fs_struct *fs ;
    struct files_struct *files ;
@@ -1977,6 +2173,8 @@ struct task_struct {
    sigset_t *notifier_mask ;
    void *security ;
    struct audit_context *audit_context ;
+   uid_t loginuid ;
+   unsigned int sessionid ;
    seccomp_t seccomp ;
    u32 parent_exec_id ;
    u32 self_exec_id ;
@@ -1992,14 +2190,10 @@ struct task_struct {
    struct io_context *io_context ;
    unsigned long ptrace_message ;
    siginfo_t *last_siginfo ;
-   u64 rchar ;
-   u64 wchar ;
-   u64 syscr ;
-   u64 syscw ;
    struct task_io_accounting ioac ;
    u64 acct_rss_mem1 ;
    u64 acct_vm_mem1 ;
-   cputime_t acct_stimexpd ;
+   cputime_t acct_timexpd ;
    nodemask_t mems_allowed ;
    int cpuset_mems_generation ;
    int cpuset_mem_spread_rotor ;
@@ -2010,8 +2204,11 @@ struct task_struct {
    struct futex_pi_state *pi_state_cache ;
    atomic_t fs_excl ;
    struct rcu_head rcu ;
+   struct list_head *scm_work_list ;
    struct pipe_inode_info *splice_pipe ;
    struct prop_local_single dirties ;
+   int latency_record_count ;
+   struct latency_record latency_record[32] ;
 };
 struct pid_namespace;
 struct exception_table_entry {
@@ -2060,28 +2257,25 @@ struct dev_archdata {
 };
 struct device;
 struct device_driver;
+struct driver_private;
+struct driver_private;
 struct class;
 struct class;
-struct class_device;
-struct class_device;
+struct class_private;
+struct class_private;
 struct bus_type;
 struct bus_type;
+struct bus_type_private;
+struct bus_type_private;
 struct bus_attribute {
    struct attribute attr ;
-   ssize_t (*show)(struct bus_type * , char *buf ) ;
-   ssize_t (*store)(struct bus_type * , char const   *buf , size_t count ) ;
+   ssize_t (*show)(struct bus_type *bus , char *buf ) ;
+   ssize_t (*store)(struct bus_type *bus , char const   *buf , size_t count ) ;
 };
 struct device_attribute;
 struct driver_attribute;
 struct bus_type {
    char const   *name ;
-   struct module *owner ;
-   struct kset subsys ;
-   struct kset drivers ;
-   struct kset devices ;
-   struct klist klist_devices ;
-   struct klist klist_drivers ;
-   struct blocking_notifier_head bus_notifier ;
    struct bus_attribute *bus_attrs ;
    struct device_attribute *dev_attrs ;
    struct driver_attribute *drv_attrs ;
@@ -2094,73 +2288,47 @@ struct bus_type {
    int (*suspend_late)(struct device *dev , pm_message_t state ) ;
    int (*resume_early)(struct device *dev ) ;
    int (*resume)(struct device *dev ) ;
-   unsigned int drivers_autoprobe : 1 ;
+   struct pm_ext_ops *pm ;
+   struct bus_type_private *p ;
 };
-struct notifier_block;
 struct device_driver {
    char const   *name ;
    struct bus_type *bus ;
-   struct kobject kobj ;
-   struct klist klist_devices ;
-   struct klist_node knode_bus ;
    struct module *owner ;
    char const   *mod_name ;
-   struct module_kobject *mkobj ;
    int (*probe)(struct device *dev ) ;
    int (*remove)(struct device *dev ) ;
    void (*shutdown)(struct device *dev ) ;
    int (*suspend)(struct device *dev , pm_message_t state ) ;
    int (*resume)(struct device *dev ) ;
+   struct attribute_group **groups ;
+   struct pm_ops *pm ;
+   struct driver_private *p ;
 };
 struct driver_attribute {
    struct attribute attr ;
-   ssize_t (*show)(struct device_driver * , char *buf ) ;
-   ssize_t (*store)(struct device_driver * , char const   *buf , size_t count ) ;
+   ssize_t (*show)(struct device_driver *driver , char *buf ) ;
+   ssize_t (*store)(struct device_driver *driver , char const   *buf , size_t count ) ;
 };
 struct class_attribute;
-struct class_device_attribute;
 struct class {
    char const   *name ;
    struct module *owner ;
-   struct kset subsys ;
-   struct list_head children ;
-   struct list_head devices ;
-   struct list_head interfaces ;
-   struct kset class_dirs ;
-   struct semaphore sem ;
    struct class_attribute *class_attrs ;
-   struct class_device_attribute *class_dev_attrs ;
    struct device_attribute *dev_attrs ;
-   int (*uevent)(struct class_device *dev , struct kobj_uevent_env *env ) ;
+   struct kobject *dev_kobj ;
    int (*dev_uevent)(struct device *dev , struct kobj_uevent_env *env ) ;
-   void (*release)(struct class_device *dev ) ;
    void (*class_release)(struct class *class ) ;
    void (*dev_release)(struct device *dev ) ;
-   int (*suspend)(struct device * , pm_message_t state ) ;
-   int (*resume)(struct device * ) ;
+   int (*suspend)(struct device *dev , pm_message_t state ) ;
+   int (*resume)(struct device *dev ) ;
+   struct pm_ops *pm ;
+   struct class_private *p ;
 };
 struct class_attribute {
    struct attribute attr ;
-   ssize_t (*show)(struct class * , char *buf ) ;
-   ssize_t (*store)(struct class * , char const   *buf , size_t count ) ;
-};
-struct class_device_attribute {
-   struct attribute attr ;
-   ssize_t (*show)(struct class_device * , char *buf ) ;
-   ssize_t (*store)(struct class_device * , char const   *buf , size_t count ) ;
-};
-struct class_device {
-   struct list_head node ;
-   struct kobject kobj ;
-   struct class *class ;
-   dev_t devt ;
-   struct device *dev ;
-   void *class_data ;
-   struct class_device *parent ;
-   struct attribute_group **groups ;
-   void (*release)(struct class_device *dev ) ;
-   int (*uevent)(struct class_device *dev , struct kobj_uevent_env *env ) ;
-   char class_id[20] ;
+   ssize_t (*show)(struct class *class , char *buf ) ;
+   ssize_t (*store)(struct class *class , char const   *buf , size_t count ) ;
 };
 struct device_type {
    char const   *name ;
@@ -2169,12 +2337,17 @@ struct device_type {
    void (*release)(struct device *dev ) ;
    int (*suspend)(struct device *dev , pm_message_t state ) ;
    int (*resume)(struct device *dev ) ;
+   struct pm_ops *pm ;
 };
 struct device_attribute {
    struct attribute attr ;
    ssize_t (*show)(struct device *dev , struct device_attribute *attr , char *buf ) ;
    ssize_t (*store)(struct device *dev , struct device_attribute *attr , char const   *buf ,
                     size_t count ) ;
+};
+struct device_dma_parameters {
+   unsigned int max_segment_size ;
+   unsigned long segment_boundary_mask ;
 };
 struct dma_coherent_mem;
 struct device {
@@ -2185,8 +2358,8 @@ struct device {
    struct device *parent ;
    struct kobject kobj ;
    char bus_id[20] ;
+   char const   *init_name ;
    struct device_type *type ;
-   unsigned int is_registered : 1 ;
    unsigned int uevent_suppress : 1 ;
    struct semaphore sem ;
    struct bus_type *bus ;
@@ -2196,6 +2369,7 @@ struct device {
    struct dev_pm_info power ;
    u64 *dma_mask ;
    u64 coherent_dma_mask ;
+   struct device_dma_parameters *dma_parms ;
    struct list_head dma_pools ;
    struct dma_coherent_mem *dma_mem ;
    struct dev_archdata archdata ;
@@ -2286,8 +2460,8 @@ struct ipmi_reg_list {
 /* compiler builtin: 
    long __builtin_expect(long  , long  ) ;  */
 extern int ( /* format attribute */ __attribute__((__regparm__(0))) printk)(char const   *fmt 
-                                                                            , ...) ;
-__inline static void ( __attribute__((__always_inline__)) prefetch)(void const   *x ) 
+                                                                            , ...)  __attribute__((__cold__)) ;
+__inline static void prefetch(void const   *x ) 
 { 
 
   {
@@ -2296,12 +2470,21 @@ __inline static void ( __attribute__((__always_inline__)) prefetch)(void const  
                        ".byte 0x8d,0x74,0x26,0x00\n"
                        "\n662:\n"
                        ".section .altinstructions,\"a\"\n"
-                       "  .align 4\n"
-                       "  .long 661b\n"
-                       "  .long 663f\n"
-                       "  .byte %c0\n"
-                       "  .byte 662b-661b\n"
-                       "  .byte 664f-663f\n"
+                       " "
+                       ".balign 4"
+                       " "
+                       "\n"
+                       " "
+                       ".long"
+                       " "
+                       "661b\n"
+                       " "
+                       ".long"
+                       " "
+                       "663f\n"
+                       "\t .byte %c0\n"
+                       "\t .byte 662b-661b\n"
+                       "\t .byte 664f-663f\n"
                        ".previous\n"
                        ".section .altinstr_replacement,\"ax\"\n"
                        "663:\n\t"
@@ -2312,7 +2495,7 @@ __inline static void ( __attribute__((__always_inline__)) prefetch)(void const  
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) INIT_LIST_HEAD)(struct list_head *list ) 
+__inline static void INIT_LIST_HEAD(struct list_head *list ) 
 { 
 
   {
@@ -2323,9 +2506,7 @@ __inline static void ( __attribute__((__always_inline__)) INIT_LIST_HEAD)(struct
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) __list_add)(struct list_head *new ,
-                                                                      struct list_head *prev ,
-                                                                      struct list_head *next ) 
+__inline static void __list_add(struct list_head *new , struct list_head *prev , struct list_head *next ) 
 { 
 
   {
@@ -2338,8 +2519,7 @@ __inline static void ( __attribute__((__always_inline__)) __list_add)(struct lis
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) list_add)(struct list_head *new ,
-                                                                    struct list_head *head ) 
+__inline static void list_add(struct list_head *new , struct list_head *head ) 
 { 
 
   {
@@ -2349,8 +2529,7 @@ __inline static void ( __attribute__((__always_inline__)) list_add)(struct list_
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) list_add_tail)(struct list_head *new ,
-                                                                         struct list_head *head ) 
+__inline static void list_add_tail(struct list_head *new , struct list_head *head ) 
 { 
 
   {
@@ -2360,8 +2539,7 @@ __inline static void ( __attribute__((__always_inline__)) list_add_tail)(struct 
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) __list_del)(struct list_head *prev ,
-                                                                      struct list_head *next ) 
+__inline static void __list_del(struct list_head *prev , struct list_head *next ) 
 { 
 
   {
@@ -2372,7 +2550,7 @@ __inline static void ( __attribute__((__always_inline__)) __list_del)(struct lis
   return;
 }
 }
-__inline static void ( __attribute__((__always_inline__)) list_del)(struct list_head *entry ) 
+__inline static void list_del(struct list_head *entry ) 
 { 
 
   {
@@ -2384,7 +2562,7 @@ __inline static void ( __attribute__((__always_inline__)) list_del)(struct list_
   return;
 }
 }
-__inline static int ( __attribute__((__always_inline__)) list_empty)(struct list_head  const  *head ) 
+__inline static int list_empty(struct list_head  const  *head ) 
 { 
 
   {
@@ -2392,32 +2570,30 @@ __inline static int ( __attribute__((__always_inline__)) list_empty)(struct list
 }
 }
 register unsigned long current_stack_pointer  __asm__("esp") __attribute__((__used__))  ;
-extern unsigned long ( __attribute__((__regparm__(3))) _spin_lock_irqsave)(spinlock_t *lock )  __attribute__((__section__(".spinlock.text"))) ;
-extern void ( __attribute__((__regparm__(3))) _spin_unlock_irqrestore)(spinlock_t *lock ,
-                                                                       unsigned long flags )  __attribute__((__section__(".spinlock.text"))) ;
+extern unsigned long _spin_lock_irqsave(spinlock_t *lock )  __attribute__((__section__(".spinlock.text"))) ;
+extern void _spin_unlock_irqrestore(spinlock_t *lock , unsigned long flags )  __attribute__((__section__(".spinlock.text"))) ;
 extern void init_waitqueue_head(wait_queue_head_t *q ) ;
-extern void ( __attribute__((__regparm__(3))) __wake_up)(wait_queue_head_t *q , unsigned int mode ,
-                                                         int nr , void *key ) ;
+extern void __wake_up(wait_queue_head_t *q , unsigned int mode , int nr , void *key ) ;
 extern void __mutex_init(struct mutex *lock , char const   *name , struct lock_class_key *key ) ;
-extern void ( __attribute__((__regparm__(3))) mutex_lock)(struct mutex *lock ) ;
-extern void ( __attribute__((__regparm__(3))) mutex_unlock)(struct mutex *lock ) ;
+extern void mutex_lock(struct mutex *lock ) ;
+extern void mutex_unlock(struct mutex *lock ) ;
+extern int param_set_int(char const   *val , struct kernel_param *kp ) ;
+extern int param_get_int(char *buffer , struct kernel_param *kp ) ;
 extern void kfree(void const   * ) ;
 extern void *__kmalloc(size_t size , gfp_t flags ) ;
 __inline static void *( __attribute__((__always_inline__)) kmalloc)(size_t size ,
                                                                     gfp_t flags ) 
-{ void *tmp___3 ;
+{ void *tmp___2 ;
 
   {
   {
-  tmp___3 = __kmalloc(size, flags);
+  tmp___2 = __kmalloc(size, flags);
   }
-  return (tmp___3);
+  return (tmp___2);
 }
 }
-extern int param_set_int(char const   *val , struct kernel_param *kp ) ;
-extern int param_get_int(char *buffer , struct kernel_param *kp ) ;
 extern unsigned int __invalid_size_argument_for_IOC ;
-__inline static unsigned int ( __attribute__((__always_inline__)) iminor)(struct inode  const  *inode ) 
+__inline static unsigned int iminor(struct inode  const  *inode ) 
 { 
 
   {
@@ -2428,14 +2604,14 @@ extern int fasync_helper(int  , struct file * , int  , struct fasync_struct ** )
 extern void kill_fasync(struct fasync_struct ** , int  , int  ) ;
 extern int register_chrdev(unsigned int  , char const   * , struct file_operations  const  * ) ;
 extern void unregister_chrdev(unsigned int  , char const   * ) ;
-__inline static long ( __attribute__((__always_inline__)) PTR_ERR)(void const   *ptr ) 
+__inline static long PTR_ERR(void const   *ptr ) 
 { 
 
   {
   return ((long )ptr);
 }
 }
-__inline static long ( __attribute__((__always_inline__)) IS_ERR)(void const   *ptr ) 
+__inline static long IS_ERR(void const   *ptr ) 
 { long tmp ;
 
   {
@@ -2447,9 +2623,8 @@ __inline static long ( __attribute__((__always_inline__)) IS_ERR)(void const   *
 }
 extern unsigned long copy_to_user(void *to , void const   *from , unsigned long n ) ;
 extern unsigned long copy_from_user(void *to , void const   *from , unsigned long n ) ;
-__inline static void ( __attribute__((__always_inline__)) poll_wait)(struct file *filp ,
-                                                                     wait_queue_head_t *wait_address ,
-                                                                     poll_table *p ) 
+__inline static void poll_wait(struct file *filp , wait_queue_head_t *wait_address ,
+                               poll_table *p ) 
 { 
 
   {
@@ -2463,11 +2638,12 @@ __inline static void ( __attribute__((__always_inline__)) poll_wait)(struct file
   return;
 }
 }
-extern struct class *class_create(struct module *owner , char const   *name ) ;
+extern struct class *__class_create(struct module *owner , char const   *name , struct lock_class_key *key ) ;
 extern void class_destroy(struct class *cls ) ;
 extern struct device *( /* format attribute */  device_create)(struct class *cls ,
                                                                struct device *parent ,
-                                                               dev_t devt , char const   *fmt 
+                                                               dev_t devt , void *drvdata ,
+                                                               char const   *fmt 
                                                                , ...) ;
 extern void device_destroy(struct class *cls , dev_t devt ) ;
 extern void ipmi_free_recv_msg(struct ipmi_recv_msg *msg ) ;
@@ -2492,6 +2668,8 @@ extern int ipmi_smi_watcher_register(struct ipmi_smi_watcher *watcher ) ;
 extern int ipmi_smi_watcher_unregister(struct ipmi_smi_watcher *watcher ) ;
 extern unsigned int ipmi_addr_length(int addr_type ) ;
 extern int ipmi_validate_addr(struct ipmi_addr *addr , int len ) ;
+extern void lock_kernel(void)  __attribute__((__section__(".spinlock.text"))) ;
+extern void unlock_kernel(void)  __attribute__((__section__(".spinlock.text"))) ;
 static void file_receive_handler(struct ipmi_recv_msg *msg , void *handler_data ) 
 { struct ipmi_file_private *priv ;
   int was_empty ;
@@ -2500,7 +2678,18 @@ static void file_receive_handler(struct ipmi_recv_msg *msg , void *handler_data 
   {
   {
   priv = (struct ipmi_file_private *)handler_data;
-  flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+  }
+  {
+  while (1) {
+    while_0_continue: /* CIL Label */ ;
+    {
+    flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+    }
+    goto while_0_break;
+  }
+  while_0_break: /* CIL Label */ ;
+  }
+  {
   was_empty = list_empty((struct list_head  const  *)(& priv->recv_msgs));
   list_add_tail(& msg->link, & priv->recv_msgs);
   }
@@ -2511,7 +2700,14 @@ static void file_receive_handler(struct ipmi_recv_msg *msg , void *handler_data 
     }
   }
   {
-  _spin_unlock_irqrestore(& priv->recv_msg_lock, flags);
+  while (1) {
+    while_1_continue: /* CIL Label */ ;
+    {
+    _spin_unlock_irqrestore(& priv->recv_msg_lock, flags);
+    }
+    goto while_1_break;
+  }
+  while_1_break: /* CIL Label */ ;
   }
   return;
 }
@@ -2527,7 +2723,18 @@ static unsigned int ipmi_poll(struct file *file , poll_table *wait )
   priv = (struct ipmi_file_private *)file->private_data;
   mask = 0U;
   poll_wait(file, & priv->wait, wait);
-  flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+  }
+  {
+  while (1) {
+    while_2_continue: /* CIL Label */ ;
+    {
+    flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+    }
+    goto while_2_break;
+  }
+  while_2_break: /* CIL Label */ ;
+  }
+  {
   tmp = list_empty((struct list_head  const  *)(& priv->recv_msgs));
   }
   if (! tmp) {
@@ -2536,7 +2743,14 @@ static unsigned int ipmi_poll(struct file *file , poll_table *wait )
     }
   }
   {
-  _spin_unlock_irqrestore(& priv->recv_msg_lock, flags);
+  while (1) {
+    while_3_continue: /* CIL Label */ ;
+    {
+    _spin_unlock_irqrestore(& priv->recv_msg_lock, flags);
+    }
+    goto while_3_break;
+  }
+  while_3_break: /* CIL Label */ ;
   }
   return (mask);
 }
@@ -2548,13 +2762,15 @@ static int ipmi_fasync(int fd , struct file *file , int on )
   {
   {
   priv = (struct ipmi_file_private *)file->private_data;
+  lock_kernel();
   result = fasync_helper(fd, file, on, & priv->fasync_queue);
+  unlock_kernel();
   }
   return (result);
 }
 }
 static struct ipmi_user_hndl ipmi_hndlrs  =    {& file_receive_handler, (void (*)(void *handler_data ))0};
-static struct lock_class_key __key  ;
+static struct lock_class_key __key___0  ;
 static int ipmi_open(struct inode *inode , struct file *file ) 
 { int if_num ;
   unsigned int tmp ;
@@ -2574,6 +2790,7 @@ static int ipmi_open(struct inode *inode , struct file *file )
     return (-12);
   }
   {
+  lock_kernel();
   priv->file = file;
   rv = ipmi_create_user((unsigned int )if_num, & ipmi_hndlrs, (void *)priv, & priv->user);
   }
@@ -2581,21 +2798,21 @@ static int ipmi_open(struct inode *inode , struct file *file )
     {
     kfree((void const   *)priv);
     }
-    return (rv);
+    goto out;
   }
   {
   file->private_data = (void *)priv;
   }
   {
   while (1) {
-    while_0_continue: /* CIL Label */ ;
+    while_4_continue: /* CIL Label */ ;
     {
-    __constr_expr_0.raw_lock.slock = 1U;
+    __constr_expr_0.raw_lock.slock = 0U;
     priv->recv_msg_lock = __constr_expr_0;
     }
-    goto while_0_break;
+    goto while_4_break;
   }
-  while_0_break: /* CIL Label */ ;
+  while_4_break: /* CIL Label */ ;
   }
   {
   INIT_LIST_HEAD(& priv->recv_msgs);
@@ -2604,19 +2821,23 @@ static int ipmi_open(struct inode *inode , struct file *file )
   }
   {
   while (1) {
-    while_1_continue: /* CIL Label */ ;
+    while_5_continue: /* CIL Label */ ;
     {
-    __mutex_init(& priv->recv_mutex, "&priv->recv_mutex", & __key);
+    __mutex_init(& priv->recv_mutex, "&priv->recv_mutex", & __key___0);
     }
-    goto while_1_break;
+    goto while_5_break;
   }
-  while_1_break: /* CIL Label */ ;
+  while_5_break: /* CIL Label */ ;
   }
   {
   priv->default_retries = -1;
   priv->default_retry_time_ms = 0U;
   }
-  return (0);
+  out: 
+  {
+  unlock_kernel();
+  }
+  return (rv);
 }
 }
 static int ipmi_release(struct inode *inode , struct file *file ) 
@@ -2774,70 +2995,70 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
   arg = (void *)data;
   }
   if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 13U) | (sizeof(struct ipmi_req ) << 16))) {
-    goto switch_2_exp_0;
+    goto switch_6_exp_0;
   } else {
     if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 21U) | (sizeof(struct ipmi_req_settime ) << 16))) {
-      goto switch_2_exp_1;
+      goto switch_6_exp_1;
     } else {
       if ((int )cmd == ((((3U << 30) | (unsigned int )(105 << 8)) | 12U) | (sizeof(struct ipmi_recv ) << 16))) {
-        goto switch_2_exp_2;
+        goto switch_6_exp_2;
       } else {
         if ((int )cmd == ((((3U << 30) | (unsigned int )(105 << 8)) | 11U) | (sizeof(struct ipmi_recv ) << 16))) {
-          goto switch_2_exp_2;
+          goto switch_6_exp_2;
         } else {
           if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 14U) | (sizeof(struct ipmi_cmdspec ) << 16))) {
-            goto switch_2_exp_4;
+            goto switch_6_exp_4;
           } else {
             if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 15U) | (sizeof(struct ipmi_cmdspec ) << 16))) {
-              goto switch_2_exp_5;
+              goto switch_6_exp_5;
             } else {
               if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 28U) | (sizeof(struct ipmi_cmdspec_chans ) << 16))) {
-                goto switch_2_exp_6;
+                goto switch_6_exp_6;
               } else {
                 if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 29U) | (sizeof(struct ipmi_cmdspec_chans ) << 16))) {
-                  goto switch_2_exp_7;
+                  goto switch_6_exp_7;
                 } else {
                   if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 16U) | (sizeof(int ) << 16))) {
-                    goto switch_2_exp_8;
+                    goto switch_6_exp_8;
                   } else {
                     if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 17U) | (sizeof(unsigned int ) << 16))) {
-                      goto switch_2_exp_9;
+                      goto switch_6_exp_9;
                     } else {
                       if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 18U) | (sizeof(unsigned int ) << 16))) {
-                        goto switch_2_exp_10;
+                        goto switch_6_exp_10;
                       } else {
                         if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 19U) | (sizeof(unsigned int ) << 16))) {
-                          goto switch_2_exp_11;
+                          goto switch_6_exp_11;
                         } else {
                           if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 20U) | (sizeof(unsigned int ) << 16))) {
-                            goto switch_2_exp_12;
+                            goto switch_6_exp_12;
                           } else {
                             if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 24U) | (sizeof(struct ipmi_channel_lun_address_set ) << 16))) {
-                              goto switch_2_exp_13;
+                              goto switch_6_exp_13;
                             } else {
                               if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 25U) | (sizeof(struct ipmi_channel_lun_address_set ) << 16))) {
-                                goto switch_2_exp_14;
+                                goto switch_6_exp_14;
                               } else {
                                 if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 26U) | (sizeof(struct ipmi_channel_lun_address_set ) << 16))) {
-                                  goto switch_2_exp_15;
+                                  goto switch_6_exp_15;
                                 } else {
                                   if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 27U) | (sizeof(struct ipmi_channel_lun_address_set ) << 16))) {
-                                    goto switch_2_exp_16;
+                                    goto switch_6_exp_16;
                                   } else {
                                     if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 22U) | (sizeof(struct ipmi_timing_parms ) << 16))) {
-                                      goto switch_2_exp_17;
+                                      goto switch_6_exp_17;
                                     } else {
                                       if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 23U) | (sizeof(struct ipmi_timing_parms ) << 16))) {
-                                        goto switch_2_exp_18;
+                                        goto switch_6_exp_18;
                                       } else {
                                         if ((int )cmd == ((((2U << 30) | (unsigned int )(105 << 8)) | 30U) | (sizeof(int ) << 16))) {
-                                          goto switch_2_exp_19;
+                                          goto switch_6_exp_19;
                                         } else {
                                           if ((int )cmd == ((((1U << 30) | (unsigned int )(105 << 8)) | 31U) | (sizeof(int ) << 16))) {
-                                            goto switch_2_exp_20;
+                                            goto switch_6_exp_20;
                                           } else {
                                             if (0) {
-                                              switch_2_exp_0: /* CIL Label */ 
+                                              switch_6_exp_0: /* CIL Label */ 
                                               {
                                               tmp = copy_from_user((void *)(& req),
                                                                    (void const   *)arg,
@@ -2847,15 +3068,15 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = handle_send_req(priv->user, & req,
                                                                    priv->default_retries,
                                                                    priv->default_retry_time_ms);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_1: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_1: /* CIL Label */ 
                                               {
                                               tmp___0 = copy_from_user((void *)(& req___0),
                                                                        (void const   *)arg,
@@ -2865,16 +3086,16 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = handle_send_req(priv->user, & req___0.req,
                                                                    req___0.retries,
                                                                    req___0.retry_time_ms);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_2: /* CIL Label */ 
-                                              switch_2_exp_3: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_2: /* CIL Label */ 
+                                              switch_6_exp_3: /* CIL Label */ 
                                               {
                                               rv = 0;
                                               tmp___1 = copy_from_user((void *)(& rsp),
@@ -2885,17 +3106,37 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               mutex_lock(& priv->recv_mutex);
-                                              flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+                                              }
+                                              {
+                                              while (1) {
+                                                while_7_continue: /* CIL Label */ ;
+                                                {
+                                                flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+                                                }
+                                                goto while_7_break;
+                                              }
+                                              while_7_break: /* CIL Label */ ;
+                                              }
+                                              {
                                               tmp___2 = list_empty((struct list_head  const  *)(& priv->recv_msgs));
                                               }
                                               if (tmp___2) {
                                                 {
-                                                _spin_unlock_irqrestore(& priv->recv_msg_lock,
-                                                                        flags);
+                                                while (1) {
+                                                  while_8_continue: /* CIL Label */ ;
+                                                  {
+                                                  _spin_unlock_irqrestore(& priv->recv_msg_lock,
+                                                                          flags);
+                                                  }
+                                                  goto while_8_break;
+                                                }
+                                                while_8_break: /* CIL Label */ ;
+                                                }
+                                                {
                                                 rv = -11;
                                                 }
                                                 goto recv_err;
@@ -2905,8 +3146,19 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                               __mptr = (struct list_head  const  *)entry;
                                               msg = (struct ipmi_recv_msg *)((char *)__mptr - (unsigned int )(& ((struct ipmi_recv_msg *)0)->link));
                                               list_del(entry);
-                                              _spin_unlock_irqrestore(& priv->recv_msg_lock,
-                                                                      flags);
+                                              }
+                                              {
+                                              while (1) {
+                                                while_9_continue: /* CIL Label */ ;
+                                                {
+                                                _spin_unlock_irqrestore(& priv->recv_msg_lock,
+                                                                        flags);
+                                                }
+                                                goto while_9_break;
+                                              }
+                                              while_9_break: /* CIL Label */ ;
+                                              }
+                                              {
                                               tmp___3 = ipmi_addr_length(msg->addr.addr_type);
                                               addr_len = (int )tmp___3;
                                               }
@@ -2995,22 +3247,42 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                               mutex_unlock(& priv->recv_mutex);
                                               ipmi_free_recv_msg(msg);
                                               }
-                                              goto switch_2_break;
+                                              goto switch_6_break;
                                               recv_putback_on_err: 
                                               {
-                                              flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+                                              while (1) {
+                                                while_10_continue: /* CIL Label */ ;
+                                                {
+                                                flags = _spin_lock_irqsave(& priv->recv_msg_lock);
+                                                }
+                                                goto while_10_break;
+                                              }
+                                              while_10_break: /* CIL Label */ ;
+                                              }
+                                              {
                                               list_add(entry, & priv->recv_msgs);
-                                              _spin_unlock_irqrestore(& priv->recv_msg_lock,
-                                                                      flags);
+                                              }
+                                              {
+                                              while (1) {
+                                                while_11_continue: /* CIL Label */ ;
+                                                {
+                                                _spin_unlock_irqrestore(& priv->recv_msg_lock,
+                                                                        flags);
+                                                }
+                                                goto while_11_break;
+                                              }
+                                              while_11_break: /* CIL Label */ ;
+                                              }
+                                              {
                                               mutex_unlock(& priv->recv_mutex);
                                               }
-                                              goto switch_2_break;
+                                              goto switch_6_break;
                                               recv_err: 
                                               {
                                               mutex_unlock(& priv->recv_mutex);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_4: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_4: /* CIL Label */ 
                                               {
                                               tmp___8 = copy_from_user((void *)(& val),
                                                                        (void const   *)arg,
@@ -3020,7 +3292,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_register_for_cmd(priv->user,
@@ -3028,8 +3300,8 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                          val.cmd,
                                                                          (unsigned int )(~ 0));
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_5: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_5: /* CIL Label */ 
                                               {
                                               tmp___9 = copy_from_user((void *)(& val___0),
                                                                        (void const   *)arg,
@@ -3039,7 +3311,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_unregister_for_cmd(priv->user,
@@ -3047,8 +3319,8 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                            val___0.cmd,
                                                                            (unsigned int )(~ 0));
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_6: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_6: /* CIL Label */ 
                                               {
                                               tmp___10 = copy_from_user((void *)(& val___1),
                                                                         (void const   *)arg,
@@ -3058,7 +3330,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_register_for_cmd(priv->user,
@@ -3066,8 +3338,8 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                          (unsigned char )val___1.cmd,
                                                                          val___1.chans);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_7: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_7: /* CIL Label */ 
                                               {
                                               tmp___11 = copy_from_user((void *)(& val___2),
                                                                         (void const   *)arg,
@@ -3077,7 +3349,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_unregister_for_cmd(priv->user,
@@ -3085,8 +3357,8 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                            (unsigned char )val___2.cmd,
                                                                            val___2.chans);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_8: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_8: /* CIL Label */ 
                                               {
                                               tmp___12 = copy_from_user((void *)(& val___3),
                                                                         (void const   *)arg,
@@ -3096,14 +3368,14 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_set_gets_events(priv->user,
                                                                         val___3);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_9: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_9: /* CIL Label */ 
                                               {
                                               tmp___13 = copy_from_user((void *)(& val___4),
                                                                         (void const   *)arg,
@@ -3113,20 +3385,20 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_set_my_address(priv->user,
                                                                        0U, (unsigned char )val___4);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_10: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_10: /* CIL Label */ 
                                               {
                                               rv = ipmi_get_my_address(priv->user,
                                                                        0U, & rval);
                                               }
                                               if (rv) {
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               val___5 = (unsigned int )rval;
@@ -3137,10 +3409,10 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_11: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_11: /* CIL Label */ 
                                               {
                                               tmp___15 = copy_from_user((void *)(& val___6),
                                                                         (void const   *)arg,
@@ -3150,20 +3422,20 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_set_my_LUN(priv->user, 0U,
                                                                    (unsigned char )val___6);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_12: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_12: /* CIL Label */ 
                                               {
                                               rv = ipmi_get_my_LUN(priv->user, 0U,
                                                                    & rval___0);
                                               }
                                               if (rv) {
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               val___7 = (unsigned int )rval___0;
@@ -3174,10 +3446,10 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_13: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_13: /* CIL Label */ 
                                               {
                                               tmp___17 = copy_from_user((void *)(& val___8),
                                                                         (void const   *)arg,
@@ -3187,7 +3459,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               tmp___18 = ipmi_set_my_address(priv->user,
@@ -3195,8 +3467,8 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                              val___8.value);
                                               }
                                               return (tmp___18);
-                                              goto switch_2_break;
-                                              switch_2_exp_14: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_14: /* CIL Label */ 
                                               {
                                               tmp___19 = copy_from_user((void *)(& val___9),
                                                                         (void const   *)arg,
@@ -3206,7 +3478,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_get_my_address(priv->user,
@@ -3214,7 +3486,7 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                                        & val___9.value);
                                               }
                                               if (rv) {
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               tmp___20 = copy_to_user(arg, (void const   *)(& val___9),
@@ -3224,10 +3496,10 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_15: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_15: /* CIL Label */ 
                                               {
                                               tmp___21 = copy_from_user((void *)(& val___10),
                                                                         (void const   *)arg,
@@ -3237,14 +3509,14 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_set_my_LUN(priv->user, (unsigned int )val___10.channel,
                                                                    val___10.value);
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_16: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_16: /* CIL Label */ 
                                               {
                                               tmp___22 = copy_from_user((void *)(& val___11),
                                                                         (void const   *)arg,
@@ -3254,14 +3526,14 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_get_my_LUN(priv->user, (unsigned int )val___11.channel,
                                                                    & val___11.value);
                                               }
                                               if (rv) {
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               tmp___23 = copy_to_user(arg, (void const   *)(& val___11),
@@ -3271,10 +3543,10 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_17: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_17: /* CIL Label */ 
                                               {
                                               tmp___24 = copy_from_user((void *)(& parms),
                                                                         (void const   *)arg,
@@ -3284,15 +3556,15 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               priv->default_retries = parms.retries;
                                               priv->default_retry_time_ms = parms.retry_time_ms;
                                               rv = 0;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_18: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_18: /* CIL Label */ 
                                               {
                                               parms___0.retries = priv->default_retries;
                                               parms___0.retry_time_ms = priv->default_retry_time_ms;
@@ -3303,13 +3575,13 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = 0;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_19: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_19: /* CIL Label */ 
                                               {
                                               mode = ipmi_get_maintenance_mode(priv->user);
                                               tmp___26 = copy_to_user(arg, (void const   *)(& mode),
@@ -3319,13 +3591,13 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = 0;
                                               }
-                                              goto switch_2_break;
-                                              switch_2_exp_20: /* CIL Label */ 
+                                              goto switch_6_break;
+                                              switch_6_exp_20: /* CIL Label */ 
                                               {
                                               tmp___27 = copy_from_user((void *)(& mode___0),
                                                                         (void const   *)arg,
@@ -3335,15 +3607,15 @@ static int ipmi_ioctl(struct inode *inode , struct file *file , unsigned int cmd
                                                 {
                                                 rv = -14;
                                                 }
-                                                goto switch_2_break;
+                                                goto switch_6_break;
                                               }
                                               {
                                               rv = ipmi_set_maintenance_mode(priv->user,
                                                                              mode___0);
                                               }
-                                              goto switch_2_break;
+                                              goto switch_6_break;
                                             } else {
-                                              switch_2_break: /* CIL Label */ ;
+                                              switch_6_break: /* CIL Label */ ;
                                             }
                                           }
                                         }
@@ -3404,8 +3676,7 @@ static struct file_operations  const  ipmi_fops  =
                                                                          unsigned int  ))0,
     (ssize_t (*)(struct file * , loff_t * , struct pipe_inode_info * , size_t  , unsigned int  ))0,
     (int (*)(struct file * , long  , struct file_lock ** ))0, (int (*)(struct file * ,
-                                                                       struct kstat * ))0,
-    (int (*)(struct file * , struct iattr * ))0};
+                                                                       struct iattr * ))0};
 static int ipmi_major  ;
 static char const   __param_str_ipmi_major[22]  = 
   {      (char const   )'S',      (char const   )'o',      (char const   )'m',      (char const   )'e', 
@@ -3418,7 +3689,7 @@ static struct kernel_param  const  __param_ipmi_major  __attribute__((__used__, 
 __section__("__param"), __aligned__(sizeof(void *))))  =    {__param_str_ipmi_major, 0U, & param_set_int, & param_get_int, {(void *)(& ipmi_major)}};
 static struct list_head reg_list  =    {& reg_list,
     & reg_list};
-static struct mutex reg_list_mutex  =    {{1}, {{1U}}, {& reg_list_mutex.wait_list, & reg_list_mutex.wait_list}};
+static struct mutex reg_list_mutex  =    {{1}, {{0U}}, {& reg_list_mutex.wait_list, & reg_list_mutex.wait_list}};
 static struct class *ipmi_class  ;
 static void ipmi_new_smi(int if_num , struct device *device ) 
 { dev_t dev ;
@@ -3440,7 +3711,7 @@ static void ipmi_new_smi(int if_num , struct device *device )
   {
   entry->dev = dev;
   mutex_lock(& reg_list_mutex);
-  device_create(ipmi_class, device, dev, "ipmi%d", if_num);
+  device_create(ipmi_class, device, dev, (void *)0, "ipmi%d", if_num);
   list_add(& entry->link, & reg_list);
   mutex_unlock(& reg_list_mutex);
   }
@@ -3462,26 +3733,26 @@ static void ipmi_smi_gone(int if_num )
   }
   {
   while (1) {
-    while_3_continue: /* CIL Label */ ;
+    while_12_continue: /* CIL Label */ ;
     {
     prefetch((void const   *)entry->link.next);
     }
     if (! ((unsigned int )(& entry->link) != (unsigned int )(& reg_list))) {
-      goto while_3_break;
+      goto while_12_break;
     }
     if (entry->dev == dev) {
       {
       list_del(& entry->link);
       kfree((void const   *)entry);
       }
-      goto while_3_break;
+      goto while_12_break;
     }
     {
     __mptr___0 = (struct list_head  const  *)entry->link.next;
     entry = (struct ipmi_reg_list *)((char *)__mptr___0 - (unsigned int )(& ((struct ipmi_reg_list *)0)->link));
     }
   }
-  while_3_break: /* CIL Label */ ;
+  while_12_break: /* CIL Label */ ;
   }
   {
   device_destroy(ipmi_class, dev);
@@ -3492,27 +3763,30 @@ static void ipmi_smi_gone(int if_num )
 }
 static struct ipmi_smi_watcher smi_watcher  =    {{(struct list_head *)0, (struct list_head *)0}, (struct module *)0, & ipmi_new_smi,
     & ipmi_smi_gone};
-static int init_ipmi_devintf(void)  __attribute__((__section__(".init.text"))) ;
-static int init_ipmi_devintf(void) 
+static struct lock_class_key __key___1  ;
+static int __attribute__((__cold__))  init_ipmi_devintf(void)  __attribute__((__section__(".init.text"))) ;
+static int __attribute__((__cold__))  init_ipmi_devintf(void) 
 { int rv ;
-  long tmp ;
+  struct class *tmp ;
   long tmp___0 ;
+  long tmp___1 ;
 
   {
   if (ipmi_major < 0) {
-    return (-22);
+    return ((int __attribute__((__cold__))  )-22);
   }
   {
   printk("<6>ipmi device interface\n");
-  ipmi_class = class_create((struct module *)0, "ipmi");
-  tmp___0 = IS_ERR((void const   *)ipmi_class);
+  tmp = __class_create((struct module *)0, "ipmi", & __key___1);
+  ipmi_class = tmp;
+  tmp___1 = IS_ERR((void const   *)ipmi_class);
   }
-  if (tmp___0) {
+  if (tmp___1) {
     {
     printk("<3>ipmi: can\'t register device class\n");
-    tmp = PTR_ERR((void const   *)ipmi_class);
+    tmp___0 = PTR_ERR((void const   *)ipmi_class);
     }
-    return ((int )tmp);
+    return ((int __attribute__((__cold__))  )tmp___0);
   }
   {
   rv = register_chrdev((unsigned int )ipmi_major, "ipmidev", & ipmi_fops);
@@ -3522,7 +3796,7 @@ static int init_ipmi_devintf(void)
     class_destroy(ipmi_class);
     printk("<3>ipmi: can\'t get major %d\n", ipmi_major);
     }
-    return (rv);
+    return ((int __attribute__((__cold__))  )rv);
   }
   if (ipmi_major == 0) {
     {
@@ -3538,15 +3812,15 @@ static int init_ipmi_devintf(void)
     class_destroy(ipmi_class);
     printk("<4>ipmi: can\'t register smi watcher\n");
     }
-    return (rv);
+    return ((int __attribute__((__cold__))  )rv);
   }
-  return (0);
+  return ((int __attribute__((__cold__))  )0);
 }
 }
-static int (*__initcall_init_ipmi_devintf6)(void)  __attribute__((__used__, __section__(".initcall6.init")))  =    & init_ipmi_devintf;
-static void cleanup_ipmi(void)  __attribute__((__used__,
+static int (*__initcall_init_ipmi_devintf6)(void)  __attribute__((__used__, __section__(".initcall6.init")))  =    (int (*)(void))(& init_ipmi_devintf);
+static void __attribute__((__cold__))  cleanup_ipmi(void)  __attribute__((__used__,
 __section__(".exit.text"))) ;
-static void cleanup_ipmi(void) 
+static void __attribute__((__cold__))  cleanup_ipmi(void) 
 { struct ipmi_reg_list *entry ;
   struct ipmi_reg_list *entry2 ;
   struct list_head  const  *__mptr ;
@@ -3563,9 +3837,9 @@ static void cleanup_ipmi(void)
   }
   {
   while (1) {
-    while_4_continue: /* CIL Label */ ;
+    while_13_continue: /* CIL Label */ ;
     if (! ((unsigned int )(& entry->link) != (unsigned int )(& reg_list))) {
-      goto while_4_break;
+      goto while_13_break;
     }
     {
     list_del(& entry->link);
@@ -3576,7 +3850,7 @@ static void cleanup_ipmi(void)
     entry2 = (struct ipmi_reg_list *)((char *)__mptr___1 - (unsigned int )(& ((struct ipmi_reg_list *)0)->link));
     }
   }
-  while_4_break: /* CIL Label */ ;
+  while_13_break: /* CIL Label */ ;
   }
   {
   mutex_unlock(& reg_list_mutex);
@@ -3587,4 +3861,4 @@ static void cleanup_ipmi(void)
   return;
 }
 }
-static void (*__exitcall_cleanup_ipmi)(void)  __attribute__((__used__, __section__(".exitcall.exit")))  =    & cleanup_ipmi;
+static void (*__exitcall_cleanup_ipmi)(void)  __attribute__((__used__, __section__(".exitcall.exit")))  =    (void (*)(void))(& cleanup_ipmi);
