@@ -1567,6 +1567,8 @@ struct user_struct {
    atomic_t sigpending ;
    atomic_t inotify_watches ;
    atomic_t inotify_devs ;
+   atomic_t epoll_devs ;
+   atomic_t epoll_watches ;
    unsigned long mq_bytes ;
    unsigned long locked_shm ;
    struct key *uid_keyring ;
@@ -4416,24 +4418,22 @@ static int ac_ioctl(struct inode *inode , struct file *file , unsigned int cmd ,
   {
   IndexCard = (unsigned char )((int )adgl->num_card - 1);
   }
-  if (cmd != 0U) {
-    if (cmd != 6U) {
-      if ((int )IndexCard >= 8) {
-        goto _L;
-      } else {
-        if (! apbs[IndexCard].RamIO) {
-          _L: /* CIL Label */ 
-          if (warncount___0) {
-            {
-            printk("<4>APPLICOM driver IOCTL, bad board number %d\n", (int )IndexCard + 1);
-            warncount___0 --;
-            }
-          }
+  if (cmd != 6U) {
+    if ((int )IndexCard >= 8) {
+      goto _L;
+    } else {
+      if (! apbs[IndexCard].RamIO) {
+        _L: /* CIL Label */ 
+        if (warncount___0) {
           {
-          kfree((void const   *)adgl);
+          printk("<4>APPLICOM driver IOCTL, bad board number %d\n", (int )IndexCard + 1);
+          warncount___0 --;
           }
-          return (-22);
         }
+        {
+        kfree((void const   *)adgl);
+        }
+        return (-22);
       }
     }
   }
@@ -4766,8 +4766,7 @@ static int ac_ioctl(struct inode *inode , struct file *file , unsigned int cmd ,
                   goto switch_34_break;
                   switch_34_default: /* CIL Label */ 
                   {
-                  printk("<6>APPLICOM driver ioctl, unknown function code %d\n", cmd);
-                  ret = -22;
+                  ret = -25;
                   }
                   goto switch_34_break;
                 } else {
