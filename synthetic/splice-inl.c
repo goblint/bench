@@ -36,7 +36,6 @@ static ssize_t *process(struct file *file, char __user *buf, size_t count, loff_
   while (1) {
     mutex_lock(&mutex_A);
     mutex_lock(&mutex_B);
-    list_splice(&A,&B);
     list = &A;
     head = &B;
     if (list->next != list) {
