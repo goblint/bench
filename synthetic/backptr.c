@@ -37,8 +37,3 @@ int dispose(struct usb_drv *drv) {
   bus =  list_entry(node, struct usb_bus, bus_list);
   bus->busnum = 0;
 }
-
-
-
-
-  
