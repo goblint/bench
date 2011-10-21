@@ -32,7 +32,7 @@ static inline void *qdisc_priv(struct Qdisc *q)
    
    The result: [34]86 is not good choice for QoS router :-(
 
-   The things are not so bad, because we may use artifical
+   The things are not so bad, because we may use artificial
    clock evaluated by integration of network data flow
    in the most critical places.
  */
@@ -95,13 +95,13 @@ extern void __qdisc_run(struct Qdisc *q);
 
 static inline void qdisc_run(struct Qdisc *q)
 {
-	if (!test_and_set_bit(__QDISC_STATE_RUNNING, &q->state))
+	if (qdisc_run_begin(q))
 		__qdisc_run(q);
 }
 
-extern int tc_classify_compat(struct sk_buff *skb, struct tcf_proto *tp,
+extern int tc_classify_compat(struct sk_buff *skb, const struct tcf_proto *tp,
 			      struct tcf_result *res);
-extern int tc_classify(struct sk_buff *skb, struct tcf_proto *tp,
+extern int tc_classify(struct sk_buff *skb, const struct tcf_proto *tp,
 		       struct tcf_result *res);
 
 /* Calculate maximal size of packet seen by hard_start_xmit

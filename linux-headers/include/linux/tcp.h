@@ -105,6 +105,7 @@ enum {
 #define TCP_COOKIE_TRANSACTIONS	15	/* TCP Cookie Transactions */
 #define TCP_THIN_LINEAR_TIMEOUTS 16      /* Use linear timeouts for thin streams*/
 #define TCP_THIN_DUPACK         17      /* Fast retrans. after 1 dupack */
+#define TCP_USER_TIMEOUT	18	/* How long for loss retry before timeout */
 
 /* for TCP_INFO socket option */
 #define TCPI_OPT_TIMESTAMPS	1
@@ -281,6 +282,7 @@ struct tcp_request_sock {
 #endif
 	u32				rcv_isn;
 	u32				snt_isn;
+	u32				snt_synack; /* synack sent time */
 };
 
 static inline struct tcp_request_sock *tcp_rsk(const struct request_sock *req)

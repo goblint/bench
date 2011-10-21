@@ -8,6 +8,8 @@
 #include <linux/blkdev.h>
 #include <linux/tracepoint.h>
 
+#define RWBS_LEN	8
+
 DECLARE_EVENT_CLASS(block_rq_with_error,
 
 	TP_PROTO(struct request_queue *q, struct request *rq),
@@ -19,17 +21,19 @@ DECLARE_EVENT_CLASS(block_rq_with_error,
 		__field(  sector_t,	sector			)
 		__field(  unsigned int,	nr_sector		)
 		__field(  int,		errors			)
-		__array(  char,		rwbs,	6		)
+		__array(  char,		rwbs,	RWBS_LEN	)
 		__dynamic_array( char,	cmd,	blk_cmd_buf_len(rq)	)
 	),
 
 	TP_fast_assign(
 		__entry->dev	   = rq->rq_disk ? disk_devt(rq->rq_disk) : 0;
-		__entry->sector    = blk_pc_request(rq) ? 0 : blk_rq_pos(rq);
-		__entry->nr_sector = blk_pc_request(rq) ? 0 : blk_rq_sectors(rq);
+		__entry->sector    = (rq->cmd_type == REQ_TYPE_BLOCK_PC) ?
+					0 : blk_rq_pos(rq);
+		__entry->nr_sector = (rq->cmd_type == REQ_TYPE_BLOCK_PC) ?
+					0 : blk_rq_sectors(rq);
 		__entry->errors    = rq->errors;
 
-		blk_fill_rwbs_rq(__entry->rwbs, rq);
+		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags, blk_rq_bytes(rq));
 		blk_dump_cmd(__get_str(cmd), rq);
 	),
 
@@ -102,18 +106,21 @@ DECLARE_EVENT_CLASS(block_rq,
 		__field(  sector_t,	sector			)
 		__field(  unsigned int,	nr_sector		)
 		__field(  unsigned int,	bytes			)
-		__array(  char,		rwbs,	6		)
+		__array(  char,		rwbs,	RWBS_LEN	)
 		__array(  char,         comm,   TASK_COMM_LEN   )
 		__dynamic_array( char,	cmd,	blk_cmd_buf_len(rq)	)
 	),
 
 	TP_fast_assign(
 		__entry->dev	   = rq->rq_disk ? disk_devt(rq->rq_disk) : 0;
-		__entry->sector    = blk_pc_request(rq) ? 0 : blk_rq_pos(rq);
-		__entry->nr_sector = blk_pc_request(rq) ? 0 : blk_rq_sectors(rq);
-		__entry->bytes     = blk_pc_request(rq) ? blk_rq_bytes(rq) : 0;
+		__entry->sector    = (rq->cmd_type == REQ_TYPE_BLOCK_PC) ?
+					0 : blk_rq_pos(rq);
+		__entry->nr_sector = (rq->cmd_type == REQ_TYPE_BLOCK_PC) ?
+					0 : blk_rq_sectors(rq);
+		__entry->bytes     = (rq->cmd_type == REQ_TYPE_BLOCK_PC) ?
+					blk_rq_bytes(rq) : 0;
 
-		blk_fill_rwbs_rq(__entry->rwbs, rq);
+		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags, blk_rq_bytes(rq));
 		blk_dump_cmd(__get_str(cmd), rq);
 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
 	),
@@ -178,7 +185,7 @@ TRACE_EVENT(block_bio_bounce,
 		__field( dev_t,		dev			)
 		__field( sector_t,	sector			)
 		__field( unsigned int,	nr_sector		)
-		__array( char,		rwbs,	6		)
+		__array( char,		rwbs,	RWBS_LEN	)
 		__array( char,		comm,	TASK_COMM_LEN	)
 	),
 
@@ -201,28 +208,30 @@ TRACE_EVENT(block_bio_bounce,
  * block_bio_complete - completed all work on the block operation
  * @q: queue holding the block operation
  * @bio: block operation completed
+ * @error: io error value
  *
  * This tracepoint indicates there is no further work to do on this
  * block IO operation @bio.
  */
 TRACE_EVENT(block_bio_complete,
 
-	TP_PROTO(struct request_queue *q, struct bio *bio),
+	TP_PROTO(struct request_queue *q, struct bio *bio, int error),
 
-	TP_ARGS(q, bio),
+	TP_ARGS(q, bio, error),
 
 	TP_STRUCT__entry(
 		__field( dev_t,		dev		)
 		__field( sector_t,	sector		)
 		__field( unsigned,	nr_sector	)
 		__field( int,		error		)
-		__array( char,		rwbs,	6	)
+		__array( char,		rwbs,	RWBS_LEN)
 	),
 
 	TP_fast_assign(
 		__entry->dev		= bio->bi_bdev->bd_dev;
 		__entry->sector		= bio->bi_sector;
 		__entry->nr_sector	= bio->bi_size >> 9;
+		__entry->error		= error;
 		blk_fill_rwbs(__entry->rwbs, bio->bi_rw, bio->bi_size);
 	),
 
@@ -242,7 +251,7 @@ DECLARE_EVENT_CLASS(block_bio,
 		__field( dev_t,		dev			)
 		__field( sector_t,	sector			)
 		__field( unsigned int,	nr_sector		)
-		__array( char,		rwbs,	6		)
+		__array( char,		rwbs,	RWBS_LEN	)
 		__array( char,		comm,	TASK_COMM_LEN	)
 	),
 
@@ -314,7 +323,7 @@ DECLARE_EVENT_CLASS(block_get_rq,
 		__field( dev_t,		dev			)
 		__field( sector_t,	sector			)
 		__field( unsigned int,	nr_sector		)
-		__array( char,		rwbs,	6		)
+		__array( char,		rwbs,	RWBS_LEN	)
 		__array( char,		comm,	TASK_COMM_LEN	)
         ),
 
@@ -394,9 +403,9 @@ TRACE_EVENT(block_plug,
 
 DECLARE_EVENT_CLASS(block_unplug,
 
-	TP_PROTO(struct request_queue *q),
+	TP_PROTO(struct request_queue *q, unsigned int depth, bool explicit),
 
-	TP_ARGS(q),
+	TP_ARGS(q, depth, explicit),
 
 	TP_STRUCT__entry(
 		__field( int,		nr_rq			)
@@ -404,7 +413,7 @@ DECLARE_EVENT_CLASS(block_unplug,
 	),
 
 	TP_fast_assign(
-		__entry->nr_rq	= q->rq.count[READ] + q->rq.count[WRITE];
+		__entry->nr_rq = depth;
 		memcpy(__entry->comm, current->comm, TASK_COMM_LEN);
 	),
 
@@ -412,31 +421,19 @@ DECLARE_EVENT_CLASS(block_unplug,
 );
 
 /**
- * block_unplug_timer - timed release of operations requests in queue to device driver
+ * block_unplug - release of operations requests in request queue
  * @q: request queue to unplug
- *
- * Unplug the request queue @q because a timer expired and allow block
- * operation requests to be sent to the device driver.
- */
-DEFINE_EVENT(block_unplug, block_unplug_timer,
-
-	TP_PROTO(struct request_queue *q),
-
-	TP_ARGS(q)
-);
-
-/**
- * block_unplug_io - release of operations requests in request queue
- * @q: request queue to unplug
+ * @depth: number of requests just added to the queue
+ * @explicit: whether this was an explicit unplug, or one from schedule()
  *
  * Unplug request queue @q because device driver is scheduled to work
  * on elements in the request queue.
  */
-DEFINE_EVENT(block_unplug, block_unplug_io,
+DEFINE_EVENT(block_unplug, block_unplug,
 
-	TP_PROTO(struct request_queue *q),
+	TP_PROTO(struct request_queue *q, unsigned int depth, bool explicit),
 
-	TP_ARGS(q)
+	TP_ARGS(q, depth, explicit)
 );
 
 /**
@@ -461,7 +458,7 @@ TRACE_EVENT(block_split,
 		__field( dev_t,		dev				)
 		__field( sector_t,	sector				)
 		__field( sector_t,	new_sector			)
-		__array( char,		rwbs,		6		)
+		__array( char,		rwbs,		RWBS_LEN	)
 		__array( char,		comm,		TASK_COMM_LEN	)
 	),
 
@@ -481,16 +478,16 @@ TRACE_EVENT(block_split,
 );
 
 /**
- * block_remap - map request for a partition to the raw device
+ * block_bio_remap - map request for a logical device to the raw device
  * @q: queue holding the operation
  * @bio: revised operation
  * @dev: device for the operation
  * @from: original sector for the operation
  *
- * An operation for a partition on a block device has been mapped to the
+ * An operation for a logical device has been mapped to the
  * raw block device.
  */
-TRACE_EVENT(block_remap,
+TRACE_EVENT(block_bio_remap,
 
 	TP_PROTO(struct request_queue *q, struct bio *bio, dev_t dev,
 		 sector_t from),
@@ -503,7 +500,7 @@ TRACE_EVENT(block_remap,
 		__field( unsigned int,	nr_sector	)
 		__field( dev_t,		old_dev		)
 		__field( sector_t,	old_sector	)
-		__array( char,		rwbs,	6	)
+		__array( char,		rwbs,	RWBS_LEN)
 	),
 
 	TP_fast_assign(
@@ -547,7 +544,7 @@ TRACE_EVENT(block_rq_remap,
 		__field( unsigned int,	nr_sector	)
 		__field( dev_t,		old_dev		)
 		__field( sector_t,	old_sector	)
-		__array( char,		rwbs,	6	)
+		__array( char,		rwbs,	RWBS_LEN)
 	),
 
 	TP_fast_assign(
@@ -556,7 +553,7 @@ TRACE_EVENT(block_rq_remap,
 		__entry->nr_sector	= blk_rq_sectors(rq);
 		__entry->old_dev	= dev;
 		__entry->old_sector	= from;
-		blk_fill_rwbs_rq(__entry->rwbs, rq);
+		blk_fill_rwbs(__entry->rwbs, rq->cmd_flags, blk_rq_bytes(rq));
 	),
 
 	TP_printk("%d,%d %s %llu + %u <- (%d,%d) %llu",

@@ -7,14 +7,6 @@
  *
  */
 
-#define tsk_state 0 /* offsetof(struct task_struct, state)	# */
-#define tsk_flags 20 /* offsetof(struct task_struct, flags)	# */
-#define tsk_pid 616 /* offsetof(struct task_struct, pid)	# */
-
-#define TI_flags 16 /* offsetof(struct thread_info, flags)	# */
-#define TI_addr_limit 32 /* offsetof(struct thread_info, addr_limit)	# */
-#define TI_preempt_count 28 /* offsetof(struct thread_info, preempt_count)	# */
-#define TI_status 20 /* offsetof(struct thread_info, status)	# */
 #define TI_sysenter_return 88 /* offsetof(struct thread_info, sysenter_return)	# */
 
 #define IA32_SIGCONTEXT_ax 44 /* offsetof(struct sigcontext_ia32, ax)	# */
@@ -27,11 +19,7 @@
 #define IA32_SIGCONTEXT_sp 28 /* offsetof(struct sigcontext_ia32, sp)	# */
 #define IA32_SIGCONTEXT_ip 56 /* offsetof(struct sigcontext_ia32, ip)	# */
 
-#define IA32_RT_SIGFRAME_sigcontext 164 /* offsetof (struct rt_sigframe_ia32, uc.uc_mcontext)	# */
-
-#define pbe_address 0 /* offsetof(struct pbe, address)	# */
-#define pbe_orig_address 8 /* offsetof(struct pbe, orig_address)	# */
-#define pbe_next 16 /* offsetof(struct pbe, next)	# */
+#define IA32_RT_SIGFRAME_sigcontext 164 /* offsetof(struct rt_sigframe_ia32, uc.uc_mcontext)	# */
 
 #define pt_regs_bx 40 /* offsetof(struct pt_regs, bx)	# */
 #define pt_regs_bx 40 /* offsetof(struct pt_regs, bx)	# */
@@ -59,16 +47,23 @@
 
 #define TSS_ist 36 /* offsetof(struct tss_struct, x86_tss.ist)	# */
 
+#define __NR_syscall_max 309 /* sizeof(syscalls) - 1	# */
+
+#define TI_flags 16 /* offsetof(struct thread_info, flags)	# */
+#define TI_status 20 /* offsetof(struct thread_info, status)	# */
+#define TI_addr_limit 32 /* offsetof(struct thread_info, addr_limit)	# */
+#define TI_preempt_count 28 /* offsetof(struct thread_info, preempt_count)	# */
+
 #define crypto_tfm_ctx_offset 88 /* offsetof(struct crypto_tfm, __crt_ctx)	# */
 
-#define __NR_syscall_max 299 /* sizeof(syscalls) - 1	# */
+#define pbe_address 0 /* offsetof(struct pbe, address)	# */
+#define pbe_orig_address 8 /* offsetof(struct pbe, orig_address)	# */
+#define pbe_next 16 /* offsetof(struct pbe, next)	# */
 
 #define BP_scratch 484 /* offsetof(struct boot_params, scratch)	# */
 #define BP_loadflags 529 /* offsetof(struct boot_params, hdr.loadflags)	# */
 #define BP_hardware_subarch 572 /* offsetof(struct boot_params, hdr.hardware_subarch)	# */
 #define BP_version 518 /* offsetof(struct boot_params, hdr.version)	# */
 #define BP_kernel_alignment 560 /* offsetof(struct boot_params, hdr.kernel_alignment)	# */
-
-#define PAGE_SIZE_asm 4096 /* PAGE_SIZE	# */
 
 #endif

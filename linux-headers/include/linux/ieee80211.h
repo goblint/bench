@@ -117,11 +117,23 @@
 #define IEEE80211_MAX_MESH_ID_LEN	32
 
 #define IEEE80211_QOS_CTL_LEN		2
-#define IEEE80211_QOS_CTL_TID_MASK	0x000F
-#define IEEE80211_QOS_CTL_TAG1D_MASK	0x0007
+/* 1d tag mask */
+#define IEEE80211_QOS_CTL_TAG1D_MASK		0x0007
+/* TID mask */
+#define IEEE80211_QOS_CTL_TID_MASK		0x000f
+/* EOSP */
+#define IEEE80211_QOS_CTL_EOSP			0x0010
+/* ACK policy */
+#define IEEE80211_QOS_CTL_ACK_POLICY_NORMAL	0x0000
+#define IEEE80211_QOS_CTL_ACK_POLICY_NOACK	0x0020
+#define IEEE80211_QOS_CTL_ACK_POLICY_NO_EXPL	0x0040
+#define IEEE80211_QOS_CTL_ACK_POLICY_BLOCKACK	0x0060
+/* A-MSDU 802.11n */
+#define IEEE80211_QOS_CTL_A_MSDU_PRESENT	0x0080
 
 /* U-APSD queue for WMM IEs sent by AP */
 #define IEEE80211_WMM_IE_AP_QOSINFO_UAPSD	(1<<7)
+#define IEEE80211_WMM_IE_AP_QOSINFO_PARAM_SET_CNT_MASK	0x0f
 
 /* U-APSD queues for WMM IEs sent by STA */
 #define IEEE80211_WMM_IE_STA_QOSINFO_AC_VO	(1<<0)
@@ -535,7 +547,6 @@ struct ieee80211s_hdr {
 	__le32 seqnum;
 	u8 eaddr1[6];
 	u8 eaddr2[6];
-	u8 eaddr3[6];
 } __attribute__ ((packed));
 
 /* Mesh flags */
@@ -884,6 +895,15 @@ struct ieee80211_ht_cap {
 #define IEEE80211_HT_CAP_40MHZ_INTOLERANT	0x4000
 #define IEEE80211_HT_CAP_LSIG_TXOP_PROT		0x8000
 
+/* 802.11n HT extended capabilities masks (for extended_ht_cap_info) */
+#define IEEE80211_HT_EXT_CAP_PCO		0x0001
+#define IEEE80211_HT_EXT_CAP_PCO_TIME		0x0006
+#define		IEEE80211_HT_EXT_CAP_PCO_TIME_SHIFT	1
+#define IEEE80211_HT_EXT_CAP_MCS_FB		0x0300
+#define		IEEE80211_HT_EXT_CAP_MCS_FB_SHIFT	8
+#define IEEE80211_HT_EXT_CAP_HTC_SUP		0x0400
+#define IEEE80211_HT_EXT_CAP_RD_RESPONDER	0x0800
+
 /* 802.11n HT capability AMPDU settings (for ampdu_params_info) */
 #define IEEE80211_HT_AMPDU_PARM_FACTOR		0x03
 #define IEEE80211_HT_AMPDU_PARM_DENSITY		0x1C
@@ -959,7 +979,7 @@ struct ieee80211_ht_info {
 /* block-ack parameters */
 #define IEEE80211_ADDBA_PARAM_POLICY_MASK 0x0002
 #define IEEE80211_ADDBA_PARAM_TID_MASK 0x003C
-#define IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK 0xFFA0
+#define IEEE80211_ADDBA_PARAM_BUF_SIZE_MASK 0xFFC0
 #define IEEE80211_DELBA_PARAM_TID_MASK 0xF000
 #define IEEE80211_DELBA_PARAM_INITIATOR_MASK 0x0800
 
@@ -986,12 +1006,22 @@ struct ieee80211_ht_info {
 #define WLAN_AUTH_OPEN 0
 #define WLAN_AUTH_SHARED_KEY 1
 #define WLAN_AUTH_FT 2
+#define WLAN_AUTH_SAE 3
 #define WLAN_AUTH_LEAP 128
 
 #define WLAN_AUTH_CHALLENGE_LEN 128
 
 #define WLAN_CAPABILITY_ESS		(1<<0)
 #define WLAN_CAPABILITY_IBSS		(1<<1)
+
+/*
+ * A mesh STA sets the ESS and IBSS capability bits to zero.
+ * however, this holds true for p2p probe responses (in the p2p_find
+ * phase) as well.
+ */
+#define WLAN_CAPABILITY_IS_STA_BSS(cap)	\
+	(!((cap) & (WLAN_CAPABILITY_ESS | WLAN_CAPABILITY_IBSS)))
+
 #define WLAN_CAPABILITY_CF_POLLABLE	(1<<2)
 #define WLAN_CAPABILITY_CF_POLL_REQUEST	(1<<3)
 #define WLAN_CAPABILITY_PRIVACY		(1<<4)
@@ -1072,6 +1102,10 @@ enum ieee80211_statuscode {
 	WLAN_STATUS_NO_DIRECT_LINK = 48,
 	WLAN_STATUS_STA_NOT_PRESENT = 49,
 	WLAN_STATUS_STA_NOT_QSTA = 50,
+	/* 802.11s */
+	WLAN_STATUS_ANTI_CLOG_REQUIRED = 76,
+	WLAN_STATUS_FCG_NOT_SUPP = 78,
+	WLAN_STATUS_STA_NO_TBTT = 78,
 };
 
 
@@ -1112,6 +1146,22 @@ enum ieee80211_reasoncode {
 	WLAN_REASON_QSTA_REQUIRE_SETUP = 38,
 	WLAN_REASON_QSTA_TIMEOUT = 39,
 	WLAN_REASON_QSTA_CIPHER_NOT_SUPP = 45,
+	/* 802.11s */
+	WLAN_REASON_MESH_PEER_CANCELED = 52,
+	WLAN_REASON_MESH_MAX_PEERS = 53,
+	WLAN_REASON_MESH_CONFIG = 54,
+	WLAN_REASON_MESH_CLOSE = 55,
+	WLAN_REASON_MESH_MAX_RETRIES = 56,
+	WLAN_REASON_MESH_CONFIRM_TIMEOUT = 57,
+	WLAN_REASON_MESH_INVALID_GTK = 58,
+	WLAN_REASON_MESH_INCONSISTENT_PARAM = 59,
+	WLAN_REASON_MESH_INVALID_SECURITY = 60,
+	WLAN_REASON_MESH_PATH_ERROR = 61,
+	WLAN_REASON_MESH_PATH_NOFORWARD = 62,
+	WLAN_REASON_MESH_PATH_DEST_UNREACHABLE = 63,
+	WLAN_REASON_MAC_EXISTS_IN_MBSS = 64,
+	WLAN_REASON_MESH_CHAN_REGULATORY = 65,
+	WLAN_REASON_MESH_CHAN = 66,
 };
 
 
@@ -1139,20 +1189,33 @@ enum ieee80211_eid {
 	WLAN_EID_TS_DELAY = 43,
 	WLAN_EID_TCLAS_PROCESSING = 44,
 	WLAN_EID_QOS_CAPA = 46,
-	/* 802.11s
-	 *
-	 * All mesh EID numbers are pending IEEE 802.11 ANA approval.
-	 * The numbers have been incremented from those suggested in
-	 * 802.11s/D2.0 so that MESH_CONFIG does not conflict with
-	 * EXT_SUPP_RATES.
+	/* 802.11s */
+	WLAN_EID_MESH_CONFIG = 113,
+	WLAN_EID_MESH_ID = 114,
+	WLAN_EID_LINK_METRIC_REPORT = 115,
+	WLAN_EID_CONGESTION_NOTIFICATION = 116,
+	/* Note that the Peer Link IE has been replaced with the similar
+	 * Peer Management IE.  We will keep the former definition until mesh
+	 * code is changed to comply with latest 802.11s drafts.
 	 */
-	WLAN_EID_MESH_CONFIG = 51,
-	WLAN_EID_MESH_ID = 52,
-	WLAN_EID_PEER_LINK = 55,
-	WLAN_EID_PREQ = 68,
-	WLAN_EID_PREP = 69,
-	WLAN_EID_PERR = 70,
-	WLAN_EID_RANN = 49,	/* compatible with FreeBSD */
+	WLAN_EID_PEER_LINK = 55,  /* no longer in 802.11s drafts */
+	WLAN_EID_PEER_MGMT = 117,
+	WLAN_EID_CHAN_SWITCH_PARAM = 118,
+	WLAN_EID_MESH_AWAKE_WINDOW = 119,
+	WLAN_EID_BEACON_TIMING = 120,
+	WLAN_EID_MCCAOP_SETUP_REQ = 121,
+	WLAN_EID_MCCAOP_SETUP_RESP = 122,
+	WLAN_EID_MCCAOP_ADVERT = 123,
+	WLAN_EID_MCCAOP_TEARDOWN = 124,
+	WLAN_EID_GANN = 125,
+	WLAN_EID_RANN = 126,
+	WLAN_EID_PREQ = 130,
+	WLAN_EID_PREP = 131,
+	WLAN_EID_PERR = 132,
+	WLAN_EID_PXU = 137,
+	WLAN_EID_PXUC = 138,
+	WLAN_EID_AUTH_MESH_PEER_EXCH = 139,
+	WLAN_EID_MIC = 140,
 
 	WLAN_EID_PWR_CONSTRAINT = 32,
 	WLAN_EID_PWR_CAPABILITY = 33,
@@ -1189,6 +1252,9 @@ enum ieee80211_eid {
 	WLAN_EID_BSS_AC_ACCESS_DELAY = 68,
 	WLAN_EID_RRM_ENABLED_CAPABILITIES = 70,
 	WLAN_EID_MULTIPLE_BSSID = 71,
+	WLAN_EID_BSS_COEX_2040 = 72,
+	WLAN_EID_OVERLAP_BSS_SCAN_PARAM = 74,
+	WLAN_EID_EXT_CAPABILITY = 127,
 
 	WLAN_EID_MOBILITY_DOMAIN = 54,
 	WLAN_EID_FAST_BSS_TRANSITION = 55,
@@ -1211,9 +1277,13 @@ enum ieee80211_category {
 	WLAN_CATEGORY_HT = 7,
 	WLAN_CATEGORY_SA_QUERY = 8,
 	WLAN_CATEGORY_PROTECTED_DUAL_OF_ACTION = 9,
+	WLAN_CATEGORY_MESH_ACTION = 13,
+	WLAN_CATEGORY_MULTIHOP_ACTION = 14,
+	WLAN_CATEGORY_SELF_PROTECTED = 15,
 	WLAN_CATEGORY_WMM = 17,
-	WLAN_CATEGORY_MESH_PLINK = 30,		/* Pending ANA approval */
-	WLAN_CATEGORY_MESH_PATH_SEL = 32,	/* Pending ANA approval */
+	/* TODO: remove MESH_PATH_SEL after mesh is updated
+	 * to current 802.11s draft  */
+	WLAN_CATEGORY_MESH_PATH_SEL = 32,
 	WLAN_CATEGORY_VENDOR_SPECIFIC_PROTECTED = 126,
 	WLAN_CATEGORY_VENDOR_SPECIFIC = 127,
 };
@@ -1248,6 +1318,31 @@ enum ieee80211_key_len {
 	WLAN_KEY_LEN_AES_CMAC = 16,
 };
 
+/**
+ * enum - mesh path selection protocol identifier
+ *
+ * @IEEE80211_PATH_PROTOCOL_HWMP: the default path selection protocol
+ * @IEEE80211_PATH_PROTOCOL_VENDOR: a vendor specific protocol that will
+ * be specified in a vendor specific information element
+ */
+enum {
+	IEEE80211_PATH_PROTOCOL_HWMP = 0,
+	IEEE80211_PATH_PROTOCOL_VENDOR = 255,
+};
+
+/**
+ * enum - mesh path selection metric identifier
+ *
+ * @IEEE80211_PATH_METRIC_AIRTIME: the default path selection metric
+ * @IEEE80211_PATH_METRIC_VENDOR: a vendor specific metric that will be
+ * specified in a vendor specific information element
+ */
+enum {
+	IEEE80211_PATH_METRIC_AIRTIME = 0,
+	IEEE80211_PATH_METRIC_VENDOR = 255,
+};
+
+
 /*
  * IEEE 802.11-2007 7.3.2.9 Country information element
  *
@@ -1257,6 +1352,9 @@ enum ieee80211_key_len {
 
 /* Although the spec says 8 I'm seeing 6 in practice */
 #define IEEE80211_COUNTRY_IE_MIN_LEN	6
+
+/* The Country String field of the element shall be 3 octets in length */
+#define IEEE80211_COUNTRY_STRING_LEN	3
 
 /*
  * For regulatory extension stuff see IEEE 802.11-2007
@@ -1336,9 +1434,6 @@ enum ieee80211_sa_query_action {
 };
 
 
-/* A-MSDU 802.11n */
-#define IEEE80211_QOS_CONTROL_A_MSDU_PRESENT 0x0080
-
 /* cipher suite selectors */
 #define WLAN_CIPHER_SUITE_USE_GROUP	0x000FAC00
 #define WLAN_CIPHER_SUITE_WEP40		0x000FAC01
@@ -1351,10 +1446,49 @@ enum ieee80211_sa_query_action {
 /* AKM suite selectors */
 #define WLAN_AKM_SUITE_8021X		0x000FAC01
 #define WLAN_AKM_SUITE_PSK		0x000FAC02
+#define WLAN_AKM_SUITE_SAE			0x000FAC08
+#define WLAN_AKM_SUITE_FT_OVER_SAE	0x000FAC09
 
 #define WLAN_MAX_KEY_LEN		32
 
 #define WLAN_PMKID_LEN			16
+
+/*
+ * WMM/802.11e Tspec Element
+ */
+#define IEEE80211_WMM_IE_TSPEC_TID_MASK		0x0F
+#define IEEE80211_WMM_IE_TSPEC_TID_SHIFT	1
+
+enum ieee80211_tspec_status_code {
+	IEEE80211_TSPEC_STATUS_ADMISS_ACCEPTED = 0,
+	IEEE80211_TSPEC_STATUS_ADDTS_INVAL_PARAMS = 0x1,
+};
+
+struct ieee80211_tspec_ie {
+	u8 element_id;
+	u8 len;
+	u8 oui[3];
+	u8 oui_type;
+	u8 oui_subtype;
+	u8 version;
+	__le16 tsinfo;
+	u8 tsinfo_resvd;
+	__le16 nominal_msdu;
+	__le16 max_msdu;
+	__le32 min_service_int;
+	__le32 max_service_int;
+	__le32 inactivity_int;
+	__le32 suspension_int;
+	__le32 service_start_time;
+	__le32 min_data_rate;
+	__le32 mean_data_rate;
+	__le32 peak_data_rate;
+	__le32 max_burst_size;
+	__le32 delay_bound;
+	__le32 min_phy_rate;
+	__le16 sba;
+	__le16 medium_time;
+} __packed;
 
 /**
  * ieee80211_get_qos_ctl - get pointer to qos control bytes
@@ -1435,6 +1569,7 @@ static inline bool ieee80211_is_robust_mgmt_frame(struct ieee80211_hdr *hdr)
 		category = ((u8 *) hdr) + 24;
 		return *category != WLAN_CATEGORY_PUBLIC &&
 			*category != WLAN_CATEGORY_HT &&
+			*category != WLAN_CATEGORY_SELF_PROTECTED &&
 			*category != WLAN_CATEGORY_VENDOR_SPECIFIC;
 	}
 

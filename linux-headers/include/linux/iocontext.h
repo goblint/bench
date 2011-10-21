@@ -5,6 +5,14 @@
 #include <linux/rcupdate.h>
 
 struct cfq_queue;
+struct cfq_ttime {
+	unsigned long last_end_request;
+
+	unsigned long ttime_total;
+	unsigned long ttime_samples;
+	unsigned long ttime_mean;
+};
+
 struct cfq_io_context {
 	void *key;
 
@@ -12,11 +20,7 @@ struct cfq_io_context {
 
 	struct io_context *ioc;
 
-	unsigned long last_end_request;
-
-	unsigned long ttime_total;
-	unsigned long ttime_samples;
-	unsigned long ttime_mean;
+	struct cfq_ttime ttime;
 
 	struct list_head queue_list;
 	struct hlist_node cic_list;
@@ -53,7 +57,7 @@ struct io_context {
 
 	struct radix_tree_root radix_root;
 	struct hlist_head cic_list;
-	void *ioc_data;
+	void __rcu *ioc_data;
 };
 
 static inline struct io_context *ioc_task_link(struct io_context *ioc)
@@ -76,7 +80,6 @@ int put_io_context(struct io_context *ioc);
 void exit_io_context(struct task_struct *task);
 struct io_context *get_io_context(gfp_t gfp_flags, int node);
 struct io_context *alloc_io_context(gfp_t gfp_flags, int node);
-void copy_io_context(struct io_context **pdst, struct io_context **psrc);
 #else
 static inline void exit_io_context(struct task_struct *task)
 {

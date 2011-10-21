@@ -1,14 +1,16 @@
 deps_config := \
+	lib/xz/Kconfig \
 	lib/Kconfig \
-	drivers/virtio/Kconfig \
 	drivers/lguest/Kconfig \
 	drivers/vhost/Kconfig \
 	virt/kvm/Kconfig \
 	arch/x86/kvm/Kconfig \
+	drivers/crypto/caam/Kconfig \
 	drivers/crypto/Kconfig \
 	crypto/async_tx/Kconfig \
 	crypto/Kconfig \
 	security/integrity/ima/Kconfig \
+	security/apparmor/Kconfig \
 	security/tomoyo/Kconfig \
 	security/smack/Kconfig \
 	security/selinux/Kconfig \
@@ -29,13 +31,13 @@ deps_config := \
 	fs/ncpfs/Kconfig \
 	fs/cifs/Kconfig \
 	fs/ceph/Kconfig \
-	fs/smbfs/Kconfig \
 	net/sunrpc/Kconfig \
 	fs/nfsd/Kconfig \
 	fs/nfs/Kconfig \
 	fs/exofs/Kconfig \
 	fs/ufs/Kconfig \
 	fs/sysv/Kconfig \
+	fs/pstore/Kconfig \
 	fs/romfs/Kconfig \
 	fs/qnx4/Kconfig \
 	fs/hpfs/Kconfig \
@@ -66,8 +68,8 @@ deps_config := \
 	fs/fscache/Kconfig \
 	fs/fuse/Kconfig \
 	fs/autofs4/Kconfig \
-	fs/autofs/Kconfig \
 	fs/quota/Kconfig \
+	fs/notify/fanotify/Kconfig \
 	fs/notify/inotify/Kconfig \
 	fs/notify/dnotify/Kconfig \
 	fs/notify/Kconfig \
@@ -84,43 +86,65 @@ deps_config := \
 	fs/ext3/Kconfig \
 	fs/ext2/Kconfig \
 	fs/Kconfig \
+	drivers/firmware/google/Kconfig \
 	drivers/firmware/Kconfig \
+	drivers/virt/Kconfig \
+	drivers/iommu/Kconfig \
+	drivers/clocksource/Kconfig \
+	drivers/hwspinlock/Kconfig \
+	drivers/clk/Kconfig \
 	drivers/platform/x86/Kconfig \
 	drivers/platform/Kconfig \
-	drivers/staging/msm/Kconfig \
-	drivers/staging/mrst-touchscreen/Kconfig \
+	drivers/staging/nvec/Kconfig \
+	drivers/staging/mei/Kconfig \
+	drivers/staging/altera-stapl/Kconfig \
+	drivers/staging/gma500/Kconfig \
+	drivers/staging/ste_rmi4/Kconfig \
+	drivers/staging/cptm1217/Kconfig \
+	drivers/staging/speakup/Kconfig \
+	drivers/staging/intel_sst/Kconfig \
+	drivers/staging/ft1000/Kconfig \
+	drivers/staging/bcm/Kconfig \
+	drivers/staging/keucr/Kconfig \
+	drivers/staging/ath6kl/Kconfig \
+	drivers/staging/sbe-2t3e3/Kconfig \
+	drivers/staging/quickstart/Kconfig \
+	drivers/staging/tidspbridge/Kconfig \
+	drivers/staging/solo6x10/Kconfig \
+	drivers/staging/easycap/Kconfig \
+	drivers/staging/lirc/Kconfig \
 	drivers/staging/xgifb/Kconfig \
-	drivers/staging/adis16255/Kconfig \
-	drivers/staging/ti-st/Kconfig \
 	drivers/staging/cxt1e1/Kconfig \
 	drivers/staging/crystalhd/Kconfig \
 	drivers/staging/dt3155v4l/Kconfig \
-	drivers/staging/dt3155/Kconfig \
 	drivers/staging/sm7xx/Kconfig \
-	drivers/staging/samsung-laptop/Kconfig \
-	drivers/staging/batman-adv/Kconfig \
 	drivers/staging/wlags49_h25/Kconfig \
 	drivers/staging/wlags49_h2/Kconfig \
-	drivers/staging/ramzswap/Kconfig \
+	drivers/staging/zcache/Kconfig \
+	drivers/staging/zram/Kconfig \
 	drivers/staging/iio/trigger/Kconfig \
+	drivers/staging/iio/resolver/Kconfig \
+	drivers/staging/iio/meter/Kconfig \
+	drivers/staging/iio/magnetometer/Kconfig \
 	drivers/staging/iio/light/Kconfig \
 	drivers/staging/iio/imu/Kconfig \
 	drivers/staging/iio/gyro/Kconfig \
+	drivers/staging/iio/dds/Kconfig \
+	drivers/staging/iio/dac/Kconfig \
+	drivers/staging/iio/addac/Kconfig \
 	drivers/staging/iio/adc/Kconfig \
 	drivers/staging/iio/accel/Kconfig \
 	drivers/staging/iio/Kconfig \
 	drivers/staging/sep/Kconfig \
-	drivers/staging/memrar/Kconfig \
-	drivers/staging/rar_register/Kconfig \
 	drivers/staging/vme/boards/Kconfig \
 	drivers/staging/vme/devices/Kconfig \
 	drivers/staging/vme/bridges/Kconfig \
 	drivers/staging/vme/Kconfig \
 	drivers/staging/hv/Kconfig \
-	drivers/staging/udlfb/Kconfig \
 	drivers/staging/vt6656/Kconfig \
 	drivers/staging/vt6655/Kconfig \
 	drivers/staging/quatech_usb2/Kconfig \
+	drivers/staging/spectra/Kconfig \
 	drivers/staging/serqt_usb2/Kconfig \
 	drivers/staging/octeon/Kconfig \
 	drivers/gpu/drm/nouveau/Kconfig \
@@ -128,23 +152,22 @@ deps_config := \
 	drivers/staging/line6/Kconfig \
 	drivers/staging/phison/Kconfig \
 	drivers/staging/pohmelfs/Kconfig \
-	drivers/staging/dream/camera/Kconfig \
-	drivers/staging/dream/Kconfig \
 	drivers/staging/frontier/Kconfig \
+	drivers/staging/rts_pstor/Kconfig \
+	drivers/staging/rtl8712/Kconfig \
 	drivers/staging/rtl8192e/Kconfig \
 	drivers/staging/rtl8192u/Kconfig \
-	drivers/staging/rtl8192su/Kconfig \
 	drivers/staging/rtl8187se/Kconfig \
 	drivers/staging/panel/Kconfig \
 	drivers/staging/asus_oled/Kconfig \
+	drivers/staging/olpc_dcon/Kconfig \
 	drivers/staging/comedi/Kconfig \
-	drivers/staging/rt2870/Kconfig \
-	drivers/staging/rt2860/Kconfig \
-	drivers/staging/otus/Kconfig \
+	drivers/staging/brcm80211/Kconfig \
 	drivers/staging/echo/Kconfig \
 	drivers/staging/wlan-ng/Kconfig \
 	drivers/staging/winbond/Kconfig \
 	drivers/staging/usbip/Kconfig \
+	drivers/staging/cxd2099/Kconfig \
 	drivers/staging/tm6000/Kconfig \
 	drivers/staging/cx25821/Kconfig \
 	drivers/staging/go7007/Kconfig \
@@ -152,6 +175,7 @@ deps_config := \
 	drivers/staging/et131x/Kconfig \
 	drivers/staging/Kconfig \
 	drivers/xen/Kconfig \
+	drivers/virtio/Kconfig \
 	drivers/vlynq/Kconfig \
 	drivers/uio/Kconfig \
 	drivers/auxdisplay/Kconfig \
@@ -191,6 +215,7 @@ deps_config := \
 	drivers/usb/image/Kconfig \
 	drivers/usb/storage/Kconfig \
 	drivers/usb/class/Kconfig \
+	drivers/usb/renesas_usbhs/Kconfig \
 	drivers/usb/musb/Kconfig \
 	drivers/usb/host/Kconfig \
 	drivers/usb/wusbcore/Kconfig \
@@ -202,13 +227,19 @@ deps_config := \
 	sound/oss/Kconfig \
 	sound/soc/codecs/Kconfig \
 	sound/soc/txx9/Kconfig \
+	sound/soc/tegra/Kconfig \
 	sound/soc/sh/Kconfig \
 	sound/soc/s6000/Kconfig \
-	sound/soc/s3c24xx/Kconfig \
+	sound/soc/samsung/Kconfig \
 	sound/soc/pxa/Kconfig \
+	sound/soc/mid-x86/Kconfig \
+	sound/soc/kirkwood/Kconfig \
 	sound/soc/omap/Kconfig \
+	sound/soc/nuc900/Kconfig \
+	sound/soc/jz4740/Kconfig \
 	sound/soc/imx/Kconfig \
 	sound/soc/fsl/Kconfig \
+	sound/soc/ep93xx/Kconfig \
 	sound/soc/davinci/Kconfig \
 	sound/soc/blackfin/Kconfig \
 	sound/soc/au1x/Kconfig \
@@ -217,6 +248,7 @@ deps_config := \
 	sound/parisc/Kconfig \
 	sound/sparc/Kconfig \
 	sound/pcmcia/Kconfig \
+	sound/firewire/Kconfig \
 	sound/usb/Kconfig \
 	sound/sh/Kconfig \
 	sound/mips/Kconfig \
@@ -246,12 +278,14 @@ deps_config := \
 	drivers/video/omap2/Kconfig \
 	drivers/video/omap/Kconfig \
 	drivers/video/geode/Kconfig \
+	drivers/gpu/stub/Kconfig \
 	drivers/gpu/drm/radeon/Kconfig \
 	drivers/gpu/drm/Kconfig \
 	drivers/gpu/vga/Kconfig \
 	drivers/char/agp/Kconfig \
 	drivers/video/Kconfig \
 	drivers/media/dvb/frontends/Kconfig \
+	drivers/media/dvb/ddbridge/Kconfig \
 	drivers/media/dvb/ngene/Kconfig \
 	drivers/media/dvb/mantis/Kconfig \
 	drivers/media/dvb/pt1/Kconfig \
@@ -266,13 +300,12 @@ deps_config := \
 	drivers/media/dvb/dvb-usb/Kconfig \
 	drivers/media/dvb/ttpci/Kconfig \
 	drivers/media/dvb/Kconfig \
+	drivers/media/radio/wl128x/Kconfig \
 	drivers/media/radio/si470x/Kconfig \
 	drivers/media/radio/Kconfig \
 	drivers/media/video/pwc/Kconfig \
-	drivers/media/video/zc0301/Kconfig \
 	drivers/media/video/sn9c102/Kconfig \
 	drivers/media/video/et61x251/Kconfig \
-	drivers/media/video/usbvideo/Kconfig \
 	drivers/media/video/usbvision/Kconfig \
 	drivers/media/video/cx231xx/Kconfig \
 	drivers/media/video/tlg2300/Kconfig \
@@ -284,6 +317,9 @@ deps_config := \
 	drivers/media/video/gspca/m5602/Kconfig \
 	drivers/media/video/gspca/Kconfig \
 	drivers/media/video/uvc/Kconfig \
+	drivers/media/video/s5p-tv/Kconfig \
+	drivers/media/video/m5mols/Kconfig \
+	drivers/media/video/marvell-ccic/Kconfig \
 	drivers/media/video/saa7164/Kconfig \
 	drivers/media/video/cx18/Kconfig \
 	drivers/media/video/ivtv/Kconfig \
@@ -295,36 +331,44 @@ deps_config := \
 	drivers/media/video/cpia2/Kconfig \
 	drivers/media/video/bt8xx/Kconfig \
 	drivers/media/video/omap/Kconfig \
+	drivers/media/video/davinci/Kconfig \
 	drivers/media/video/cx25840/Kconfig \
 	drivers/media/video/Kconfig \
 	drivers/media/common/tuners/Kconfig \
-	drivers/media/IR/keymaps/Kconfig \
-	drivers/media/IR/Kconfig \
+	drivers/media/rc/keymaps/Kconfig \
+	drivers/media/rc/Kconfig \
 	drivers/media/common/Kconfig \
 	drivers/media/Kconfig \
 	drivers/regulator/Kconfig \
 	drivers/mfd/Kconfig \
+	drivers/bcma/Kconfig \
 	drivers/ssb/Kconfig \
 	drivers/watchdog/Kconfig \
 	drivers/thermal/Kconfig \
+	drivers/hwmon/pmbus/Kconfig \
 	drivers/hwmon/Kconfig \
 	drivers/power/Kconfig \
 	drivers/w1/slaves/Kconfig \
 	drivers/w1/masters/Kconfig \
 	drivers/w1/Kconfig \
 	drivers/gpio/Kconfig \
+	drivers/ptp/Kconfig \
+	drivers/pps/generators/Kconfig \
 	drivers/pps/clients/Kconfig \
 	drivers/pps/Kconfig \
 	drivers/spi/Kconfig \
 	drivers/i2c/busses/Kconfig \
 	drivers/i2c/algos/Kconfig \
+	drivers/i2c/muxes/Kconfig \
 	drivers/i2c/Kconfig \
 	drivers/s390/char/Kconfig \
 	drivers/char/tpm/Kconfig \
 	drivers/char/pcmcia/Kconfig \
 	drivers/char/hw_random/Kconfig \
 	drivers/char/ipmi/Kconfig \
-	drivers/serial/Kconfig \
+	drivers/tty/hvc/Kconfig \
+	drivers/tty/serial/Kconfig \
+	drivers/tty/Kconfig \
 	drivers/char/Kconfig \
 	drivers/input/gameport/Kconfig \
 	drivers/input/serio/Kconfig \
@@ -361,19 +405,23 @@ deps_config := \
 	drivers/net/usb/Kconfig \
 	drivers/net/wimax/i2400m/Kconfig \
 	drivers/net/wimax/Kconfig \
+	drivers/net/wireless/mwifiex/Kconfig \
 	drivers/net/wireless/zd1211rw/Kconfig \
 	drivers/net/wireless/wl12xx/Kconfig \
+	drivers/net/wireless/wl1251/Kconfig \
+	drivers/net/wireless/rtlwifi/Kconfig \
 	drivers/net/wireless/rt2x00/Kconfig \
 	drivers/net/wireless/p54/Kconfig \
 	drivers/net/wireless/orinoco/Kconfig \
 	drivers/net/wireless/libertas/Kconfig \
 	drivers/net/wireless/iwmc3200wifi/Kconfig \
+	drivers/net/wireless/iwlegacy/Kconfig \
 	drivers/net/wireless/iwlwifi/Kconfig \
 	drivers/net/wireless/ipw2x00/Kconfig \
 	drivers/net/wireless/hostap/Kconfig \
 	drivers/net/wireless/b43legacy/Kconfig \
 	drivers/net/wireless/b43/Kconfig \
-	drivers/net/wireless/ath/ar9170/Kconfig \
+	drivers/net/wireless/ath/carl9170/Kconfig \
 	drivers/net/wireless/ath/ath9k/Kconfig \
 	drivers/net/wireless/ath/ath5k/Kconfig \
 	drivers/net/wireless/ath/Kconfig \
@@ -394,9 +442,12 @@ deps_config := \
 	drivers/net/Kconfig \
 	drivers/macintosh/Kconfig \
 	drivers/message/i2o/Kconfig \
-	drivers/ieee1394/Kconfig \
 	drivers/firewire/Kconfig \
 	drivers/message/fusion/Kconfig \
+	drivers/target/iscsi/Kconfig \
+	drivers/target/tcm_fc/Kconfig \
+	drivers/target/loopback/Kconfig \
+	drivers/target/Kconfig \
 	drivers/md/Kconfig \
 	drivers/ata/Kconfig \
 	drivers/scsi/osd/Kconfig \
@@ -412,11 +463,17 @@ deps_config := \
 	drivers/scsi/aic7xxx/Kconfig.aic79xx \
 	drivers/scsi/aic7xxx/Kconfig.aic7xxx \
 	drivers/scsi/be2iscsi/Kconfig \
+	drivers/scsi/bnx2fc/Kconfig \
 	drivers/scsi/bnx2i/Kconfig \
-	drivers/scsi/cxgb3i/Kconfig \
+	drivers/scsi/cxgbi/cxgb4i/Kconfig \
+	drivers/scsi/cxgbi/cxgb3i/Kconfig \
+	drivers/scsi/cxgbi/Kconfig \
 	drivers/scsi/libsas/Kconfig \
 	drivers/scsi/Kconfig \
 	drivers/ide/Kconfig \
+	drivers/misc/carma/Kconfig \
+	drivers/misc/lis3lv02d/Kconfig \
+	drivers/misc/ti-st/Kconfig \
 	drivers/misc/iwmc3200top/Kconfig \
 	drivers/misc/cb710/Kconfig \
 	drivers/misc/eeprom/Kconfig \
@@ -432,7 +489,6 @@ deps_config := \
 	drivers/pnp/Kconfig \
 	drivers/parport/Kconfig \
 	drivers/of/Kconfig \
-	drivers/mtd/ubi/Kconfig.debug \
 	drivers/mtd/ubi/Kconfig \
 	drivers/mtd/lpddr/Kconfig \
 	drivers/mtd/onenand/Kconfig \
@@ -442,8 +498,12 @@ deps_config := \
 	drivers/mtd/chips/Kconfig \
 	drivers/mtd/Kconfig \
 	drivers/connector/Kconfig \
+	drivers/base/regmap/Kconfig \
 	drivers/base/Kconfig \
 	drivers/Kconfig \
+	drivers/nfc/Kconfig \
+	net/nfc/Kconfig \
+	net/ceph/Kconfig \
 	net/caif/Kconfig \
 	net/9p/Kconfig \
 	net/rfkill/Kconfig \
@@ -462,13 +522,17 @@ deps_config := \
 	net/irda/irnet/Kconfig \
 	net/irda/irlan/Kconfig \
 	net/irda/Kconfig \
+	drivers/net/can/softing/Kconfig \
 	drivers/net/can/usb/Kconfig \
+	drivers/net/can/c_can/Kconfig \
 	drivers/net/can/sja1000/Kconfig \
 	drivers/net/can/mscan/Kconfig \
 	drivers/net/can/Kconfig \
 	net/can/Kconfig \
 	drivers/net/hamradio/Kconfig \
 	net/ax25/Kconfig \
+	net/batman-adv/Kconfig \
+	net/dns_resolver/Kconfig \
 	net/dcb/Kconfig \
 	net/sched/Kconfig \
 	net/ieee802154/Kconfig \
@@ -497,6 +561,7 @@ deps_config := \
 	net/ipv6/netfilter/Kconfig \
 	net/ipv4/netfilter/Kconfig \
 	net/netfilter/ipvs/Kconfig \
+	net/netfilter/ipset/Kconfig \
 	net/netfilter/Kconfig \
 	net/netlabel/Kconfig \
 	net/ipv6/Kconfig \
@@ -507,6 +572,8 @@ deps_config := \
 	net/packet/Kconfig \
 	net/Kconfig \
 	fs/Kconfig.binfmt \
+	drivers/rapidio/switches/Kconfig \
+	drivers/rapidio/Kconfig \
 	drivers/pci/hotplug/Kconfig \
 	drivers/pcmcia/Kconfig \
 	drivers/mca/Kconfig \
@@ -517,8 +584,10 @@ deps_config := \
 	drivers/pci/pcie/Kconfig \
 	drivers/idle/Kconfig \
 	drivers/cpuidle/Kconfig \
+	drivers/cpufreq/Kconfig.powerpc \
+	drivers/cpufreq/Kconfig.arm \
+	drivers/cpufreq/Kconfig.x86 \
 	drivers/cpufreq/Kconfig \
-	arch/x86/kernel/cpu/cpufreq/Kconfig \
 	drivers/sfi/Kconfig \
 	drivers/acpi/apei/Kconfig \
 	drivers/acpi/Kconfig \
@@ -537,16 +606,21 @@ deps_config := \
 	kernel/gcov/Kconfig \
 	arch/Kconfig \
 	usr/Kconfig \
+	kernel/irq/Kconfig \
 	init/Kconfig \
-	arch/x86/Kconfig
+	arch/x86/Kconfig \
+	Kconfig
 
 include/config/auto.conf: \
 	$(deps_config)
 
-ifneq "$(KERNELVERSION)" "2.6.35.4"
+ifneq "$(KERNELVERSION)" "3.1.0-rc10"
 include/config/auto.conf: FORCE
 endif
 ifneq "$(ARCH)" "x86_64"
+include/config/auto.conf: FORCE
+endif
+ifneq "$(SRCARCH)" "x86"
 include/config/auto.conf: FORCE
 endif
 
