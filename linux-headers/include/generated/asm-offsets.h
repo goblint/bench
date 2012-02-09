@@ -47,7 +47,7 @@
 
 #define TSS_ist 36 /* offsetof(struct tss_struct, x86_tss.ist)	# */
 
-#define __NR_syscall_max 309 /* sizeof(syscalls) - 1	# */
+#define __NR_syscall_max 311 /* sizeof(syscalls) - 1	# */
 
 #define TI_flags 16 /* offsetof(struct thread_info, flags)	# */
 #define TI_status 20 /* offsetof(struct thread_info, status)	# */
