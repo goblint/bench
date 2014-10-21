@@ -44,15 +44,18 @@
 #define saved_context_cr3 218 /* offsetof(struct saved_context, cr3)	# */
 #define saved_context_cr4 226 /* offsetof(struct saved_context, cr4)	# */
 #define saved_context_cr8 234 /* offsetof(struct saved_context, cr8)	# */
+#define saved_context_gdt_desc 261 /* offsetof(struct saved_context, gdt_desc)	# */
 
 #define TSS_ist 36 /* offsetof(struct tss_struct, x86_tss.ist)	# */
 
-#define __NR_syscall_max 311 /* sizeof(syscalls) - 1	# */
+#define __NR_syscall_max 320 /* sizeof(syscalls_64) - 1	# */
+#define NR_syscalls 321 /* sizeof(syscalls_64)	# */
+#define __NR_ia32_syscall_max 356 /* sizeof(syscalls_ia32) - 1	# */
+#define IA32_NR_syscalls 357 /* sizeof(syscalls_ia32)	# */
 
 #define TI_flags 16 /* offsetof(struct thread_info, flags)	# */
 #define TI_status 20 /* offsetof(struct thread_info, status)	# */
 #define TI_addr_limit 32 /* offsetof(struct thread_info, addr_limit)	# */
-#define TI_preempt_count 28 /* offsetof(struct thread_info, preempt_count)	# */
 
 #define crypto_tfm_ctx_offset 88 /* offsetof(struct crypto_tfm, __crt_ctx)	# */
 
@@ -65,5 +68,9 @@
 #define BP_hardware_subarch 572 /* offsetof(struct boot_params, hdr.hardware_subarch)	# */
 #define BP_version 518 /* offsetof(struct boot_params, hdr.version)	# */
 #define BP_kernel_alignment 560 /* offsetof(struct boot_params, hdr.kernel_alignment)	# */
+#define BP_pref_address 600 /* offsetof(struct boot_params, hdr.pref_address)	# */
+#define BP_code32_start 532 /* offsetof(struct boot_params, hdr.code32_start)	# */
+
+#define PTREGS_SIZE 168 /* sizeof(struct pt_regs)	# */
 
 #endif

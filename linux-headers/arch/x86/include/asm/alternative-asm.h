@@ -1,14 +1,17 @@
+#ifndef _ASM_X86_ALTERNATIVE_ASM_H
+#define _ASM_X86_ALTERNATIVE_ASM_H
+
 #ifdef __ASSEMBLY__
 
 #include <asm/asm.h>
 
 #ifdef CONFIG_SMP
 	.macro LOCK_PREFIX
-1:	lock
-	.section .smp_locks,"a"
+672:	lock
+	.pushsection .smp_locks,"a"
 	.balign 4
-	.long 1b - .
-	.previous
+	.long 672b - .
+	.popsection
 	.endm
 #else
 	.macro LOCK_PREFIX
@@ -24,3 +27,5 @@
 .endm
 
 #endif  /*  __ASSEMBLY__  */
+
+#endif /* _ASM_X86_ALTERNATIVE_ASM_H */
