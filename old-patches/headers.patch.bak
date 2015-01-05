@@ -1,0 +1,126 @@
+diff -ru linux-headers-orig/arch/x86/include/asm/bug.h linux-headers/arch/x86/include/asm/bug.h
+--- linux-headers-orig/arch/x86/include/asm/bug.h	2010-09-08 13:14:03.596884475 +0200
++++ linux-headers/arch/x86/include/asm/bug.h	2010-09-10 11:12:19.476259146 +0200
+@@ -4,34 +4,7 @@
+ #ifdef CONFIG_BUG
+ #define HAVE_ARCH_BUG
+ 
+-#ifdef CONFIG_DEBUG_BUGVERBOSE
+-
+-#ifdef CONFIG_X86_32
+-# define __BUG_C0	"2:\t.long 1b, %c0\n"
+-#else
+-# define __BUG_C0	"2:\t.long 1b - 2b, %c0 - 2b\n"
+-#endif
+-
+-#define BUG()							\
+-do {								\
+-	asm volatile("1:\tud2\n"				\
+-		     ".pushsection __bug_table,\"a\"\n"		\
+-		     __BUG_C0					\
+-		     "\t.word %c1, 0\n"				\
+-		     "\t.org 2b+%c2\n"				\
+-		     ".popsection"				\
+-		     : : "i" (__FILE__), "i" (__LINE__),	\
+-		     "i" (sizeof(struct bug_entry)));		\
+-	unreachable();						\
+-} while (0)
+-
+-#else
+-#define BUG()							\
+-do {								\
+-	asm volatile("ud2");					\
+-	unreachable();						\
+-} while (0)
+-#endif
++#define BUG() unreachable()
+ 
+ #endif /* !CONFIG_BUG */
+ 
+diff -ru linux-headers-orig/include/generated/autoconf.h linux-headers/include/generated/autoconf.h
+--- linux-headers-orig/include/generated/autoconf.h	2010-09-08 13:14:03.456879861 +0200
++++ linux-headers/include/generated/autoconf.h	2010-09-10 12:55:33.646258784 +0200
+@@ -918,3 +918,6 @@
+ #define CONFIG_AGP 1
+ #define CONFIG_INLINE_WRITE_UNLOCK 1
+ #define CONFIG_E1000 1
++// Additions
++#define CONFIG_DMA_ENGINE 1
++#define CONFIG_SCSI_DH 1
+diff -ru linux-headers-orig/include/linux/compiler-gcc.h linux-headers/include/linux/compiler-gcc.h
+--- linux-headers-orig/include/linux/compiler-gcc.h	2010-09-08 13:14:03.536881253 +0200
++++ linux-headers/include/linux/compiler-gcc.h	2010-09-08 16:38:04.366791093 +0200
+@@ -35,8 +35,7 @@
+     (typeof(ptr)) (__ptr + (off)); })
+ 
+ /* &a[0] degrades to a pointer: a different type from an array */
+-#define __must_be_array(a) \
+-  BUILD_BUG_ON_ZERO(__builtin_types_compatible_p(typeof(a), typeof(&a[0])))
++#define __must_be_array(a) 0
+ 
+ /*
+  * Force always-inline if the user requests it so via the .config,
+diff -ru linux-headers-orig/include/linux/kernel.h linux-headers/include/linux/kernel.h
+--- linux-headers-orig/include/linux/kernel.h	2010-09-08 13:14:03.526881977 +0200
++++ linux-headers/include/linux/kernel.h	2010-09-08 13:16:45.776583489 +0200
+@@ -756,7 +756,7 @@
+ #define BUILD_BUG_ON(condition) ((void)BUILD_BUG_ON_ZERO(condition))
+ 
+ /* Force a compilation error if condition is constant and true */
+-#define MAYBE_BUILD_BUG_ON(cond) ((void)sizeof(char[1 - 2 * !!(cond)]))
++#define MAYBE_BUILD_BUG_ON(cond) ((void)sizeof(char[1 - 2 * !!(0)]))
+ 
+ /* Force a compilation error if a constant expression is not a power of 2 */
+ #define BUILD_BUG_ON_NOT_POWER_OF_2(n)			\
+diff -ru linux-headers-orig/include/linux/poison.h linux-headers/include/linux/poison.h
+--- linux-headers-orig/include/linux/poison.h	2010-09-08 13:14:03.566880648 +0200
++++ linux-headers/include/linux/poison.h	2011-04-07 13:48:14.943803000 +0200
+@@ -19,8 +19,8 @@
+  * under normal circumstances, used to verify that nobody uses
+  * non-initialized list entries.
+  */
+-#define LIST_POISON1  ((void *) 0x00100100 + POISON_POINTER_DELTA)
+-#define LIST_POISON2  ((void *) 0x00200200 + POISON_POINTER_DELTA)
++#define LIST_POISON1  ((void *) 0)
++#define LIST_POISON2  ((void *) 0)
+ 
+ /********** include/linux/timer.h **********/
+ /*
+diff -ru linux-headers-orig/include/linux/raw.h linux-headers/include/linux/raw.h
+--- linux-headers-orig/include/linux/raw.h	2010-09-08 13:14:03.536881253 +0200
++++ linux-headers/include/linux/raw.h	2010-09-09 16:46:27.885629399 +0200
+@@ -13,6 +13,6 @@
+ 	__u64	block_minor;
+ };
+ 
+-#define MAX_RAW_MINORS CONFIG_MAX_RAW_DEVS
++#define MAX_RAW_MINORS 256
+ 
+ #endif /* __LINUX_RAW_H */
+diff -ru linux-headers-orig/include/linux/sched.h linux-headers/include/linux/sched.h
+--- linux-headers-orig/include/linux/sched.h	2010-09-08 13:14:03.536881253 +0200
++++ linux-headers/include/linux/sched.h	2010-09-08 16:20:29.075981860 +0200
+@@ -195,8 +195,7 @@
+ 
+ #define TASK_STATE_TO_CHAR_STR "RSDTtZXxKW"
+ 
+-extern char ___assert_task_state[1 - 2*!!(
+-		sizeof(TASK_STATE_TO_CHAR_STR)-1 != ilog2(TASK_STATE_MAX)+1)];
++//extern char ___assert_task_state[1 - 2*!!(sizeof(TASK_STATE_TO_CHAR_STR)-1 != ilog2(TASK_STATE_MAX)+1)];
+ 
+ /* Convenience macros for the sake of set_task_state */
+ #define TASK_KILLABLE		(TASK_WAKEKILL | TASK_UNINTERRUPTIBLE)
+diff -ru linux-headers-orig/include/linux/slab.h linux-headers/include/linux/slab.h
+--- linux-headers-orig/include/linux/slab.h	2010-09-08 13:14:03.546881560 +0200
++++ linux-headers/include/linux/slab.h	2010-09-21 11:21:31.175044206 +0200
+@@ -225,8 +225,8 @@
+  */
+ static inline void *kcalloc(size_t n, size_t size, gfp_t flags)
+ {
+-	if (size != 0 && n > ULONG_MAX / size)
+-		return NULL;
++//        if (size != 0 && n > ULONG_MAX / size)
++//                return NULL;
+ 	return __kmalloc(n * size, flags | __GFP_ZERO);
+ }
+ 
