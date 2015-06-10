@@ -13832,7 +13832,7 @@ char divider[50]  =
         (char )'-',      (char )'\000'};
 move_s dummy  =    {0, 0, 0, 0, 0, 0};
 xbool allow_pondering  ;
-int main(int argc , char **argv ) 
+int main__(int argc , char **argv ) 
 { 
   char input[256] ;
   char *p ;
@@ -17330,4 +17330,8 @@ unsigned int randomMT(void)
   y ^= (y << 15) & 4022730752U;
   return (y ^ (y >> 18));
 }
+}
+
+int main(){
+  return main__();
 }
