@@ -60,6 +60,7 @@ $header = <<END
 </head>
 END
 $theresultfile = File.join($testresults, "index.html")
+
 def print_res (i)
   File.open($theresultfile, "w") do |f|
     f.puts "<html>"
@@ -92,16 +93,13 @@ def print_res (i)
             lines = g.readlines
             warnings = lines.grep(/Datarace at/).size
             safely = lines.grep(/Safely accessed/)
-            correlations = safely.grep(/common mutex/).size
-            safely = safely.size - correlations
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
-                thenumbers =  "<font color=\"green\">#{correlations}</font> / "
-                thenumbers << "<font color=\"seagreen\">#{safely}</font> / " if safely > 0
+                thenumbers =  "<font color=\"green\">#{safely}</font> / "
                 thenumbers << "<font color=\"brown\">#{warnings}</font>"
                 thenumbers << " / <font color=\"red\">#{uncalled}</font>" if uncalled > 0
                 f.puts "<td><a href = #{outfile}>#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
