@@ -92,7 +92,7 @@ def print_res (i)
           File.open($testresults + outfile, "r") do |g|
             lines = g.readlines
             warnings = lines.grep(/Datarace at/).size
-            safely = lines.grep(/Safely accessed/)
+            safely = lines.grep(/Safely accessed/).size
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
             if res == [] then
