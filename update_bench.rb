@@ -99,8 +99,8 @@ def print_res (i)
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
-                thenumbers =  "<font color=\"green\">#{safely}</font> / "
-                thenumbers << "<font color=\"brown\">#{warnings}</font>"
+                thenumbers =  "<font color=\"brown\">#{warnings}</font> / "
+                thenumbers << "<font color=\"green\">#{safely+warnings}</font>"
                 thenumbers << " / <font color=\"red\">#{uncalled}</font>" if uncalled > 0
                 f.puts "<td><a href = #{outfile}>#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
