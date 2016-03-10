@@ -91,17 +91,19 @@ def print_res (i)
         if File.exists?($testresults + outfile) then
           File.open($testresults + outfile, "r") do |g|
             lines = g.readlines
-            warnings = lines.grep(/Datarace at/).size
-            safely = lines.grep(/Safely accessed/).size
+            safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
-                thenumbers =  "<font color=\"brown\">#{warnings}</font> / "
-                thenumbers << "<font color=\"green\">#{safely+warnings}</font>"
-                thenumbers << " / <font color=\"red\">#{uncalled}</font>" if uncalled > 0
+                thenumbers =  "<font color=\"green\">#{safely}</font>; "
+                thenumbers << "<font color=\"orange\">#{vulner}</font> + "
+                thenumbers << "<font color=\"red\">#{unsafe}</font>"
+                thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
                 f.puts "<td><a href = #{outfile}>#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href = #{outfile}>failed (code: #{cod.to_s})</a></td>"
