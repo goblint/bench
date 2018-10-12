@@ -1,6 +1,6 @@
 #!/bin/bash
 # Prepare Kernel: make defconfig && make prepare
-# Then run this script.
+# Then run this script with absolute path to kernel root dir.
 rm -rf linux-headers linux-headers-orig
 mkdir linux-headers
 cd linux-headers

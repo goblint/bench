@@ -1,4 +1,5 @@
 #!/bin/bash
 while read p; do
-  cp $1/$p linux/$p
+	mkdir -p linux/$(dirname $p)
+	cp $1/$p $_
 done <files.txt

@@ -106,10 +106,10 @@ def print_res (i)
                 thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
                 f.puts "<td><a href = #{outfile}>#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
-                f.puts "<td><a href = #{outfile}>failed (code: #{cod.to_s})</a></td>"
+	        f.puts "<td><a href = #{outfile}>failed (code: #{cod.first.to_s})</a></td>"
               end
             else
-              f.puts "<td><a href=\"#{outfile}\">#{res.to_s} s</a> (limit)</td>"
+	      f.puts "<td><a href=\"#{outfile}\">#{res.first.to_s} s</a> (limit)</td>"
             end
           end
         else
