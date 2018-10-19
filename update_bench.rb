@@ -104,9 +104,9 @@ def print_res (i)
                 thenumbers << "<font color=\"orange\">#{vulner}</font> + "
                 thenumbers << "<font color=\"red\">#{unsafe}</font>"
                 thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
-                f.puts "<td><a href = #{outfile}>#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
+                f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
-	        f.puts "<td><a href = #{outfile}>failed (code: #{cod.first.to_s})</a></td>"
+                f.puts "<td><a href=\"#{outfile}.html\">failed (code: #{cod.first.to_s})</a></td>"
               end
             else
 	      f.puts "<td><a href=\"#{outfile}\">#{res.first.to_s} s</a> (limit)</td>"
@@ -144,6 +144,7 @@ end
 
 skipgrp = []
 file = "bench.txt"
+$linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 File.symlink("index/dd.txt",file) unless FileTest.exists? file
 
 $analyses = []
@@ -164,7 +165,7 @@ File.open(file, "r") do |f|
       params = "" if params == "-"
       if url == "linux!" then
         params = "--enable kernel " + params
-        url = "http://lxr.free-electrons.com/source/" + path + "?v=3.17"
+        url = $linuxroot + path
         path = File.expand_path(path, linux)
       else
         path = File.expand_path(path, bench)
@@ -176,6 +177,40 @@ File.open(file, "r") do |f|
     end
   end
 end
+
+#Process linux results!
+
+$fileheader = <<END
+<html>
+  <head>
+    <title>Benchmarks on #{`uname -n`.chomp}</title>
+    <style type="text/css">
+      body { white-space: pre; font-family: monospace }
+      a { color: inherit }
+    </style>
+  </head>
+  <body>
+END
+
+
+def proc_linux_res(resultfile, url, filename)
+  File.open(resultfile, "r") do |f|
+    File.open(resultfile + ".html", "w") do |o|
+      o.puts $fileheader
+      while line = f.gets
+        line.sub!(/\@(#{filename}:(\d+))/, "@<a href=\" #{url}#L\\2\">\\1</a>")
+        if line =~ /race with/
+          o.puts '<font color="red">' + line.chop + "</font>"
+        else
+          o.puts line
+        end
+      end
+      o.puts "</body>"
+      o.puts "</html>"
+    end
+  end
+end
+
 
 #analysing the files
 gname = ""
@@ -233,7 +268,11 @@ $projects.each do |p|
       puts "-- Done!"
     end
     print_res p.id
+    proc_linux_res(outfile, p.url, filename)
   end
 end
 print_res nil
 puts ("Results: " + $theresultfile)
+
+
+
