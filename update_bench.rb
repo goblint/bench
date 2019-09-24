@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-require 'fileutils' 
-
+require 'fileutils'
+Dir.chdir(File.dirname(__FILE__))
 goblint = File.expand_path("../analyzer/goblint")
 fail "Please run script from goblint dir!" unless File.exist?(goblint)
 $vrsn = `#{goblint} --version`
@@ -24,7 +24,7 @@ cmds.each do |name, cmd|
 end
 if highlighter.nil? then
   puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
-  highlighter = lambda {|f,o| "cp #{f} #{o}"} 
+  highlighter = lambda {|f,o| "cp #{f} #{o}"}
 end
 
 class Project
@@ -78,7 +78,7 @@ def print_res (i)
         else
           f.puts "<tr><th>#</th><th>Name</th><th>Size</th>"
         end
-        $analyses.each do |a| 
+        $analyses.each do |a|
           aname = a[0]
           f.puts "<th>#{aname}</th>"
         end
@@ -106,7 +106,7 @@ def print_res (i)
                 thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
-                f.puts "<td><a href=\"#{outfile}.html\">failed (code: #{cod.first.to_s})</a></td>"
+                f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
               end
             else
 	      f.puts "<td><a href=\"#{outfile}\">#{res.first.to_s} s</a> (limit)</td>"
@@ -147,11 +147,13 @@ file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 File.symlink("index/dd.txt",file) unless FileTest.exists? file
 
+FileUtils.cp(file,File.join($testresults, "bench.txt"))
+
 $analyses = []
 File.open(file, "r") do |f|
   id = 0
   while line = f.gets
-    next if line =~ /^\s*$/ 
+    next if line =~ /^\s*$/
     if line =~ /Group: (.*)/
       gname = $1.chomp
       skipgrp << gname if line =~ /SKIP/
@@ -218,7 +220,7 @@ maxlen = $analyses.map { |x| x[0].length }.max + 1
 $projects.each do |p|
   next if skipgrp.member? p.group
   next unless thegroup.nil? or p.group == thegroup
-  next unless only.nil? or p.name == only 
+  next unless only.nil? or p.name == only
   if p.group != gname then
     gname = p.group
     puts gname
@@ -273,6 +275,3 @@ $projects.each do |p|
 end
 print_res nil
 puts ("Results: " + $theresultfile)
-
-
-
