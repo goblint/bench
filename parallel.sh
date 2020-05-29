@@ -2,13 +2,13 @@
 files=${1-"coreutils/*.c single-thread/*.c"}
 # dir=$(dirname $files | head -n1)
 # mkdir -p out/$dir # might not work for files accross directories?
-mkdir out
+mkdir -p out/coreutils out/single-thread
 cp ../analyzer/goblint .
 
 case $OSTYPE in darwin*) time="gtime";; *) time="/usr/bin/time";; esac
 
-ulimit -Ss 49152 # 48MB
-export OCAMLRUNPARAM=s=4M,i=32M,o=150,v=0x015
+ulimit -Ss 49152 # increase stack size limit to 48MB; ulimit -s says default is 8192
+# export OCAMLRUNPARAM=s=4M,i=32M,o=150,v=0x015
 
 function finish {
   rm -rf goblint_temp_*
