@@ -12,7 +12,7 @@ ulimit -Ss 49152 # increase stack size limit to 48MB; ulimit -s says default is 
 
 function finish {
   rm -rf goblint_temp_*
-  ag exception out
+  ag 'Fatal error:' out
 }
 trap finish EXIT
 
