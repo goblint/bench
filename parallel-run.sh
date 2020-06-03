@@ -4,6 +4,7 @@ files=${1-"coreutils/*.c single-thread/*.c"}
 # mkdir -p out/$dir # might not work for files accross directories?
 mkdir -p out/coreutils out/single-thread
 cp ../analyzer/goblint .
+cp $0 out
 
 case $OSTYPE in darwin*) time="gtime";; *) time="/usr/bin/time";; esac
 
