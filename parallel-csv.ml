@@ -8,12 +8,12 @@ let list_files ?suffix dir =
   Sys.readdir dir |> Array.to_list |> List.sort compare |> List.map (Filename.concat dir)
   |> match suffix with None -> fun x -> x | Some suffix -> let l = String.length suffix in List.filter (fun x -> Str.last_chars x l = suffix)
 
-type run = { file: string; lines: string; start_time: string; cpu_time: string; cpu_per: string; max_mem: string; error: string; vars: string; evals: string; rho: string; stable: string; infl: string; wpoint: string }
-let empty_run = { file = ""; lines = ""; start_time = ""; cpu_time = ""; cpu_per = ""; max_mem = ""; error = ""; vars = ""; evals = ""; rho = ""; stable = ""; infl = ""; wpoint = "" }
+type run = { file: string; lines: string; start_time: string; cpu_time: string; cpu_per: string; max_mem: string; vars: string; evals: string; rho: string; stable: string; infl: string; wpoint: string; error: string }
+let empty_run = { file = ""; lines = ""; start_time = ""; cpu_time = ""; cpu_per = ""; max_mem = ""; vars = ""; evals = ""; rho = ""; stable = ""; infl = ""; wpoint = ""; error = "" }
 
 let print_csv xs = print_endline (String.concat ", " xs)
-let print_headers () = print_csv ["file"; "lines (_comb.c)"; "start_time"; "cpu_time (hh:mm:ss)"; "cpu_per"; "max_mem (kb)"; "error"; "vars"; "evals"; "rho"; "stable"; "infl"; "wpoint"]
-let print_run x = print_csv [x.file; x.lines; x.start_time; x.cpu_time; x.cpu_per; x.max_mem; x.error; x.vars; x.evals; x.rho; x.stable; x.infl; x.wpoint]
+let print_headers () = print_csv ["file"; "lines (_comb.c)"; "start_time"; "cpu_time (hh:mm:ss)"; "cpu_per"; "max_mem (kb)"; "vars"; "evals"; "rho"; "stable"; "infl"; "wpoint"; "error"]
+let print_run x = print_csv [x.file; x.lines; x.start_time; x.cpu_time; x.cpu_per; x.max_mem; x.vars; x.evals; x.rho; x.stable; x.infl; x.wpoint; x.error]
 
 let re_vars = Str.regexp "vars = \\([0-9]+\\).*"
 let re_evals = Str.regexp ".*evals = \\([0-9]+\\).*"
