@@ -1,4 +1,6 @@
-(* run with: ocaml parallel-csv.ml *)
+(* This script parses the logs in out/{coreutils,single-thread} and prints the results as CSV. *)
+(* Dependencies: opam install ocamlfind batteries *)
+(* Run with: ocaml parallel-csv.ml *)
 #use "topfind"
 #require "str"
 #require "batteries"
@@ -32,7 +34,7 @@ let csv file =
       { run with cpu_time }
     else if starts_with line "\tPercent of CPU this job got" then
       { run with cpu_per = snd @@ split line ": " }
-    else if starts_with line "\tMaximum resident set size" then
+    else if starts_with line "\tMaximum resident set size" then (* https://stackoverflow.com/questions/774556/peak-memory-usage-of-a-linux-unix-process *)
       { run with max_mem = snd @@ split line "): " }
     (* sequence 'Fatal error: out of memory\nCommand terminated by signal 6' should be saved as first line, so we only overwrite error if it's empty. *)
     else if run.error = "" && starts_with line "Command terminated by signal" then
