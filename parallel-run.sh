@@ -19,7 +19,7 @@ function finish {
 }
 trap finish EXIT
 
-# defaults: --disable noverify --enable exp.solver.td3.space_cache --disable dbg.trace.context
+# defaults: --enable verify --enable exp.solver.td3.space_cache --disable dbg.trace.context
 opt="--enable dbg.verbose --enable printstats --set ana.activated \"['base']\" --enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --enable exp.full-context --disable exp.widen-context --disable exp.solver.td3.space_restore --enable exp.solver.td3.term"
 # --enable exp.no-interval32-context # needed for wget b/c of mergesort
 # --enable exp.no-int-context # needed for '400.perlbench_comb.c 482.sphinx_livepretend_comb.c duff-0.5_comb.c maradns-1.4.06_comb.c'. Only '445.gobmk_comb.c' does not terminate.
