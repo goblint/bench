@@ -1,6 +1,6 @@
 (* This script parses the logs in out/{coreutils,single-thread} and prints the results as CSV. *)
 (* Dependencies: opam install ocamlfind batteries *)
-(* Run with: ocaml parallel-csv.ml *)
+(* Run with: ocaml csv-results.ml *)
 #use "topfind"
 #require "str"
 #require "batteries"
