@@ -30,11 +30,11 @@ opts="--enable dbg.verbose --enable printstats --set ana.activated \"['base']\" 
 # parallel --noswap --load 100% --eta --joblog out/jobs.log $cmd ::: $files
 # ag locals out/$dir/*.cmp.log | sort | tee out/$dir.locals
 
-opt=term
+# opt=term
 # opt=space
-# opt=side_widen  values=cycle(default), always, cycle_self
-cmd="(date && $time -v ./goblint {1} --{2} exp.solver.td3.$opt $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
-parallel --noswap --memfree 2G --eta --joblog out/jobs.log $cmd ::: $files ::: enable disable
+opt=side_widen # values=cycle(default), always, cycle_self
+cmd="(date && $time -v ./goblint {1} --sets exp.solver.td3.$opt {2} $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
+parallel --noswap --memfree 2G --eta --joblog out/jobs.log $cmd ::: $files ::: cycle always cycle_self
 # --load 100% (default) Will only start new job if fewer cores are used.
 # --memfree If the jobs take up very different amount of RAM, GNU parallel will only start as many as there is memory for. If less than size bytes are free, no more jobs will be started. If less than 50% size bytes are free, the youngest job will be killed, and put back on the queue to be run later.
 

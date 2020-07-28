@@ -58,7 +58,8 @@ let csv file =
 let () =
   (* let input_files = list_files ~suffix:".c" "coreutils" @ list_files ~suffix:".c" "single-thread" in *)
   (* List.iter print_endline input_files; *)
-  Sys.chdir "out";
+  let dir = match Sys.argv with [|_;dir|] -> dir | _ -> "out" in
+  Sys.chdir dir;
   let input_files = list_files ~suffix:".log" "coreutils" @ list_files ~suffix:".log" "single-thread" in
   print_headers ();
   List.iter csv input_files
