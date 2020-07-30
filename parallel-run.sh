@@ -21,7 +21,7 @@ trap finish EXIT
 
 # defaults: --enable verify --enable exp.solver.td3.space_cache --disable dbg.trace.context --sets solver td3
 opts="--enable dbg.verbose --enable printstats --set ana.activated \"['base']\" --enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --enable exp.full-context --disable exp.widen-context\
-  --disable exp.solver.td3.space_restore --disable exp.solver.td3.space"
+  --disable exp.solver.td3.space_restore"
 # --enable exp.no-interval32-context # needed for wget b/c of mergesort
 # --enable exp.no-int-context # needed for '400.perlbench_comb.c 482.sphinx_livepretend_comb.c duff-0.5_comb.c maradns-1.4.06_comb.c'. Only '445.gobmk_comb.c' does not terminate.
 # --enable ana.hashcons # no(t much) difference in runtime or max res. size for wget. TODO try rest
@@ -30,11 +30,12 @@ opts="--enable dbg.verbose --enable printstats --set ana.activated \"['base']\" 
 # parallel --noswap --load 100% --eta --joblog out/jobs.log $cmd ::: $files
 # ag locals out/$dir/*.cmp.log | sort | tee out/$dir.locals
 
-# opt=term
+opt=term
 # opt=space
-opt=side_widen # values=cycle(default), always, cycle_self
-cmd="(date && $time -v ./goblint {1} --sets exp.solver.td3.$opt {2} $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
-parallel --noswap --memfree 2G --eta --joblog out/jobs.log $cmd ::: $files ::: cycle always cycle_self
+# opt=side_widen # values=cycle(default), always, cycle_self
+# pay attention that $opts may overwrite! we place only place $opt first such that the variant is easy to see in htop.
+cmd="(date && $time -v ./goblint {1} --{2} exp.solver.td3.$opt $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
+parallel --noswap --memfree 2G --eta --joblog out/jobs.log $cmd ::: $files ::: disable enable
 # --load 100% (default) Will only start new job if fewer cores are used.
 # --memfree If the jobs take up very different amount of RAM, GNU parallel will only start as many as there is memory for. If less than size bytes are free, no more jobs will be started. If less than 50% size bytes are free, the youngest job will be killed, and put back on the queue to be run later.
 
