@@ -16,11 +16,12 @@ function finish {
   ag 'Fixpoint' out
   ag 'Fatal error:' out
   ag 'terminated by signal' out
+  ag 'About to crash' out
 }
 trap finish EXIT
 
 # defaults: --enable verify --enable exp.solver.td3.space_cache --disable dbg.trace.context --sets solver td3
-opts="--set ana.activated \"['base']\" --enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --enable exp.full-context --disable exp.widen-context\
+opts="--set ana.activated \"['base','mallocWrapper']\" --enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --enable exp.full-context --disable exp.widen-context\
   --disable exp.solver.td3.space_restore"
 # --enable exp.no-interval32-context # needed for wget b/c of mergesort
 # --enable exp.no-int-context # needed for '400.perlbench_comb.c 482.sphinx_livepretend_comb.c duff-0.5_comb.c maradns-1.4.06_comb.c'. Only '445.gobmk_comb.c' does not terminate.
