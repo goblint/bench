@@ -10,6 +10,8 @@ let list_files ?suffix dir =
   Sys.readdir dir |> Array.to_list |> List.sort compare |> List.map (Filename.concat dir)
   |> match suffix with None -> fun x -> x | Some suffix -> let l = String.length suffix in List.filter (fun x -> Str.last_chars x l = suffix)
 
+let contains_str a b = try String.find a b >= 0 with _ -> false
+
 type run = { file: string; lines: string; start_time: string; cpu_time: string; cpu_per: string; max_mem: string; vars: string; evals: string; rho: string; stable: string; infl: string; wpoint: string; error: string }
 let empty_run = { file = ""; lines = ""; start_time = ""; cpu_time = ""; cpu_per = ""; max_mem = ""; vars = ""; evals = ""; rho = ""; stable = ""; infl = ""; wpoint = ""; error = "" }
 
@@ -27,17 +29,18 @@ let csv file =
   let lines = File.lines_of file in
   let run = { empty_run with file; lines = loc; start_time = Option.get (Enum.get lines) } in
   let parse_line run line =
-    if starts_with line "\tElapsed (wall clock) time" then
+    let line = trim line in
+    if starts_with line "Elapsed (wall clock) time" then
       let cpu_time = snd @@ split line "): " in
       let cpu_time = try fst @@ split cpu_time "." with Not_found -> cpu_time in (* LibreOffice does not treat it as time with .12 sub-second part, so we remove it *)
       let cpu_time = rchop ~n:(String.length cpu_time) "00:00:00" ^ cpu_time in (* LibreOffice parses 1:23 as 1:23:00, so we left-pad zeros *)
       { run with cpu_time }
-    else if starts_with line "\tPercent of CPU this job got" then
+    else if starts_with line "Percent of CPU this job got" then
       { run with cpu_per = snd @@ split line ": " }
-    else if starts_with line "\tMaximum resident set size" then (* https://stackoverflow.com/questions/774556/peak-memory-usage-of-a-linux-unix-process *)
+    else if starts_with line "Maximum resident set size" then (* https://stackoverflow.com/questions/774556/peak-memory-usage-of-a-linux-unix-process *)
       { run with max_mem = snd @@ split line "): " }
     (* sequence 'Fatal error: out of memory\nCommand terminated by signal 6' should be saved as first line, so we only overwrite error if it's empty. *)
-    else if run.error = "" && starts_with line "Command terminated by signal" then
+    else if run.error = "" && contains_str line "Command terminated by signal" then
       { run with error = line }
     else if starts_with line "Fatal error" then
       { run with error = line }
