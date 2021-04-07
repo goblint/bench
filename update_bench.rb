@@ -264,8 +264,6 @@ $projects.each do |p|
         puts "-- Failed!"
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
-      print_res p.id
-      break
     else
       puts "-- Done!"
     end
