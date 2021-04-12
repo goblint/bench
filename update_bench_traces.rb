@@ -97,7 +97,7 @@ def print_res (i)
             vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-            res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
+            res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
