@@ -250,7 +250,7 @@ $projects.each do |p|
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
