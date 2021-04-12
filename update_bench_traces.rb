@@ -2,6 +2,7 @@
 require 'fileutils'
 Dir.chdir(File.dirname(__FILE__))
 goblint = File.expand_path("../analyzer/goblint")
+goblint_conf = File.expand_path("../analyzer/conf/traces.json")
 compare = File.expand_path("../analyzer/_build/default/src/privPrecCompare.exe")
 fail "Please run script from goblint dir!" unless File.exist?(goblint)
 $vrsn = `#{goblint} --version`
@@ -250,7 +251,7 @@ $projects.each do |p|
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
