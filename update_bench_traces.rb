@@ -98,6 +98,7 @@ def print_res (i)
             vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
+            live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -107,6 +108,7 @@ def print_res (i)
                 thenumbers << "<font color=\"orange\">#{vulner}</font> + "
                 thenumbers << "<font color=\"red\">#{unsafe}</font>"
                 thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
+                thenumbers << "; <font color=\"gray\">#{live}</font>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
