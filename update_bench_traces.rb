@@ -99,16 +99,20 @@ def print_res (i)
             unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
+            dead = lines.grep(/Found dead code on ([0-9]*) lines?!/) { |x| $1.to_i } .first
+            total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
-                thenumbers =  "<font color=\"green\">#{safely}</font>; "
-                thenumbers << "<font color=\"orange\">#{vulner}</font> + "
-                thenumbers << "<font color=\"red\">#{unsafe}</font>"
-                thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
-                thenumbers << "; <font color=\"gray\">#{live}</font>"
+                thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
+                thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
+                thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
+                thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
+                thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
+                thenumbers << "<b title=\"live lines\">#{live}</b>="
+                thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
