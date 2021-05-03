@@ -3,7 +3,7 @@ require 'fileutils'
 Dir.chdir(File.dirname(__FILE__))
 goblint = File.expand_path("../analyzer/goblint")
 goblint_conf = File.expand_path("../analyzer/conf/traces.json")
-compare = File.expand_path("../analyzer/_build/default/src/privPrecCompare.exe")
+compare = File.expand_path("../analyzer/privPrecCompare")
 fail "Please run script from goblint dir!" unless File.exist?(goblint)
 $vrsn = `#{goblint} --version`
 results = "bench_result"
@@ -156,7 +156,7 @@ end
 skipgrp = []
 file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-File.symlink("index/dd.txt",file) unless FileTest.exists? file
+File.symlink("index/traces.txt",file) unless FileTest.exists? file
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
