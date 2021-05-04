@@ -94,9 +94,9 @@ def print_res (i)
         if File.exists?($testresults + outfile) then
           File.open($testresults + outfile, "r") do |g|
             lines = g.readlines
-            safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-            vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-            unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            # safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            # vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            # unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
             dead = lines.grep(/Found dead code on ([0-9]*) lines?!/) { |x| $1.to_i } .first
@@ -106,10 +106,10 @@ def print_res (i)
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
               cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
-                thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
-                thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
-                thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
-                thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
+                # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
+                # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
+                # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
+                thenumbers = "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 thenumbers << "<b title=\"live lines\">#{live}</b>="
                 thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
