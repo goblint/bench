@@ -109,7 +109,8 @@ def print_res (i)
                 # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
-                thenumbers = "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
+                thenumbers = ""
+                thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 thenumbers << "<b title=\"live lines\">#{live}</b>="
                 thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
