@@ -712,11 +712,9 @@ extern  __attribute__((__nothrow__)) int mkdir(char const   *__path , __mode_t _
 #line 399
 extern  __attribute__((__nothrow__)) int __xstat(int __ver , char const   *__filename ,
                                                  struct stat *__stat_buf )  __attribute__((__nonnull__(2,3))) ;
-#line 450
-__inline static  __attribute__((__nothrow__)) int stat__extinline(char const   *__path ,
-                                                                  struct stat *__statbuf ) ;
+
 #line 450 "/usr/include/sys/stat.h"
-__inline static int stat__extinline(char const   *__path , struct stat *__statbuf ) 
+__inline static int stat__extinline(char const   *__path , struct stat *__statbuf )
 { int tmp ;
 
   {
@@ -741,20 +739,20 @@ extern int fclose(FILE *__stream ) ;
 #line 249
 extern FILE *fopen(char const   * __restrict  __filename , char const   * __restrict  __modes ) ;
 #line 331
-extern int fprintf(FILE * __restrict  __stream , char const   * __restrict  __format 
+extern int fprintf(FILE * __restrict  __stream , char const   * __restrict  __format
                    , ...) ;
 #line 337
 extern int printf(char const   * __restrict  __format  , ...) ;
 #line 339
-extern  __attribute__((__nothrow__)) int sprintf(char * __restrict  __s , char const   * __restrict  __format 
+extern  __attribute__((__nothrow__)) int sprintf(char * __restrict  __s , char const   * __restrict  __format
                                                  , ...) ;
 #line 361
 extern  __attribute__((__nothrow__)) int ( /* format attribute */  snprintf)(char * __restrict  __s ,
                                                                              size_t __maxlen ,
-                                                                             char const   * __restrict  __format 
+                                                                             char const   * __restrict  __format
                                                                              , ...) ;
 #line 411
-extern  __attribute__((__nothrow__)) int sscanf(char const   * __restrict  __s , char const   * __restrict  __format 
+extern  __attribute__((__nothrow__)) int sscanf(char const   * __restrict  __s , char const   * __restrict  __format
                                                 , ...) ;
 #line 570
 extern __ssize_t __getdelim(char ** __restrict  __lineptr , size_t * __restrict  __n ,
@@ -764,7 +762,7 @@ extern int fputs(char const   * __restrict  __s , FILE * __restrict  __stream ) 
 #line 733
 extern  __attribute__((__nothrow__)) int feof(FILE *__stream ) ;
 #line 111 "/usr/include/bits/stdio.h"
-__inline static __ssize_t getline__extinline(char **__lineptr , size_t *__n , FILE *__stream ) 
+__inline static __ssize_t getline__extinline(char **__lineptr , size_t *__n , FILE *__stream )
 { __ssize_t tmp ;
 
   {
@@ -787,13 +785,9 @@ extern  __attribute__((__nothrow__)) int *__errno_location(void)  __attribute__(
 extern  __attribute__((__nothrow__)) long __strtol_internal(char const   * __restrict  __nptr ,
                                                             char ** __restrict  __endptr ,
                                                             int __base , int __group )  __attribute__((__nonnull__(1))) ;
-#line 332
-__inline static  __attribute__((__nothrow__)) long strtol__extinline(char const   * __restrict  __nptr ,
-                                                                     char ** __restrict  __endptr ,
-                                                                     int __base ) ;
 #line 332 "/usr/include/stdlib.h"
 __inline static long strtol__extinline(char const   * __restrict  __nptr , char ** __restrict  __endptr ,
-                                       int __base ) 
+                                       int __base )
 { long tmp ;
 
   {
@@ -803,10 +797,8 @@ __inline static long strtol__extinline(char const   * __restrict  __nptr , char 
   return (tmp);
 }
 }
-#line 401
-__inline static  __attribute__((__nothrow__)) int atoi__extinline(char const   *__nptr ) ;
 #line 401 "/usr/include/stdlib.h"
-__inline static int atoi__extinline(char const   *__nptr ) 
+__inline static int atoi__extinline(char const   *__nptr )
 { int tmp ;
 
   {
@@ -957,7 +949,7 @@ static union __anonunion_pthread_mutex_t_5 mutex_pid  =    {{0, 0U, 0, 0, 0U, {0
 #line 80 "ypbind-mt.c"
 static union __anonunion_pthread_cond_t_8 cond_pid  =    {{0, 0U, 0ULL, 0ULL, 0ULL, (void *)0, 0U, 0U}};
 #line 82 "ypbind-mt.c"
-static void unlink_bindingdir(void) 
+static void unlink_bindingdir(void)
 { DIR *dird ;
   char path[4096] ;
   struct dirent *dirp ;
@@ -998,7 +990,7 @@ static void unlink_bindingdir(void)
         } else {
 #line 93
           if (__s1_len >= 4U) {
-            _L___0: /* CIL Label */ 
+            _L___0: /* CIL Label */
 #line 93
             if (! ((unsigned int )((void const   *)("." + 1)) - (unsigned int )((void const   *)".") == 1U)) {
 #line 93
@@ -1048,7 +1040,7 @@ static void unlink_bindingdir(void)
           } else {
 #line 94
             if (__s1_len___0 >= 4U) {
-              _L___2: /* CIL Label */ 
+              _L___2: /* CIL Label */
 #line 94
               if (! ((unsigned int )((void const   *)(".." + 1)) - (unsigned int )((void const   *)"..") == 1U)) {
 #line 94
@@ -1102,7 +1094,7 @@ static void unlink_bindingdir(void)
 }
 }
 #line 104 "ypbind-mt.c"
-static int load_config(int check_syntax ) 
+static int load_config(int check_syntax )
 { FILE *fp ;
   char *buf ;
   size_t buflen ;
@@ -1263,7 +1255,7 @@ static int load_config(int check_syntax )
         } else {
 #line 166
           if (__s1_len___4 >= 4U) {
-            _L___12: /* CIL Label */ 
+            _L___12: /* CIL Label */
 #line 166
             if (! ((unsigned int )((void const   *)("domain" + 1)) - (unsigned int )((void const   *)"domain") == 1U)) {
 #line 166
@@ -1379,7 +1371,7 @@ static int load_config(int check_syntax )
         goto _L___13;
       }
     } else {
-      _L___13: /* CIL Label */ 
+      _L___13: /* CIL Label */
 #line 232
       if (0) {
 #line 232
@@ -1394,7 +1386,7 @@ static int load_config(int check_syntax )
           } else {
 #line 232
             if (__s1_len___2 >= 4U) {
-              _L___7: /* CIL Label */ 
+              _L___7: /* CIL Label */
 #line 232
               if (! ((unsigned int )((void const   *)("ypserver" + 1)) - (unsigned int )((void const   *)"ypserver") == 1U)) {
 #line 232
@@ -1473,7 +1465,7 @@ static int load_config(int check_syntax )
           goto _L___8;
         }
       } else {
-        _L___8: /* CIL Label */ 
+        _L___8: /* CIL Label */
 #line 249
         if (0) {
 #line 249
@@ -1488,7 +1480,7 @@ static int load_config(int check_syntax )
             } else {
 #line 249
               if (__s1_len___0 >= 4U) {
-                _L___2: /* CIL Label */ 
+                _L___2: /* CIL Label */
 #line 249
                 if (! ((unsigned int )((void const   *)("broadcast" + 1)) - (unsigned int )((void const   *)"broadcast") == 1U)) {
 #line 249
@@ -1540,7 +1532,7 @@ static int load_config(int check_syntax )
           } else {
 #line 249
             if ((int )(*(cp + 9)) == 0) {
-              _L___3: /* CIL Label */ 
+              _L___3: /* CIL Label */
 #line 255
               if (debug_flag) {
 #line 256
@@ -1630,7 +1622,7 @@ static int load_config(int check_syntax )
 }
 }
 #line 301 "ypbind-mt.c"
-static void create_pidfile(void) 
+static void create_pidfile(void)
 { struct flock lock ;
   int left ;
   int written ;
@@ -1771,7 +1763,7 @@ static void create_pidfile(void)
 }
 }
 #line 382 "ypbind-mt.c"
-static void *sig_handler(void *v_param  __attribute__((__unused__)) ) 
+static void *sig_handler(void *v_param  __attribute__((__unused__)) )
 { struct flock lock ;
   sigset_t sigs_to_catch ;
   int caught ;
@@ -1831,7 +1823,7 @@ static void *sig_handler(void *v_param  __attribute__((__unused__)) )
     }
 #line 419
     switch (caught) {
-    case 17: 
+    case 17:
 #line 422
     tmp___1 = dcgettext((char const   *)((void *)0), "SIGCHLD arrived, what should I do ?",
                         5);
@@ -1839,10 +1831,10 @@ static void *sig_handler(void *v_param  __attribute__((__unused__)) )
     log_msg(3, (char const   *)tmp___1);
 #line 423
     break;
-    case 15: 
-    case 2: 
-    case 3: 
-    case 11: 
+    case 15:
+    case 2:
+    case 3:
+    case 11:
 #line 429
     if (debug_flag) {
 #line 430
@@ -1882,7 +1874,7 @@ static void *sig_handler(void *v_param  __attribute__((__unused__)) )
     exit(0);
 #line 445
     break;
-    case 1: 
+    case 1:
 #line 448
     if (debug_flag) {
 #line 449
@@ -1908,7 +1900,7 @@ static void *sig_handler(void *v_param  __attribute__((__unused__)) )
     }
 #line 459
     break;
-    default: 
+    default:
 #line 461
     tmp___6 = dcgettext((char const   *)((void *)0), "Unknown signal: %d", 5);
 #line 461
@@ -1920,7 +1912,7 @@ static void *sig_handler(void *v_param  __attribute__((__unused__)) )
 }
 }
 #line 467 "ypbind-mt.c"
-static void usage(void) 
+static void usage(void)
 { char *tmp ;
   char *tmp___0 ;
   char *tmp___1 ;
@@ -1950,7 +1942,7 @@ static void usage(void)
 }
 }
 #line 477 "ypbind-mt.c"
-int main(int argc , char **argv ) 
+int main(int argc , char **argv )
 { SVCXPRT *transp ;
   int sock ;
   int result ;
@@ -2157,7 +2149,7 @@ int main(int argc , char **argv )
       } else {
 #line 496
         if (__s1_len___16 >= 4U) {
-          _L___35: /* CIL Label */ 
+          _L___35: /* CIL Label */
 #line 496
           if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 496
@@ -2213,7 +2205,7 @@ int main(int argc , char **argv )
         } else {
 #line 501
           if (__s1_len___15 >= 4U) {
-            _L___33: /* CIL Label */ 
+            _L___33: /* CIL Label */
 #line 501
             if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 501
@@ -2266,7 +2258,7 @@ int main(int argc , char **argv )
           } else {
 #line 503
             if (__s1_len___14 >= 4U) {
-              _L___31: /* CIL Label */ 
+              _L___31: /* CIL Label */
 #line 503
               if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 503
@@ -2319,7 +2311,7 @@ int main(int argc , char **argv )
             } else {
 #line 505
               if (__s1_len___12 >= 4U) {
-                _L___27: /* CIL Label */ 
+                _L___27: /* CIL Label */
 #line 505
                 if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 505
@@ -2372,7 +2364,7 @@ int main(int argc , char **argv )
               } else {
 #line 506
                 if (__s1_len___13 >= 4U) {
-                  _L___29: /* CIL Label */ 
+                  _L___29: /* CIL Label */
 #line 506
                   if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 506
@@ -2425,7 +2417,7 @@ int main(int argc , char **argv )
                 } else {
 #line 508
                   if (__s1_len___10 >= 4U) {
-                    _L___23: /* CIL Label */ 
+                    _L___23: /* CIL Label */
 #line 508
                     if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 508
@@ -2478,7 +2470,7 @@ int main(int argc , char **argv )
                   } else {
 #line 509
                     if (__s1_len___11 >= 4U) {
-                      _L___25: /* CIL Label */ 
+                      _L___25: /* CIL Label */
 #line 509
                       if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 509
@@ -2531,7 +2523,7 @@ int main(int argc , char **argv )
                     } else {
 #line 511
                       if (__s1_len___8 >= 4U) {
-                        _L___19: /* CIL Label */ 
+                        _L___19: /* CIL Label */
 #line 511
                         if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 511
@@ -2584,7 +2576,7 @@ int main(int argc , char **argv )
                       } else {
 #line 512
                         if (__s1_len___9 >= 4U) {
-                          _L___21: /* CIL Label */ 
+                          _L___21: /* CIL Label */
 #line 512
                           if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 512
@@ -2637,7 +2629,7 @@ int main(int argc , char **argv )
                         } else {
 #line 514
                           if (__s1_len___7 >= 4U) {
-                            _L___17: /* CIL Label */ 
+                            _L___17: /* CIL Label */
 #line 514
                             if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 514
@@ -2690,7 +2682,7 @@ int main(int argc , char **argv )
                           } else {
 #line 516
                             if (__s1_len___5 >= 4U) {
-                              _L___13: /* CIL Label */ 
+                              _L___13: /* CIL Label */
 #line 516
                               if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 516
@@ -2743,7 +2735,7 @@ int main(int argc , char **argv )
                             } else {
 #line 517
                               if (__s1_len___6 >= 4U) {
-                                _L___15: /* CIL Label */ 
+                                _L___15: /* CIL Label */
 #line 517
                                 if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 517
@@ -2796,7 +2788,7 @@ int main(int argc , char **argv )
                               } else {
 #line 519
                                 if (__s1_len___4 >= 4U) {
-                                  _L___11: /* CIL Label */ 
+                                  _L___11: /* CIL Label */
 #line 519
                                   if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 519
@@ -2862,7 +2854,7 @@ int main(int argc , char **argv )
                                 } else {
 #line 526
                                   if (__s1_len___3 >= 4U) {
-                                    _L___9: /* CIL Label */ 
+                                    _L___9: /* CIL Label */
 #line 526
                                     if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 526
@@ -2928,7 +2920,7 @@ int main(int argc , char **argv )
                                   } else {
 #line 533
                                     if (__s1_len___0 >= 4U) {
-                                      _L___2: /* CIL Label */ 
+                                      _L___2: /* CIL Label */
 #line 533
                                       if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 533
@@ -2982,7 +2974,7 @@ int main(int argc , char **argv )
                                     } else {
 #line 534
                                       if (__s1_len___1 >= 4U) {
-                                        _L___4: /* CIL Label */ 
+                                        _L___4: /* CIL Label */
 #line 534
                                         if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 534
@@ -3037,7 +3029,7 @@ int main(int argc , char **argv )
                                       } else {
 #line 535
                                         if (__s1_len___2 >= 4U) {
-                                          _L___6: /* CIL Label */ 
+                                          _L___6: /* CIL Label */
 #line 535
                                           if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 535
@@ -3075,7 +3067,7 @@ int main(int argc , char **argv )
                                     }
 #line 535
                                     if (tmp___34 == 0) {
-                                      _L___7: /* CIL Label */ 
+                                      _L___7: /* CIL Label */
 #line 537
                                       if (i + 1 == argc) {
 #line 538
@@ -3104,7 +3096,7 @@ int main(int argc , char **argv )
                                         } else {
 #line 542
                                           if (__s1_len >= 4U) {
-                                            _L___0: /* CIL Label */ 
+                                            _L___0: /* CIL Label */
 #line 542
                                             if (! ((unsigned int )((void const   *)((*(argv + i)) + 1)) - (unsigned int )((void const   *)(*(argv + i))) == 1U)) {
 #line 542
@@ -3194,7 +3186,7 @@ int main(int argc , char **argv )
           } else {
 #line 549
             if (__s1_len___17 >= 4U) {
-              _L___37: /* CIL Label */ 
+              _L___37: /* CIL Label */
 #line 549
               if (! ((unsigned int )((void const   *)("(none)" + 1)) - (unsigned int )((void const   *)"(none)") == 1U)) {
 #line 549
@@ -3232,7 +3224,7 @@ int main(int argc , char **argv )
         }
 #line 549
         if (tmp___187 == 0) {
-          _L___38: /* CIL Label */ 
+          _L___38: /* CIL Label */
 #line 551
           if (configcheck_only) {
 #line 553
@@ -3522,7 +3514,7 @@ int main(int argc , char **argv )
   } else {
 #line 701
     if (local_only) {
-      _L___39: /* CIL Label */ 
+      _L___39: /* CIL Label */
 #line 703
       sock = socket(2, 2, 0);
 #line 704
@@ -3632,7 +3624,7 @@ int main(int argc , char **argv )
   } else {
 #line 754
     if (local_only) {
-      _L___40: /* CIL Label */ 
+      _L___40: /* CIL Label */
 #line 756
       sock = socket(2, 1, 0);
 #line 757
@@ -3769,7 +3761,7 @@ extern  __attribute__((__nothrow__)) bool_t xdr_char(XDR *__xdrs , char *__cp ) 
 extern  __attribute__((__nothrow__)) bool_t xdr_vector(XDR *__xdrs , char *__basep ,
                                                        u_int __nelem , u_int __elemsize ,
                                                        bool_t (*__xdr_elem)(XDR * ,
-                                                                            void * 
+                                                                            void *
                                                                             , ...) ) ;
 #line 118 "ypbind.h"
 bool_t ypbind_xdr_domainname(XDR *xdrs , domainname *objp ) ;
@@ -3784,7 +3776,7 @@ bool_t ypbind_xdr_oldsetdom(XDR *xdrs , ypbind_oldsetdom *objp ) ;
 #line 123
 bool_t ypbind_xdr_setdom(XDR *xdrs , ypbind_setdom *objp ) ;
 #line 4 "ypbind_xdr.c"
-bool_t ypbind_xdr_domainname(XDR *xdrs , domainname *objp ) 
+bool_t ypbind_xdr_domainname(XDR *xdrs , domainname *objp )
 { bool_t tmp ;
 
   {
@@ -3800,7 +3792,7 @@ bool_t ypbind_xdr_domainname(XDR *xdrs , domainname *objp )
 }
 }
 #line 12 "ypbind_xdr.c"
-bool_t ypbind_xdr_resptype(XDR *xdrs , ypbind_resptype *objp ) 
+bool_t ypbind_xdr_resptype(XDR *xdrs , ypbind_resptype *objp )
 { bool_t tmp ;
 
   {
@@ -3816,7 +3808,7 @@ bool_t ypbind_xdr_resptype(XDR *xdrs , ypbind_resptype *objp )
 }
 }
 #line 20 "ypbind_xdr.c"
-bool_t ypbind_xdr_binding(XDR *xdrs , ypbind_binding *objp ) 
+bool_t ypbind_xdr_binding(XDR *xdrs , ypbind_binding *objp )
 { bool_t tmp ;
   bool_t tmp___0 ;
 
@@ -3840,7 +3832,7 @@ bool_t ypbind_xdr_binding(XDR *xdrs , ypbind_binding *objp )
 }
 }
 #line 30 "ypbind_xdr.c"
-bool_t ypbind_xdr_resp(XDR *xdrs , ypbind_resp *objp ) 
+bool_t ypbind_xdr_resp(XDR *xdrs , ypbind_resp *objp )
 { bool_t tmp ;
   bool_t tmp___0 ;
   bool_t tmp___1 ;
@@ -3855,7 +3847,7 @@ bool_t ypbind_xdr_resp(XDR *xdrs , ypbind_resp *objp )
   }
 #line 35
   switch ((int )objp->ypbind_status) {
-  case 2: 
+  case 2:
 #line 38
   tmp___0 = xdr_u_int(xdrs, & objp->ypbind_resp_u.ypbind_error);
 #line 38
@@ -3865,7 +3857,7 @@ bool_t ypbind_xdr_resp(XDR *xdrs , ypbind_resp *objp )
   }
 #line 40
   break;
-  case 1: 
+  case 1:
 #line 42
   tmp___1 = ypbind_xdr_binding(xdrs, & objp->ypbind_resp_u.ypbind_bindinfo);
 #line 42
@@ -3884,14 +3876,14 @@ bool_t ypbind_xdr_resp(XDR *xdrs , ypbind_resp *objp )
 }
 }
 #line 51 "ypbind_xdr.c"
-bool_t ypbind_xdr_oldsetdom(XDR *xdrs , ypbind_oldsetdom *objp ) 
+bool_t ypbind_xdr_oldsetdom(XDR *xdrs , ypbind_oldsetdom *objp )
 { bool_t tmp ;
   bool_t tmp___0 ;
 
   {
 #line 54
   tmp = xdr_vector(xdrs, objp->ypoldsetdom_domain, 256U, sizeof(char ), (bool_t (*)(XDR * ,
-                                                                                    void * 
+                                                                                    void *
                                                                                     , ...))(& xdr_char));
 #line 54
   if (! tmp) {
@@ -3910,7 +3902,7 @@ bool_t ypbind_xdr_oldsetdom(XDR *xdrs , ypbind_oldsetdom *objp )
 }
 }
 #line 62 "ypbind_xdr.c"
-bool_t ypbind_xdr_setdom(XDR *xdrs , ypbind_setdom *objp ) 
+bool_t ypbind_xdr_setdom(XDR *xdrs , ypbind_setdom *objp )
 { bool_t tmp ;
   bool_t tmp___0 ;
   bool_t tmp___1 ;
@@ -3947,7 +3939,7 @@ bool_t ypbind_xdr_setdom(XDR *xdrs , ypbind_setdom *objp )
 extern  __attribute__((__nothrow__)) bool_t xdr_void(void) ;
 #line 229 "/usr/include/rpc/svc.h"
 extern  __attribute__((__nothrow__)) bool_t svc_sendreply(SVCXPRT *xprt , bool_t (*__xdr_results)(XDR * ,
-                                                                                                  void * 
+                                                                                                  void *
                                                                                                   , ...) ,
                                                           caddr_t __xdr_location ) ;
 #line 232
@@ -3965,7 +3957,7 @@ bool_t ypbindproc_olddomain_1_svc(domainname *argp , ypbind_resp *result , struc
 bool_t ypbindproc_oldsetdom_1_svc(ypbind_oldsetdom *argp , void *result , struct svc_req *rqstp ) ;
 #line 105
 int ypbindprog_1_freeresult(SVCXPRT *transp  __attribute__((__unused__)) , bool_t (*xdr_result)(XDR * ,
-                                                                                                void * 
+                                                                                                void *
                                                                                                 , ...) ,
                             caddr_t result ) ;
 #line 109
@@ -3977,11 +3969,11 @@ bool_t ypbindproc_domain_2_svc(domainname *argp , ypbind_resp *result , struct s
 bool_t ypbindproc_setdom_2_svc(ypbind_setdom *argp , void *result , struct svc_req *rqstp ) ;
 #line 114
 int ypbindprog_2_freeresult(SVCXPRT *transp  __attribute__((__unused__)) , bool_t (*xdr_result)(XDR * ,
-                                                                                                void * 
+                                                                                                void *
                                                                                                 , ...) ,
                             caddr_t result ) ;
 #line 23 "ypbind_svc.c"
-void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp ) 
+void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
 { union __anonunion_argument_57 argument ;
   union __anonunion_result_58 result ;
   bool_t retval ;
@@ -3999,7 +3991,7 @@ void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
   {
 #line 41
   switch ((int )rqstp->rq_proc) {
-  case 0: 
+  case 0:
 #line 44
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& xdr_void);
 #line 45
@@ -4008,7 +4000,7 @@ void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_oldnull_1_svc);
 #line 48
   break;
-  case 1: 
+  case 1:
 #line 51
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_domainname);
 #line 52
@@ -4017,7 +4009,7 @@ void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_olddomain_1_svc);
 #line 55
   break;
-  case 2: 
+  case 2:
 #line 58
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_oldsetdom);
 #line 59
@@ -4026,7 +4018,7 @@ void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_oldsetdom_1_svc);
 #line 62
   break;
-  default: 
+  default:
 #line 65
   svcerr_noproc(transp);
 #line 66
@@ -4080,7 +4072,7 @@ void ypbindprog_1(struct svc_req *rqstp , SVCXPRT *transp )
 }
 }
 #line 88 "ypbind_svc.c"
-void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp ) 
+void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
 { union __anonunion_argument_59 argument ;
   union __anonunion_result_60 result ;
   bool_t retval ;
@@ -4098,7 +4090,7 @@ void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
   {
 #line 106
   switch ((int )rqstp->rq_proc) {
-  case 0: 
+  case 0:
 #line 109
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& xdr_void);
 #line 110
@@ -4107,7 +4099,7 @@ void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_null_2_svc);
 #line 113
   break;
-  case 1: 
+  case 1:
 #line 116
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_domainname);
 #line 117
@@ -4116,7 +4108,7 @@ void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_domain_2_svc);
 #line 120
   break;
-  case 2: 
+  case 2:
 #line 123
   xdr_argument = (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_setdom);
 #line 124
@@ -4125,7 +4117,7 @@ void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
   local = (bool_t (*)(char * , void * , struct svc_req * ))(& ypbindproc_setdom_2_svc);
 #line 127
   break;
-  default: 
+  default:
 #line 130
   svcerr_noproc(transp);
 #line 131
@@ -4183,7 +4175,7 @@ void ypbindprog_2(struct svc_req *rqstp , SVCXPRT *transp )
 #line 54 "/usr/include/arpa/inet.h"
 extern  __attribute__((__nothrow__)) char *inet_ntoa(struct in_addr __in ) ;
 #line 375 "/usr/include/rpc/xdr.h"
-extern  __attribute__((__nothrow__)) void xdr_free(bool_t (*__proc)(XDR * , void * 
+extern  __attribute__((__nothrow__)) void xdr_free(bool_t (*__proc)(XDR * , void *
                                                                     , ...) , char *__objp ) ;
 #line 10 "local.h"
 void find_domain(char const   *domain___0 , ypbind_resp *result ) ;
@@ -4193,8 +4185,8 @@ void change_binding(char const   *domain___0 , ypbind_binding *binding ) ;
 int test_bindings_once(int lastcheck , char const   *req_domain ) ;
 #line 41 "ypbind_server.c"
 bool_t ypbindproc_oldnull_1_svc(void *argp  __attribute__((__unused__)) , void *result ,
-                                struct svc_req *rqstp  __attribute__((__unused__)) ) 
-{ 
+                                struct svc_req *rqstp  __attribute__((__unused__)) )
+{
 
   {
 #line 45
@@ -4205,8 +4197,8 @@ bool_t ypbindproc_oldnull_1_svc(void *argp  __attribute__((__unused__)) , void *
 }
 #line 49 "ypbind_server.c"
 bool_t ypbindproc_null_2_svc(void *argp  __attribute__((__unused__)) , void *result ,
-                             struct svc_req *rqstp  __attribute__((__unused__)) ) 
-{ 
+                             struct svc_req *rqstp  __attribute__((__unused__)) )
+{
 
   {
 #line 53
@@ -4216,7 +4208,7 @@ bool_t ypbindproc_null_2_svc(void *argp  __attribute__((__unused__)) , void *res
 }
 }
 #line 57 "ypbind_server.c"
-static bool_t ypbindproc_domain(char *domain___0 , ypbind_resp *result , struct svc_req *rqstp  __attribute__((__unused__)) ) 
+static bool_t ypbindproc_domain(char *domain___0 , ypbind_resp *result , struct svc_req *rqstp  __attribute__((__unused__)) )
 { char *tmp ;
   char *tmp___1 ;
   char *tmp___2 ;
@@ -4267,7 +4259,7 @@ static bool_t ypbindproc_domain(char *domain___0 , ypbind_resp *result , struct 
 }
 }
 #line 85 "ypbind_server.c"
-bool_t ypbindproc_olddomain_1_svc(domainname *argp , ypbind_resp *result , struct svc_req *rqstp ) 
+bool_t ypbindproc_olddomain_1_svc(domainname *argp , ypbind_resp *result , struct svc_req *rqstp )
 { bool_t tmp ;
 
   {
@@ -4283,7 +4275,7 @@ bool_t ypbindproc_olddomain_1_svc(domainname *argp , ypbind_resp *result , struc
 }
 }
 #line 95 "ypbind_server.c"
-bool_t ypbindproc_domain_2_svc(domainname *argp , ypbind_resp *result , struct svc_req *rqstp ) 
+bool_t ypbindproc_domain_2_svc(domainname *argp , ypbind_resp *result , struct svc_req *rqstp )
 { bool_t tmp ;
 
   {
@@ -4300,7 +4292,7 @@ bool_t ypbindproc_domain_2_svc(domainname *argp , ypbind_resp *result , struct s
 }
 #line 105 "ypbind_server.c"
 static bool_t ypbindproc_setdom(char const   *domain___0 , ypbind_binding *binding ,
-                                struct sockaddr_in *fromhost ) 
+                                struct sockaddr_in *fromhost )
 { char *tmp ;
   char *tmp___1 ;
   char *tmp___2 ;
@@ -4327,7 +4319,7 @@ static bool_t ypbindproc_setdom(char const   *domain___0 , ypbind_binding *bindi
   }
 #line 116
   switch (ypset) {
-  case 2: 
+  case 2:
 #line 119
   __x = 2130706433U;
 #line 119
@@ -4349,11 +4341,11 @@ static bool_t ypbindproc_setdom(char const   *domain___0 , ypbind_binding *bindi
   }
 #line 127
   break;
-  case 1: 
+  case 1:
 #line 129
   break;
-  case 0: 
-  default: 
+  case 0:
+  default:
 #line 132
   tmp___4 = dcgettext((char const   *)((void *)0), "Changing the binding is not allowed.",
                       5);
@@ -4383,7 +4375,7 @@ static bool_t ypbindproc_setdom(char const   *domain___0 , ypbind_binding *bindi
 }
 }
 #line 146 "ypbind_server.c"
-bool_t ypbindproc_oldsetdom_1_svc(ypbind_oldsetdom *argp , void *result , struct svc_req *rqstp ) 
+bool_t ypbindproc_oldsetdom_1_svc(ypbind_oldsetdom *argp , void *result , struct svc_req *rqstp )
 { bool_t tmp ;
 
   {
@@ -4402,7 +4394,7 @@ bool_t ypbindproc_oldsetdom_1_svc(ypbind_oldsetdom *argp , void *result , struct
 }
 }
 #line 161 "ypbind_server.c"
-bool_t ypbindproc_setdom_2_svc(ypbind_setdom *argp , void *result , struct svc_req *rqstp ) 
+bool_t ypbindproc_setdom_2_svc(ypbind_setdom *argp , void *result , struct svc_req *rqstp )
 { bool_t tmp ;
 
   {
@@ -4422,10 +4414,10 @@ bool_t ypbindproc_setdom_2_svc(ypbind_setdom *argp , void *result , struct svc_r
 }
 #line 176 "ypbind_server.c"
 int ypbindprog_1_freeresult(SVCXPRT *transp  __attribute__((__unused__)) , bool_t (*xdr_result)(XDR * ,
-                                                                                                void * 
+                                                                                                void *
                                                                                                 , ...) ,
-                            caddr_t result ) 
-{ 
+                            caddr_t result )
+{
 
   {
 #line 180
@@ -4436,10 +4428,10 @@ int ypbindprog_1_freeresult(SVCXPRT *transp  __attribute__((__unused__)) , bool_
 }
 #line 185 "ypbind_server.c"
 int ypbindprog_2_freeresult(SVCXPRT *transp  __attribute__((__unused__)) , bool_t (*xdr_result)(XDR * ,
-                                                                                                void * 
+                                                                                                void *
                                                                                                 , ...) ,
-                            caddr_t result ) 
-{ 
+                            caddr_t result )
+{
 
   {
 #line 189
@@ -4460,7 +4452,7 @@ extern void ( /* format attribute */  vsyslog)(int __pri , char const   *__fmt ,
 #line 1011 "/usr/include/unistd.h"
 extern  __attribute__((__nothrow__)) long syscall(long __sysno  , ...) ;
 #line 33 "log_msg.c"
-pid_t gettid(void) 
+pid_t gettid(void)
 { pid_t tmp ;
 
   {
@@ -4473,7 +4465,7 @@ pid_t gettid(void)
 #line 46 "log_msg.c"
 int debug_flag  =    0;
 #line 48 "log_msg.c"
-void log_msg(int type , char const   *fmt  , ...) 
+void log_msg(int type , char const   *fmt  , ...)
 { va_list ap ;
   pid_t tmp ;
 
@@ -4560,11 +4552,11 @@ extern  __attribute__((__nothrow__)) enum clnt_stat clnt_broadcast(u_long __prog
                                                                    u_long __vers ,
                                                                    u_long __proc ,
                                                                    bool_t (*__xargs)(XDR * ,
-                                                                                     void * 
+                                                                                     void *
                                                                                      , ...) ,
                                                                    caddr_t __argsp ,
                                                                    bool_t (*__xresults)(XDR * ,
-                                                                                        void * 
+                                                                                        void *
                                                                                         , ...) ,
                                                                    caddr_t __resultsp ,
                                                                    bool_t (*__eachresult)(caddr_t resp ,
@@ -4572,7 +4564,7 @@ extern  __attribute__((__nothrow__)) enum clnt_stat clnt_broadcast(u_long __prog
 #line 97 "/usr/include/rpc/pmap_prot.h"
 extern  __attribute__((__nothrow__)) bool_t xdr_pmap(XDR *__xdrs , struct pmap *__regs ) ;
 #line 42 "/usr/include/sys/ioctl.h"
-extern  __attribute__((__nothrow__)) int ioctl(int __fd , unsigned long __request 
+extern  __attribute__((__nothrow__)) int ioctl(int __fd , unsigned long __request
                                                , ...) ;
 #line 187 "/usr/include/time.h"
 extern  __attribute__((__nothrow__)) time_t time(time_t *__timer ) ;
@@ -4601,7 +4593,7 @@ static void do_broadcast(struct binding *list ) ;
 #line 90
 static int ping_all(struct binding *list ) ;
 #line 92 "serv_list.c"
-static void remove_bindingfile(char const   *domain___0 ) 
+static void remove_bindingfile(char const   *domain___0 )
 { size_t tmp ;
   size_t tmp___0 ;
   char *path ;
@@ -4631,7 +4623,7 @@ static void remove_bindingfile(char const   *domain___0 )
 }
 }
 #line 105 "serv_list.c"
-static void update_bindingfile(struct binding *entry ) 
+static void update_bindingfile(struct binding *entry )
 { unsigned short sport ;
   struct iovec iov[2] ;
   struct ypbind_resp ybres ;
@@ -4760,7 +4752,7 @@ static void update_bindingfile(struct binding *entry )
 }
 }
 #line 177 "serv_list.c"
-void change_binding(char const   *domain___0 , ypbind_binding *binding ) 
+void change_binding(char const   *domain___0 , ypbind_binding *binding )
 { int i ;
   struct sockaddr_in addr ;
   struct timeval timeout___0 ;
@@ -4790,7 +4782,7 @@ void change_binding(char const   *domain___0 , ypbind_binding *binding )
       } else {
 #line 186
         if (__s1_len >= 4U) {
-          _L___0: /* CIL Label */ 
+          _L___0: /* CIL Label */
 #line 186
           if (! ((unsigned int )((void const   *)(domain___0 + 1)) - (unsigned int )((void const   *)domain___0) == 1U)) {
 #line 186
@@ -4894,7 +4886,7 @@ void change_binding(char const   *domain___0 , ypbind_binding *binding )
 }
 }
 #line 236 "serv_list.c"
-void find_domain(char const   *domain___0 , ypbind_resp *result ) 
+void find_domain(char const   *domain___0 , ypbind_resp *result )
 { int i ;
   int count ;
   size_t __s1_len ;
@@ -4937,7 +4929,7 @@ void find_domain(char const   *domain___0 , ypbind_resp *result )
       } else {
 #line 247
         if (__s1_len >= 4U) {
-          _L___0: /* CIL Label */ 
+          _L___0: /* CIL Label */
 #line 247
           if (! ((unsigned int )((void const   *)(domain___0 + 1)) - (unsigned int )((void const   *)domain___0) == 1U)) {
 #line 247
@@ -4988,7 +4980,7 @@ void find_domain(char const   *domain___0 , ypbind_resp *result )
 #line 253
     return;
   }
-  again: 
+  again:
 #line 257
   count ++;
 #line 258
@@ -5086,7 +5078,7 @@ void find_domain(char const   *domain___0 , ypbind_resp *result )
 }
 }
 #line 322 "serv_list.c"
-void clear_server(void) 
+void clear_server(void)
 { int i ;
   int j ;
 
@@ -5138,7 +5130,7 @@ void clear_server(void)
 }
 }
 #line 351 "serv_list.c"
-static int get_entry(char const   *domain___0 , struct binding **entry ) 
+static int get_entry(char const   *domain___0 , struct binding **entry )
 { int i ;
   size_t __s1_len ;
   size_t __s2_len ;
@@ -5166,7 +5158,7 @@ static int get_entry(char const   *domain___0 , struct binding **entry )
       } else {
 #line 360
         if (__s1_len >= 4U) {
-          _L___0: /* CIL Label */ 
+          _L___0: /* CIL Label */
 #line 360
           if (! ((unsigned int )((void const   *)(domain___0 + 1)) - (unsigned int )((void const   *)domain___0) == 1U)) {
 #line 360
@@ -5243,7 +5235,7 @@ static int get_entry(char const   *domain___0 , struct binding **entry )
 }
 }
 #line 385 "serv_list.c"
-int add_server(char const   *domain___0 , char const   *host , int check_syntax ) 
+int add_server(char const   *domain___0 , char const   *host , int check_syntax )
 { struct binding *entry ;
   int active ;
   int res ;
@@ -5371,7 +5363,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
             goto _L;
           }
         } else {
-          _L: /* CIL Label */ 
+          _L: /* CIL Label */
 #line 449
           if (error == 34) {
 #line 453
@@ -5391,7 +5383,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
       tmp___4 = __h_errno_location();
 #line 467
       switch ((*tmp___4)) {
-      case 1: 
+      case 1:
 #line 470
       if (check_syntax) {
 #line 471
@@ -5407,7 +5399,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
       }
 #line 474
       break;
-      case 2: 
+      case 2:
 #line 476
       if (check_syntax) {
 #line 477
@@ -5425,7 +5417,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
       }
 #line 480
       break;
-      case 4: 
+      case 4:
 #line 482
       if (check_syntax) {
 #line 483
@@ -5443,7 +5435,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
       }
 #line 488
       break;
-      case 3: 
+      case 3:
 #line 490
       if (check_syntax) {
 #line 491
@@ -5498,7 +5490,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
 #line 514
     res = 1;
   }
-  exit: 
+  exit:
 #line 518
   pthread_rdwr_wunlock_np(& domainlock);
 #line 519
@@ -5508,7 +5500,7 @@ int add_server(char const   *domain___0 , char const   *host , int check_syntax 
 #line 522 "serv_list.c"
 static struct binding *in_use  =    (struct binding *)((void *)0);
 #line 524 "serv_list.c"
-static bool_t eachresult(bool_t *out , struct sockaddr_in *addr ) 
+static bool_t eachresult(bool_t *out , struct sockaddr_in *addr )
 { struct timeval timeout___0 ;
   int sock ;
   struct hostent hostbuf ;
@@ -5570,7 +5562,7 @@ static bool_t eachresult(bool_t *out , struct sockaddr_in *addr )
               goto _L;
             }
           } else {
-            _L: /* CIL Label */ 
+            _L: /* CIL Label */
 #line 547
             if (error == 34) {
 #line 551
@@ -5654,7 +5646,7 @@ static bool_t eachresult(bool_t *out , struct sockaddr_in *addr )
 }
 }
 #line 612 "serv_list.c"
-static void do_broadcast(struct binding *list ) 
+static void do_broadcast(struct binding *list )
 { char *domain___0 ;
   bool_t out ;
   enum clnt_stat status ;
@@ -5705,7 +5697,7 @@ static void do_broadcast(struct binding *list )
   in_use = list;
 #line 645
   status = clnt_broadcast(100004UL, 2UL, 2UL, (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_domainname),
-                          (char *)((void *)(& domain___0)), (bool_t (*)(XDR * , void * 
+                          (char *)((void *)(& domain___0)), (bool_t (*)(XDR * , void *
                                                                         , ...))(& xdr_bool),
                           (char *)((void *)(& out)), (bool_t (*)(caddr_t resp , struct sockaddr_in *raddr ))(& eachresult));
 #line 651
@@ -5740,7 +5732,7 @@ static struct timeval timeout  =    {(__time_t )1, (__suseconds_t )0};
 static struct timeval tottimeout  =    {(__time_t )1, (__suseconds_t )0};
 #line 676 "serv_list.c"
 static u_short __pmap_getport(struct sockaddr_in *address , u_long program , u_long version ,
-                              u_int protocol ) 
+                              u_int protocol )
 { u_short rport ;
   int sock ;
   CLIENT *client ;
@@ -5773,10 +5765,10 @@ static u_short __pmap_getport(struct sockaddr_in *address , u_long program , u_l
 #line 695
     parms.pm_port = 0UL;
 #line 696
-    tmp = ((*((client->cl_ops)->cl_call)))(client, 3UL, (bool_t (*)(XDR * , void * 
+    tmp = ((*((client->cl_ops)->cl_call)))(client, 3UL, (bool_t (*)(XDR * , void *
                                                                     , ...))(& xdr_pmap),
                                            (char *)(& parms), (bool_t (*)(XDR * ,
-                                                                          void * 
+                                                                          void *
                                                                           , ...))(& xdr_u_short),
                                            (char *)(& rport), tottimeout);
 #line 696
@@ -5807,7 +5799,7 @@ static u_short __pmap_getport(struct sockaddr_in *address , u_long program , u_l
 }
 }
 #line 744 "serv_list.c"
-static int ping_all(struct binding *list ) 
+static int ping_all(struct binding *list )
 { struct timeval TIMEOUT50 ;
   struct timeval TIMEOUT00 ;
   CLIENT *clnt ;
@@ -5969,7 +5961,7 @@ static int ping_all(struct binding *list )
     xid_seed ++;
 #line 807
     pings_count ++;
-    __Cont: /* CIL Label */ 
+    __Cont: /* CIL Label */
 #line 772
     i ++;
   }
@@ -6023,7 +6015,7 @@ static int ping_all(struct binding *list )
     memset((void *)(& clnt_res), 0, sizeof(clnt_res));
 #line 841
     ((*((clnt->cl_ops)->cl_call)))(clnt, 2UL, (bool_t (*)(XDR * , void *  , ...))(& ypbind_xdr_domainname),
-                                   (char *)(& domain___0), (bool_t (*)(XDR * , void * 
+                                   (char *)(& domain___0), (bool_t (*)(XDR * , void *
                                                                        , ...))(& xdr_bool),
                                    (char *)(& clnt_res), TIMEOUT00);
 #line 834
@@ -6033,7 +6025,7 @@ static int ping_all(struct binding *list )
   memset((void *)((char *)(& clnt_res)), 0, sizeof(clnt_res));
 #line 848
   ((*((clnt->cl_ops)->cl_call)))(clnt, 2UL, (bool_t (*)(XDR * , void *  , ...))((void *)0),
-                                 (char *)((void *)0), (bool_t (*)(XDR * , void * 
+                                 (char *)((void *)0), (bool_t (*)(XDR * , void *
                                                                   , ...))(& xdr_bool),
                                  (char *)(& clnt_res), TIMEOUT00);
 #line 851
@@ -6111,7 +6103,7 @@ static int ping_all(struct binding *list )
 }
 }
 #line 996 "serv_list.c"
-void do_binding(void) 
+void do_binding(void)
 { int i ;
   int tmp ;
 
@@ -6144,7 +6136,7 @@ void do_binding(void)
 #line 1016 "serv_list.c"
 static int success  =    0;
 #line 1013 "serv_list.c"
-void *test_bindings(void *param  __attribute__((__unused__)) ) 
+void *test_bindings(void *param  __attribute__((__unused__)) )
 { int lastcheck ;
 
   {
@@ -6179,7 +6171,7 @@ void *test_bindings(void *param  __attribute__((__unused__)) )
 }
 }
 #line 1042 "serv_list.c"
-int test_bindings_once(int lastcheck , char const   *req_domain ) 
+int test_bindings_once(int lastcheck , char const   *req_domain )
 { int i ;
   char *tmp ;
   char *tmp___0 ;
@@ -6243,7 +6235,7 @@ int test_bindings_once(int lastcheck , char const   *req_domain )
         } else {
 #line 1066
           if (__s1_len >= 4U) {
-            _L___0: /* CIL Label */ 
+            _L___0: /* CIL Label */
 #line 1066
             if (! ((unsigned int )((void const   *)(req_domain + 1)) - (unsigned int )((void const   *)req_domain) == 1U)) {
 #line 1066
@@ -6314,11 +6306,11 @@ int test_bindings_once(int lastcheck , char const   *req_domain )
         status = ((*((((domainlist + i)->client_handle)->cl_ops)->cl_call)))((domainlist + i)->client_handle,
                                                                              1UL,
                                                                              (bool_t (*)(XDR * ,
-                                                                                         void * 
+                                                                                         void *
                                                                                          , ...))(& ypbind_xdr_domainname),
                                                                              (char *)(& domain___0),
                                                                              (bool_t (*)(XDR * ,
-                                                                                         void * 
+                                                                                         void *
                                                                                          , ...))(& xdr_bool),
                                                                              (char *)(& out),
                                                                              time_out);
@@ -6332,14 +6324,14 @@ int test_bindings_once(int lastcheck , char const   *req_domain )
           goto _L___2;
         }
       } else {
-        _L___2: /* CIL Label */ 
+        _L___2: /* CIL Label */
 #line 1103
         if ((int )status != 0) {
           goto _L___1;
         } else {
 #line 1103
           if (out != 1) {
-            _L___1: /* CIL Label */ 
+            _L___1: /* CIL Label */
 #line 1108
             if (debug_flag) {
 #line 1108
@@ -6438,7 +6430,7 @@ int test_bindings_once(int lastcheck , char const   *req_domain )
 #line 1172
       pthread_rdwr_wlock_np(& domainlock);
     }
-    __Cont: /* CIL Label */ 
+    __Cont: /* CIL Label */
 #line 1060
     i ++;
   }
@@ -6461,8 +6453,8 @@ extern  __attribute__((__nothrow__)) int pthread_cond_signal(pthread_cond_t *__c
 #line 38 "./pthread_np.h"
 int pthread_rdwr_init_np(pthread_rdwr_t *rdwrp ) ;
 #line 24 "pthread_np.c"
-int pthread_rdwr_init_np(pthread_rdwr_t *rdwrp ) 
-{ 
+int pthread_rdwr_init_np(pthread_rdwr_t *rdwrp )
+{
 
   {
 #line 27
@@ -6480,8 +6472,8 @@ int pthread_rdwr_init_np(pthread_rdwr_t *rdwrp )
 }
 }
 #line 35 "pthread_np.c"
-int pthread_rdwr_rlock_np(pthread_rdwr_t *rdwrp ) 
-{ 
+int pthread_rdwr_rlock_np(pthread_rdwr_t *rdwrp )
+{
 
   {
 #line 38
@@ -6508,8 +6500,8 @@ int pthread_rdwr_rlock_np(pthread_rdwr_t *rdwrp )
 }
 }
 #line 48 "pthread_np.c"
-int pthread_rdwr_wlock_np(pthread_rdwr_t *rdwrp ) 
-{ 
+int pthread_rdwr_wlock_np(pthread_rdwr_t *rdwrp )
+{
 
   {
 #line 51
@@ -6540,7 +6532,7 @@ int pthread_rdwr_wlock_np(pthread_rdwr_t *rdwrp )
 }
 }
 #line 61 "pthread_np.c"
-int pthread_rdwr_runlock_np(pthread_rdwr_t *rdwrp ) 
+int pthread_rdwr_runlock_np(pthread_rdwr_t *rdwrp )
 { int status ;
 
   {
@@ -6568,7 +6560,7 @@ int pthread_rdwr_runlock_np(pthread_rdwr_t *rdwrp )
 }
 }
 #line 82 "pthread_np.c"
-int pthread_rdwr_wunlock_np(pthread_rdwr_t *rdwrp ) 
+int pthread_rdwr_wunlock_np(pthread_rdwr_t *rdwrp )
 { int status ;
 
   {
