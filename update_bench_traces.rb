@@ -99,7 +99,7 @@ def print_res (i)
             # unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
             live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
-            dead = lines.grep(/Found dead code on ([0-9]*) lines?!/) { |x| $1.to_i } .first
+            dead = lines.grep(/Found dead code on ([0-9]*) line/) { |x| $1.to_i } .first
             total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
