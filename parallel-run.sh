@@ -37,7 +37,7 @@ opt=term
 # opt=space
 # opt=side_widen # values=cycle(default), always, cycle_self
 # pay attention that $opts may overwrite! we place only place $opt first such that the variant is easy to see in htop.
-cmd="(date && $time -v timeout --foreground 6h ./goblint -v {1} --{2} exp.solver.td3.$opt $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
+cmd="($time -v timeout --foreground 6h ./goblint -v {1} --{2} exp.solver.td3.$opt $opts --sets save_run out/{1}.{2}-$opt 2>&1) > out/{1}.{2}-$opt.log"
 parallel --noswap --memfree 2G --eta --joblog out/jobs.log $cmd ::: $files ::: disable enable
 # --load 100% (default) Will only start new job if fewer cores are used.
 # --memfree If the jobs take up very different amount of RAM, GNU parallel will only start as many as there is memory for. If less than size bytes are free, no more jobs will be started. If less than 50% size bytes are free, the youngest job will be killed, and put back on the queue to be run later.
