@@ -40,7 +40,7 @@ let csv file =
     else if starts_with line "Maximum resident set size" then (* https://stackoverflow.com/questions/774556/peak-memory-usage-of-a-linux-unix-process *)
       { run with max_mem = snd @@ split line "): " }
     (* sequence 'Fatal error: out of memory\nCommand terminated by signal 6' should be saved as first line, so we only overwrite error if it's empty. *)
-    else if run.error = "" && contains_str line "Command terminated by signal" then
+    else if run.error = "" && (contains_str line "Command terminated by signal" || contains_str line "Command exited with non-zero status") then
       { run with error = line }
     else if starts_with line "Fatal error" then
       { run with error = line }
