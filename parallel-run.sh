@@ -1,8 +1,6 @@
 #!/bin/bash
-files=${1-"coreutils/*.c single-thread/*.c"}
-# dir=$(dirname $files | head -n1)
-# mkdir -p out/$dir # might not work for files accross directories?
-mkdir -p out/coreutils out/single-thread
+files=${1-"coreutils/*.c single-thread/*.c single-thread-nonterm/*.c"}
+mkdir -p $(dirname $files | uniq | sed 's$^$out/$') # create subdirs of $files in out/
 cp ../analyzer/goblint .
 cp $0 out
 
