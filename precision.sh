@@ -18,6 +18,5 @@ for program in $programs; do
   fi
   dst=$program.precision
   rm -f $dst
-  # TODO change this to ./goblint once file is no longer busy
-  ~/analyzer/goblint --compare_runs $program_runs $src 2>/dev/null | sed '/^$/d' | tee $dst
+  $dir/goblint -v --compare_runs $program_runs $src 2>/dev/null | sed '/^$/d' | tee $dst
 done
