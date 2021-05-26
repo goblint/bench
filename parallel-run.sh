@@ -3,6 +3,7 @@ files=${1-"coreutils/*.c single-thread/*.c single-thread-nonterm/*.c"}
 mkdir -p $(dirname $files | uniq | sed 's$^$out/$') # create subdirs of $files in out/
 cp ../analyzer/goblint .
 cp $0 out
+cp ./goblint out
 
 case $OSTYPE in darwin*) time="gtime";; *) time="/usr/bin/time";; esac
 
