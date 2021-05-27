@@ -16,7 +16,9 @@ for program in $programs; do
     echo "Source $src for $program does not exist!";
     continue;
   fi
+  conf="$(echo "$program_runs" | head -n1)/config.json"
   dst=$program.precision
   rm -f $dst
-  $dir/goblint -v --compare_runs $program_runs $src 2>/dev/null | sed '/^$/d' | tee $dst
+  $dir/goblint --conf $conf --compare_runs $program_runs $src 2>/dev/null | tee $dst
 done
+ag 'Comparing precision of' -A1 $dir
