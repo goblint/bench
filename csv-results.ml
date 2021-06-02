@@ -63,6 +63,6 @@ let () =
   (* List.iter print_endline input_files; *)
   let dir = match Sys.argv with [|_;dir|] -> dir | _ -> "out" in
   Sys.chdir dir;
-  let input_files = list_files ~suffix:".log" "coreutils" @ list_files ~suffix:".log" "single-thread" in
+  let input_files = list_files ~suffix:".log" "coreutils" @ list_files ~suffix:".log" "single-thread" @ list_files ~suffix:".log" "single-thread-nonterm" in
   print_headers ();
   List.iter csv input_files
