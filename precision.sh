@@ -19,6 +19,6 @@ for program in $programs; do
   conf="$(echo "$program_runs" | head -n1)/config.json"
   dst=$program.precision
   rm -f $dst
-  $dir/goblint --conf $conf --compare_runs $program_runs $src 2>/dev/null | tee $dst
+  $dir/goblint --conf $conf --sets save_run '' --compare_runs $program_runs $src 2>/dev/null | tee $dst
 done
 ag 'Comparing precision of' -A1 $dir
