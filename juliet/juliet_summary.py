@@ -5,9 +5,9 @@ import sys
 
 # To use DEFAULT path values:
 # Juliet folders' content and info.py location - Goblint/analyzer/tests/juliet
-goblint_path = '../../goblint' # DEFAULT
+goblint_path = '../../analyzer/goblint' # DEFAULT
 testsupport_path = 'testcasesupport' # DEFAULT
-path = './testcases/CWE366_Race_Condition_Within_Thread' # Will be changed by CL input
+path = 'testcases/CWE366_Race_Condition_Within_Thread' # Will be changed by CL input
 
 # Command line input
 if len(sys.argv) == 2:
@@ -18,7 +18,7 @@ elif len(sys.argv) == 4:
 	path = sys.argv[3]
 else:
 	os.system('echo "There are two options for parameters (legend below):"')
-	os.system('echo "1) python3 info.py X Y Z\n2) python3 info.py Z		# uses default values for X and Y"')
+	os.system('echo "1) python3 juliet_summary.py X Y Z\n2) python3 uliet_summary.py Z		# uses default values for X and Y"')
 	os.system('echo "Legend:\nX - path to goblint executable\nY - path to testcasessupport folder\nZ - path to testcases (individual cases or folders containing testcases)"')
 	quit()
 	
