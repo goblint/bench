@@ -2,25 +2,42 @@ import os
 import re
 import subprocess
 import sys
+import urllib.request
+import zipfile
 
-# To use DEFAULT path values:
-# Juliet folders' content and info.py location - Goblint/analyzer/tests/juliet
+# Used to access Juliet Suite or to confirm its existence in the current dir
+juliet_url = 'https://samate.nist.gov/SRD/testsuites/juliet/Juliet_Test_Suite_v1.3_for_C_Cpp.zip'
+juliet_path = 'C/testcases'
+
+# Checking if the testcases path exists, if not the script will download the Juliet Suite
+if not os.path.exists(juliet_path):
+	os.system('echo "DOWNLOADING JULIET SUITE FROM: "' + juliet_url)
+	try:
+		zip_path, _ = urllib.request.urlretrieve(juliet_url)
+		with zipfile.ZipFile(zip_path, "r") as f:
+			f.extractall()	
+	except urllib.error.HTTPError:
+		os.system('echo "FAILURE: Download url invalid."')
+		quit()
+
+# Paths to relevant files or folders
 goblint_path = '../../analyzer/goblint' # DEFAULT
-testsupport_path = 'testcasesupport' # DEFAULT
-path = 'testcases/CWE366_Race_Condition_Within_Thread' # Will be changed by CL input
+testsupport_path = 'C/testcasesupport' # DEFAULT
+path = 'C/testcases/CWE366_Race_Condition_Within_Thread' # Can be changed by CL input
 
 # Command line input
 if len(sys.argv) == 2:
 	path = sys.argv[1] # path + '/' + sys.argv[1]
-elif len(sys.argv) == 4:
-	goblint_path = sys.argv[1]
-	testsupport_path = sys.argv[2]
-	path = sys.argv[3]
-else:
-	os.system('echo "There are two options for parameters (legend below):"')
-	os.system('echo "1) python3 juliet_summary.py X Y Z\n2) python3 uliet_summary.py Z		# uses default values for X and Y"')
-	os.system('echo "Legend:\nX - path to goblint executable\nY - path to testcasessupport folder\nZ - path to testcases (individual cases or folders containing testcases)"')
+	# Checking if the path is valid
+	if not os.path.exists(juliet_path):
+		os.system('echo "PATH NOT FOUND: "' + path)	
+elif len(sys.argv) != 1:
+	os.system('echo "FAILURE: Run script with no arguments to run on all testcases or add path to a specific testcases folder (that has individual cases or folders containing testcases)."')
 	quit()
+
+
+# # # FUNCTIONS # # #
+
 	
 # Goes through all the files in given path, returns all suitable testcase files and 
 # all directories that might potentially contain testcases1
@@ -92,13 +109,17 @@ def goblint_files(testcases, filepath, html_table):
 		html_table += "</tr>\n"
 	html_table += "</table><br><hr><br>\n"
 	return html_table
+
+
+# # # MAIN PROCEDURES # # #
+
 	
 # Blanks for HTML content
 table = ''
 contents_href = []
 
 # Generating directory for output text files
-outputs_path = 'summary_fileoutputs' # Path to outputs directory
+outputs_path = 'C/juliet_summary_fileoutputs' # Path to outputs directory
 if not os.path.exists(outputs_path):
     os.makedirs(outputs_path)
 
