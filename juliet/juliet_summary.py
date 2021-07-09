@@ -57,7 +57,7 @@ def check_path(filepath):
 def run_function(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
 	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable printstats'
-	print(filename)
+	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'
 	return cmd + "\n\n" + process.stdout + process.stderr
