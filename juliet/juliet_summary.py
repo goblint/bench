@@ -23,6 +23,7 @@ if not os.path.exists(juliet_path):
 # Paths to relevant files or folders
 goblint_path = '../../analyzer/goblint' # DEFAULT
 testsupport_path = 'C/testcasesupport' # DEFAULT
+testsupport_files = testsupport_path + '/*.c'
 path = 'C/testcases/CWE366_Race_Condition_Within_Thread' # Can be changed by CL input
 
 # Command line input
@@ -55,10 +56,11 @@ def check_path(filepath):
 # '_good' or '_bad' determined by input parameter 'mode'
 def run_function(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
-	cmd = goblint_path + ' ' + filepath + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.uncalled --enable allglobs --enable printstats'
+	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable printstats'
+	print(filename)
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'
-	return process.stdout + process.stderr
+	return cmd + "\n\n" + process.stdout + process.stderr
 	
 # Takes a list of testcase files as input and iterates through them to analyze 
 # outputs for both 'good' and 'bad' function. Generates a HTML table based on outputs.
