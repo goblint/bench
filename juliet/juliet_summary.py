@@ -39,7 +39,25 @@ elif len(sys.argv) != 1:
 
 # # # FUNCTIONS # # #
 
-	
+
+# The definive function that performs all the main operations:
+#	- Takes current working directory and HTML contents as input
+#	- Finds valid C files for Goblint in that dir and establishes 
+#	other potential sub-directories for the future
+#	- Runs Goblint on valid test cases if they exist
+#	- Generates HTML table with new results from those cases
+#	- Returns potential directories and new HTML contents
+def goblint_analyse(current_directory, HTML_info):
+	# Getting valid C files and potential directories for further work
+	valid_files, pot_directories = check_path(current_directory)
+	# In case there are valid C files to analyse with Goblint
+	if len(valid_files) > 0:
+		os.system('echo ' + current_directory) # Feedback to the user
+		# Generating HTML table with new results from Goblint
+		HTML_info[0] = goblint_files(valid_files, current_directory, HTML_info[0])
+		HTML_info[1].append(current_directory)
+	return pot_directories, HTML_info
+		
 # Goes through all the files in given path, returns all suitable testcase files and 
 # all directories that might potentially contain testcases1
 def check_path(filepath):
@@ -56,7 +74,7 @@ def check_path(filepath):
 # '_good' or '_bad' determined by input parameter 'mode'
 def run_function(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
-	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable printstats'
+	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.debug --enable printstats'
 	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'
@@ -110,6 +128,7 @@ def goblint_files(testcases, filepath, html_table):
 			html_table += "    <td>{0}</td>\n".format(column.strip())
 		html_table += "</tr>\n"
 	html_table += "</table><br><hr><br>\n"
+	print('')
 	return html_table
 
 
@@ -117,50 +136,46 @@ def goblint_files(testcases, filepath, html_table):
 
 	
 # Blanks for HTML content
-table = ''
-contents_href = []
+# '' - empty string for HTML table that will contain results from Goblint
+# [] - empty array for href values that will be used for table of contents
+HTML = ['', []]
 
 # Generating directory for output text files
 outputs_path = 'C/juliet_summary_fileoutputs' # Path to outputs directory
 if not os.path.exists(outputs_path):
     os.makedirs(outputs_path)
 
+# Running Goblint and generating content for HTML
 
 # Starting with files in the running directory
 current_dir = path
-valid_files, directories = check_path(current_dir)
-if len(valid_files) > 0:
-	os.system('echo ' + current_dir) # For keeping track of the progress	
-	table = goblint_files(valid_files, current_dir, table)
-	contents_href.append(current_dir)
+# Running Goblint on current directory and getting new potential sub-directories
+directories, HTML = goblint_analyse(current_dir, HTML)
 		
 # Going through the main CWE directories if present
 directories.sort()
 for d in directories:
 	current_dir = path + '/' + d
-	valid_files, sub_directories = check_path(current_dir)
-	if len(valid_files) > 0:
-		os.system('echo ' + current_dir)
-		table = goblint_files(valid_files, current_dir, table)
-		contents_href.append(current_dir)
+	# Running Goblint, getting new sub-directories
+	sub_directories, HTML = goblint_analyse(current_dir, HTML)
 	# When the main CWE dir is split into sub-directories (s01, s02, ...)
 	sub_directories.sort()
 	for s in sub_directories:
 		current_subdir = current_dir + '/' + s
-		valid_files, nodir = check_path(current_subdir)
-		if len(valid_files) > 0:
-			os.system('echo ' + current_subdir)
-			table = goblint_files(valid_files, current_subdir, table)
-			contents_href.append(current_subdir)		
+		# Running Goblint, max depth achieved so no sub-directories
+		goblint_analyse(current_subdir, HTML)
+		
 
 # Generating content for HTML
-contents = '<p id="top" style="font-size:30px">RESULTS</p>\n'
-contents += '<p><small><strong>X</strong>&emsp;Vulnerabilities detected</small></p>\n'
-contents += '<p><small><strong>-</strong>&emsp;No vulnerabilities detected</small></p>\n'
-contents += '<p><small><strong>?</strong>&emsp;Function not found, error</small></p><br>\n'
-for ref in contents_href:
-	contents += '<a href="#' + ref + '">' + ref + '</a>\n'
-table = contents + '<br><hr><br>\n' + table + '<a href="#top">Go to top</a>'		
+HTML_content = '<p id="top" style="font-size:30px">RESULTS</p>\n'
+HTML_content += '<p><small><strong>X</strong>&emsp;Vulnerabilities detected</small></p>\n'
+HTML_content += '<p><small><strong>-</strong>&emsp;No vulnerabilities detected</small></p>\n'
+HTML_content += '<p><small><strong>?</strong>&emsp;Function not found, error</small></p><br>\n'
+# Creating table of contents using href linking
+for href in HTML[1]:
+	HTML_content += '<a href="#' + href + '">' + href + '</a>\n'
+# Adding table of contents and results table together
+HTML_content = HTML_content + '<br><hr><br>\n' + HTML[0] + '<a href="#top">Go to top</a>'		
 # Creating HTML file
 with open('summary_table.html', 'w', encoding='utf-8') as file:
-	file.write(table)	
+	file.write(HTML_content)	
