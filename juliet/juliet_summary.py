@@ -178,4 +178,4 @@ for href in HTML[1]:
 HTML_content = HTML_content + '<br><hr><br>\n' + HTML[0] + '<a href="#top">Go to top</a>'		
 # Creating HTML file
 with open('summary_table.html', 'w', encoding='utf-8') as file:
-	file.write(HTML_content)	
+	file.write(HTML_content)
