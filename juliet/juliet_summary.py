@@ -24,7 +24,7 @@ if not os.path.exists(juliet_path):
 goblint_path = '../../analyzer/goblint' # DEFAULT
 testsupport_path = 'C/testcasesupport' # DEFAULT
 testsupport_files = testsupport_path + '/*.c'
-path = 'C/testcases/CWE366_Race_Condition_Within_Thread' # Can be changed by CL input
+path = 'C/testcases' # Can be changed by CL input
 
 # Command line input
 if len(sys.argv) == 2:
@@ -40,7 +40,7 @@ elif len(sys.argv) != 1:
 # # # FUNCTIONS # # #
 
 
-# The definive function that performs all the main operations:
+# The definitive function that performs all the main operations:
 #	- Takes current working directory and HTML contents as input
 #	- Finds valid C files for Goblint in that dir and establishes 
 #	other potential sub-directories for the future
@@ -54,7 +54,7 @@ def goblint_analyse(current_directory, HTML_info):
 	if len(valid_files) > 0:
 		os.system('echo ' + current_directory) # Feedback to the user
 		# Generating HTML table with new results from Goblint
-		HTML_info[0] = goblint_files(valid_files, current_directory, HTML_info[0])
+		HTML_info[0] = files_output_to_HTML(valid_files, current_directory, HTML_info[0])
 		HTML_info[1].append(current_directory)
 	return pot_directories, HTML_info
 		
@@ -72,7 +72,7 @@ def check_path(filepath):
 	
 # Runs Goblint to process a testcase function, testcase function will be either
 # '_good' or '_bad' determined by input parameter 'mode'
-def run_function(filepath, filename, mode):
+def goblint_cmd(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
 	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.debug --enable printstats'
 	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
@@ -81,8 +81,8 @@ def run_function(filepath, filename, mode):
 	return cmd + "\n\n" + process.stdout + process.stderr
 	
 # Takes a list of testcase files as input and iterates through them to analyze 
-# outputs for both 'good' and 'bad' function. Generates a HTML table based on outputs.
-def goblint_files(testcases, filepath, html_table):
+# outputs for both 'good' and 'bad' function. Generates an HTML table based on outputs.
+def files_output_to_HTML(testcases, filepath, html_table):
 	# Creating column headers for the table
 	html_table += '\n<p id="' + filepath + '">Folder: ' + filepath + '&emsp;<a href="#top">Go to top</a></p>\n'
 	html_table += "<table border=1>\n"
@@ -102,12 +102,12 @@ def goblint_files(testcases, filepath, html_table):
 		# The upcoming 'try' statements are used because at least one test case 
 		#from Juliet suite does not contain both functions.
 		try:
-			output_good = run_function(f_path, t, '_good') # 'good' function
+			output_good = goblint_cmd(f_path, t, '_good') # 'good' function
 			if re.search('Summary for all memory locations:', output_good) != None:
 				v_good = 'X'
 		except: v_good = '?'
 		try:
-			output_bad = run_function(f_path, t, '_bad') # 'bad' function
+			output_bad = goblint_cmd(f_path, t, '_bad') # 'bad' function
 			if re.search('Summary for all memory locations:', output_bad) != None:
 				v_bad = 'X'
 		except: v_bad = '?'
@@ -173,7 +173,7 @@ HTML_content += '<p><small><strong>-</strong>&emsp;No vulnerabilities detected</
 HTML_content += '<p><small><strong>?</strong>&emsp;Function not found, error</small></p><br>\n'
 # Creating table of contents using href linking
 for href in HTML[1]:
-	HTML_content += '<a href="#' + href + '">' + href + '</a>\n'
+	HTML_content += '<a href="#' + href + '">' + href + '</a><br>\n'
 # Adding table of contents and results table together
 HTML_content = HTML_content + '<br><hr><br>\n' + HTML[0] + '<a href="#top">Go to top</a>'		
 # Creating HTML file
