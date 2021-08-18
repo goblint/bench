@@ -74,7 +74,7 @@ def check_path(filepath):
 # '_good' or '_bad' determined by input parameter 'mode'
 def goblint_cmd(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
-	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.debug --enable printstats'
+	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.print_dead_code --enable dbg.debug --enable printstats'
 	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'
@@ -103,12 +103,12 @@ def files_output_to_HTML(testcases, filepath, html_table):
 		#from Juliet suite does not contain both functions.
 		try:
 			output_good = goblint_cmd(f_path, t, '_good') # 'good' function
-			if re.search('Summary for all memory locations:', output_good) != None:
+			if re.search(v_detection, output_good) != None:
 				v_good = 'X'
 		except: v_good = '?'
 		try:
 			output_bad = goblint_cmd(f_path, t, '_bad') # 'bad' function
-			if re.search('Summary for all memory locations:', output_bad) != None:
+			if re.search(v_detection, output_bad) != None:
 				v_bad = 'X'
 		except: v_bad = '?'
 		
@@ -134,6 +134,8 @@ def files_output_to_HTML(testcases, filepath, html_table):
 
 # # # MAIN PROCEDURES # # #
 
+# Regex string that is used to confirm that vulnerabilities were detected 
+v_detection = 'is dead!|Summary for all memory locations:'
 	
 # Blanks for HTML content
 # '' - empty string for HTML table that will contain results from Goblint
