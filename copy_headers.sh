@@ -1,4 +1,5 @@
 #!/bin/bash
+# Make sure packages are installed (https://wiki.ubuntu.com/Kernel/BuildYourOwnKernel)
 # Prepare Kernel: make defconfig && make prepare
 # Then run this script with absolute path to kernel root dir.
 rm -rf linux-headers linux-headers-orig
