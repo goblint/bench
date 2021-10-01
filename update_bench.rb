@@ -116,8 +116,6 @@ def print_res (i)
           f.puts "<td>N/A</a></td>"
         end
       end
-      gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
-      f.puts "</tr>"
       f.puts "</tr>"
     end
     f.puts "</table>"

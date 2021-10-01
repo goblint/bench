@@ -128,8 +128,6 @@ def print_res (i)
       end
       comparefile = File.basename(p.path,".c") + ".compare.txt"
       f.puts "<td><a href=\"#{comparefile}\">compare</a></td>"
-      gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
-      f.puts "</tr>"
       f.puts "</tr>"
     end
     f.puts "</table>"
