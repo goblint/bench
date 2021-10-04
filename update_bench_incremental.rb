@@ -200,7 +200,7 @@ File.open(file, "r") do |f|
       size = `wc -l #{path}`.split[0] + " lines"
       id += 1
       patches = Dir["#{path.chomp(".c")}*.patch"]
-      p = Project.new(id,name,size,url,gname,path,params,patches)
+      p = Project.new(id,name,size,url,gname,path,params,patches.sort)
       $projects << p
     end
   end
@@ -313,6 +313,7 @@ $projects.each do |p|
     pp = Project.new(p.id,pfile,p.size,"generate!",nil,p.path,p.params,nil)
     analyze_project(pp, false)
     `patch -b -R #{p.path} #{pfile}`
+    `rm #{p.path}.orig`
   end
 end
 print_res nil

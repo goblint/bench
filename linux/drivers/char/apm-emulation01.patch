@@ -1,0 +1,17 @@
+diff --git linux/drivers/char/apm-emulation.c linux/drivers/char/apm-emulation.c
+index dd9dfa1..324c821 100644
+--- linux/drivers/char/apm-emulation.c
++++ linux/drivers/char/apm-emulation.c
+@@ -369,11 +369,11 @@ static int apm_open(struct inode * inode, struct file * filp)
+ 		 * we might close the device immediately without doing a
+ 		 * privileged operation -- cevans
+ 		 */
++		down_write(&user_list_lock);
+ 		as->suser = capable(CAP_SYS_ADMIN);
+ 		as->writer = (filp->f_mode & FMODE_WRITE) == FMODE_WRITE;
+ 		as->reader = (filp->f_mode & FMODE_READ) == FMODE_READ;
+ 
+-		down_write(&user_list_lock);
+ 		list_add(&as->list, &apm_user_list);
+ 		up_write(&user_list_lock);
+ 
