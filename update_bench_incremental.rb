@@ -176,7 +176,7 @@ $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
-$analyses = [["FromScratch", ""], ["Incremental", "--enable incremental.load"]]
+$analyses = [["FromScratch", ""], ["Incremental", "--disable incremental.reluctant"], ["Reluctant", "--enable incremental.reluctant"]]
 File.open(file, "r") do |f|
   id = 0
   while line = f.gets
@@ -258,7 +258,12 @@ def analyze_project(p, save)
   $analyses.each do |a|
     aname = a[0]
     aparam = a[1]
-    aparam += " --enable incremental.save " if save && first
+    if first then
+      aparam += " --enable incremental.save " if save
+      first = false
+    else
+      aparam += " --enable incremental.load "
+    end
     print "  #{format("%*s", -$maxlen, aname)}"
     STDOUT.flush
     outfile = $testresults + resname + ".#{aname}.txt"
