@@ -143,7 +143,10 @@ def print_res (i)
       f.puts "</tr>"
       p.patches.each do |pfile|
         f.puts "<tr>"
-        f.puts "<td>-</td><td>#{File.basename(pfile)}</td>\n" + "<td>-</td>\n"
+        pname = File.basename(pfile)
+        rpath = $testresults + pname
+        `cp #{pfile} #{rpath}`
+        f.puts "<td>-</td><td><a href=\"#{rpath}\">#{pname}</a></td>\n" + "<td><a href=\"#{rpath}.html\">patched</td>\n"
         print_file_res(f, pfile)
         f.puts "</tr>"
       end
@@ -176,7 +179,7 @@ $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
-$analyses = [["FromScratch", ""], ["Incremental", "--disable incremental.reluctant"], ["Reluctant", "--enable incremental.reluctant"]]
+$analyses = []
 File.open(file, "r") do |f|
   id = 0
   while line = f.gets
@@ -184,6 +187,8 @@ File.open(file, "r") do |f|
     if line =~ /Group: (.*)/
       gname = $1.chomp
       skipgrp << gname if line =~ /SKIP/
+          elsif line =~ /(.*): ?(.*)/
+      $analyses << [$1,$2]
     else
       name = line.chomp
       url = f.gets.chomp
