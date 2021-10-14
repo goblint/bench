@@ -144,9 +144,8 @@ def print_res (i)
       p.patches.each do |pfile|
         f.puts "<tr>"
         pname = File.basename(pfile)
-        rpath = $testresults + pname
         `cp #{pfile} #{rpath}`
-        f.puts "<td>-</td><td><a href=\"#{rpath}\">#{pname}</a></td>\n" + "<td><a href=\"#{rpath}.html\">patched</td>\n"
+        f.puts "<td>-</td><td><a href=\"#{pname}\">#{pname}</a></td>\n" + "<td><a href=\"#{pname}.html\">patched</a></td>\n"
         print_file_res(f, pfile)
         f.puts "</tr>"
       end
@@ -254,7 +253,7 @@ def analyze_project(p, save)
   Dir.chdir(dirname)
   outfiles = $testresults + resname + ".*"
   `rm -f #{outfiles}`
-  if p.url == "generate!" then
+  if not p.url.start_with? "http" then
     system($highlighter.call(p.path, $testresults + resname + ".html"))
     p.url = p.name + ".html"
   end
