@@ -22,7 +22,7 @@ trap finish EXIT
 
 # defaults: --enable verify --enable exp.solver.td3.space_cache --disable dbg.trace.context --sets solver td3
 # --set ana.activated \"['base','mallocWrapper']\"; defaults: "['expRelation','base','threadid','threadflag','escape','mutex', 'mallocWrapper']"
-opts="--enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --disable exp.full-context --disable exp.widen-context --disable exp.widen-context-partial --sets exp.privatization none\
+opts="--enable exp.earlyglobs --enable ana.int.interval --disable ana.int.enums --disable ana.int.def_exc --disable ana.context.widen --sets exp.privatization none\
   --disable exp.solver.td3.space_restore"
 # --enable exp.no-interval32-context # needed for wget b/c of mergesort
 # --enable exp.no-int-context # needed for '400.perlbench_comb.c 482.sphinx_livepretend_comb.c duff-0.5_comb.c maradns-1.4.06_comb.c'. Only '445.gobmk_comb.c' does not terminate.
