@@ -144,7 +144,7 @@ def print_res (i)
       p.patches.each do |pfile|
         f.puts "<tr>"
         pname = File.basename(pfile)
-        `cp #{pfile} #{rpath}`
+        `cp #{pfile} #{$testresults + pname}`
         f.puts "<td>-</td><td><a href=\"#{pname}\">#{pname}</a></td>\n" + "<td><a href=\"#{pname}.html\">patched</a></td>\n"
         print_file_res(f, pfile)
         f.puts "</tr>"
