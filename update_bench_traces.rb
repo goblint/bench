@@ -101,10 +101,10 @@ def print_res (i)
             live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
             dead = lines.grep(/Found dead code on ([0-9]*) line/) { |x| $1.to_i } .first
             total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
-            res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
+            res = lines.grep(/^TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
-              cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
+              cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
                 # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "

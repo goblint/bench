@@ -94,10 +94,10 @@ def print_file_res (f, path)
         vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
         unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
         uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-        res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
+        res = lines.grep(/^TIMEOUT\s*(.*) s.*$/) { |x| $1 }
         if res == [] then
           dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
-          cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
+          cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
           if cod == [] and not dur == [] then
             if $compare then
               compfile = "#{outfile}.compare.txt"
@@ -299,7 +299,7 @@ def analyze_project(p, save)
     if status != 0 then
       if status == 124 then
         puts "-- Timeout!"
-        `echo "TIMEOUT                    #{timeout} s" >> #{outfile}`
+        `echo "TIMEOUT                    #{$timeout} s" >> #{outfile}`
       else
         puts "-- Failed!"
         `echo "EXITCODE                   #{status}" >> #{outfile}`
