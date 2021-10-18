@@ -82,6 +82,7 @@ END
 $theresultfile = File.join($testresults, "index.html")
 
 def print_file_res (f, path)
+  first = true
   $analyses.each do |a|
     aname = a[0]
     outfile = File.basename(path,".c") + ".#{aname}.txt"
@@ -98,12 +99,18 @@ def print_file_res (f, path)
           dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
           cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
           if cod == [] and not dur == [] then
-            thenumbers =  "<font color=\"green\">#{safely}</font>; "
-            thenumbers << "<font color=\"orange\">#{vulner}</font> + "
-            thenumbers << "<font color=\"red\">#{unsafe}</font>"
-            thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
-            thenumbers << " -- <a href=\"#{outfile}.compare.txt\">compare!</a>" if $compare
-            f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s / #{vars} vars / #{evals} evals</a> (#{thenumbers})</td>"
+            if $compare then
+              compfile = "#{outfile}.compare.txt"
+              thenumbers = ""
+              thenumbers = "<a href=\"#{outfile}.compare.txt\">compare</a>" unless first
+            else 
+              thenumbers =  "<font color=\"green\">#{safely}</font>; "
+              thenumbers << "<font color=\"orange\">#{vulner}</font> + "
+              thenumbers << "<font color=\"red\">#{unsafe}</font>"
+              thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
+            end
+            thenumbers = " (#{thenumbers})" if thenumbers != ""
+            f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s / #{vars} vars / #{evals} evals</a>#{thenumbers}</td>"
           else
             f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
           end
@@ -114,6 +121,7 @@ def print_file_res (f, path)
     else
       f.puts "<td>N/A</a></td>"
     end
+  first = false
   end
 end
 
@@ -267,7 +275,6 @@ def analyze_project(p, save)
     if first then
       aparam += " --enable incremental.save " if save
       aparam += " --set save_run original " if $compare
-      first = false
     else
       aparam += " --enable incremental.load "
       aparam += " --set save_run increment " if $compare
@@ -298,12 +305,14 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      system("#{$goblint} --enable kernel original/config.json --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
+      system("#{$goblint} original/config.json --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
       puts "-- Done!"
     end
+    first = false
     print_res p.id
     proc_linux_res(outfile, p.url, filename)
   end
+  `rm -rf original increment` if $compare
 end
 
 #analysing the files
