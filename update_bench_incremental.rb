@@ -10,6 +10,7 @@ Dir.mkdir(results) unless Dir.exist?(results)
 $testresults = File.expand_path("bench_result") + "/"
 bench = "./"
 linux = bench + "linux/"
+$compare = true
 
 cmds = {"code2html" => lambda {|f,o| "code2html -l c -n #{f} 2> /dev/null 1> #{o}"},
         "source-highlight" => lambda {|f,o| "source-highlight -n -i #{f} -o #{o}"},
@@ -101,6 +102,7 @@ def print_file_res (f, path)
             thenumbers << "<font color=\"orange\">#{vulner}</font> + "
             thenumbers << "<font color=\"red\">#{unsafe}</font>"
             thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
+            thenumbers << " -- <a href=\"#{outfile}.compare.txt\">compare!</a>" if $compare
             f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s / #{vars} vars / #{evals} evals</a> (#{thenumbers})</td>"
           else
             f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
@@ -264,9 +266,11 @@ def analyze_project(p, save)
     aparam = a[1]
     if first then
       aparam += " --enable incremental.save " if save
+      aparam += " --set save_run original " if $compare
       first = false
     else
       aparam += " --enable incremental.load "
+      aparam += " --set save_run increment " if $compare
     end
     print "  #{format("%*s", -$maxlen, aname)}"
     STDOUT.flush
@@ -294,6 +298,7 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
+      system("#{$goblint} --enable kernel original/config.json --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
       puts "-- Done!"
     end
     print_res p.id
