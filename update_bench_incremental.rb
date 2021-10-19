@@ -274,6 +274,7 @@ def analyze_project(p, save)
     aparam = a[1]
     if first then
       aparam += " --enable incremental.save " if save
+      aparam += " --enable incremental.only-rename " if not save
       aparam += " --set save_run original " if $compare
     else
       aparam += " --enable incremental.load "
