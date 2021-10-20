@@ -90,20 +90,27 @@ def print_file_res (f, path)
       File.open($testresults + outfile, "r") do |g|
         lines = g.readlines
         vars, evals = lines.grep(/vars = (\d*).*evals = (\d+)/) { |x| [$1.to_i, $2.to_i] } .first
-        safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-        vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-        unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-        uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
         res = lines.grep(/^TIMEOUT\s*(.*) s.*$/) { |x| $1 }
         if res == [] then
           dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
           cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
           if cod == [] and not dur == [] then
             if $compare then
-              compfile = "#{outfile}.compare.txt"
-              thenumbers = ""
-              thenumbers = "<a href=\"#{outfile}.compare.txt\">compare</a>" unless first
-            else 
+              if not first then 
+                compfile = "#{outfile}.compare.txt"
+                complines = File.readlines($testresults + compfile)
+                msg = ""
+                msg << "⊑" if complines.grep(/left = [1-9]/).any?
+                msg << "≸" if complines.grep(/incomparable = [1-9]/).any?
+                msg << "⊒" if complines.grep(/\<right = [1-9]/).any?
+                msg = "=" if msg == ""
+                thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
+              end
+            else
+              safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+              vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+              unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+              uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
               thenumbers =  "<font color=\"green\">#{safely}</font>; "
               thenumbers << "<font color=\"orange\">#{vulner}</font> + "
               thenumbers << "<font color=\"red\">#{unsafe}</font>"
