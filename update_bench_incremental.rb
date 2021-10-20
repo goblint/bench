@@ -2,7 +2,7 @@
 require 'fileutils'
 Dir.chdir(File.dirname(__FILE__))
 $goblint = File.expand_path("../analyzer/goblint")
-$goblint_conf = File.expand_path("../index/incremental.json")
+$goblint_conf = File.expand_path("index/incremental.json")
 fail "Please run script from goblint dir!" unless File.exist?($goblint)
 $vrsn = `#{$goblint} --version`
 results = "bench_result"
@@ -171,6 +171,7 @@ def print_res (i)
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "#{$vrsn}"
+    f.puts "Goblint base configuration: <a href=\"#{$testresults}/conf.json\">conf.json</a>."
     f.puts "</p>"
     f.puts "</body>"
     f.puts "</html>"
@@ -292,7 +293,7 @@ def analyze_project(p, save)
     outfile = $testresults + resname + ".#{aname}.txt"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{$goblint} -v --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats 1>#{outfile} 2>&1"
+    cmd = "#{$goblint} --conf #{$goblint_conf} -v --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -325,6 +326,7 @@ end
 
 #analysing the files
 gname = ""
+system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/conf.json")
 $projects.each do |p|
   next if skipgrp.member? p.group
   next unless thegroup.nil? or p.group == thegroup
