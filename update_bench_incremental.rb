@@ -193,7 +193,7 @@ end
 #processing the input file
 
 skipgrp = []
-file = "index/incremental.txt"
+file = "index/interactive.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
