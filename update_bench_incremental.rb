@@ -69,9 +69,12 @@ end
 $projects = []
 
 $header = <<END
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="utf-8"/>
   <title>Benchmarks on #{`uname -n`.chomp}</title>
-  <style type="text/css">
+  <style>
     A:link {text-decoration: none}
     A:visited {text-decoration: none}
     A:active {text-decoration: none}
@@ -116,7 +119,7 @@ def print_file_res (f, path)
               thenumbers << "<font color=\"red\">#{unsafe}</font>"
               thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
             end
-            thenumbers = " (#{thenumbers})" if thenumbers != ""
+            thenumbers = " (#{thenumbers})" unless thenumbers.nil?
             f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s / #{vars} vars / #{evals} evals</a>#{thenumbers}</td>"
           else
             f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
@@ -134,7 +137,6 @@ end
 
 def print_res (i)
   File.open($theresultfile, "w") do |f|
-    f.puts "<html>"
     f.puts $header
     f.puts "<body>"
     f.puts "<p>Benchmarking in progress: #{i}/#{$projects.length} <progress value=\"#{i}\" max=\"#{$projects.length}\" /></p>" unless i.nil?
@@ -143,7 +145,7 @@ def print_res (i)
     $projects.each do |p|
       if p.group != gname then
         gname = p.group
-        f.puts "<tr><th colspan=#{4+$analyses.size}>#{gname}</th></tr>"
+        f.puts "<tr><th colspan=#{3+$analyses.size}>#{gname}</th></tr>"
         if $print_desc then
           f.puts "<tr><th>#</th><th>Name</th><th>Description</th><th>Size</th>"
         else
@@ -171,7 +173,7 @@ def print_res (i)
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "#{$vrsn}"
-    f.puts "Goblint base configuration: <a href=\"#{$testresults}/conf.json\">conf.json</a>."
+    f.puts "Goblint base configuration: <a href=\"conf.json\">conf.json</a>."
     f.puts "</p>"
     f.puts "</body>"
     f.puts "</html>"
