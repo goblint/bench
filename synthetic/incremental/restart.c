@@ -10,9 +10,9 @@ void* t_fun1(void *arg) {
 }
 
 void* t_fun2(void *arg) {
+    g = 0;
     return NULL;
 }
-    g = 0;
 
 int main() {
     pthread_t id1, id2;
