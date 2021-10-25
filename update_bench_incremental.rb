@@ -103,9 +103,9 @@ def print_file_res (f, path)
                 compfile = "#{outfile}.compare.txt"
                 complines = File.readlines($testresults + compfile)
                 msg = ""
-                msg << "⊑" if complines.grep(/left = [1-9]/).any?
-                msg << "≸" if complines.grep(/incomparable = [1-9]/).any?
-                msg << "⊒" if complines.grep(/\<right = [1-9]/).any?
+                msg << "⊑" if complines.grep(/\bleft = [1-9]/).any?
+                msg << "≸" if complines.grep(/\bincomparable = [1-9]/).any?
+                msg << "⊒" if complines.grep(/\bright = [1-9]/).any?
                 msg = "=" if msg == ""
                 thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
               end
