@@ -102,11 +102,13 @@ def print_file_res (f, path)
               if not first then 
                 compfile = "#{outfile}.compare.txt"
                 complines = File.readlines($testresults + compfile)
-                msg = ""
-                msg << "⊑" if complines.grep(/(locals_ctx|globals).*\bleft = [1-9]/).any?
-                msg << "≸" if complines.grep(/(locals_ctx|globals).*\bincomparable = [1-9]/).any?
-                msg << "⊒" if complines.grep(/(locals_ctx|globals).*\bright = [1-9]/).any?
-                msg = "=" if msg == ""
+                verdict = complines.grep(/^Comparison summary: original (.*) increment/) { |x| $1 }.first
+                msg = case verdict
+                  when "equal to" then "="
+                  when "more precise than" then "⊑"
+                  when "incomparable to" then "≸"
+                  when "less precise than" then "⊒"
+                end
                 thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
               end
             else
