@@ -110,7 +110,7 @@ def print_res (i)
               max_protected = mpr_r.first
             end
             spr_r = lines.grep(/Sum protected: ([0-9]*)/) { |x| $1.to_i }
-            if mtx_r.length == 0 then
+            if spr_r.length == 0 then
               sum_protected = 0
             else
               sum_protected = spr_r.first
