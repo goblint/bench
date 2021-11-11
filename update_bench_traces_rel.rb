@@ -103,6 +103,26 @@ def print_res (i)
             total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
             threads = lines.grep(/Encountered number of thread IDs \(unique\): ([0-9]*) /) { |x| $1.to_i } .first
             uniques =  lines.grep(/Encountered number of thread IDs \(unique\): [0-9]* \(([0-9]*)\)/) { |x| $1.to_i } .first
+            mtx_r = lines.grep(/Num mutexes: ([0-9]*)/) { |x| $1.to_i }
+            if mtx_r.length == 0 then
+              mutexes = 0
+            else
+              mutexes = mtx_r.first
+            end
+            mpr_r = lines.grep(/Max number of protected: ([0-9]*)/) { |x| $1.to_i }
+            if mtx_r.length == 0 then
+              max_protected = 0
+            else
+              max_protected = mpr_r.first
+            end
+            spr_r = lines.grep(/Sum protected: ([0-9]*)/) { |x| $1.to_i }
+            if mtx_r.length == 0 then
+              sum_protected = 0
+              avg_protected = 0
+            else
+              sum_protected = spr_r.first
+              avg_protected = sum_protected / mutexes
+            end
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -112,11 +132,12 @@ def print_res (i)
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
                 thenumbers = ""
-                thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
-                thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
-                thenumbers << "<b title=\"live lines\">#{live}</b>="
+                # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
+                # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
+                # thenumbers << "<b title=\"live lines\">#{live}</b>="
                 thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
-                thenumbers << ";<b title=\"threads(unique)\">#{threads} (#{uniques})</b>"
+                thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
+                thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
