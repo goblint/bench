@@ -121,7 +121,7 @@ def print_res (i)
               avg_protected = 0
             else
               mutexes = mtx_r.first
-              if mutex > 0 then
+              if mutexes > 0 then
                 avg_protected = sum_protected / mutexes
               else
                 avg_protected = 0
