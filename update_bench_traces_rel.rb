@@ -103,14 +103,8 @@ def print_res (i)
             total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
             threads = lines.grep(/Encountered number of thread IDs \(unique\): ([0-9]*) /) { |x| $1.to_i } .first
             uniques =  lines.grep(/Encountered number of thread IDs \(unique\): [0-9]* \(([0-9]*)\)/) { |x| $1.to_i } .first
-            mtx_r = lines.grep(/Num mutexes: ([0-9]*)/) { |x| $1.to_i }
-            if mtx_r.length == 0 then
-              mutexes = 0
-            else
-              mutexes = mtx_r.first
-            end
             mpr_r = lines.grep(/Max number of protected: ([0-9]*)/) { |x| $1.to_i }
-            if mtx_r.length == 0 then
+            if mpr_r.length == 0 then
               max_protected = 0
             else
               max_protected = mpr_r.first
@@ -118,10 +112,20 @@ def print_res (i)
             spr_r = lines.grep(/Sum protected: ([0-9]*)/) { |x| $1.to_i }
             if mtx_r.length == 0 then
               sum_protected = 0
-              avg_protected = 0
             else
               sum_protected = spr_r.first
-              avg_protected = sum_protected / mutexes
+            end
+            mtx_r = lines.grep(/Num mutexes: ([0-9]*)/) { |x| $1.to_i }
+            if mtx_r.length == 0 then
+              mutexes = 0
+              avg_protected = 0
+            else
+              mutexes = mtx_r.first
+              if mutex > 0 then
+                avg_protected = sum_protected / mutexes
+              else
+                avg_protected = 0
+              end
             end
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
