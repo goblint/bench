@@ -318,7 +318,7 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      system("#{$goblint} original/config.json --enable solverdiffs --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
+      system("#{$goblint} --disable dbg.compare_runs.glob --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
       puts "-- Done!"
     end
     first = false
