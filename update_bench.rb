@@ -95,10 +95,10 @@ def print_res (i)
             vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-            res = lines.grep(/TIMEOUT\s*(.*) s.*$/) { |x| $1 }
+            res = lines.grep(/^TIMEOUT\s*(.*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
-              cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
+              cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
                 thenumbers =  "<font color=\"green\">#{safely}</font>; "
                 thenumbers << "<font color=\"orange\">#{vulner}</font> + "
@@ -116,8 +116,6 @@ def print_res (i)
           f.puts "<td>N/A</a></td>"
         end
       end
-      gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
-      f.puts "</tr>"
       f.puts "</tr>"
     end
     f.puts "</table>"

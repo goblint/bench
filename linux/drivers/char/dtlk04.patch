@@ -1,0 +1,13 @@
+diff --git linux/drivers/char/dtlk.c linux/drivers/char/dtlk.c
+index 65a8d96..deff366 100644
+--- linux/drivers/char/dtlk.c
++++ linux/drivers/char/dtlk.c
+@@ -302,7 +302,7 @@ static int dtlk_open(struct inode *inode, struct file *file)
+ 	switch (iminor(inode)) {
+ 	case DTLK_MINOR:
+ 		if (dtlk_busy)
+-			return -EBUSY;
++			return -EPIPE;
+ 		return nonseekable_open(inode, file);
+
+ 	default:

@@ -1,0 +1,25 @@
+diff --git pthread/ypbind_comb.c pthread/ypbind_comb.c
+index 255923b..4be088a 100644
+--- pthread/ypbind_comb.c
++++ pthread/ypbind_comb.c
+@@ -5628,16 +5628,19 @@ static bool_t eachresult(bool_t *out , struct sockaddr_in *addr )
+     timeout___0.tv_sec = 1L;
+ #line 595
+     timeout___0.tv_usec = 0L;
+-#line 596
++#line 596 
++    pthread_mutex_lock(& search_lock);
+     in_use->client_handle = clntudp_create(addr, 100004UL, 2UL, timeout___0, & sock);
+ #line 599
+     if ((unsigned int )in_use->client_handle == (unsigned int )((void *)0)) {
+ #line 600
++      pthread_mutex_unlock(& search_lock);
+       return (0);
+     }
+ #line 602
+     in_use->active = 0;
+ #line 604
++    pthread_mutex_unlock(& search_lock);
+     return (1);
+   } else {
+ #line 608
