@@ -4,7 +4,8 @@ Dir.chdir(File.dirname(__FILE__))
 $goblint = File.expand_path("../analyzer/goblint")
 $goblint_conf = File.expand_path("index/incremental.json")
 fail "Please run script from goblint dir!" unless File.exist?($goblint)
-$vrsn = `#{$goblint} --version`
+$goblint_version = `#{$goblint} --version`
+$bench_version = `git describe --all --long --dirty 2> /dev/null`
 results = "bench_result"
 Dir.mkdir(results) unless Dir.exist?(results)
 $testresults = File.expand_path("bench_result") + "/"
@@ -174,7 +175,8 @@ def print_res (i)
     f.puts "</table>"
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
-    f.puts "#{$vrsn}"
+    f.puts "Bench version: #{$bench_version}"
+    f.puts "#{$goblint_version}"
     f.puts "Goblint base configuration: <a href=\"conf.json\">conf.json</a>."
     f.puts "</p>"
     f.puts "</body>"
