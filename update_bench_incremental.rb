@@ -2,29 +2,29 @@
 require 'fileutils'
 require 'yaml'
 Dir.chdir(File.dirname(__FILE__))
-$goblint = File.expand_path("../analyzer/goblint")
-fail "Please run script from goblint dir!" unless File.exist?($goblint)
+$goblint = File.expand_path('../analyzer/goblint')
+fail 'Please run script from goblint dir!' unless File.exist?($goblint)
 $goblint_version = `#{$goblint} --version`
 $bench_version = `git describe --all --long --dirty 2> /dev/null`
-results = "bench_result"
+results = 'bench_result'
 Dir.mkdir(results) unless Dir.exist?(results)
-$testresults = File.expand_path("bench_result") + "/"
-bench_path = "./"
+$testresults = File.expand_path('bench_result') + '/'
+bench_path = './'
 
-cmds = {"code2html" => lambda {|f,o| "code2html -l c -n #{f} 2> /dev/null 1> #{o}"},
-        "source-highlight" => lambda {|f,o| "source-highlight -n -i #{f} -o #{o}"},
-        "pygmentize" => lambda {|f,o| "pygmentize -O full,linenos=1 -o #{o} #{f}"}
+cmds = {'code2html' => lambda {|f,o| "code2html -l c -n #{f} 2> /dev/null 1> #{o}"},
+        'source-highlight' => lambda {|f,o| "source-highlight -n -i #{f} -o #{o}"},
+        'pygmentize' => lambda {|f,o| "pygmentize -O full,linenos=1 -o #{o} #{f}"}
        }
 $highlighter = nil
 cmds.each do |name, cmd|
   # if `which #{cmd} 2> /dev/null`.empty? then
-  if ENV['PATH'].split(':').map {|f| File.executable? "#{f}/#{name}"}.include?(true) then
+  if ENV['PATH'].split(':').map {|f| File.executable? "#{f}/#{name}"}.include?(true)
     $highlighter = cmd
     break
   end
 end
-if $highlighter.nil? then
-  puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
+if $highlighter.nil?
+  puts 'Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize).'
   $highlighter = lambda {|f,o| "cp #{f} #{o}"}
 end
 
@@ -81,32 +81,32 @@ $header = <<END
 </style>
 </head>
 END
-$theresultfile = File.join($testresults, "index.html")
+$theresultfile = File.join($testresults, 'index.html')
 
 def print_file_res (f, path)
   first = true
   $analyses.each do |a|
     aname = a[0]
-    outfile = File.basename(path,".c") + ".#{aname}.txt"
-    if File.exists?($testresults + outfile) then
-      File.open($testresults + outfile, "r") do |g|
+    outfile = File.basename(path,'.c') + ".#{aname}.txt"
+    if File.exists?($testresults + outfile)
+      File.open($testresults + outfile, 'r') do |g|
         lines = g.readlines
         vars, evals = lines.grep(/vars = (\d*).*evals = (\d+)/) { |x| [$1.to_i, $2.to_i] } .first
         res = lines.grep(/^TIMEOUT\s*(.*) s.*$/) { |x| $1 }
-        if res == [] then
+        if res == []
           dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
           cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
-          if cod == [] and not dur == [] then
-            if $compare then
-              if not first then 
+          if cod == [] and not dur == []
+            if $compare
+              unless first
                 compfile = "#{outfile}.compare.txt"
                 complines = File.readlines($testresults + compfile)
                 verdict = complines.grep(/^Comparison summary: original (.*) increment/) { |x| $1 }.first
                 msg = case verdict
-                  when "equal to" then "="
-                  when "more precise than" then "⊑"
-                  when "incomparable to" then "≸"
-                  when "less precise than" then "⊒"
+                  when 'equal to' then '='
+                  when 'more precise than' then '⊑'
+                  when 'incomparable to' then '≸'
+                  when 'less precise than' then '⊒'
                 end
                 thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
               end
@@ -130,56 +130,52 @@ def print_file_res (f, path)
         end
       end
     else
-      f.puts "<td>N/A</a></td>"
+      f.puts '<td>N/A</a></td>'
     end
   first = false
   end
 end
 
 def print_res (i)
-  File.open($theresultfile, "w") do |f|
+  File.open($theresultfile, 'w') do |f|
     f.puts $header
-    f.puts "<body>"
+    f.puts '<body>'
     f.puts "<p>Benchmarking in progress: #{i}/#{$projects.length} <progress value=\"#{i}\" max=\"#{$projects.length}\" /></p>" unless i.nil?
-    f.puts "<table border=2 cellpadding=4 style=\"font-size: 90%\">"
-    gname = ""
+    f.puts '<table border=2 cellpadding=4 style="font-size: 90%">'
+    gname = ''
     $projects.each do |p|
-      if p.group != gname then
+      if p.group != gname
         gname = p.group
         f.puts "<tr><th colspan=#{3+$analyses.size}>#{gname}</th></tr>"
-        if $print_desc then
-          f.puts "<tr><th>#</th><th>Name</th><th>Description</th><th>Size</th>"
-        else
-          f.puts "<tr><th>#</th><th>Name</th><th>Size</th>"
-        end
+        f.puts '<tr><th>#</th><th>Name</th><th>Size</th>'
         $analyses.each do |a|
           aname = a[0]
           f.puts "<th>#{aname}</th>"
         end
       end
-      f.puts "<tr>"
+      f.puts '<tr>'
       f.puts p.to_html
       print_file_res(f, p.path)
-      f.puts "</tr>"
+      f.puts '</tr>'
       p.patches.each do |pfile|
-        f.puts "<tr>"
+        f.puts '<tr>'
         pname = File.basename(pfile)
         `cp #{pfile} #{$testresults + pname}`
         f.puts "<td>-</td><td><a href=\"#{pname}\">#{pname}</a></td>\n" + "<td><a href=\"#{pname}.html\">patched</a></td>\n"
         print_file_res(f, pfile)
-        f.puts "</tr>"
+        f.puts '</tr>'
       end
     end
-    f.puts "</table>"
-    f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
+    f.puts '</table>'
+    f.print '<p style="font-size: 80%; white-space: pre-line">'
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "Bench version: #{$bench_version}"
     f.puts "#{$goblint_version}"
-    f.puts "Goblint base configuration: <a href=\"conf.json\">conf.json</a>."
-    f.puts "Analysis definitions: <a href=\"bench.yaml\">bench.yaml</a>."
-    f.puts "</p>"
-    f.puts "</body>"
-    f.puts "</html>"
+    f.puts 'Goblint base configuration: <a href="conf.json">conf.json</a>.'
+    f.puts 'Analysis definitions: <a href="bench.yaml">bench.yaml</a>.'
+    f.puts '</p>'
+    f.puts '</body>'
+    f.puts '</html>'
   end
 end
 
@@ -224,7 +220,7 @@ groups.each do |group|
     params = '' if params.nil?
     path = File.expand_path(path, bench_path)
     size = "#{`wc -l #{path}`.split[0]} lines"
-    patches = if $incremental then Dir["#{path.chomp('.c')}*.patch"] else [] end
+    patches = $incremental ? Dir["#{path.chomp('.c')}*.patch"] : []
     name = File.basename(path, '.c')
     id += 1
     $projects << Project.new(id,name,size,url,gname,path,params,patches.sort)
@@ -247,19 +243,19 @@ END
 
 
 def proc_linux_res(resultfile, url, filename)
-  File.open(resultfile, "r") do |f|
-    File.open(resultfile + ".html", "w") do |o|
+  File.open(resultfile, 'r') do |f|
+    File.open(resultfile + '.html', 'w') do |o|
       o.puts $fileheader
-      while line = f.gets
+      while (line = f.gets)
         line.sub!(/\@(#{filename}:(\d+))/, "@<a href=\" #{url}#L\\2\">\\1</a>")
         if line =~ /race with/
-          o.puts '<font color="red">' + line.chop + "</font>"
+          o.puts '<font color="red">' + line.chop + '</font>'
         else
           o.puts line
         end
       end
-      o.puts "</body>"
-      o.puts "</html>"
+      o.puts '</body>'
+      o.puts '</html>'
     end
   end
 end
@@ -270,26 +266,26 @@ def analyze_project(p, save)
   filepath = p.path
   dirname = File.dirname(filepath)
   filename = File.basename(filepath)
-  resname = File.basename(p.name,".c")
+  resname = File.basename(p.name,'.c')
   Dir.chdir(dirname)
-  outfiles = $testresults + resname + ".*"
+  outfiles = "#{$testresults}#{resname}.*"
   `rm -f #{outfiles}`
-  if not p.url.start_with? "http" then
-    system($highlighter.call(p.path, $testresults + resname + ".html"))
-    p.url = p.name + ".html"
+  unless p.url.start_with? 'http'
+    system($highlighter.call(p.path, "#{$testresults}#{resname}.html"))
+    p.url = "#{p.name}.html"
   end
   puts "Analysing #{resname} (#{p.id}/#{$projects.length})"
   first = true
   $analyses.each do |a|
     aname = a[0]
     aparam = a[1]
-    if first then
-      aparam += " --enable incremental.save " if save
-      aparam += " --enable incremental.only-rename " if not save
-      aparam += " --set save_run original " if $compare
+    if first
+      aparam += ' --enable incremental.save ' if save
+      aparam += ' --enable incremental.only-rename ' unless save
+      aparam += ' --set save_run original ' if $compare
     else
-      aparam += " --enable incremental.load " if $incremental
-      aparam += " --set save_run increment " if $compare
+      aparam += ' --enable incremental.load ' if $incremental
+      aparam += ' --set save_run increment ' if $compare
     end
     print "  #{format("%*s", -$maxlen, aname)}"
     STDOUT.flush
@@ -300,7 +296,7 @@ def analyze_project(p, save)
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
-    File.open(outfile, "a") do |f|
+    File.open(outfile, 'a') do |f|
       f.puts "\n=== APPENDED BY BENCHMARKING SCRIPT ==="
       f.puts "Analysis began: #{starttime}"
       f.puts "Analysis ended: #{endtime}"
@@ -308,17 +304,17 @@ def analyze_project(p, save)
       f.puts "Goblint params: #{cmd}"
       f.puts $vrsn
     end
-    if status != 0 then
-      if status == 124 then
-        puts "-- Timeout!"
+    if status != 0
+      if status == 124
+        puts '-- Timeout!'
         `echo "TIMEOUT                    #{$timeout} s" >> #{outfile}`
       else
-        puts "-- Failed!"
+        puts '-- Failed!'
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
       system("#{$goblint} --disable dbg.compare_runs.glob --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
-      puts "-- Done!"
+      puts '-- Done!'
     end
     first = false
     print_res p.id
@@ -328,7 +324,7 @@ def analyze_project(p, save)
 end
 
 #analysing the files
-gname = ""
+gname = ''
 system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/conf.json")
 $projects.each do |p|
   if p.group != gname
@@ -338,11 +334,11 @@ $projects.each do |p|
   analyze_project(p, true)
   p.patches.each do |pfile|
     `patch -b #{p.path} #{pfile}`
-    pp = Project.new(p.id,pfile,p.size,"generate!",nil,p.path,p.params,nil)
+    pp = Project.new(p.id,pfile,p.size,'generate!',nil,p.path,p.params,nil)
     analyze_project(pp, false)
     `patch -b -R #{p.path} #{pfile}`
     `rm #{p.path}.orig`
   end
 end
 print_res nil
-puts ("Results: " + $theresultfile)
+puts ('Results: ' + $theresultfile)
