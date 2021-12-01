@@ -11,13 +11,14 @@ The benchmarks descriptions are assumed to be in a file called `bench.txt`. If t
 
 ## Incremental Benchmarks
 
-1. Edit the file `index/incremental.txt` to set the parameters. Do not add the incremental save and load commands since these are added by some ugly mechanism. (Be happy I'm keeping my hands away from goblint...)
-2. Run `./update_bench_incremental.rb`
+1. Create a setup definition, such as `index/defs/incremental.yaml`, to specify the different analyses and parameters to run. Do not add the incremental save and load commands since these are added by some ugly mechanisms.
+2. If necessary, edit the benchmark sets, such as `index/sets/posix.yaml`. 
+3. Run script with parameters for timeout, conf, and list of benchmark sets, e.g., `./update_bench_incremental.rb 60 index/defs/interactive.yaml index/sets/examples.yaml index/sets/posix.yaml`
 
 Add patches by changing some benchmark and doing, e.g., `git diff --no-prefix dtlk.c > dtlk04.patch`, and then of course restore the file. 
 
 ## Other Benchmarking scripts
 
-- [parallel-run.sh](https://github.com/goblint/bench/blob/2d8bc2c8cb2cd6499733c535b868643f45bcae49/parallel-run.sh) to run the config in that script in parallel and log each program
-- [csv-results.ml](https://github.com/goblint/bench/blob/2d8bc2c8cb2cd6499733c535b868643f45bcae49/csv-results.ml) to extract some numbers from each log and print a csv of it
-- [precision.sh](https://github.com/goblint/bench/blob/2d8bc2c8cb2cd6499733c535b868643f45bcae49/precision.sh) to let goblint compare two variants for each program and write the result to a .precision file
+- [parallel-run.sh](parallel-run.sh) to run the config in that script in parallel and log each program
+- [csv-results.ml](csv-results.ml) to extract some numbers from each log and print a csv of it
+- [precision.sh](precision.sh) to let goblint compare two variants for each program and write the result to a .precision file

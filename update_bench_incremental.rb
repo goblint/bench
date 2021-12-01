@@ -1,17 +1,15 @@
 #!/usr/bin/ruby
 require 'fileutils'
+require 'yaml'
 Dir.chdir(File.dirname(__FILE__))
 $goblint = File.expand_path("../analyzer/goblint")
-$goblint_conf = File.expand_path("index/incremental.json")
 fail "Please run script from goblint dir!" unless File.exist?($goblint)
 $goblint_version = `#{$goblint} --version`
 $bench_version = `git describe --all --long --dirty 2> /dev/null`
 results = "bench_result"
 Dir.mkdir(results) unless Dir.exist?(results)
 $testresults = File.expand_path("bench_result") + "/"
-bench = "./"
-linux = bench + "linux/"
-$compare = true
+bench_path = "./"
 
 cmds = {"code2html" => lambda {|f,o| "code2html -l c -n #{f} 2> /dev/null 1> #{o}"},
         "source-highlight" => lambda {|f,o| "source-highlight -n -i #{f} -o #{o}"},
@@ -47,7 +45,7 @@ class Project
     "<td>#{@id}</td><td><a href=\"#{@url}\">#{@name}</a></td>\n" + "<td>#{@size}</td>\n"
   end
   def to_s
-    "#{@name}"
+    @name.to_s
   end
 end
 
@@ -178,6 +176,7 @@ def print_res (i)
     f.puts "Bench version: #{$bench_version}"
     f.puts "#{$goblint_version}"
     f.puts "Goblint base configuration: <a href=\"conf.json\">conf.json</a>."
+    f.puts "Analysis definitions: <a href=\"bench.yaml\">bench.yaml</a>."
     f.puts "</p>"
     f.puts "</body>"
     f.puts "</html>"
@@ -186,51 +185,49 @@ end
 
 #Command line parameters
 
-$timeout = 900
-$timeout = ARGV[0].to_i unless ARGV[0].nil?
-only = ARGV[1] unless ARGV[1].nil?
-if only == "group" then
-  only = nil
-  thegroup = ARGV[2]
+if ARGV[2].nil?
+  puts 'You must run command with timout, conf, and at least one benchmark set, e.g.:'
+  puts './update_bench_incremental.rb 60 index/defs/interactive.yaml index/sets/posix.yaml'
+  exit 1
 end
 
+$timeout = ARGV[0].to_i
+conf_file = ARGV[1]
+groups = ARGV[2..-1]
+
 #processing the input file
+FileUtils.cp(conf_file, File.join($testresults, 'bench.yaml'))
 
-skipgrp = []
-file = "index/interactive.txt"
-$linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-
-FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
 $analyses = []
-File.open(file, "r") do |f|
-  id = 0
-  while line = f.gets
-    next if line =~ /^\s*$/
-    if line =~ /Group: (.*)/
-      gname = $1.chomp
-      skipgrp << gname if line =~ /SKIP/
-          elsif line =~ /(.*): ?(.*)/
-      $analyses << [$1,$2]
-    else
-      name = line.chomp
-      url = f.gets.chomp
-      path = f.gets.chomp
-      params = f.gets.chomp
-      params = "" if params == "-"
-      if url == "linux!" then
-        params = "--enable kernel " + params
-        url = $linuxroot + path
-        path = File.expand_path(path, linux)
-      else
-        path = File.expand_path(path, bench)
-      end
-      size = `wc -l #{path}`.split[0] + " lines"
-      id += 1
-      patches = Dir["#{path.chomp(".c")}*.patch"]
-      p = Project.new(id,name,size,url,gname,path,params,patches.sort)
-      $projects << p
-    end
+conf = YAML.load_file(conf_file)
+$goblint_conf = File.expand_path(conf['baseconf'])
+abort("Configuration lacks base conf: #{$goblint_conf}") unless File.exist?($goblint_conf)
+
+$compare = conf['compare']
+$incremental = conf['incremental']
+
+conf.delete('compare')
+conf.delete('baseconf')
+conf.delete('incremental')
+conf.each { |(key, value)| $analyses << [key, value.nil? ? '' : value] }
+
+id = 0
+groups.each do |group|
+  benchmarks = YAML.load_file(group)
+  gname = File.basename(group, '.yaml').upcase
+  #TODO: name is ignored because it breaks patch hacks.
+  benchmarks.each do |name, spec|
+    url = spec['info']
+    path = spec['path']
+    params = spec['params']
+    params = '' if params.nil?
+    path = File.expand_path(path, bench_path)
+    size = "#{`wc -l #{path}`.split[0]} lines"
+    patches = if $incremental then Dir["#{path.chomp('.c')}*.patch"] else [] end
+    name = File.basename(path, '.c')
+    id += 1
+    $projects << Project.new(id,name,size,url,gname,path,params,patches.sort)
   end
 end
 
@@ -291,7 +288,7 @@ def analyze_project(p, save)
       aparam += " --enable incremental.only-rename " if not save
       aparam += " --set save_run original " if $compare
     else
-      aparam += " --enable incremental.load "
+      aparam += " --enable incremental.load " if $incremental
       aparam += " --set save_run increment " if $compare
     end
     print "  #{format("%*s", -$maxlen, aname)}"
@@ -334,10 +331,7 @@ end
 gname = ""
 system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/conf.json")
 $projects.each do |p|
-  next if skipgrp.member? p.group
-  next unless thegroup.nil? or p.group == thegroup
-  next unless only.nil? or p.name == only
-  if p.group != gname then
+  if p.group != gname
     gname = p.group
     puts gname
   end
