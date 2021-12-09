@@ -42,7 +42,13 @@ class Project
     @patches  = patches
   end
   def to_html
-    "<td>#{@id}</td><td><a href=\"#{@url}\">#{@name}</a></td>\n" + "<td>#{@size}</td>\n"
+    name = @name
+    if @url.end_with? 'html'
+      name = "<a href=\"#{@url}\">#{@name}</a>"
+    else
+      name = "<div title=\"#{@url}\">#{@name}</div>"
+    end
+    "<td>#{@id}</td><td>#{name}</td>\n" + "<td>#{@size}</td>\n"
   end
   def to_s
     @name.to_s
@@ -268,9 +274,7 @@ def analyze_project(p, save)
   filename = File.basename(filepath)
   resname = File.basename(p.name,'.c')
   Dir.chdir(dirname)
-  outfiles = "#{$testresults}#{resname}.*"
-  `rm -f #{outfiles}`
-  unless p.url.start_with? 'http'
+  unless p.url.start_with?('http') || (p.size.to_i > 100)
     system($highlighter.call(p.path, "#{$testresults}#{resname}.html"))
     p.url = "#{p.name}.html"
   end
@@ -313,7 +317,7 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      system("#{$goblint} --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} > #{outfile}.compare.txt") if $compare and not first
+      system("#{$goblint} --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} | sed '2000,/Comparison summary/{/Comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
       puts '-- Done!'
     end
     first = false
@@ -325,6 +329,7 @@ end
 
 #analysing the files
 gname = ''
+system("rm -f #{$testresults}/*")
 system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/conf.json")
 $projects.each do |p|
   if p.group != gname
