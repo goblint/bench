@@ -9,45 +9,27 @@ $bench_version = `git describe --all --long --dirty 2> /dev/null`
 results = 'bench_result'
 Dir.mkdir(results) unless Dir.exist?(results)
 $testresults = File.expand_path('bench_result') + '/'
-bench_path = './'
-
-cmds = {'code2html' => lambda {|f,o| "code2html -l c -n #{f} 2> /dev/null 1> #{o}"},
-        'source-highlight' => lambda {|f,o| "source-highlight -n -i #{f} -o #{o}"},
-        'pygmentize' => lambda {|f,o| "pygmentize -O full,linenos=1 -o #{o} #{f}"}
-       }
-$highlighter = nil
-cmds.each do |name, cmd|
-  # if `which #{cmd} 2> /dev/null`.empty? then
-  if ENV['PATH'].split(':').map {|f| File.executable? "#{f}/#{name}"}.include?(true)
-    $highlighter = cmd
-    break
-  end
-end
-if $highlighter.nil?
-  puts 'Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize).'
-  $highlighter = lambda {|f,o| "cp #{f} #{o}"}
-end
+$bench_path = File.expand_path('.') + '/'
+$repo_url = 'https://github.com/goblint/bench/blob/master/'
 
 class Project
   attr_reader :id, :name, :group, :path, :patches, :size
-  attr_accessor :url, :params
-  def initialize(id, name, size, url, group, path, params, patches)
+  attr_accessor :info, :params, :url
+  def initialize(id, name, size, info, group, path, params, patches)
     @id       = id
     @name     = name
     @size     = size
-    @url      = url
+    @info     = info
     @group    = group
     @path     = path
     @params   = params
     @patches  = patches
   end
+  def url
+    $repo_url + @path
+  end
   def to_html
-    name = @name
-    if @url.end_with? 'html'
-      name = "<a href=\"#{@url}\">#{@name}</a>"
-    else
-      name = "<div title=\"#{@url}\">#{@name}</div>"
-    end
+    name = "<div title=\"#{@info}\"><a href=\"#{url}\">#{@name}</a></div>"
     "<td>#{@id}</td><td>#{name}</td>\n" + "<td>#{@size}</td>\n"
   end
   def to_s
@@ -55,21 +37,6 @@ class Project
   end
 end
 
-# class Patch
-#   attr_reader :name, :path
-#   attr_accessor :url,
-#   def initialize(size, url, group, path, params, patches)
-#     @size     = size
-#     @url      = url
-#     @path     = path
-#   end
-#   def to_html
-#     "<td>-</td><td><a href=\"#{@url}\">#{@name}</a></td>\n" + "<td>#{@size}</td>\n"
-#   end
-#   def to_s
-#     "#{@name}"
-#   end
-# end
 
 $projects = []
 
@@ -220,16 +187,16 @@ groups.each do |group|
   gname = File.basename(group, '.yaml').upcase
   #TODO: name is ignored because it breaks patch hacks.
   benchmarks.each do |name, spec|
-    url = spec['info']
+    info = spec['info']
     path = spec['path']
     params = spec['params']
     params = '' if params.nil?
-    path = File.expand_path(path, bench_path)
+    fullpath = File.expand_path(path, $bench_path)
     size = "#{`wc -l #{path}`.split[0]} lines"
-    patches = $incremental ? Dir["#{path.chomp('.c')}*.patch"] : []
+    patches = $incremental ? Dir["#{fullpath.chomp('.c')}*.patch"] : []
     name = File.basename(path, '.c')
     id += 1
-    $projects << Project.new(id,name,size,url,gname,path,params,patches.sort)
+    $projects << Project.new(id,name,size,info,gname,path,params,patches.sort)
   end
 end
 
@@ -248,14 +215,16 @@ $fileheader = <<END
 END
 
 
-def proc_linux_res(resultfile, url, filename)
+def proc_res(resultfile, url, filename)
   File.open(resultfile, 'r') do |f|
     File.open(resultfile + '.html', 'w') do |o|
       o.puts $fileheader
       while (line = f.gets)
-        line.sub!(/\@(#{filename}:(\d+))/, "@<a href=\" #{url}#L\\2\">\\1</a>")
-        if line =~ /race with/
+        line.gsub!(/(#{filename}:(\d+))/, "<a href=\" #{url}#L\\2\">\\1</a>")
+        if line =~ /race with|\[Warning\]/
           o.puts '<font color="red">' + line.chop + '</font>'
+        elsif line =~ /\[Success\]/
+          o.puts '<font color="green">' + line.chop + '</font>'
         else
           o.puts line
         end
@@ -269,15 +238,11 @@ end
 
 $maxlen = $analyses.map { |x| x[0].length }.max + 1
 def analyze_project(p, save)
-  filepath = p.path
+  filepath = File.expand_path(p.path, $bench_path)
   dirname = File.dirname(filepath)
   filename = File.basename(filepath)
   resname = File.basename(p.name,'.c')
   Dir.chdir(dirname)
-  unless p.url.start_with?('http') || (p.size.to_i > 100)
-    system($highlighter.call(p.path, "#{$testresults}#{resname}.html"))
-    p.url = "#{p.name}.html"
-  end
   puts "Analysing #{resname} (#{p.id}/#{$projects.length})"
   first = true
   $analyses.each do |a|
@@ -322,7 +287,7 @@ def analyze_project(p, save)
     end
     first = false
     print_res p.id
-    proc_linux_res(outfile, p.url, filename)
+    proc_res(outfile, p.url, filename)
   end
   `rm -rf original increment` if $compare
 end
@@ -337,13 +302,15 @@ $projects.each do |p|
     puts gname
   end
   analyze_project(p, true)
+  path = File.expand_path(p.path, $bench_path)
   p.patches.each do |pfile|
-    `patch -b #{p.path} #{pfile}`
-    pp = Project.new(p.id,pfile,p.size,'generate!',nil,p.path,p.params,nil)
+    `patch -b #{path} #{pfile}`
+    pp = Project.new(p.id,pfile,p.size,'patch',nil,path,p.params,nil)
     analyze_project(pp, false)
-    `patch -b -R #{p.path} #{pfile}`
-    `rm #{p.path}.orig`
+    `patch -b -R #{path} #{pfile}`
+    `rm #{path}.orig`
   end
+  `rm -rf incremental_data`
 end
 print_res nil
 puts ('Results: ' + $theresultfile)
