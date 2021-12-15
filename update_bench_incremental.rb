@@ -96,10 +96,10 @@ def print_file_res (f, path)
             thenumbers = " (#{thenumbers})" unless thenumbers.nil?
             f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s / #{vars} vars / #{evals} evals</a>#{thenumbers}</td>"
           else
-            f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
+            f.puts "<td><a href=\"#{outfile}.html\">failed (code: #{cod.first.to_s})</a></td>"
           end
         else
-    f.puts "<td><a href=\"#{outfile}\">#{res.first.to_s} s</a> (limit)</td>"
+    f.puts "<td><a href=\"#{outfile}.html\">#{res.first.to_s} s</a> (limit)</td>"
         end
       end
     else
