@@ -144,8 +144,8 @@ def print_res (i)
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "Bench version: #{$bench_version}"
     f.puts "#{$goblint_version}"
-    f.puts 'Goblint base configuration: <a href="conf.json">conf.json</a>.'
-    f.puts 'Analysis definitions: <a href="bench.yaml">bench.yaml</a>.'
+    f.puts "Goblint base configuration: <a href=\"#{$goblint_conf_name}\">#{$goblint_conf_name}</a>."
+    f.puts "Analysis definitions: <a href=\"#{$conf_name}\">#{$conf_name}</a>."
     f.puts '</p>'
     f.puts '</body>'
     f.puts '</html>'
@@ -165,12 +165,12 @@ conf_file = ARGV[1]
 groups = ARGV[2..-1]
 
 #processing the input file
-FileUtils.cp(conf_file, File.join($testresults, 'bench.yaml'))
-
 
 $analyses = []
 conf = YAML.load_file(conf_file)
+$conf_name = File.basename(conf_file)
 $goblint_conf = File.expand_path(conf['baseconf'])
+$goblint_conf_name = File.basename($goblint_conf)
 abort("Configuration lacks base conf: #{$goblint_conf}") unless File.exist?($goblint_conf)
 
 $compare = conf['compare']
@@ -295,7 +295,8 @@ end
 #analysing the files
 gname = ''
 system("rm -f #{$testresults}/*")
-system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/conf.json")
+FileUtils.cp(conf_file, File.join($testresults, $conf_name))
+system("#{$goblint} --conf #{$goblint_conf} --writeconf #{$testresults}/#{$goblint_conf_name}")
 $projects.each do |p|
   if p.group != gname
     gname = p.group
