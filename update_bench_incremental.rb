@@ -156,7 +156,7 @@ end
 
 if ARGV[2].nil?
   puts 'You must run command with timout, conf, and at least one benchmark set, e.g.:'
-  puts './update_bench_incremental.rb 60 index/defs/interactive.yaml index/sets/posix.yaml'
+  puts './update_bench_incremental.rb 60 index/defs/incremental.yaml index/sets/posix.yaml'
   exit 1
 end
 
