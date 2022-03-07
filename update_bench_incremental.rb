@@ -282,7 +282,7 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      system("#{$goblint} --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} | sed '2000,/Comparison summary/{/Comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
+      system("#{$goblint} --conf #{$goblint_conf} -v --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} #{p.params} 2>&1 | sed '2000,/Comparison summary/{/Comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
       puts '-- Done!'
     end
     first = false
