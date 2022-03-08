@@ -1,0 +1,2 @@
+#!/bin/sh
+../analyzer/goblint --enable kernel --set pre.kernel-root . ib_isert_rc.c
