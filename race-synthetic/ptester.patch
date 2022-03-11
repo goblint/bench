@@ -1,0 +1,22 @@
+diff --git a/race-synthetic/ptester.c b/pthread/ptester.c
+index f4c7f37..3e9a9cb 100644
+--- a/race-synthetic/ptester.c
++++ b/pthread/ptester.c
+@@ -646,7 +646,7 @@ int main(int argc,
+ 
+     printf("Actual test time.. %d seconds\n", test_length);
+     
+-    // pthread_mutex_lock(&result_lock);
++    pthread_mutex_lock(&result_lock);
+     printf("Total requests.... %d (%d requests/sec)\n",
+ 	   total_nrq,
+ 	   total_nrq / test_length);
+@@ -658,7 +657,7 @@ int main(int argc,
+     printf("Total bytes....... %d (%d bytes/sec)\n",
+ 	   total_bytes,
+ 	   total_bytes / test_length);
+-    // pthread_mutex_unlock(&result_lock);
++    pthread_mutex_unlock(&result_lock);
+     
+     putchar('\n');
+     printf("Min Tx: %.4f\n", min_tx / (keepalive ? (double) keepalive : 1));

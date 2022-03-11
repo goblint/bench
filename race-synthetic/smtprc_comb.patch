@@ -1,0 +1,22 @@
+diff --git a/race-synthetic/smtprc_comb.c b/pthread/smtprc_comb.c
+index c8eba38..8aaffec 100644
+--- a/race-synthetic/smtprc_comb.c
++++ b/pthread/smtprc_comb.c
+@@ -2378,7 +2378,7 @@ void start_scan(void)
+   while (o.cur_host < o.no_hostnames) {
+     pthread_mutex_lock(& main_thread_count_mutex);
+     while ((int )o.cur_threads >= (int )o.number_of_threads) {
+-      pthread_mutex_unlock(& main_thread_count_mutex);
++      // pthread_mutex_unlock(& main_thread_count_mutex);
+       debug((char *)"Sleeping cur child == %d, max child == %d\n", o.cur_threads,
+             o.number_of_threads);
+       nanosleep((struct timespec  const  *)(& tv), (struct timespec *)((void *)0));
+@@ -2409,7 +2409,7 @@ void start_scan(void)
+   flag = (unsigned char)0;
+   pthread_mutex_lock(& main_thread_count_mutex);
+   while ((int )o.cur_threads > 0) {
+-    pthread_mutex_unlock(& main_thread_count_mutex);
++    // pthread_mutex_unlock(& main_thread_count_mutex);
+     flag = (unsigned char )((int )flag + 1);
+     if (f.debug) {
+       goto _L;

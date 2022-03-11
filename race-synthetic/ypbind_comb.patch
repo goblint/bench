@@ -1,0 +1,22 @@
+diff --git a/race-synthetic/ypbind_comb.c b/pthread/ypbind_comb.c
+index 4affcd0..255923b 100644
+--- a/race-synthetic/ypbind_comb.c
++++ b/pthread/ypbind_comb.c
+@@ -5218,7 +5218,7 @@ static int get_entry(char const   *domain___0 , struct binding **entry )
+       exit(1);
+     }
+ #line 373
+-    // pthread_mutex_lock(& search_lock);
++    pthread_mutex_lock(& search_lock);
+     strcpy((char * __restrict  )((domainlist + (max_domains - 1))->domain), (char const   * __restrict  )domain___0);
+ #line 374
+     (domainlist + (max_domains - 1))->ypset.host = (char *)((void *)0);
+@@ -5230,7 +5229,7 @@ static int get_entry(char const   *domain___0 , struct binding **entry )
+     memset((void *)((domainlist + (max_domains - 1))->server), 0, 30U * sizeof(struct bound_server ));
+ #line 379
+     (*entry) = domainlist + (max_domains - 1);
+-    // pthread_mutex_unlock(& search_lock);
++    pthread_mutex_unlock(& search_lock);
+   }
+ #line 382
+   return (0);

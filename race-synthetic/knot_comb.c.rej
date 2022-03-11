@@ -1,0 +1,27 @@
+***************
+*** 1280,1291 ****
+        conn_fail = g_conn_fail;
+        g_conn_fail = 0;
+        conn_active = g_conn_active;
+-       pthread_mutex_lock(& g_cache_mutex);
+        cache_hits = g_cache_hits;
+        g_cache_hits = 0;
+        cache_misses = g_cache_misses;
+        g_cache_misses = 0;
+-       pthread_mutex_unlock(& g_cache_mutex);
+        printf((char const   * __restrict  )"rate: %.3g Mbits/sec   %.0f open/sec   %.0f succ/sec   %.0f fail/sec   active: %d   misses: %d   hitrate: %.1f%%   ",
+               (((double )bytes_sent * (double )8) * (double )1000000) / ((double )(now - start) * (double )1048576),
+               ((double )conn_open * (double )1000000) / (double )(now - start), ((double )conn_succeed * (double )1000000) / (double )(now - start),
+--- 1280,1291 ----
+        conn_fail = g_conn_fail;
+        g_conn_fail = 0;
+        conn_active = g_conn_active;
++       //pthread_mutex_lock(& g_cache_mutex);
+        cache_hits = g_cache_hits;
+        g_cache_hits = 0;
+        cache_misses = g_cache_misses;
+        g_cache_misses = 0;
++       //pthread_mutex_unlock(& g_cache_mutex);
+        printf((char const   * __restrict  )"rate: %.3g Mbits/sec   %.0f open/sec   %.0f succ/sec   %.0f fail/sec   active: %d   misses: %d   hitrate: %.1f%%   ",
+               (((double )bytes_sent * (double )8) * (double )1000000) / ((double )(now - start) * (double )1048576),
+               ((double )conn_open * (double )1000000) / (double )(now - start), ((double )conn_succeed * (double )1000000) / (double )(now - start),

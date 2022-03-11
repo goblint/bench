@@ -1,0 +1,19 @@
+diff --git a/race-synthetic/ctrace_comb.c b/race-synthetic/ctrace_comb.c
+index b913f43..932cec0 100644
+--- a/race-synthetic/ctrace_comb.c
++++ b/race-synthetic/ctrace_comb.c
+@@ -722,12 +722,12 @@ int trc_turn_thread_on(tid_t id )
+   if (id == 0UL) {
+     id = pthread_self();
+   }
+-  // pthread_mutex_lock(& _hashmutex);
++  pthread_mutex_lock(& _hashmutex);
+   if (! _hashreads) {
+     sem_wait(& _hashsem);
+   }
+   _hashreads ++;
+-  // pthread_mutex_unlock(& _hashmutex);
++  pthread_mutex_unlock(& _hashmutex);
+   t = trc_thread(id);
+   if (t) {
+     t->on = 1;
