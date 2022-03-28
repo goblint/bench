@@ -185,7 +185,7 @@ end
 skipgrp = []
 file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-File.symlink("index/traces.txt",file) unless FileTest.exists? file
+File.symlink("index/traces-relational.txt",file) unless FileTest.exists? file
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
@@ -286,7 +286,7 @@ $projects.each do |p|
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -307,6 +307,9 @@ $projects.each do |p|
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
+      # Run again to get precision dump
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
+      system(cmd)
       puts "-- Done!"
       precfiles << precfile
     end
