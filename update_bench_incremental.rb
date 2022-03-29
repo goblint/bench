@@ -87,10 +87,14 @@ def print_file_res (f, path)
               safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
               vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
               unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+              total = lines.grep(/total:[ ]*([0-9]*)/) { |x| $1.to_i } .first
               uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-              thenumbers =  "<font color=\"green\">#{safely}</font>; "
-              thenumbers << "<font color=\"orange\">#{vulner}</font> + "
-              thenumbers << "<font color=\"red\">#{unsafe}</font>"
+              deadlock = lines.grep(/\[Deadlock\]/).size
+              thenumbers =  "<font color=\"green\">#{safely}</font>+"
+              thenumbers << "<font color=\"orange\">#{vulner}</font>+"
+              thenumbers << "<font color=\"red\">#{unsafe}</font>="
+              thenumbers << "#{total}"
+              thenumbers << "; <font color=\"blue\">#{deadlock}</font>"
               thenumbers << "; <font color=\"magenta\">#{uncalled}</font>" if uncalled > 0
             end
             thenumbers = " (#{thenumbers})" unless thenumbers.nil?
@@ -189,7 +193,7 @@ groups.each do |group|
   benchmarks.each do |name, spec|
     info = spec['info']
     path = spec['path']
-    params = spec['params']
+    params = spec['param']
     params = '' if params.nil?
     fullpath = File.expand_path(path, $bench_path)
     size = "#{`wc -l #{path}`.split[0]} lines"

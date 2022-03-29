@@ -1,0 +1,18 @@
+diff --git a/race-synthetic/pfscan_comb.c b/pthread/pfscan_comb.c
+index ea9e7d7..3360da5 100644
+--- a/race-synthetic/pfscan_comb.c
++++ b/pthread/pfscan_comb.c
+@@ -1177,11 +1177,11 @@ int main(int argc , char **argv )
+   if (debug) {
+     fprintf((FILE * __restrict  )stderr, (char const   * __restrict  )"Waiting for workers to finish...\n");
+   }
+-  // pthread_mutex_lock(& aworker_lock);
++  pthread_mutex_lock(& aworker_lock);
+   while (aworkers > 0) {
+     pthread_cond_wait((pthread_cond_t * __restrict  )(& aworker_cv), (pthread_mutex_t * __restrict  )(& aworker_lock));
+   }
+-  // pthread_mutex_unlock(& aworker_lock);
++  pthread_mutex_unlock(& aworker_lock);
+   if (debug) {
+     fprintf((FILE * __restrict  )stderr, (char const   * __restrict  )"n_files = %d, n_matches = %d, n_workers = %d, n_Mbytes = %d\n",
+             n_files, n_matches, nworkers, (int )(n_bytes / 1000000U));
