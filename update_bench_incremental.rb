@@ -191,7 +191,7 @@ groups.each do |group|
   benchmarks.each do |name, spec|
     info = spec['info']
     path = spec['path']
-    params = spec['params']
+    params = spec['param']
     params = '' if params.nil?
     fullpath = File.expand_path(path, $bench_path)
     size = "#{`wc -l #{path}`.split[0]} lines"
