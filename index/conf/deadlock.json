@@ -1,0 +1,62 @@
+{
+  "pre": {
+    "cppflags": [
+      "-D GOBLINT_NO_PTHREAD_ONCE",
+      "-U __weak"
+    ]
+  },
+  "ana": {
+    "base": {
+      "arrays": {
+        "domain": "partitioned"
+      }
+    },
+    "int": {
+      "def_exc": true,
+      "enums": false,
+      "interval": true
+    },
+    "activated": [
+      "base",
+      "threadid",
+      "threadflag",
+      "mallocWrapper",
+      "mutex",
+      "access",
+      "escape",
+      "expRelation",
+      "var_eq",
+      "symb_locks",
+      "mhp",
+      "deadlock"
+    ],
+    "context": {
+      "widen": false
+    },
+    "opt": {
+	    "hashcons": false
+    },
+    "malloc": {
+      "wrappers": [
+        "kmalloc",
+        "__kmalloc",
+        "usb_alloc_urb",
+        "__builtin_alloca",
+        "kzalloc",
+        "ldv_malloc",
+        "kzalloc_node",
+        "ldv_zalloc",
+        "kmalloc_array",
+        "kcalloc"
+      ]
+    }
+  },
+  "sem": {
+    "unknown_function": {
+      "spawn": false
+    },
+    "int": {
+      "signed_overflow": "assume_none"
+    }
+  }
+}
