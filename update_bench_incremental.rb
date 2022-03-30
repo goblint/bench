@@ -83,7 +83,7 @@ def print_file_res (f, path)
                   when 'less precise than' then '⊒'
                 end
                 thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
-                thenumbers = "<a href=\"#{outfile}.compare.messages.txt\">M</a>"
+                thenumbers << " <a href=\"#{outfile}.compare.messages.txt\">M</a>"
               end
             else
               safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
