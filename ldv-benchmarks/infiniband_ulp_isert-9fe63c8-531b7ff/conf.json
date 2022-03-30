@@ -1,0 +1,99 @@
+{
+  "kernel": true,
+  "pre": {
+    "kernel-root": ".",
+    "cppflags": [
+      "-D GOBLINT_NO_PTHREAD_ONCE",
+      "-U __weak"
+    ]
+  },
+  "ana": {
+    "activated": [
+      "expRelation",
+      "base",
+      "threadid",
+      "threadflag",
+      "threadreturn",
+      "escape",
+      "mutex",
+      "access",
+      "mallocWrapper",
+      "mhp",
+      "region",
+      "symb_locks"
+    ],
+    "path_sens": [
+      "mutex",
+      "malloc_null",
+      "uninit"
+    ],
+    "ctx_insens": [
+      "stack_loc",
+      "stack_trace_set"
+    ],
+    "int": {
+      "def_exc": true,
+      "interval": false,
+      "enums": false,
+      "congruence": false,
+      "refinement": "never",
+      "def_exc_widen_by_join": false,
+      "interval_threshold_widening": false
+    },
+    "base": {
+      "context": {
+        "non-ptr": true,
+        "int": true,
+        "interval": true
+      },
+      "partition-arrays": {
+        "enabled": false,
+        "keep-expr": "first",
+        "partition-by-const-on-return": false,
+        "smart-join": false
+      },
+      "structs": {
+        "domain": "simple",
+        "key": {
+          "forward": true,
+          "avoid-ints": true,
+          "prefer-ptrs": true
+        }
+      },
+      "privatization": "protection-read"
+    },
+    "malloc": {
+      "wrappers": [
+        "kmalloc",
+        "__kmalloc",
+        "usb_alloc_urb",
+        "__builtin_alloca",
+        "kzalloc"
+      ]
+    },
+    "context": {
+      "widen": false
+    },
+    "thread": {
+      "domain": "history",
+      "include-node": true
+    }
+  },
+  "incremental": {
+    "load": false,
+    "only-rename": false,
+    "save": false,
+    "stable": true,
+    "wpoint": false,
+    "reluctant": {
+      "on": true,
+      "compare": "leq"
+    },
+    "compare": "ast",
+    "force-reanalyze": {
+      "funs": [
+
+      ]
+    }
+  }
+}

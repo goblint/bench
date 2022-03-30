@@ -1,0 +1,28 @@
+diff --git a/race-injection/aget_comb.c b/race-injection/aget_comb.c
+index c7d24b4..8ee601e 100644
+--- a/race-injection/aget_comb.c
++++ b/race-injection/aget_comb.c
+@@ -1042,12 +1042,15 @@ void sigint_handler(void)
+   exit(0);
+ }
+ }
++pthread_mutex_t bwritten_mutex  =    {{0, 0U, 0, 0, 0U, {0}}};
+ void sigalrm_handler(void) 
+ { 
+ 
+   {
+   printf((char const   * __restrict  )"Signal Alarm came\n");
++  pthread_mutex_lock(& bwritten_mutex);
+   updateProgressBar((float )bwritten, (float )req->clength);
++  pthread_mutex_unlock(& bwritten_mutex);
+   alarm(1U);
+   return;
+ }
+@@ -1059,7 +1062,6 @@ extern int pthread_setcanceltype(int __type , int *__oldtype ) ;
+ extern  __attribute__((__nothrow__)) int pthread_mutex_lock(pthread_mutex_t *__mutex )  __attribute__((__nonnull__(1))) ;
+ extern  __attribute__((__nothrow__)) int pthread_mutex_unlock(pthread_mutex_t *__mutex )  __attribute__((__nonnull__(1))) ;
+ unsigned int bwritten  =    0U;
+-pthread_mutex_t bwritten_mutex  =    {{0, 0U, 0, 0, 0U, {0}}};
+ extern int ( /* missing proto */  pwrite)() ;
+ void *http_get(void *arg ) 
+ { struct thread_data *td ;
