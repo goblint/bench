@@ -3,6 +3,7 @@ require 'fileutils'
 require 'yaml'
 Dir.chdir(File.dirname(__FILE__))
 $goblint = File.expand_path('../analyzer/goblint')
+$messagesCompare = File.expand_path('../analyzer/_build/default/src/messagesCompare.exe')
 fail 'Please run script from goblint dir!' unless File.exist?($goblint)
 $goblint_version = `#{$goblint} --version`
 $bench_version = `git describe --all --long --dirty 2> /dev/null`
@@ -82,6 +83,7 @@ def print_file_res (f, path)
                   when 'less precise than' then '⊒'
                 end
                 thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
+                thenumbers = "<a href=\"#{outfile}.compare.messages.txt\">M</a>"
               end
             else
               safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
@@ -256,16 +258,18 @@ def analyze_project(p, save)
       aparam += ' --enable incremental.save ' if save
       aparam += ' --enable incremental.only-rename ' unless save
       aparam += ' --set save_run original ' if $compare
+      aparam += ' --set outfile original.messages.json ' if $compare
     else
       aparam += ' --enable incremental.load ' if $incremental
       aparam += ' --set save_run increment ' if $compare
+      aparam += ' --set outfile increment.messages.json ' if $compare
     end
     print "  #{format("%*s", -$maxlen, aname)}"
     STDOUT.flush
     outfile = $testresults + resname + ".#{aname}.txt"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{$goblint} --conf #{$goblint_conf} -v --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats 1>#{outfile} 2>&1"
+    cmd = "#{$goblint} --conf #{$goblint_conf} -v --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --set result json-messages 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -287,6 +291,7 @@ def analyze_project(p, save)
       end
     else
       system("#{$goblint} --conf #{$goblint_conf} -v --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} #{p.params} 2>&1 | sed '2000,/Comparison summary/{/Comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
+      system("#{$messagesCompare} --no-colors original.messages.json increment.messages.json > #{outfile}.compare.messages.txt") if $compare and not first
       puts '-- Done!'
     end
     first = false
@@ -294,6 +299,7 @@ def analyze_project(p, save)
     proc_res(outfile, p.url, filename)
   end
   `rm -rf original increment` if $compare
+  `rm original.messages.json increment.messages.json` if $compare
 end
 
 #analysing the files
