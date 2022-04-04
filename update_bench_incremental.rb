@@ -75,14 +75,14 @@ def print_file_res (f, path)
               unless first
                 compfile = "#{outfile}.compare.txt"
                 complines = File.readlines($testresults + compfile)
-                verdict = complines.grep(/^Comparison summary: original (.*) increment/) { |x| $1 }.first
+                verdict = complines.grep(/comparison summary: original (.*) increment/) { |x| $1 }.first
                 msg = case verdict
                   when 'equal to' then '='
                   when 'more precise than' then '⊑'
                   when 'incomparable to' then '≸'
                   when 'less precise than' then '⊒'
                 end
-                thenumbers = "<a href=\"#{compfile}\">#{msg}</a>"
+                thenumbers = "<a href=\"#{compfile}\">#{msg} </a>"
                 thenumbers << " <a href=\"#{outfile}.compare.messages.txt\">M</a>"
               end
             else
@@ -290,7 +290,7 @@ def analyze_project(p, save)
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      system("#{$goblint} --conf #{$goblint_conf} -v --disable dbg.compare_runs.glob --enable solverdiffs --compare_runs original increment #{filename} #{p.params} 2>&1 | sed '2000,/Comparison summary/{/Comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
+      system("#{$goblint} --conf #{$goblint_conf} -v --enable dbg.compare_runs.diff --compare_runs original increment #{filename} #{p.params} 2>&1 | sed '2000,/comparison summary/{/comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
       system("#{$messagesCompare} --no-colors original.messages.json increment.messages.json > #{outfile}.compare.messages.txt") if $compare and not first
       puts '-- Done!'
     end
