@@ -1,0 +1,34 @@
+diff --git a/race-synthetic/smtprc_comb.c b/race-synthetic/smtprc_comb.c
+index 8aaffec..ceb0341 100644
+--- a/race-synthetic/smtprc_comb.c
++++ b/race-synthetic/smtprc_comb.c
+@@ -2378,10 +2378,11 @@ void start_scan(void)
+   while (o.cur_host < o.no_hostnames) {
+     pthread_mutex_lock(& main_thread_count_mutex);
+     while ((int )o.cur_threads >= (int )o.number_of_threads) {
+-      pthread_mutex_unlock(& main_thread_count_mutex);
+       debug((char *)"Sleeping cur child == %d, max child == %d\n", o.cur_threads,
+             o.number_of_threads);
++      pthread_mutex_unlock(& main_thread_count_mutex);
+       nanosleep((struct timespec  const  *)(& tv), (struct timespec *)((void *)0));
++      pthread_mutex_lock(& main_thread_count_mutex);
+     }
+     pthread_mutex_unlock(& main_thread_count_mutex);
+     while (1) {
+@@ -2417,13 +2418,16 @@ void start_scan(void)
+       if ((int )f.verbose > 1) {
+         _L: /* CIL Label */ 
+         if ((int )flag > 1) {
++          pthread_mutex_lock(& main_thread_count_mutex);
+           fprintf((FILE * __restrict  )stderr, (char const   * __restrict  )"O.cur_childs(%d) id greater than zero...... sleepingz\n",
+                   o.cur_threads);
++          pthread_mutex_unlock(& main_thread_count_mutex);
+           flag = (unsigned char)0;
+         }
+       }
+     }
+     nanosleep((struct timespec  const  *)(& tv), (struct timespec *)((void *)0));
++    pthread_mutex_lock(& main_thread_count_mutex);
+   }
+   pthread_mutex_unlock(& main_thread_count_mutex);
+   return;
