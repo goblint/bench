@@ -3,6 +3,9 @@
 #include <ddverify/ddverify.h>
 #include <ddverify/ioport.h>
 
+int ddv_ioport_request_start;
+int ddv_ioport_request_len;
+
 inline struct resource *request_region(unsigned long start, unsigned long len, const char *name)
 {
   unsigned int i;    
