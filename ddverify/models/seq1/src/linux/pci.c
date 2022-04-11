@@ -5,7 +5,7 @@
 #include <ddverify/interrupt.h>
 #include <ddverify/pci.h>
 
-int pci_enable_device(struct pci_dev *dev)
+inline int pci_enable_device(struct pci_dev *dev)
 {
     int i;
 
@@ -16,7 +16,7 @@ int pci_enable_device(struct pci_dev *dev)
     }
 }
 
-struct pci_dev *pci_get_class (unsigned int class, struct pci_dev *from)
+inline struct pci_dev *pci_get_class (unsigned int class, struct pci_dev *from)
 {
     if (from == NULL) {
 	from = (struct pci_dev*)malloc(sizeof(struct pci_dev));
@@ -34,7 +34,7 @@ struct pci_dev *pci_get_class (unsigned int class, struct pci_dev *from)
     }
 }
 
-int pci_register_driver(struct pci_driver *driver)
+inline int pci_register_driver(struct pci_driver *driver)
 {
     if (nondet_int()) {
 	registered_pci_driver.pci_driver       = driver;
@@ -47,13 +47,13 @@ int pci_register_driver(struct pci_driver *driver)
     }
 }
 
-void pci_unregister_driver(struct pci_driver *driver)
+inline void pci_unregister_driver(struct pci_driver *driver)
 {
     registered_pci_driver.pci_driver       = NULL;
     registered_pci_driver.no_pci_device_id = 0;
 }
 
-void pci_release_region(struct pci_dev *pdev, int bar)
+inline void pci_release_region(struct pci_dev *pdev, int bar)
 {
     if (pci_resource_len(pdev, bar) == 0)
 	return;
@@ -65,7 +65,7 @@ void pci_release_region(struct pci_dev *pdev, int bar)
 			   pci_resource_len(pdev, bar));
 }
 
-int pci_request_region(struct pci_dev *pdev, int bar, const char *res_name)
+inline int pci_request_region(struct pci_dev *pdev, int bar, const char *res_name)
 {
     if (pci_resource_len(pdev, bar) == 0)
 	return 0;
@@ -84,8 +84,7 @@ int pci_request_region(struct pci_dev *pdev, int bar, const char *res_name)
     return 0;
 }
 
-
-void pci_release_regions(struct pci_dev *pdev)
+inline void pci_release_regions(struct pci_dev *pdev)
 {
     int i;
     
@@ -93,8 +92,7 @@ void pci_release_regions(struct pci_dev *pdev)
 	pci_release_region(pdev, i);
 }
 
-
-int pci_request_regions(struct pci_dev *pdev, const char *res_name)
+inline int pci_request_regions(struct pci_dev *pdev, const char *res_name)
 {
     int i;
     

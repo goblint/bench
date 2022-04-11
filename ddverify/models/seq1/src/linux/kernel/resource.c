@@ -6,7 +6,7 @@
 int ddv_ioport_request_start;
 int ddv_ioport_request_len;
 
-struct resource *request_region(unsigned long start, unsigned long len, const char *name)
+inline struct resource *request_region(unsigned long start, unsigned long len, const char *name)
 {
   unsigned int i;    
     struct resource *resource = (struct resource*)malloc(sizeof(struct resource));
@@ -20,7 +20,7 @@ struct resource *request_region(unsigned long start, unsigned long len, const ch
     return resource;
 }
 
-void release_region(unsigned long start, unsigned long len)
+inline void release_region(unsigned long start, unsigned long len)
 {
   unsigned int i = 0;
 
@@ -32,7 +32,7 @@ void release_region(unsigned long start, unsigned long len)
   ddv_ioport_request_len = 0;
 }
 
-unsigned char inb(unsigned int port)
+inline unsigned char inb(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -40,13 +40,13 @@ unsigned char inb(unsigned int port)
     return nondet_uchar();
 }
 
-void outb(unsigned char byte, unsigned int port)
+inline void outb(unsigned char byte, unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
 }
 
-unsigned short inw(unsigned int port)
+inline unsigned short inw(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -54,13 +54,13 @@ unsigned short inw(unsigned int port)
     return nondet_ushort();
 }
 
-void outw(unsigned short word, unsigned int port)
+inline void outw(unsigned short word, unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
 }
 
-unsigned inl(unsigned int port)
+inline unsigned inl(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -68,14 +68,13 @@ unsigned inl(unsigned int port)
     return nondet_unsigned();
 }
 
-void outl(unsigned doubleword, unsigned int port)
+inline void outl(unsigned doubleword, unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
 }
 
-
-unsigned char inb_p(unsigned int port)
+inline unsigned char inb_p(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -83,13 +82,13 @@ unsigned char inb_p(unsigned int port)
     return nondet_uchar();
 }
 
-void outb_p(unsigned char byte, unsigned int port)
+inline void outb_p(unsigned char byte, unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
 }
 
-unsigned short inw_p(unsigned int port)
+inline unsigned short inw_p(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -97,13 +96,13 @@ unsigned short inw_p(unsigned int port)
     return nondet_ushort();
 }
 
-void outw_p(unsigned short word, unsigned int port)
+inline void outw_p(unsigned short word, unsigned int port)
 {
  __CPROVER_HIDE:    
     ddv_correct_port_use(port);
 }
 
-unsigned inl_p(unsigned int port)
+inline unsigned inl_p(unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);
@@ -111,7 +110,7 @@ unsigned inl_p(unsigned int port)
     return nondet_unsigned();
 }
 
-void outl_p(unsigned doubleword, unsigned int port)
+inline void outl_p(unsigned doubleword, unsigned int port)
 {
  __CPROVER_HIDE:
     ddv_correct_port_use(port);

@@ -1,7 +1,7 @@
 #include <linux/interrupt.h>
 #include <ddverify/tasklet.h>
 
-void tasklet_schedule(struct tasklet_struct *t)
+inline void tasklet_schedule(struct tasklet_struct *t)
 {
     int i;
     int next_free = -1;
@@ -28,7 +28,7 @@ void tasklet_schedule(struct tasklet_struct *t)
     tasklet_registered[next_free].is_running = 0;
 }
 
-void tasklet_init(struct tasklet_struct *t,
+inline void tasklet_init(struct tasklet_struct *t,
 		  void (*func)(unsigned long), unsigned long data)
 {
     t->count = 0;

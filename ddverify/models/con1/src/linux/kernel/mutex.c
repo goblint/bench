@@ -1,7 +1,7 @@
 #include <ddverify/satabs.h>
 #include <linux/mutex.h>
 
-void mutex_init(struct mutex *lock)
+inline void mutex_init(struct mutex *lock)
 {
  __CPROVER_HIDE:
 #ifdef DDV_ASSERT_MUTEX
@@ -11,7 +11,7 @@ void mutex_init(struct mutex *lock)
     lock->init = 1;
 }
 
-void mutex_lock(struct mutex *lock)
+inline void mutex_lock(struct mutex *lock)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();
@@ -24,7 +24,7 @@ void mutex_lock(struct mutex *lock)
     __CPROVER_atomic_end();
 }
 
-void mutex_unlock(struct mutex *lock)
+inline void mutex_unlock(struct mutex *lock)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();

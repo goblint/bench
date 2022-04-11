@@ -1,7 +1,7 @@
 #include <linux/timer.h>
 #include <ddverify/timer.h>
 
-void init_timer(struct timer_list * timer)
+inline void init_timer(struct timer_list * timer)
 {
     if (number_timer_registered < MAX_TIMER_SUPPORT) {
 	timer->__ddv_active = 0;
@@ -12,8 +12,7 @@ void init_timer(struct timer_list * timer)
     }
 }
 
-
-void add_timer(struct timer_list *timer)
+inline void add_timer(struct timer_list *timer)
 {
 #ifdef DDV_ASSERT_TIMER
  __CPROVER_HIDE:
@@ -22,21 +21,18 @@ void add_timer(struct timer_list *timer)
     timer->__ddv_active = 1;
 }
 
-
-void add_timer_on(struct timer_list *timer, int cpu)
+inline void add_timer_on(struct timer_list *timer, int cpu)
 {
     // We do not care about the cpu number!   
     add_timer(timer);
 }
 
-
-int del_timer(struct timer_list * timer)
+inline int del_timer(struct timer_list * timer)
 {
     timer->__ddv_active = 0;
 }
 
-
-int mod_timer(struct timer_list *timer, unsigned long expires)
+inline int mod_timer(struct timer_list *timer, unsigned long expires)
 {
 #ifdef DDV_ASSERT_TIMER
  __CPROVER_HIDE:

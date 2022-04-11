@@ -2,7 +2,7 @@
 #include <ddverify/ddverify.h>
 #include <ddverify/workqueue.h>
 
-int schedule_work(struct work_struct *work)
+inline int schedule_work(struct work_struct *work)
 {
     int i;
 
@@ -27,7 +27,7 @@ int schedule_work(struct work_struct *work)
     return -1;
 }
 
-void call_shared_workqueue_functions()
+inline void call_shared_workqueue_functions()
 {
     unsigned short i = nondet_ushort();
     __CPROVER_assume(i < MAX_WORKQUEUE_ELEMENTS_SUPPORT);

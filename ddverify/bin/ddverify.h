@@ -141,7 +141,7 @@ tool_choice tool = SATABS;
 int      cbmc_slicing = 1;
 
 struct claim {
-    unsigned int number;
+    char *claim_id;
     char *file;
     unsigned int line;
     char *text;

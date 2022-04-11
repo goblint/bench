@@ -2,7 +2,7 @@
 #include <ddverify/ddverify.h>
 #include <ddverify/satabs.h>
 
-unsigned long __get_free_pages(gfp_t gfp_mask, unsigned int order)
+inline unsigned long __get_free_pages(gfp_t gfp_mask, unsigned int order)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {
@@ -10,7 +10,7 @@ unsigned long __get_free_pages(gfp_t gfp_mask, unsigned int order)
     }
 }
 
-unsigned long __get_free_page(gfp_t gfp_mask)
+inline unsigned long __get_free_page(gfp_t gfp_mask)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {
@@ -18,7 +18,7 @@ unsigned long __get_free_page(gfp_t gfp_mask)
     }
 }
 
-unsigned long get_zeroed_page(gfp_t gfp_mask)
+inline unsigned long get_zeroed_page(gfp_t gfp_mask)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {
@@ -26,8 +26,8 @@ unsigned long get_zeroed_page(gfp_t gfp_mask)
     }
 }
 
-static struct page *alloc_pages_node(int nid, gfp_t gfp_mask,
-				     unsigned int order)
+inline static struct page *alloc_pages_node(
+  int nid, gfp_t gfp_mask, unsigned int order)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {
@@ -35,7 +35,7 @@ static struct page *alloc_pages_node(int nid, gfp_t gfp_mask,
     }
 }
 
-struct page * alloc_pages(gfp_t gfp_mask, unsigned int order)
+inline struct page * alloc_pages(gfp_t gfp_mask, unsigned int order)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {
@@ -43,7 +43,7 @@ struct page * alloc_pages(gfp_t gfp_mask, unsigned int order)
     }
 }
 
-struct page * alloc_page(gfp_t gfp_mask)
+inline struct page * alloc_page(gfp_t gfp_mask)
 {
  __CPROVER_HIDE:
     if (gfp_mask & __GFP_WAIT) {

@@ -80,7 +80,7 @@ getline(char **lineptr, size_t *n, FILE *stream)
 
 void print_msg(char *msg)
 {
-    fprintf(stdout, msg);
+    fprintf(stdout, "%s", msg);
     fflush(stdout);
 }
 
@@ -260,7 +260,7 @@ void write_cc_file()
 	close(fh);
 	
 	fp = fopen(output_cc_file, "a");
-	fprintf(fp, content);
+	fprintf(fp, "%s", content);
 	fclose(fp);
     } else {
 	fprintf(stderr, "Error: Could not create c file!\n");
@@ -361,7 +361,7 @@ void write_compile_script()
 	close(fh);
 	
 	fp = fopen(output_compile_file, "a");
-	fprintf(fp, script);
+	fprintf(fp, "%s", script);
 	fclose(fp);
     } else {
 	fprintf(stderr, "Error: Could not create compile script!\n");
@@ -382,14 +382,14 @@ void write_tool_script()
     strcat(script, (tool==SATABS)?"satabs":"cbmc");
     strcat(script, " $* ");
     
-    if (!check_bounds) {
-	strcat(script, " --no-bounds-check ");
+    if (check_bounds) {
+	strcat(script, " --bounds-check ");
     }
-    if (!check_pointer) {
-	strcat(script, " --no-pointer-check ");
+    if (check_pointer) {
+	strcat(script, " --pointer-check ");
     }
-    if (!check_div_by_zero) {
-	strcat(script, " --no-div-by-zero-check ");       
+    if (check_div_by_zero) {
+	strcat(script, " --div-by-zero-check ");       
     }
     
     switch (word_width) {
@@ -461,7 +461,7 @@ void write_tool_script()
 	close(fh);
 	
 	fp = fopen(output_tool_file, "a");
-	fprintf(fp, script);
+	fprintf(fp, "%s", script);
 	fclose(fp);
     } else {
 	fprintf(stderr, "Error: Could not create Satabs script!\n");
@@ -473,7 +473,7 @@ void read_output_file()
 {
     int ret, line_nr;
     size_t t = 0;
-    char *buffer = NULL;
+    char *buffer = NULL, *ptr;
     char **lineptr = &buffer;
 
     FILE *fp = fopen(".ddv_output_2", "r");
@@ -488,8 +488,9 @@ void read_output_file()
     while((ret = getline(lineptr, &t, fp)) > 0) {	
 	switch (line_nr % 6) {
 	    case 0:
-		claim[number_claims].number = atoi(buffer);
-
+		claim[number_claims].claim_id = buffer;
+                ptr=strchr(buffer, '\n'); if(ptr!=NULL) *ptr=0;
+                ptr=strchr(buffer, '\r'); if(ptr!=NULL) *ptr=0;
 		break;
 	    case 1:
 		claim[number_claims].file = buffer;
@@ -532,26 +533,26 @@ void prove_claims_satabs()
     char **lineptr = &buffer;
 
     for (i = 0; i < number_claims; i++) {
-	sprintf(tmp, "claim %d ", (i + 1));
+	sprintf(tmp, "claim %d of %d ", (i + 1), number_claims);
 	print_msg(tmp);
 
 	if (strcmp(claim[i].claim, "TRUE") == 0) {
 	    printf("SUCCESSFULL 0 \n");
 	} else {
-	    sprintf(cmd, "./ddv_satabs --claim %d > .claim_out_%d 2>&1", 
-		    claim[i].number, claim[i].number);
+	    sprintf(cmd, "./ddv_satabs --claim %s > .claim_out_%s 2>&1", 
+		    claim[i].claim_id, claim[i].claim_id);
 	    ret = system(cmd);
 	    ret = WEXITSTATUS(ret);
 	    if(ret==0 || ret==10) {
-		sprintf(cmd, "awk -f %sawk/get_verification_result .claim_out_%d", 
-			ddv_path, claim[i].number);
+		sprintf(cmd, "awk -f %sawk/get_verification_result .claim_out_%s", 
+			ddv_path, claim[i].claim_id);
 		system(cmd);
 	    }
 	    else if(ret==11)
 	    {
 	        print_msg("TOO_MANY_ITERATIONS\t");
-	    	sprintf(cmd, "awk -f %sawk/get_too_many_iterations_result .claim_out_%d", 
-			ddv_path, claim[i].number);
+	    	sprintf(cmd, "awk -f %sawk/get_too_many_iterations_result .claim_out_%s", 
+			ddv_path, claim[i].claim_id);
 		system(cmd);
 	     } else {
 		print_msg("ERROR\n");
@@ -579,13 +580,13 @@ void prove_claims_cbmc()
 	if (strcmp(claim[i].claim, "TRUE") == 0) {
 	    printf("SUCCESSFULL 0 \n");
 	} else {
-	    sprintf(cmd, "./ddv_cbmc --claim %d > .claim_out_%d 2>&1", 
-		    claim[i].number, claim[i].number);
+	    sprintf(cmd, "./ddv_cbmc --claim %s > .claim_out_%s 2>&1", 
+		    claim[i].claim_id, claim[i].claim_id);
 	    ret = system(cmd);
 	    ret = WEXITSTATUS(ret);
 	    if(ret==0 || ret==10) {
-		sprintf(cmd, "awk -f %sawk/get_verification_result .claim_out_%d", 
-			ddv_path, claim[i].number);
+		sprintf(cmd, "awk -f %sawk/get_verification_result .claim_out_%s", 
+			ddv_path, claim[i].claim_id);
 		system(cmd);
 	    }
 	    else {
@@ -601,14 +602,14 @@ void run_satabs()
 {
     char cmd[1000];
 
-    print_msg("Run satabs ..");
+    print_msg("Running satabs ..");
     if (system("./ddv_satabs --show-claims > .ddv_output_1") == 0) {
 	fprintf(stderr, "\nError: Could not start Satabs!\n");
 	exit(-1);
     }
     print_msg(".\n");   
 
-    print_msg("Parse satabs output ..");
+    print_msg("Parsing satabs output ..");
     sprintf(cmd, "awk -f %sawk/convert_satabs_output .ddv_output_1 > .ddv_output_2", ddv_path);
     system(cmd);
     print_msg(".\n");
@@ -624,14 +625,14 @@ void run_cbmc()
 {
     char cmd[1000];
 
-    print_msg("Run CBMC ..");
+    print_msg("Running CBMC ..");
     if (system("./ddv_cbmc --show-claims > .ddv_output_1") != 0) {
 	fprintf(stderr, "\nError: Could not start CBMC!\n");
 	exit(-1);
     }
     print_msg(".\n");   
 
-    print_msg("Parse CBMC output ..");
+    print_msg("Parsing CBMC output ..");
     sprintf(cmd, "awk -f %sawk/convert_satabs_output .ddv_output_1 > .ddv_output_2", ddv_path);
     system(cmd);
     print_msg(".\n");
@@ -838,7 +839,7 @@ void parse_file()
 	    if (strcmp(module_init, "") == 0) {
 		strcpy(tmp, *lineptr);
 		strncpy(module_init, &tmp[12], 
-			strlen(tmp) - 12 - ((int)strlen(tmp) - ((int)strchr(tmp, ')') - (int)tmp)));
+			strlen(tmp) - 12 - (strlen(tmp) - (strchr(tmp, ')') - tmp)));
 	    }
 			
 	    continue;
@@ -850,7 +851,7 @@ void parse_file()
 	    if (strcmp(module_exit, "") == 0) {
 		strcpy(tmp, *lineptr);
 		strncpy(module_exit, &tmp[12], 
-			strlen(tmp) - 12 - ((int)strlen(tmp) - ((int)strchr(tmp, ')') - (int)tmp)));
+			strlen(tmp) - 12 - (strlen(tmp) - (strchr(tmp, ')') - tmp)));
 	    }
 
 	    continue;

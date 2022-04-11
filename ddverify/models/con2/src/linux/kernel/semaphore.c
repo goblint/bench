@@ -3,7 +3,7 @@
 #include <asm/semaphore.h>
 
 // DDV: The count value is ignored because ddverify only supports binary semaphores!
-void sema_init(struct semaphore *sem, int val)
+inline void sema_init(struct semaphore *sem, int val)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();
@@ -12,7 +12,7 @@ void sema_init(struct semaphore *sem, int val)
     __CPROVER_atomic_end();
 }
 
-void init_MUTEX(struct semaphore * sem)
+inline void init_MUTEX(struct semaphore * sem)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();
@@ -21,7 +21,7 @@ void init_MUTEX(struct semaphore * sem)
     __CPROVER_atomic_end();
 }
 
-void init_MUTEX_LOCKED(struct semaphore * sem)
+inline void init_MUTEX_LOCKED(struct semaphore * sem)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();
@@ -30,7 +30,7 @@ void init_MUTEX_LOCKED(struct semaphore * sem)
     __CPROVER_atomic_end();
 }
 
-void down(struct semaphore * sem)
+inline void down(struct semaphore * sem)
 { 
 __CPROVER_HIDE:
  
@@ -55,7 +55,7 @@ __CPROVER_HIDE:
     while(1);
 }
 
-int down_interruptible(struct semaphore * sem)
+inline int down_interruptible(struct semaphore * sem)
 {
 __CPROVER_HIDE:
  
@@ -85,7 +85,7 @@ __CPROVER_HIDE:
     while(1);
 }
 
-int down_trylock(struct semaphore * sem)
+inline int down_trylock(struct semaphore * sem)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();
@@ -103,7 +103,7 @@ int down_trylock(struct semaphore * sem)
     return 0;
 }
 
-void up(struct semaphore * sem)
+inline void up(struct semaphore * sem)
 {
  __CPROVER_HIDE:
     __CPROVER_atomic_begin();

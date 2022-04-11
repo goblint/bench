@@ -6,7 +6,7 @@
 #include <ddverify/satabs.h>
 #include <ddverify/cdev.h>
 
-int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const char *name) 
+inline int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const char *name) 
 {
     int major;
     int return_value = nondet_int();
@@ -20,7 +20,7 @@ int alloc_chrdev_region(dev_t *dev, unsigned baseminor, unsigned count, const ch
     return return_value;
 }
 
-int register_chrdev_region(dev_t from, unsigned count, const char *name)
+inline int register_chrdev_region(dev_t from, unsigned count, const char *name)
 {
     int return_value = nondet_int();
     __CPROVER_assume((return_value == 0) || (return_value == -1));
@@ -30,9 +30,9 @@ int register_chrdev_region(dev_t from, unsigned count, const char *name)
 
 //void unregister_chrdev_region(dev_t, unsigned) {}
 
-
-int register_chrdev(unsigned int major, const char *name,
-		    struct file_operations *fops)
+inline int register_chrdev(
+  unsigned int major, const char *name,
+  struct file_operations *fops)
 {
     struct cdev *cdev;
     int err;
@@ -53,25 +53,24 @@ int register_chrdev(unsigned int major, const char *name,
     return major;
 }
 
-
-int unregister_chrdev(unsigned int major, const char *name)
+inline int unregister_chrdev(unsigned int major, const char *name)
 {
     return 0;
 }
 
-struct cdev *cdev_alloc(void)
+inline struct cdev *cdev_alloc(void)
 {
   if (fixed_cdev_used < MAX_CDEV_SUPPORT) {
     return &fixed_cdev[fixed_cdev_used++];
   }
 }
 
-void cdev_init(struct cdev *cdev, struct file_operations *fops)
+inline void cdev_init(struct cdev *cdev, struct file_operations *fops)
 {
     cdev->ops = fops;
 }
 
-int cdev_add(struct cdev *p, dev_t dev, unsigned count)
+inline int cdev_add(struct cdev *p, dev_t dev, unsigned count)
 {
     p->dev = dev;
     p->count = count;
@@ -96,7 +95,7 @@ int cdev_add(struct cdev *p, dev_t dev, unsigned count)
     return return_value;    
 }
 
-void cdev_del(struct cdev *p)
+inline void cdev_del(struct cdev *p)
 {
     int i;
 

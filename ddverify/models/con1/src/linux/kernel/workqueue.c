@@ -2,7 +2,7 @@
 #include <ddverify/ddverify.h>
 #include <ddverify/workqueue.h>
 
-int schedule_work(struct work_struct *work)
+inline int schedule_work(struct work_struct *work)
 {
     int i;
 
