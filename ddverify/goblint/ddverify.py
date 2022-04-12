@@ -58,7 +58,7 @@ int main() {{
 }}
 """)
 
-model_path = Path("models/con1")
+model_path = Path("models/goblint")
 
 files = [main_path, module_path] + other_paths + sorted((model_path / "src").glob("**/*.c"))
 
