@@ -81,6 +81,14 @@ goblint_conf = {
         "sv-comp": {
             "functions": True
         }
+    },
+    "sem": {
+        "unknown_function": {
+            "invalidate": {
+                "globals": False
+            },
+            "spawn": False
+        }
     }
 }
 
