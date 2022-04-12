@@ -7,9 +7,18 @@ import re
 import json
 
 
-module_path = Path(sys.argv[1])
+arg_paths = []
+arg_defines = []
+for arg in sys.argv[1:]:
+    if arg.startswith("-D"):
+        arg_defines.append(arg)
+    else:
+        arg_paths.append(arg)
+
+
+module_path = Path(arg_paths[0])
 print(module_path)
-other_paths = list(map(Path, sys.argv[2:]))
+other_paths = list(map(Path, arg_paths[1:]))
 
 module_init = None
 module_exit = None
@@ -70,6 +79,7 @@ elif driver_type == DriverType.BLOCK:
     cppflags.append("-DDRIVER_TYPE_BLOCK")
 if driver_type_pci: # no elif!
     cppflags.append("-DDRIVER_TYPE_PCI")
+cppflags += arg_defines
 
 goblint_conf = {
     "files": list(map(str, files)),

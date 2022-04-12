@@ -2,7 +2,7 @@
 
 # block
 ./goblint/ddverify.py case_studies/block/cciss/cciss.c case_studies/block/cciss/cciss_scsi.c
-./goblint/ddverify.py case_studies/block/cpqarray/cpqarray.c
+./goblint/ddverify.py case_studies/block/cpqarray/cpqarray.c -DCONFIG_PROC_FS
 ./goblint/ddverify.py case_studies/block/floppy/floppy.c
 ./goblint/ddverify.py case_studies/block/nbd/nbd.c
 ./goblint/ddverify.py case_studies/block/umem/umem.c
