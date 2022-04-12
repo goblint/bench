@@ -76,6 +76,11 @@ goblint_conf = {
     "pre": {
         "includes": [str(model_path / "include")],
         "cppflags": cppflags
+    },
+    "ana": {
+        "sv-comp": {
+            "functions": True
+        }
     }
 }
 
