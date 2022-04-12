@@ -62,7 +62,8 @@ model_path = Path("models/goblint")
 
 files = [main_path, module_path] + other_paths + sorted((model_path / "src").glob("**/*.c"))
 
-cppflags = ["-D__KERNEL__", "-DMODULE"]
+# -m32 needed for size_t and pthread sizes to match
+cppflags = ["-m32", "-D__KERNEL__", "-DMODULE"]
 if driver_type == DriverType.CHAR:
     cppflags.append("-DDRIVER_TYPE_CHAR")
 elif driver_type == DriverType.BLOCK:

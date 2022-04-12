@@ -39,31 +39,4 @@ void noop();
 void __CPROVER_atomic_begin();
 void __CPROVER_atomic_end();
 
-
-// pthread
-struct __pthread_t_struct
-{
-    int id;
-};
-
-struct __pthread_attr_t_struct
-{
-  int dummy;
-};
-
-typedef struct __pthread_t_struct pthread_t;
-typedef struct __pthread_attr_t_struct pthread_attr_t;
-
-pthread_t nondet_pthread_t();
-
-extern inline int pthread_create(pthread_t *__threadp,
-				 __const pthread_attr_t *__attr,
-				 void *(*__start_routine) (void *),
-				 void *__arg)
-{
-  __CPROVER_HIDE:
-  *__threadp = nondet_pthread_t();
-  CPROVER_ASYNC_1: __start_routine(__arg);
-  return 0;
-}
 #endif

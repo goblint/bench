@@ -1,6 +1,5 @@
 #include <ddverify/ddverify.h>
 #include <ddverify/satabs.h>
-#include <ddverify/pthread.h>
 #include <ddverify/cdev.h>
 #include <ddverify/genhd.h>
 #include <ddverify/ioctl.h>
@@ -11,6 +10,8 @@
 #include <ddverify/workqueue.h>
 #include <linux/init.h>
 #include <linux/smp_lock.h>
+
+#include <pthread.h>
 
 void init_kernel()
 {
