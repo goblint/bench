@@ -13,7 +13,10 @@ int current_execution_context;
 #define CONTEXT_PROCESS     1
 #define CONTEXT_INTERRUPT   2
 
-#define switch_context(x) current_execution_context = x
+void __CPROVER_atomic_begin();
+void __CPROVER_atomic_end();
+
+#define switch_context(x) do { __CPROVER_atomic_begin(); current_execution_context = x; __CPROVER_atomic_end(); } while (0)
 
 #ifdef DDV_ASSERT_CONTEXT
 
