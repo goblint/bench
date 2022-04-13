@@ -1,3 +1,8 @@
+/* Chrony (https://chrony.tuxfamily.org/)
+ * Version: 4.2 (https://download.tuxfamily.org/chrony/chrony-4.2.tar.gz)
+ * License: GPLv2
+ */
+
 typedef long ptrdiff_t;
 typedef unsigned long size_t;
 typedef int wchar_t;
