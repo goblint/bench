@@ -1,6 +1,6 @@
 # Interactive chrony story
 
-1. Start server: `rlwrap goblint -v --conf chrony-4.2.json chrony-4.2 --enable server.enabled --enable server.reparse`
+1. Start server: `rlwrap goblint -v --conf chrony-4.2.json --enable server.enabled --enable server.reparse`
 2. First analysis: `{"jsonrpc":"2.0","id":0,"method":"analyze","params":{}}`
 3. In 282s shows 2 races after `pthread_join`. Goblint cannot infer the one-to-one correspondance between threads and dynamically allocated structs
 4. Add `__goblint_assume_join` annotation: `patch -p0 < patch1.patch`
