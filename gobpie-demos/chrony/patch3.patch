@@ -1,0 +1,29 @@
+--- chrony-4.2/nameserv_async.c
++++ chrony-4.2/nameserv_async.c
+@@ -47,6 +47,8 @@ struct DNS_Async_Instance {
+   DNS_NameResolveHandler handler;
+   void *arg;
+ 
++  pthread_mutex_t mutex;
++
+   pthread_t thread;
+   int pipe[2];
+ };
+@@ -58,7 +60,9 @@ start_resolving(void *anything)
+ {
+   struct DNS_Async_Instance *inst = (struct DNS_Async_Instance *)anything;
+ 
++  pthread_mutex_lock(&inst->mutex);
+   inst->status = PRV_Name2IPAddress(inst->name, inst->addresses, DNS_MAX_ADDRESSES);
++  pthread_mutex_unlock(&inst->mutex);
+ 
+   /* Notify the main thread that the result is ready */
+   if (write(inst->pipe[1], "", 1) < 0)
+@@ -106,6 +110,7 @@ DNS_Name2IPAddressAsync(const char *name, DNS_NameResolveHandler handler, void *
+   inst->handler = handler;
+   inst->arg = anything;
+   inst->status = DNS_Failure;
++  pthread_mutex_init(&inst->mutex, NULL);
+ 
+   if (pipe(inst->pipe)) {
+     LOG_FATAL("pipe() failed");
