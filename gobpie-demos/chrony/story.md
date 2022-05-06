@@ -1,3 +1,10 @@
+# Build compilation database
+
+1. cd chrony-4.2
+2. ./configure
+3. bear -- make
+4. cd .. (for the following)
+
 # Interactive chrony story
 
 1. Start server: `rlwrap goblint -v --conf chrony-4.2.json --enable server.enabled --enable server.reparse`
