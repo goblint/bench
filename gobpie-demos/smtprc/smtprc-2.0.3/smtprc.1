@@ -1,0 +1,180 @@
+.\" Process this file with
+.\" groff -man -T ascii foo.1
+.\"
+.TH SMTPRC 1 "DECEMBER 2004" "User Manuals"
+.SH NAME
+smtprc \- SMTP Relay Checker
+.SH SYNOPSIS
+.B smtprc [OPTIONS] 
+.B ...
+.SH DESCRIPTION
+.B smtprc
+is a fully configurable multithreaded open 
+mail relay scanner/checker. It can scan large 
+networks for open relays and output the 
+results to a web page. It is intended for Systems Administrators to check IP blocks under their control.
+.SH OPTIONS
+.IP "-c config-file"
+The config file specified with this
+option contains a list of open relay checks to be performed when scanning.
+The file is comprised of three columns, each of which is a different check to be performed on the host being tested.
+The first column will be sent with the
+.BR HELO
+command; the second column will be sent with the 
+.BR "MAIL FROM:"
+command; and the third column will be sent with the 
+.BR "RCPT TO:"
+command.
+
+example:
+
+If the file contains the line.
+
+.BR "x.x	diceman@dircon.co.uk	diceman@dircon.co.uk"
+
+The following commands will be sent to the server.
+
+.BR "HELO x.x"
+
+.BR "MAIL FROM:diceman@dircon.co.uk"
+
+.BR "RCPT TO:diceman@dircon.co.uk"
+
+The following macros can also be used. 
+
+.BR --IP_ADDRESS--
+Represents the IP address of the current server being checked.
+
+.BR --HOSTNAME--
+Represents the domain name of the current server being checked.
+
+.BR --NAME--
+Represents the name part of the email address specified with the
+.BR -b
+option
+
+.BR --DOMAIN--
+Represents the domain part of the email address specified with the
+.BR -b
+option.
+
+As long as the format of this file is adhered to then as many checks as is required can be added to this file.
+.IP "-s ip-range"
+Specify the ip range to scan. Smtprc has a powerful notation that
+allows you to specify an IP address range using lists/ranges for each element.
+Thus you can scan the whole class 'B' network
+.BR 192.168/16
+by specifying
+.BR 192.168.*.*
+or
+.BR 192.168.0-255.0-255
+or
+.BR 192.168.0-255.*
+You can also specify multiple different ranges sepreated by
+.BR ','
+For example 
+.BR "192.168.1.*,172.16.1.*"
+would scan both ranges
+.BR 192.168.1.0/24
+and 
+.BR 172.16.1.0/24
+.IP "-i hostname-list"
+This option can be used instead of the -s option. The file specified should contain a list of hostnames/IP addresses to scan sepereated by newlines
+.IP "-w output-html-page"
+Use this option to specify the name of a html file that the results should be written to.
+.IP "-f output-text-file"
+Use this option to specify the name of a text file that the results should be written to.
+.IP "-o output-machine-readable-format-file"
+Use this option to specify a file in which to save the scan results in machine readable format.
+Each scan will be saved on a single line with values seperated by commas. The values will be:
+.BR "IP address, Domain name, Rule no, STATUS, Banner, HELO reply, MAIL FROM: reply, RCPT TO: reply"
+.IP "-b email-address"
+This option specifies the email address that should be relayed to while testing.
+.IP "-e <path to mailbox>"
+This option specifies the (mbox) mailbox relating to the email address specied with the -b option.
+.IP "-u <path to mailbox>"
+This option specifies the (maildir) mailbox relating to the email address specied with the -b option.
+.IP "-y email-template-file"
+This option specifies the template to be used for all emails sent while testing.
+.IP "-j autoconfig-file"
+The auto config file contains a list of configuration options for running
+.BR smtprc
+smtprc can then be run just by specifying the auto config file with this option. An auto config file can also be generated with the -k option.
+.IP "-k autoconfig-file"
+Use this option to generate an auto config file comprised of the command line options currently being used.
+.BR smtprc
+can then be run using the 
+.BR -j 
+option.
+.IP "-p number-of-threads"
+Specify the number of threads to use when scanning (default 1000).
+.IP -a
+Display results of every scan (even those that passed all tests).
+.IP -n
+Try to resolve all ip addresses into hostnames.
+.IP "-m wait-for-mail-timeout"
+Specify the time in seconds to wait, after scanning, for relayed mails to arrive.
+.IP "-l connection-timeout"
+Specify the connect timeout in seconds (default 30).
+.IP "-r read-timeout"
+Specify the read timeout in seconds (default 30).
+.IP -v
+Verbose output. Use twice for greater effect.
+.IP -h
+Display the help page.
+.SH FILES
+.I /usr/local/etc/smtprc/rcheck.conf
+.RS
+The relay check configuration file.
+.BR smtprc (1)
+for further details.
+.RE
+
+.I /usr/local/etc/smtprc/email.tmpl
+.RS
+The email template file.
+.BR smtprc (1)
+for further details.
+.RE
+
+.I /usr/local/etc/smtprc/auto.conf
+.RS
+The auto configuration file.
+.BR  smtprc (1)
+for further details.
+.RE
+
+.I /usr/share/doc/smtprc/README
+.RS
+The smtprc readme file. This file contains a detailed explanation of all of smtprc's features.
+.BR smtprc (1)
+for further details.
+.RS
+.SH EXAMPLES
+The following will scan the range 192.168.1.0/24 using 250 threads
+trying to relay to smtprc@lippy.warg.co.uk. It will also 
+check the mbox mail file /var/mail/smtprc 1 minute after scanning to see if any mails 
+have been relayed. It also display the results in html to 
+/usr/local/apache/htdocs/smtprc/html. The file /use/local/etc/smtprc/email.tmpl will be used as the template for emails that are sent through any servers that are scanned.
+
+This scan will also create the file /usr/local/etc/smtprc/auto.conf containing all of the command line options just used.
+
+This scan is being run from lippy.warg.co.uk. Sendmail is 
+running on this machine and accepting all mail for smtprc@lippy.warg.co.uk. 
+
+.BR "smtprc -s 192.168.1.* -c /usr/local/etc/smtprc/rcheck.conf -e /var/mail/smtprc -b smtprc@lippy.warg.co.uk -p 255 -w /usr/local/apache/htdocs/smtprc.html -k /usr/local/etc/smtprc/auto.conf -y /usr/local/etc/smtprc/email.tmpl"
+
+The next example will run 
+.BR smtprc
+taking all of the run time options from the auto config file /usr/local/etc/smtprc/auto.conf
+
+.BR "smtprc -j /usr/local/etc/smtprc/auto.conf"
+
+.SH BUGS
+Please report all bugs to diceman@dircon.co.uk.
+.SH SEE ALSO
+gsmtprc(1)
+.SH AUTHOR
+Spencer Hardy - diceman@dircon.co.uk
+
+

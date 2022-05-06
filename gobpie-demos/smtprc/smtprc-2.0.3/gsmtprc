@@ -1,0 +1,493 @@
+#!/usr/bin/perl -w
+
+use strict;
+use Tk;
+use Fcntl ':flock';
+use POSIX qw(strftime);
+require Tk::Dialog;
+
+use vars qw($VERSION $debug $fh $pid);
+
+BEGIN {
+
+  $VERSION = "0.9.7";
+  $debug = 0;
+	$| = 1;
+}
+
+	$| = 1;
+
+my $output_text_handler = 0;
+
+my $bdw = 0;
+my $frame_bdw = 10;
+
+my $main = MainWindow->new;
+
+my $border_frame = $main->Frame(-borderwidth => $frame_bdw)->pack('-side' => 'top', -fill => 'both', -expand => 1);
+
+$border_frame->Label(-text => 'Smtp Relay Checker')->pack;
+
+my $menu_bar = $border_frame->Frame(-relief => 'groove', -borderwidth => 3)->pack('-side' => 'top', -fill => 'x');
+
+my $file_mb = $menu_bar->Menubutton(-text => 'File')->pack(-side => 'left');
+$file_mb->command(-label => 'Exit', -command => sub{quit_gui($main);});
+
+my $edit_mb = $menu_bar->Menubutton(-text => 'Edit')->pack(-side => 'left');
+$edit_mb->command(-label => 'Clear', -command => sub{clear_entry($output_text_handler)});
+
+my $help_mb = $menu_bar->Menubutton(-text => 'Help')->pack(-side => 'right');
+$help_mb->command(-label => 'Help', -command => sub{exit(0)});
+$help_mb->separator();
+$help_mb->command(-label => 'About', -command => sub{exit(0)});
+
+my $top_frame = $border_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x');
+my $bottom_frame = $border_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top',  -fill => 'both', -expand => 1);
+
+my $top_frame_label_frame = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top');
+$top_frame_label_frame->Label(-text => ' ')->pack(-side => 'top');
+$top_frame_label_frame->Label(-text => 'Configuration Options')->pack(-side => 'top');
+$top_frame_label_frame->Label(-text => ' ')->pack(-side => 'top');
+
+my $file_entry_frame = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'both');
+my $file_entry_frame3 = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'both');
+my $file_entry_frame2 = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'both');
+$file_entry_frame3->Label(-text => '   ')->pack(-side => 'left');
+my $edit_frame = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'both');
+my $check_buttons_frame = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'both');
+my $output_frame = $bottom_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'both', -expand => 1);
+
+
+# Variables to be used for scanning
+
+my $var = {
+	'smtprc_bin'						=> "/usr/local/bin/smtprc",
+	'rcheck_config_file'		=> "/usr/local/etc/smtprc/rcheck.conf",
+	'email_template_file'		=> "/usr/local/etc/smtprc/email.tmpl",
+	'output_html_file'			=> "/www/htdocs/results.html",
+	'ip_list_file'					=> "",
+	'ip_range'							=> "195.157.194.72-79",
+	'email_address'					=> "smtprc\@moejo.co.uk",
+	'mail_file'							=> "/var/mail/smtprc",
+	'number_of_threads'			=> "100",
+	'connect_timeout'				=> 30,
+	'read_timeout'					=> 60,
+	'wait_for_mail_timeout'	=> 60,
+	'show_all_scans'				=> 1,
+	'resolve_domains'				=> 1,
+	'verbose'								=> 0,
+	'output_handle'					=> 0,
+	'mail_format'						=> 0,
+	'main_handle'						=> $main,
+};
+
+
+# Set up the file entry frame
+
+my $config_file_encapse = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $config_file_frame = $config_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$config_file_frame->Label(-text => 'Config File:')->pack(-side => 'left');
+my $config_file_edit_frame = $config_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$config_file_edit_frame->Button(-text => 'Edit', -height => 0.5, -width => 3, -command => sub{edit_file($var->{rcheck_config_file});})->pack(-side => 'right');
+$config_file_edit_frame->Entry(-textvariable => \$var->{rcheck_config_file})->pack(-side => 'right');
+
+my $email_template_encapse = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $email_template_frame = $email_template_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$email_template_frame->Label(-text => 'Email Template File:')->pack(-side => 'left');
+my $email_template_edit_frame = $email_template_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$email_template_edit_frame->Button(-text => 'Edit', -height => 0.5, -width => 3, -command => sub{edit_file($var->{email_template_file});})->pack(-side => 'right');
+$email_template_edit_frame->Entry(-textvariable => \$var->{email_template_file})->pack(-side => 'right');
+
+my $output_file_encapse = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $output_html_frame = $output_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$output_html_frame->Label(-text => 'Output HTML File:')->pack(-side => 'left');
+my $output_html_edit_frame = $output_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$output_html_edit_frame->Entry(-textvariable => \$var->{output_html_file})->pack(-side => 'right');
+
+my $ip_list_encapse = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $ip_list_frame = $ip_list_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$ip_list_frame->Label(-text => 'IP Address List File:')->pack(-side => 'left');
+my $ip_list_edit_frame = $ip_list_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$ip_list_edit_frame->Button(-text => 'Edit', -height => 0.5, -width => 3, -command => sub{edit_file($var->{ip_list_file});})->pack(-side => 'right');
+$ip_list_edit_frame->Entry(-textvariable => \$var->{ip_list_file})->pack(-side => 'right');
+
+my $mail_file_encapse = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $mail_file_frame = $mail_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$mail_file_frame->Label(-text => 'Mail Box:')->pack(-side => 'left');
+my $mail_file_edit_frame = $mail_file_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$mail_file_edit_frame->Entry(-textvariable => \$var->{mail_file})->pack(-side => 'right');
+
+my $file_entry_encapse = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+my $smtprc_bin_frame = $file_entry_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left', -fill => 'x', -expand => 1);
+$smtprc_bin_frame->Label(-text => 'Path to SmtpRC Binary:')->pack(-side => 'left');
+my $smtprc_bin_edit_frame = $file_entry_encapse->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'right', -fill => 'x', -expand => 1);
+$smtprc_bin_edit_frame->Entry(-textvariable => \$var->{smtprc_bin})->pack(-side => 'right');
+
+my $ip_range_frame = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$ip_range_frame->Label(-text => 'IP Range:')->pack(-side => 'left');
+$ip_range_frame->Entry(-textvariable => \$var->{ip_range})->pack(-side => 'right');
+
+my $email_address_frame = $file_entry_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$email_address_frame->Label(-text => 'Email Address:')->pack(-side => 'left');
+$email_address_frame->Entry(-textvariable => \$var->{email_address})->pack(-side => 'right');
+
+my $number_of_threads_frame = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$number_of_threads_frame->Label(-text => 'Number Of Threads:')->pack(-side => 'left');
+$number_of_threads_frame->Entry(-textvariable => \$var->{number_of_threads})->pack(-side => 'right');
+
+my $connect_timeout_frame = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$connect_timeout_frame->Label(-text => 'Connect Timeout:')->pack(-side => 'left');
+$connect_timeout_frame->Entry(-textvariable => \$var->{connect_timeout})->pack(-side => 'right');
+
+my $read_timeout_frame = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$read_timeout_frame->Label(-text => 'Read Timeout:')->pack(-side => 'left');
+$read_timeout_frame->Entry(-textvariable => \$var->{read_timeout})->pack(-side => 'right');
+
+my $wait_for_mail_timeout_frame = $file_entry_frame2->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x', -expand => 1);
+$wait_for_mail_timeout_frame->Label(-text => 'Wait For Mail Timeout:')->pack(-side => 'left');
+$wait_for_mail_timeout_frame->Entry(-textvariable => \$var->{wait_for_mail_timeout})->pack(-side => 'right');
+
+
+
+# Set up the check box frame
+
+my $checkbox_frame = $output_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top',  -fill => 'x');
+$checkbox_frame->Label(-text => ' ')->pack(-side => 'top');
+
+my $show_all_frame = $checkbox_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left',  -fill => 'x');
+$show_all_frame->Checkbutton(-text => "Show All Scans", -variable => \$var->{show_all_scans}, -onvalue => 1, -offvalue => 0, -underline => 0)->pack(-side => 'left');
+
+my $resolve_domains_frame = $checkbox_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left',  -fill => 'x');
+$resolve_domains_frame->Checkbutton(-text => "Resolve Domains", -variable => \$var->{resolve_domains}, -onvalue => 1, -offvalue => 0, -underline => 0)->pack(-side => 'left');
+
+my $verbose_frame = $checkbox_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left',  -fill => 'x');
+$verbose_frame->Checkbutton(-text => "Verbose Output", -variable => \$var->{verbose}, -onvalue => 1, -offvalue => 0, -underline => 0)->pack(-side => 'left');
+
+my $mail_format_frame = $checkbox_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'left',  -fill => 'x');
+$mail_format_frame->Radiobutton(-text => 'mbox', -variable => \$var->{mail_format}, -value => 0)->pack(-side => 'left');
+$mail_format_frame->Radiobutton(-text => 'maildir', -variable => \$var->{mail_format}, -value => 1)->pack(-side => 'left');
+
+
+# Set up the output frame
+
+my $output_label_frame = $output_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top');
+$output_label_frame->Label(-text => ' ')->pack(-side => 'top');
+$output_label_frame->Label(-text => 'SmtpRC Output')->pack(-side => 'top');
+$output_label_frame->Label(-text => ' ')->pack(-side => 'top');
+
+my $output_text_frame = $output_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'both', -expand => 1);
+my $output_scrollbar = $output_text_frame->Scrollbar(-orient => 'vertical');
+$output_text_handler = $output_text_frame->Text(-yscrollcommand => ['set' => $output_scrollbar], -wrap => 'word', -relief => 'sunken', -width => 100, -height => 20)->pack(-side => 'left', -expand => 1, -fill => 'both');
+$output_scrollbar->configure(-command => ['yview' => $output_text_handler]);
+$output_scrollbar->pack(-side => 'right', -fill => 'y');
+
+$var->{output_handle} = $output_text_handler;
+
+my $buttons_frame = $output_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'bottom', -fill => 'x');
+$buttons_frame->Button(-text => 'Start Scan', -height => 0.5, -width => 8, -command => sub{start_scan($var);})->pack(-side => 'left', -fill => 'x');
+$buttons_frame->Button(-text => 'Stop Scan', -height => 0.5, -width => 8, -command => sub{stop_scan();})->pack(-side => 'left', -fill => 'x');
+$buttons_frame->Button(-text => 'Quit', -height => 0.5, -width => 8, -command => sub{quit_gui($main);})->pack(-side => 'right', -fill => 'x');
+$buttons_frame->Button(-text => 'Clear Output', -height => 0.5, -width => 8, -command => sub{clear_entry($output_text_handler);})->pack(-side => 'right', -fill => 'x');
+
+
+
+MainLoop;
+
+
+sub start_scan {
+
+	my $var = shift;
+	my $line;
+	my $flag = 0;
+	my $command;
+	my @commands;
+
+	push(@commands, "$var->{smtprc_bin}");
+
+	push(@commands, " -c $var->{rcheck_config_file}");
+
+	if($var->{ip_range}) {
+		push(@commands, " -s $var->{ip_range}");
+	}
+
+	if($var->{ip_list_file}) {
+		push(@commands, " -i $var->{ip_list_file}");
+	}
+
+	push(@commands, " -p $var->{number_of_threads}");
+
+	if($var->{output_html_file}) {	
+		push(@commands, " -w $var->{output_html_file}");
+	}
+
+	if($var->{email_address}) {
+		push(@commands, " -b $var->{email_address}");
+	}
+
+	if($var->{mail_format} == 0) {
+		push(@commands, " -e $var->{mail_file}");
+	}
+	else {
+		push(@commands, " -u $var->{mail_file}");
+  }
+
+	if($var->{connect_timeout}) {
+		push(@commands, " -l $var->{connect_timeout}");
+  }
+
+	if($var->{read_timeout}) {
+    push(@commands, " -r $var->{read_timeout}");
+  }
+
+	if($var->{wait_for_mail_timeout}) {
+    push(@commands, " -m $var->{wait_for_mail_timeout}");
+  }
+
+	if($var->{wait_for_mail_timeout}) {
+    push(@commands, " -y $var->{email_template_file}");
+  }
+
+	if($var->{show_all_scans}) {
+		push(@commands, " -a");
+	}
+
+	if($var->{resolve_domains}) {
+		push(@commands, " -n");
+	}
+	
+	if($var->{verbose}) {
+		push(@commands, " -v");
+	}
+
+	foreach (@commands) {
+		$command = $command . $_;
+	}
+
+	if(!$var->{ip_range} && !$var->{ip_list_file}) {
+		show_popup($var->{output_handle}, "Error", "You must supply either and IP range to scan or an IP list file");
+		return(0);
+	}
+	
+	if(!$var->{rcheck_config_file}) {
+		show_popup($var->{output_handle}, "Error", "You must supply a relay check config file");
+    return(0);
+  }
+
+	if(!$var->{number_of_threads}) {
+		show_popup($var->{output_handle}, "Error", "You must supply a relay check config file");
+    return(0);
+  }
+
+	if($var->{ip_list_file} && ! -r $var->{ip_list_file}) {
+		show_popup($var->{output_handle}, "Error", "The IP list file \"$var->{ip_list_file}\" is not readable or does not exist");
+    return(0);
+  }
+
+	if(! -r $var->{rcheck_config_file}) {
+    show_popup($var->{output_handle}, "Error", "The relay check config file \"$var->{rcheck_config_file}\" is not readable or does not exist");
+    return(0);
+  }
+
+	if($var->{mail_file} && ! -r $var->{mail_file}) {
+   	show_popup($var->{output_handle}, "Error", "The mailbox file \"$var->{mail_file}\" is not readable or does not exist");
+   	return(0);
+	}
+
+	if($var->{email_template_file} && ! -r $var->{email_template_file}) {
+    show_popup($var->{output_handle}, "Error", "The email template file \"$var->{email_template_file}\" is not readable or does not exist");
+    return(0);
+  }
+
+	if(! -x $var->{smtprc_bin}) {
+    show_popup($var->{output_handle}, "Error", "The SmtpRC binary \"$var->{smtprc_bin}\" is not executable or does not exist");
+    return(0);
+  }
+
+	open FILE, ">$var->{output_html_file}" or $flag = 1;
+	if($flag) {
+		show_popup($var->{output_handle}, "Error", "The output HTML file \"$var->{output_html_file}\" is not writeable: $!");	
+		$flag = 0;
+    return(0);
+  }
+	close(FILE);
+
+	
+
+	$pid = open ($fh, "$command 2>&1 |") or $flag = 1;
+	if($flag)  {
+		show_popup($var->{output_handle}, "Error", "Error\nCould not run SmtpRC $!");
+    $var->{output_handle}->insert("end", "Error running SmtpRC\n\n");	
+		$flag = 0;
+    return(0);
+  }
+	else {
+  	$var->{main_handle}->fileevent($fh, 'readable' => sub {
+    	if($line = <$fh>) {
+      	$var->{output_handle}->insert("end", "\t$line");
+      	$var->{output_handle}->update();
+				$var->{output_handle}->see("end");
+    	}
+    	else {
+      	$var->{main_handle}->fileevent($fh, 'readable' => "");
+      	$var->{output_handle}->insert("end", "\n\n");
+				$var->{output_handle}->see("end");
+      	close($fh);
+    	}
+  	});	
+	}
+
+}
+
+
+sub clear_entry {
+  my $entry = shift;
+  $entry->delete("1.0", "end");
+}
+
+sub quit_gui {
+	my $main = shift;
+
+	if($pid) {
+		kill(9, $pid);
+		$pid++;
+		kill(9, $pid);
+	}
+	$main->destroy();
+	exit(0);
+
+}
+	
+sub stop_scan {
+
+	if($pid) {
+		kill(9, $pid);	
+		$pid++;
+		kill(9, $pid);	
+		$pid = 0;
+	}
+
+}
+
+sub edit_file {
+
+	my $filename = shift;
+
+	my $flag = 0;
+
+	open FILE, "<$filename"  or $flag = 1;
+	if($flag) {
+		show_popup($var->{output_handle}, "Error", "Error\nCould not open file $filename: $!");
+    $flag = 0;
+    return(0);
+  }
+
+	close(FILE);
+
+
+	my $main = MainWindow->new;
+
+	my @tmp = get_file($filename, $main);
+
+	$main->Label(-text => 'Smtp Relay Checker - Edit File')->pack;
+
+	my $menu_bar = $main->Frame(-relief => 'groove', -borderwidth => 3)->pack('-side' => 'top', -fill => 'x');
+
+	my $file_mb = $menu_bar->Menubutton(-text => 'File')->pack(-side => 'left');
+	$file_mb->command(-label => 'Exit', -command => sub{quit_gui($main);});
+
+	my $edit_mb = $menu_bar->Menubutton(-text => 'Edit')->pack(-side => 'left');
+	$edit_mb->command(-label => 'Clear', -command => sub{clear_entry($output_text_handler)});
+
+	my $help_mb = $menu_bar->Menubutton(-text => 'Help')->pack(-side => 'right');
+	$help_mb->command(-label => 'Help', -command => sub{exit(0)});
+	$help_mb->separator();
+	$help_mb->command(-label => 'About', -command => sub{exit(0)});
+
+	my $top_frame = $main->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top',  -fill => 'both', -expand => 1);
+	my $bottom_frame = $main->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'x');
+
+	my $edit_text_frame = $top_frame->Frame(-relief => 'groove', -borderwidth => $bdw)->pack('-side' => 'top', -fill => 'both', -expand => 1);
+	my $edit_scrollbar = $edit_text_frame->Scrollbar(-orient => 'vertical');
+	my $edit_text_handler = $edit_text_frame->Text(-yscrollcommand => ['set' => $edit_scrollbar], -wrap => 'word', -relief => 'sunken', -width => 100, -height => 20)->pack(-side => 'left', -expand => 1, -fill => 'both');
+	$edit_scrollbar->configure(-command => ['yview' => $edit_text_handler]);
+	$edit_scrollbar->pack(-side => 'right', -fill => 'y');
+
+	$bottom_frame->Button(-text => 'Save', -height => 0.5, -width => 8, -command => sub{save_file($filename, $edit_text_handler);})->pack(-side => 'left', -fill => 'x');
+	$bottom_frame->Button(-text => 'Undo Changes', -height => 0.5, -width => 10, -command => sub{
+																																															clear_entry($edit_text_handler); 
+																																															@tmp = get_file($filename, $main); 
+																																															foreach (@tmp) {
+																																																$edit_text_handler->insert("end", "$_");
+																																															};
+																																														})->pack(-side => 'left', -fill => 'x');
+	$bottom_frame->Button(-text => 'Close', -height => 0.5, -width => 8, -command => sub{$main->destroy();})->pack(-side => 'right', -fill => 'x');
+
+
+	foreach (@tmp) {
+		$edit_text_handler->insert("end", "$_");
+	}
+
+	return(0);
+
+}
+
+sub save_file {
+
+	my $filename = shift;
+	my $handler = shift;
+
+	my $flag = 0;
+
+	my $file = $handler->get("1.0", "end");
+
+	open FILE, ">$filename" or $flag = 1;
+	if($flag)  {
+		show_popup($handler, "Error", "Error\nUnable to open file $filename for writing: $!");
+    $flag = 0;
+    return(0);
+  }
+	print FILE $file;
+	close(FILE);
+
+}
+
+sub get_file {
+
+	my $filename = shift;
+	my $handler = shift;
+
+	my $flag = 0;
+
+	open FILE, "<$filename" or $flag = 1;
+  if($flag)  {
+		show_popup($handler, "Error", "Error\nUnable to open file $filename for reading: $!");
+    $flag = 0;
+    return(0);
+  }
+	my @array = <FILE>;
+  close(FILE);
+
+	return(@array);
+
+}
+
+sub show_popup {
+
+	my $handler = shift;
+	my $title = shift;
+	my $message = shift;
+
+	
+	my $D = $handler->Dialog(
+                 -title => $title,
+                 -text  => $message,
+                 -default_button => 'Ok',
+                 -buttons        => ['Ok']
+  );
+  $D->Show;
+
+	return(0);
+
+}
+
+

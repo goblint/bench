@@ -1,0 +1,299 @@
+
+
+		SMTP Relay Checker - v2.0.3
+
+
+
+What is it?
+-----------
+
+SmtpRC is an open relay scanner. It is multithreaded, so can scan
+vast networks quickly, fully configurable, and it can output
+results in different formats for viewing. It is intended for
+Systems Administrators to scan IP blocks under their control.
+
+SmtpRC works by connecting to a mailserver, running through a
+series of pre-configured open relay tests and attemtping to
+relay mail through each server it checks. When finished
+scanning, it will check the mailbox specified for any relayed
+emails.
+
+
+The Latest Version
+------------------
+The latest version can be downloaded from
+http://sourceforge.net/projects/smtprc.
+
+
+Documentation
+-------------
+
+For most up to date documentation, please see
+http://www.moejo.co.uk/smtprc-website.
+
+
+Compilation / Installation
+--------------------------
+
+To build SmtpRC please run "make" in the package directory. This
+will build the package and create the binary "smtprc". To
+install the package, please run "make install".
+
+By Default, the binary will be installed into /usr/local/bin/,
+configuration files will be installed
+under /usr/local/etc/smtprc/ and all documentation files will be
+installed under /usr/local/share/doc/smtprc/. Please see below
+for a full list of installed files.
+
+/usr/local/bin/smtprc
+/usr/local/bin/gsmtprc
+/usr/local/etc/smtprc/auto.conf
+/usr/local/etc/smtprc/email.tmpl
+/usr/local/etc/smtprc/rcheck.conf
+/usr/local/share/doc/smtprc/README
+/usr/local/share/doc/smtprc/FAQ
+/usr/local/man/man1/smtprc.1
+/usr/local/man/man1/gsmtprc.1
+
+
+Using Smtprc
+------------
+
+SmtpRC can be run by specifying options on the command line, or
+by configuring an "auto configuration" file and letting SmtpRC
+parse the options from there. The latter is recommended.
+
+When SmtpRC is installed, a example "auto configuration" file is
+installed in "/usr/local/etc/smtprc/auto.conf". Edit this file,
+changing the values to suit your specific network requirements
+and run smtprc with the following option (a full list of options
+is detailed below): 
+
+"/usr/local/bin/smtprc -j /usr/local/etc/smtprc/auto.conf"
+
+To be sure that a mailserver relays third-party email, SmtpRC
+will attempt to relay mail to an address specified. It is
+recommended that this address is a mailbox on the local machine
+that is being used to run SmtpRC - pop support is a planned
+feature, but for now, SmtpRC only supports checking local
+mailboxes (mbox and Maildir). Create a new user account
+(smtprc), specify the email address for this account, and the
+local mailbox (on the command line or in the "auto
+configuration" file), and SmtpRC will attempt to relay emails to
+this address and check for recieved emails after scanning. 
+
+There is also a GUI interface to smtprc (gsmtprc) that is
+installed in /usr/local/bin. This requires Perl Tk to run.
+
+
+Options:-
+
+Options are shown in two formats; first the command line option
+and then the corresponding "auto configuration" option.
+
+
+-s <ip-range>
+IPRANGE:<ip-range>
+
+Specifies the ip range to scan. Smtprc has a powerful notation
+that allows you to specify an IP address range using
+lists/ranges for each element. Thus you can scan the whole class
+'B' network 192.168.0.0/16 by specifying 192.168.*.* or
+192.168.0-255.0-255 or 192.168.0-255.*
+
+You can also specify multiple ranges sepreated by ',' For example
+"192.168.1.*,172.16.1.*" would scan both ranges 192.168.1.0/24
+and 172.16.1.0/24.
+
+
+
+-c <config-file>
+CONFIGFILE:<config-file>
+
+The config file specified with this option contains a list of
+open relay checks to be performed when scanning. The file is
+comprised of three columns, each of which is a different check
+to be performed on the host being tested (please see the
+"Configuration Files" section below for further information). 
+
+
+
+-i <path-to-file>
+IPLIST:<path-to-file>
+
+This option can be used instead of the -s option. The file
+specified should contain a list of hostnames/IP addresses to
+scan, sepereated by newlines.
+
+
+
+-b <email-address>
+RELAYEMAIL:<email-address>
+
+This option specifies the email address that SmtpRC will attempt
+to relay to while scanning.
+
+
+
+-e <path-to-mailbox>
+MBOXMAILBOX:<path-to-mailbox>
+
+This option specifies the (mbox) mailbox that will be checked for
+relayed emails after scanning. This should relate to the email
+address specied with the -b option (eg: /var/spool/mail/smtprc).
+
+
+
+-u <path-to-mailbox>
+MAILDIRMAILBOX:<path-to-mailbox>
+
+This option specifies the (maildir) mailbox that will be checked
+for relayed emails after scanning. This should relate to the
+email address specied with the -b option
+(eg: /home/smtprc/Maildir).
+
+
+
+-p <number-of-threads>
+THREADS:<number-of-threads>
+
+Used to specify the number of threads to use when scanning
+(default 1000).
+
+
+
+-a
+ALLACANS:<Yes|No>
+
+Display results of every scan (even those that passed all tests).
+
+
+
+-n
+RESOLVEDOMAINS:<Yes|No>
+
+Try to resolve all ip addresses into hostnames.
+
+
+
+-m <timeout>
+WAITFORMAILTIME:<timeout>
+
+Specify the time in seconds to wait, after scanning, for relayed
+mails to arrive (default 60 seconds).
+
+
+
+-l <timeout>
+CONNECTTIMEOUT:<timeout>
+
+Specify the tcp-connect timeout in seconds (default 30). The
+default is normally always ok here. Reduce this figure if you
+want to increase scanning speed on a fast network, or increase
+it if you are seeing lots of timeouts on a slow network. 
+
+
+
+-r <timeout>
+READTIMEOUT:<timeout>
+
+Specify the read timeout in seconds (default 30). You may need to
+increase this figure if you are on a slow network.
+
+
+
+-v
+Verbose output. Use twice for greater effect. This is more of a
+debugging feature and not recommended for normal use.
+
+
+
+-h
+
+Display the help page
+
+
+
+-j <path-to-file>
+The auto config file contains a list of configuration options for
+running SmtpRC can then be run just by specifying the auto
+config file with this option. An auto config file can also be
+generated with the -k option.
+
+
+
+-k <path-to-file> (not yet implemented)
+Use this option to generate an auto config file comprised of the
+command line options currently being used. smtprc can then be
+run using the -j option.
+
+
+
+
+Configuration Files
+-------------------
+
+The main configuration file is the checks configuration file
+(/usr/local/etc/smtprc/rchecks.conf), specified with the -c
+option or the CONFIGFILE: options in the "auto configuration"
+file.
+
+This file contains a list of open relay checks to be performed on
+each host while scanning. The file is comprised of three
+columns, each of which is a different check to be performed on
+the host being tested. The first column will be sent with the
+"HELO" command, the second column will be sent with the "MAIL
+FROM:" command and the third column will be sent with the "RCPT
+TO:" command.
+
+example:
+
+If the file contains the line.
+
+"x.x  diceman@dircon.co.uk  diceman@dircon.co.uk"
+
+The following commands will be sent to the server.
+
+"HELO x.x"
+
+"MAIL FROM:diceman@dircon.co.uk"
+
+"RCPT TO:diceman@dircon.co.uk"
+
+The following macros can also be used.
+
+--HOSTNAME-- Represents the domain name of the current server
+being checked.
+
+--IP_ADDRESS-- Represents the IP Address of the current server
+being checked.
+
+--NAME-- Represents the name part of the email address specified
+with the -b option
+
+--DOMAIN-- Represents the domain part of the email address
+specified with the -b option.
+
+As long as the format of this file is adhered to then as many
+checks as is required can be added to this file.
+
+
+
+Licensing
+---------
+
+Please see the file called LICENSE.
+
+
+
+Contact
+-------
+
+If you would like to report any bugs, patches, get help with the
+program, or comment. I can be contacted on the following:-
+
+Email: diceman@dircon.co.uk
+Msn Messenger: moejo12321@msn.com 
+
+
+
