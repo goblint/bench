@@ -1,0 +1,22 @@
+--- smtprc-2.0.3/scan_engine.c
++++ smtprc/smtprc-2.0.3/scan_engine.c
+@@ -91,9 +91,10 @@ void start_scan(void) {
+ 	for(o.cur_host=0;o.cur_host<o.no_hostnames;o.cur_host++) {
+ 		pthread_mutex_lock(&main_thread_count_mutex);
+ 		while(o.cur_threads>=o.number_of_threads) {
+-			pthread_mutex_unlock(&main_thread_count_mutex);
+ 			debug("Sleeping cur child == %d, max child == %d\n", o.cur_threads, o.number_of_threads);
++			pthread_mutex_unlock(&main_thread_count_mutex);
+ 			nanosleep(&tv, NULL);
++			pthread_mutex_lock(&main_thread_count_mutex);
+ 		}
+ 		pthread_mutex_unlock(&main_thread_count_mutex);
+ 		while((res = pthread_create(&c_tid, &attr, (void *)thread_start, (int *)o.cur_host)) != 0) {
+@@ -124,6 +125,7 @@ void start_scan(void) {
+ 			}
+ 		}
+ 		nanosleep(&tv, NULL);
++		pthread_mutex_lock(&main_thread_count_mutex);
+ 	}
+ 	pthread_mutex_unlock(&main_thread_count_mutex);
+ 	//pthread_attr_destroy(&attr);
