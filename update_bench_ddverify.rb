@@ -293,7 +293,7 @@ $projects.each do |p|
     gname = p.group
     puts gname
   end
-  analyze_project(p, true)
+  analyze_project(p, $incremental)
   `rm -rf incremental_data`
 end
 print_res nil

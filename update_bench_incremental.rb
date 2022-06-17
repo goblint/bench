@@ -312,7 +312,7 @@ $projects.each do |p|
     gname = p.group
     puts gname
   end
-  analyze_project(p, true)
+  analyze_project(p, $incremental)
   path = File.expand_path(p.path, $bench_path)
   p.patches.each do |pfile|
     `patch -b #{path} #{pfile}`
