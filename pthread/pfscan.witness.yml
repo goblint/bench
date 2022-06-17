@@ -1,0 +1,36 @@
+- entry_type: loop_invariant
+  metadata:
+    format_version: "0.1"
+    uuid: 7e5ed421-04a6-4a3d-bee0-3ff084095fae
+    creation_time: 2022-06-17T09:39:09Z
+    producer:
+      name: Goblint
+      version: heads/apron-box-prod-0-ge19127a03-dirty
+      command_line: '''/home/simmo/dev/goblint/sv-comp/analyzer/goblint'' ''--conf''
+        ''/home/simmo/dev/goblint/sv-comp/analyzer/conf/traces-rel.json'' ''--set''
+        ''dbg.timeout'' ''900'' ''--set'' ''ana.activated[+]'' ''apron'' ''--set''
+        ''ana.path_sens[+]'' ''threadflag'' ''--set'' ''ana.apron.privatization''
+        ''mutex-meet-tid-cluster12'' ''--enable'' ''ana.apron.threshold_widening''
+        ''pfscan_comb.c'' ''pfscan_ftw.c'' ''--enable'' ''dbg.uncalled'' ''--enable''
+        ''allglobs'' ''--enable'' ''printstats'' ''--enable'' ''dbg.debug'' ''-v''
+        ''--enable'' ''dbg.print_dead_code'' ''--enable'' ''witness.yaml.enabled''
+        ''--set'' ''witness.yaml.path'' ''/home/simmo/dev/goblint/sv-comp/goblint-bench/bench_result/pfscan_comb.mutex-meet-tid-cluster12-th.yml'''
+    task:
+      input_files:
+      - pfscan_comb.c
+      - pfscan_ftw.c
+      input_file_hashes:
+        pfscan_comb.c: b9cdd3fd4da214506118ebe7d1b10c0c44ace6970bb7e49741612a87b4a9c442
+        pfscan_ftw.c: 5add8a83e2d7f00428536cae235f8c657ad0161bbc5ea0bac263c65514badede
+      data_model: LP64
+      language: C
+  location:
+    file_name: pfscan_comb.c
+    file_hash: b9cdd3fd4da214506118ebe7d1b10c0c44ace6970bb7e49741612a87b4a9c442
+    line: 977
+    column: 2
+    function: worker
+  loop_invariant:
+    string: (0LL - (long long )aworkers) + (long long )nworkers >= 0LL
+    type: assertion
+    format: C
