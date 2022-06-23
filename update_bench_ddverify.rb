@@ -237,7 +237,7 @@ def analyze_project(p, save)
     aparam = a[1]
     if first
       aparam += ' --enable incremental.save ' if save
-      aparam += ' --enable incremental.only-rename ' unless save
+      aparam += ' --enable incremental.only-rename ' if $incremental and not save
       aparam += ' --set save_run original ' if $compare
       aparam += ' --set outfile original.messages.json ' if $compare
     else
