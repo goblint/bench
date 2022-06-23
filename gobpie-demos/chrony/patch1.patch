@@ -1,0 +1,11 @@
+--- chrony-4.2/nameserv_async.c
++++ chrony-4.2/nameserv_async.c
+@@ -83,6 +83,8 @@ end_resolving(int fd, int event, void *anything)
+     LOG_FATAL("pthread_join() failed");
+   }
+ 
++  __goblint_assume_join(inst->thread);
++
+   SCH_RemoveFileHandler(inst->pipe[0]);
+   close(inst->pipe[0]);
+   close(inst->pipe[1]);

@@ -1,0 +1,20 @@
+diff --git a/race-synthetic/silver_searcher_comb.c b/race-synthetic/silver_searcher_comb.c
+index 995f036..756e614 100644
+--- a/race-synthetic/silver_searcher_comb.c
++++ b/race-synthetic/silver_searcher_comb.c
+@@ -9836,6 +9836,7 @@ void print_init_context(void)
+     return;
+   }
+   tmp = ag_calloc(sizeof(char *), opts.before + 1UL);
++  pthread_mutex_lock(& print_mtx);
+   print_context.context_prev_lines = (char **)tmp;
+   print_context.line = (size_t )1;
+   print_context.prev_line = (size_t )0;
+@@ -9846,6 +9847,7 @@ void print_init_context(void)
+   print_context.last_printed_match = (size_t )0;
+   print_context.in_a_match = 0;
+   print_context.printing_a_match = 0;
++  pthread_mutex_unlock(& print_mtx);
+   return;
+ }
+ }

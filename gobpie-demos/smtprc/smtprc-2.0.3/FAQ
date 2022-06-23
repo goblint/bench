@@ -1,0 +1,100 @@
+Frequently Asked Questions
+
+
+(1) What is SmtpRC anyway?
+SmtpRC is a program that can be used to scan entire networks for open mail
+relays. It is multithreaded so it runs very fast and it is fully configurable 
+so it can be adjusted to suit any need. With more and more broadband 
+customers connecting to the internet everyday a great deal of them are 
+unknowingly running mail servers that are open to abuse from spammers. 
+SmtpRC was written to enable Systems Administrator to easily detect those 
+customers and take the appropriate action. 
+
+
+(2) What is an open relay?
+When we refer to open relay we mean a mail server that allows third parties 
+to send mail to other third parties. For example, the domain mydomain.com 
+will accept mail for users @mydomain.com from Internet users all over the 
+world; it also allows users on the machine to send mail to Internet users 
+all over the world. However, it does not allow a user from, say, AOL.COM to 
+send mail to a user at, say, JUNO.COM. Doing that (which is a popular 
+technique used by spammers) is called a .third-party relay,. because the 
+spammer is attempting to relay the mail through mydomain.com. 
+
+
+(3) Why would you want to help spammers find more open relays?
+SmtpRC is not intended as a tool for spammers. It is intended for systems 
+administrators so they can check networks under their control. As broadband 
+becomes more popular with *DSL and leased lines. More and more small 
+networks have permanent connections to the internet. A lot of these small 
+networks also have wrongly configured mail servers that will relay third 
+party mail. SmtpRC aims to address this problem by allowing ISP's to scan 
+their broadband customers on a regular basis and to shut down any that are 
+acting as open relays. Before they are detected by spammers! 
+
+
+(4) Why should I bother scanning for open relays?
+If you don.t aggressively close down open relays in your network then 
+spammers with find and abuse these servers. Spam puts an unneeded strain on 
+your network and mail servers and is a pain to the millions of people that 
+find it in their inbox everyday. You will also be likely to find your network 
+on open relay blacklists such as ORBS. 
+
+
+(5) What do I need to get SmtpRC scanning my network?
+Once you have downloaded SmtpRC you will need to configure the machine that 
+will be performing the scans. It is recommended that you add a new user 
+account to the machine for the purpose of scanning. You will also need some 
+sort of MTA running on this machine as it will need to be able to receive 
+any relayed messages. 
+
+
+(6) What is a blind or anonymous open relay?
+This means that the open relay replaces the mail header with its own 
+removing details of who the message was sent from. This enables spammers to 
+send truly anonymous spam. 
+
+
+(7) When I run SmtpRC it eats all of my memory, why is this?
+At the moment SmtpRC is quite memory intensive. This is because all of the 
+info gained while scanning is stored in memory until it has finished 
+scanning. This is ok when scanning reasonably small networks 
+e.g. 192.168.*.* but scanning a network much larger than this would need 
+memory > 128mb. If memory is a problem it is recommended that you scan your 
+network in sections outputting the results to different Html files. 
+
+
+(8) What number of threads works best with SmtpRC?
+This is completely dependant on OS and architecture. On a single CPU 
+FreeBSD machine SmtpRC will happily scan with 600 threads although on the 
+same machine running Linux it seems to fail with anything more that 250. 
+If a machine has two CPU.s the number of threads that can be used should 
+double. Please send me your findings about running SmtpRC on different 
+architectures so that it can be added to this FAQ. 
+
+
+(9) I've found a bug in your program what should I do?
+Please send all bug reports to diceman@dircon.co.uk. Please send as much 
+info as possible with the report e.g.: command line options used, copies of 
+the config files and if possible a back trace from gdb. 
+
+
+(10) Where can I find information about securing my MTA
+http://www.mail-abuse.org/tsi/ar-fix.html Here you should be able to find 
+all of the information you need to secure your mail servers against third 
+party relaying. 
+
+
+(11) What should I do if I find an open relay in my network?
+First of all you should try to contact the customer and inform them that 
+their mail server is open to third party relaying. Tell them that it needs 
+to be secured immediately and forward on the relevant documentation about 
+securing MTA.s. If the problem is not fixed within 24hrs ask them to take 
+the machine offline until it no longer relays third party email. 
+
+
+(12)Where can I discuss/get help/comment about SmtpRC
+The devloper of SmtpRC can be reached at diceman@dircon.co.uk. Please feel 
+free to coment/request help/request features/report bugs. I will always try
+to sort out any issues problems that anyones has. There is also a mailing
+that can be found on the sourceforge project site sf.net/projects/smtprc.

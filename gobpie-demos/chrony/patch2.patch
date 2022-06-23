@@ -1,0 +1,21 @@
+--- chrony-4.2/nameserv_async.c
++++ chrony-4.2/nameserv_async.c
+@@ -51,8 +51,6 @@ struct DNS_Async_Instance {
+   int pipe[2];
+ };
+ 
+-static pthread_mutex_t privops_lock = PTHREAD_MUTEX_INITIALIZER;
+-
+ /* ================================================== */
+ 
+ static void *
+@@ -60,9 +58,7 @@ start_resolving(void *anything)
+ {
+   struct DNS_Async_Instance *inst = (struct DNS_Async_Instance *)anything;
+ 
+-  pthread_mutex_lock(&privops_lock);
+   inst->status = PRV_Name2IPAddress(inst->name, inst->addresses, DNS_MAX_ADDRESSES);
+-  pthread_mutex_unlock(&privops_lock);
+ 
+   /* Notify the main thread that the result is ready */
+   if (write(inst->pipe[1], "", 1) < 0)

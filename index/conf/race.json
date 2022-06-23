@@ -1,16 +1,5 @@
 {
-  "pre": {
-    "cppflags": [
-      "-D GOBLINT_NO_PTHREAD_ONCE",
-      "-U __weak"
-    ]
-  },
   "ana": {
-    "base": {
-      "arrays": {
-        "domain": "partitioned"
-      }
-    },
     "int": {
       "def_exc": true,
       "enums": false,
@@ -28,6 +17,7 @@
       "expRelation",
       "var_eq",
       "symb_locks",
+      "region",
       "mhp"
     ],
     "context": {
@@ -35,9 +25,6 @@
     },
     "thread": {
 	    "include-node": false
-    },
-    "opt": {
-	    "hashcons": true
     },
     "malloc": {
       "wrappers": [
@@ -52,36 +39,17 @@
         "kmalloc_array",
         "kcalloc"
       ]
+    },
+    "base": {
+      "arrays": {
+        "domain": "partitioned"
+      }
     }
   },
   "exp": {
     "region-offsets": true
   },
   "solver": "td3",
-  "solvers": {
-    "td3": {
-      "restart": {
-        "wpoint": {
-          "enabled": false,
-          "once": true
-        }
-      },
-      "abort": false,
-      "abort-verify": false
-    }
-  },
-  "incremental": {
-    "reluctant": {
-      "on": false,
-      "compare": "equal"
-    },
-    "restart": {
-      "sided": {
-        "enabled": false,
-        "only-global": false
-      }
-    }
-  },
   "sem": {
     "unknown_function": {
       "spawn": false
@@ -89,5 +57,11 @@
     "int": {
       "signed_overflow": "assume_none"
     }
+  },
+  "pre": {
+    "cppflags": [
+      "-D GOBLINT_NO_PTHREAD_ONCE",
+      "-U __weak"
+    ]
   }
 }

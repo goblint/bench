@@ -1,0 +1,28 @@
+diff --git a/race-synthetic/chrony_comb.c b/race-synthetic/chrony_comb.c
+index 318cb1b..fa68c76 100644
+--- a/race-synthetic/chrony_comb.c
++++ b/race-synthetic/chrony_comb.c
+@@ -69760,8 +69760,8 @@ static void *start_resolving(void *anything )
+   inst = (struct DNS_Async_Instance *)anything;
+   pthread_mutex_lock(& privops_lock);
+   inst->status = DNS_Name2IPAddress(inst->name, inst->addresses, 16);
+-  pthread_mutex_unlock(& privops_lock);
+   tmp = write(inst->pipe[1], (void const *)"", (size_t )1);
++  pthread_mutex_unlock(& privops_lock);
+   return ((void *)0);
+ }
+ }
+@@ -69823,11 +69823,13 @@ void DNS_Name2IPAddressAsync(char const *name , void (*handler)(DNS_Status statu
+   {
+   tmp = Malloc(sizeof(struct DNS_Async_Instance ));
+   inst = (struct DNS_Async_Instance *)tmp;
++  pthread_mutex_lock(& privops_lock);
+   inst->name = name;
+   inst->handler = handler;
+   inst->arg = anything;
+   inst->status = (DNS_Status )2;
+   tmp___0 = pipe((int *)(inst->pipe));
++  pthread_mutex_unlock(& privops_lock);
+   if (tmp___0) {
+     {
+     while (1) {
