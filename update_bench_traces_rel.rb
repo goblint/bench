@@ -127,6 +127,8 @@ def print_res (i)
                 avg_protected = 0
               end
             end
+            success = lines.grep(/\[Success\]\[Assert\]/).size
+            unknown = lines.grep(/\[Warning\]\[Assert\]/).size
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -139,9 +141,11 @@ def print_res (i)
                 # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
-                thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
-                thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
-                thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
+                # thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
+                # thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
+                # thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
+                thenumbers << "<font color=\"green\" title=\"success\">#{success}</font>; "
+                thenumbers << "<font color=\"orange\" title=\"unknown\">#{unknown}</font>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
