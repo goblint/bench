@@ -1,0 +1,22 @@
+The module is a kernel character device
+It supports the following operations:
+
+    .write		= ibwdt_write,
+    .ioctl		= ibwdt_ioctl,
+    .open		  = ibwdt_open,
+    .release	= ibwdt_close,
+
+## Write Operation
+
+The write operation takes as input a file pointer but it is unused
+
+It also takes a buffer and a count associated with the buffer
+
+The operation modified the global `expect_close` based on the value in the
+buffer
+
+It also calls `ibwdt_ping` which writes `wd_margin` to the `WDT_START` port
+
+No lock is held in the operation
+
+##
