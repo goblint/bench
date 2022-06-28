@@ -287,7 +287,7 @@ $projects.each do |p|
   dirname = File.dirname(filepath)
   filename = File.basename(filepath)
   Dir.chdir(dirname)
-  outfiles = $testresults + File.basename(filename,".c") + ".*"
+  outfiles = $testresults + File.basename(dirname) + ".*"
   `rm -f #{outfiles}`
   if p.url == "generate!" then
     system(highlighter.call(p.path, $testresults + p.name + ".html"))
@@ -300,8 +300,8 @@ $projects.each do |p|
     aparam = a[1]
     print "  #{format("%*s", -maxlen, aname)}"
     STDOUT.flush
-    outfile = $testresults + outfile_name(filename, aname)
-    precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
+    outfile = $testresults + outfile_name(p.path, aname)
+    precfile = $testresults + outfile_name(p.path, aname) + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
     cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code 1>#{outfile} 2>&1"
