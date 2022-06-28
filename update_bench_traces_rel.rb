@@ -2,8 +2,8 @@
 require 'fileutils'
 Dir.chdir(File.dirname(__FILE__))
 goblint = File.expand_path("../analyzer/goblint")
-# goblint_conf = File.expand_path("../analyzer/conf/traces-rel.json")
-goblint_conf = File.expand_path("../analyzer/conf/traces-rel-toy.json")
+goblint_conf = File.expand_path("../analyzer/conf/traces-rel.json")
+# goblint_conf = File.expand_path("../analyzer/conf/traces-rel-toy.json")
 compare = File.expand_path("../analyzer/apronPrecCompare")
 fail "Please run script from goblint dir!" unless File.exist?(goblint)
 $vrsn = `#{goblint} --version`
@@ -289,6 +289,7 @@ $projects.each do |p|
     STDOUT.flush
     outfile = $testresults + File.basename(filename,".c") + ".#{aname}.txt"
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
+    transfile = File.join(File.dirname(filename), File.basename(filename, File.extname(filename))) + "_traces_rel.i"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
     cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code 1>#{outfile} 2>&1"
@@ -313,7 +314,7 @@ $projects.each do |p|
       end
     else
       # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} --set trans.activated[+] assert --set trans.output #{transfile} 1>/dev/null 2>&1"
       system(cmd)
       puts "-- Done!"
       precfiles << precfile
