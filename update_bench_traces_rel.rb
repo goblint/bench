@@ -128,8 +128,10 @@ def print_res (i)
                 avg_protected = 0
               end
             end
-            success = lines.grep(/\[Success\]\[Assert\]/).size
-            unknown = lines.grep(/\[Warning\]\[Assert\]/).size
+            # success = lines.grep(/\[Success\]\[Assert\]/).size
+            # unknown = lines.grep(/\[Warning\]\[Assert\]/).size
+            success = lines.grep(/  confirmed:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            unknown = lines.grep(/  unconfirmed:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -292,7 +294,7 @@ $projects.each do |p|
     yamlfile = File.join(File.dirname(filename), File.basename(filename, File.extname(filename))) + "_traces_rel.yml"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --enable witness.yaml.enabled --set witness.yaml.path #{yamlfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --set witness.yaml.validate #{yamlfile} 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
