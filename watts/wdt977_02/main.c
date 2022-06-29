@@ -299,7 +299,7 @@ static int wdt977_keepalive(void)
   do { \
     assert(spinlock_init); \
     spin_lock(spinlock); \
-    /* Julian Erhard: The previous line contained a ";" after the if, rendering the assert(0) unguarded.
+    /* Julian Erhard: The following line previously contained a ";" after the if, rendering the assert(0) unguarded.
 	   We deemed this unintentional and removed the ";". */ \
 	if (!dev_open) { \
       assert(0); \
