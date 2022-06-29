@@ -63,8 +63,14 @@ $header = <<END
 END
 $theresultfile = File.join($testresults, "index.html")
 
+
 def outfile_name (p,aname)
   File.basename(File.dirname(p)) + "_" + File.basename(p,".c") + ".#{aname}.txt"
+end
+
+def count_asserts (file)
+  assert_fail_string = "__assert_fail"
+  (`gcc -E #{file} | grep #{assert_fail_string} | wc -l`.to_i) - 1
 end
 
 def print_res (i)
@@ -92,6 +98,7 @@ def print_res (i)
       end
       f.puts "<tr>"
       f.puts p.to_html
+      assert_count = count_asserts(p.path)
       $analyses.each do |a|
         aname = a[0]
         outfile = outfile_name(p.path,aname)
@@ -134,6 +141,9 @@ def print_res (i)
             success = lines.grep(/\[Success\]\[Assert\]/).size
             unknown = lines.grep(/\[Warning\]\[Assert\]/).size
             error = lines.grep(/\[Error\]\[Assert\]/).size
+
+            unreachable = assert_count - success - unknown - error
+
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -147,6 +157,7 @@ def print_res (i)
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
                 thenumbers << "<span title=\"total (logical) lines\">#{total}</span>;"
+                thenumbers << "<font color=\"blue\" title=\"unreachable asserts\">#{unreachable}</font>;"
                 thenumbers << "<font color=\"green\" title=\"success\">#{success}</font>;"
                 thenumbers << "<font color=\"orange\" title=\"unknown\">#{unknown}</font>;"
                 thenumbers << "<font color=\"red\" title=\"error\">#{error}</font>"
