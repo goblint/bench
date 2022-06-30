@@ -1012,15 +1012,5 @@ int main(int argc, char *argv[]) {
   pthread_create(&t1, NULL, writer27, NULL);
   pthread_create(&t1, NULL, writer28, NULL);
   pthread_create(&t1, NULL, writer29, NULL);
-  pthread_create(&t1, NULL, writer30, NULL);
-  pthread_create(&t1, NULL, writer41, NULL);
-  pthread_create(&t1, NULL, writer42, NULL);
-  pthread_create(&t1, NULL, writer43, NULL);
-  pthread_create(&t1, NULL, writer44, NULL);
-  pthread_create(&t1, NULL, writer45, NULL);
-  pthread_create(&t1, NULL, writer46, NULL);
-  pthread_create(&t1, NULL, writer47, NULL);
-  pthread_create(&t1, NULL, writer48, NULL);
-  pthread_create(&t1, NULL, writer49, NULL);
   pthread_exit(NULL);
 }
