@@ -976,6 +976,106 @@ void *writer49(void *unused) {
   return NULL;
 }
 
+void *writer50(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer51(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer52(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer53(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer54(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer55(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer56(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer57(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer58(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer59(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer60(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer61(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer62(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer63(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer64(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer65(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer66(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer67(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer68(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
+void *writer69(void *unused) {
+  i8xx_tco_write(0);
+  return NULL;
+}
+
 // markus: driver code
 int main(int argc, char *argv[]) {
   wdt_init();
