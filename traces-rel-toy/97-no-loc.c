@@ -40,7 +40,7 @@ int main(void) {
   pthread_mutex_unlock(&A);
 
   pthread_mutex_lock(&A);
-  assert(g == 12);
+  // assert(g == 12);
   pthread_mutex_unlock(&A);
 
 // ---------------------------------------------------------------------------
