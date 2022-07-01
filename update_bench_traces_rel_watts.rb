@@ -81,6 +81,7 @@ def print_res (i)
     f.puts "<p>Benchmarking in progress: #{i}/#{$projects.length} <progress value=\"#{i}\" max=\"#{$projects.length}\" /></p>" unless i.nil?
     f.puts "<table border=2 cellpadding=4 style=\"font-size: 90%\">"
     gname = ""
+    total_assert_count = 0
     $projects.each do |p|
       if p.group != gname then
         gname = p.group
@@ -99,6 +100,7 @@ def print_res (i)
       f.puts "<tr>"
       f.puts p.to_html
       assert_count = count_asserts(p.path)
+      total_assert_count += assert_count
       $analyses.each do |a|
         aname = a[0]
         outfile = outfile_name(p.path,aname)
@@ -183,6 +185,7 @@ def print_res (i)
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "#{$vrsn}"
+    f.puts "Total number of asserts in benchmark files: #{total_assert_count}"
     f.puts "</p>"
     f.puts "</body>"
     f.puts "</html>"
