@@ -127,6 +127,8 @@ def print_res (i)
                 avg_protected = 0
               end
             end
+            success = lines.grep(/\[Success\]\[Assert\]/).size
+            unknown = lines.grep(/\[Warning\]\[Assert\]/).size
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -139,9 +141,11 @@ def print_res (i)
                 # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
-                thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
-                thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
-                thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
+                # thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
+                # thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
+                # thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
+                thenumbers << "<font color=\"green\" title=\"success\">#{success}</font>; "
+                thenumbers << "<font color=\"orange\" title=\"unknown\">#{unknown}</font>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
@@ -284,6 +288,7 @@ $projects.each do |p|
     STDOUT.flush
     outfile = $testresults + File.basename(filename,".c") + ".#{aname}.txt"
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
+    # transfile = File.join(File.dirname(filename), File.basename(filename, File.extname(filename))) + "_traces_rel.i"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
     cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code 1>#{outfile} 2>&1"
@@ -309,7 +314,7 @@ $projects.each do |p|
     else
       # Run again to get precision dump
       cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
-      system(cmd)
+      # system(cmd)
       puts "-- Done!"
       precfiles << precfile
     end
