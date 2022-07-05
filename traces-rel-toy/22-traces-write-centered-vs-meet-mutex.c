@@ -26,7 +26,7 @@ void *t_fun(void *arg) {
     pthread_mutex_unlock(&B);
     i = x + 31;
     z = i;
-    assert(z >= x); // TODO (write succeeds, mutex-meet unknown)
+    // assert(z >= x); // TODO (write succeeds, mutex-meet unknown)
     pthread_mutex_unlock(&A);
     pthread_mutex_unlock(&C);
   }

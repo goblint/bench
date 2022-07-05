@@ -20,7 +20,7 @@ int main(void) {
   h = 14;
 
   pthread_mutex_lock(&A);
-  assert(g != h);
+  // assert(g != h);
   pthread_mutex_unlock(&A);
 
   pthread_t id;
