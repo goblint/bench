@@ -190,7 +190,7 @@ end
 skipgrp = []
 file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-File.symlink("index/traces-relational.txt",file) unless FileTest.exists? file
+File.symlink("index/traces-rel-toy.txt",file) unless FileTest.exists? file
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
