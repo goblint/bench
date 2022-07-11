@@ -1,5 +1,3 @@
-// SKIP PARAM: --set ana.activated[+] apron --set ana.path_sens[+] threadflag --set ana.activated[+] threadJoins --enable ana.apron.threshold_widening --sets ana.apron.privatization mutex-meet-tid
-
 #include <pthread.h>
 #include <assert.h>
 

@@ -1,5 +1,3 @@
-// SKIP PARAM: --set ana.activated[+] apron --set ana.path_sens[+] threadflag --set ana.activated[+] threadJoins
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
