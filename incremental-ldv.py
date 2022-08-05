@@ -173,9 +173,9 @@ def print_entry(str):
 def print_mapping(config_mapping: ConfigMapping, outfile):
     mapping = create_config_mapping(config_mapping)
 
-    file = open(outfile, "w")
+    file_handle = open(outfile, "w")
     stdout = sys.stdout
-    sys.stdout = file
+    sys.stdout = file_handle
     print("<html>")
     print("<body>")
 
@@ -201,6 +201,7 @@ def print_mapping(config_mapping: ConfigMapping, outfile):
     print("</html>")
 
     sys.stdout = stdout
+    file_handle.close()
 
 def run_and_print():
     config_mapping = run_benchmarks(path)
