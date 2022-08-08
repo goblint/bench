@@ -1,4 +1,5 @@
 from cProfile import run
+from genericpath import isdir
 import os
 import shutil
 import time
@@ -6,64 +7,8 @@ import sys
 from pathlib import Path
 
 path = "../bench-repos/regression-verification-tasks/regression-verification-tasks/"
-html_out = "results.html"
+output_path = "../bench/ldv-regression"
 
-class Result:
-    file = ""
-    runtime = 0
-    configuration = None
-    output = ""
-
-    def __init__(self, file, runtime, configuration, output):
-        self.file = file
-        self.runtime = runtime
-        self.configuration = configuration
-        self.output = output
-
-# results for a sequence of commits
-class Sequence:
-    results = []
-
-    def __init__(self, results):
-        self.results = results
-
-class FolderResult:
-    folder = ""
-    sequences = []
-
-    def __init__(self, folder, sequences):
-        self.folder = folder
-        self.sequences = sequences
-
-class ConfigMapping:
-    mappings: dict = {} # mapping from configs to FolderResults
-
-    def __init__(self, mappings):
-        self.mappings = mappings
-
-class Configuration:
-    config = ""
-    name = ""
-
-    def __init__(self, config, name):
-        self.config = config
-        self.name = name
-
-    def config_by_index(self, index):
-        return self.config
-
-class IncrementalConfiguration(Configuration):
-    save = " --enable incremental.save "
-    load = " --enable incremental.load "
-
-    def __init__(self, config, name):
-        super().__init__(config, name)
-
-    def config_by_index(self, index):
-        if index == 0:
-            return self.save + self.config
-        else:
-            return self.save + self.load + self.config
 
 # Returns sequences of benchmarks in a directory as a dict of lists
 def find_sequences(path):
@@ -82,6 +27,7 @@ def find_sequences(path):
     benchmarks = {}
 
     for file in filtered:
+        print("Looking at file " + file)
         suffix = file[12:]
         cut_off_index = suffix.find(".")
         suffix = suffix[:cut_off_index]
@@ -92,119 +38,79 @@ def find_sequences(path):
         else:
             lst.append(file)
         benchmarks[suffix] = lst
+
+    for start in benchmarks.keys():
+        print("Start: " + start)
+        for file in benchmarks.get(start):
+            print("file:" + file)
+
     return benchmarks
 
-def run_goblint(file, configuration, index):
-    destination = "ldv.cil"
+def copy_file(input_file, input_dir):
+    source = os.path.join(input_dir, input_file)
+    input_dir_basename = os.path.basename(input_dir)
+    destination_dir = os.path.join(output_path, input_dir_basename)
+
+    output_file = input_file.replace(".cil", ".c")
+    destination = os.path.join(destination_dir, output_file)
     if Path(destination).is_file():
         os.remove(destination)
-    shutil.copyfile(file, destination)
-    cmd = "timeout 1s ./goblint " + destination + " " + configuration.config_by_index(index)
-    print("Running " + cmd + ", file: " + file)
-    before = time.time()
+    print("Copying file " + source + " to: " + destination)
+    if not os.path.isdir(destination_dir):
+        os.makedirs(destination_dir)
+    shutil.copyfile(source, destination)
+
+def diff_files_output_to(current, update, input_dir, output_path, firstfilename, index):
+    input_dir_basename = os.path.basename(input_dir)
+    destination_dir = os.path.join(output_path, input_dir_basename, current)
+    current = os.path.join(input_dir, current)
+    update = os.path.join(input_dir, update)
+
+    index = "." + str(index).zfill(3)
+
+    base_file_name = firstfilename.replace(".cil", "")
+    output_path = os.path.join(output_path, base_file_name + index + ".patch")
+
+    cmd = "diff " + current + " " + update + " >" + output_path
+    # print("Executing: " + cmd)
     stream = os.popen(cmd)
-    output = stream.read()
-    diff = time.time() - before
-    return Result(file, diff, configuration, output)
+    _ = stream.read()
 
-def benchmark_folder(dir, configuration: Configuration):
-    dir = dir
+def generate_sequence(dir, sequence):
+    if sequence == []:
+        return
+
+    first = sequence[0]
+    current = sequence.pop(0)
+
+    copy_file(current, dir)
+
+    i = 0
+
+    for file in sequence:
+        i = i + 1
+        print("handling " + file)
+        dir_basename = os.path.basename(dir)
+        out_path = os.path.join(output_path, dir_basename)
+        diff_files_output_to(current, file, dir, out_path, first, i)
+        current = file
+
+
+def generate_folder(dir):
     benchmarks = find_sequences(dir)
-
     if benchmarks == None:
         return
 
-    sequences = []
     for key in benchmarks:
-        i = 0
-        seq = []
-        for file in benchmarks.get(key):
-            file = os.path.join(dir, file)
-            result = run_goblint(file, configuration, i)
-            i = i + 1
-            seq.append(result)
-        sequences.append(Sequence(seq))
-    return FolderResult(dir, sequences)
+        sequence = benchmarks.get(key)
+        generate_sequence(dir, sequence)
 
-def benchmark_all_folders(path, configuration: Configuration):
+def generate_all_folders(path):
     folder_results = []
     for dir in os.listdir(path):
         folder = os.path.join(path, dir)
-        folder_result = benchmark_folder(folder, configuration)
+        folder_result = generate_folder(folder)
         folder_results.append(folder_result)
     return folder_results
 
-def configurations():
-
-    args = " ".join(sys.argv[1:])
-    incremental = IncrementalConfiguration(args, "incremental")
-    non_incremental = Configuration(args, "non-incremental")
-    return [incremental, non_incremental]
-
-def run_benchmarks(path):
-    config_mapping = {}
-    for conf in configurations():
-        results = benchmark_all_folders(path, conf)
-        config_mapping[conf.name] = results
-    return ConfigMapping(config_mapping)
-
-def create_config_mapping(config_mapping: ConfigMapping):
-    mapping = {} # mapping from file names to results
-    i = 0
-    for conf in config_mapping.mappings:
-        for folder in config_mapping.mappings[conf]:
-            for folder_result in folder.sequences:
-                for result in folder_result.results:
-                    i = i + 1
-                    if result == None:
-                        continue
-                    results_for_file = mapping.get(result.file)
-                    if results_for_file == None:
-                        results_for_file = [result]
-                    else:
-                        results_for_file.append(result)
-                    mapping[result.file] = results_for_file
-    return mapping
-
-
-def print_entry(str):
-    print("<td>" + str + "</td>")
-
-def print_mapping(config_mapping: ConfigMapping, outfile):
-    mapping = create_config_mapping(config_mapping)
-
-    file_handle = open(outfile, "w")
-    stdout = sys.stdout
-    sys.stdout = file_handle
-    print("<html>")
-    print("<body>")
-
-    print("<table>")
-    print("<tr>")
-    print_entry("filename")
-    for conf in config_mapping.mappings:
-        print_entry(conf)
-    print("</tr>")
-
-    for file in mapping:
-        print("<tr>")
-        filename = os.path.basename(file)
-        print_entry(filename)
-        for entry in mapping[file]:
-            print("<td>")
-            print("%.3f" % entry.runtime)
-            print("</td>")
-        print("</tr")
-    print("</table")
-
-    print("</body>")
-    print("</html>")
-
-    sys.stdout = stdout
-    file_handle.close()
-
-def run_and_print():
-    config_mapping = run_benchmarks(path)
-    print_mapping(config_mapping, html_out)
-
-run_and_print()
+generate_all_folders(path)
