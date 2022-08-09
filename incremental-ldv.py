@@ -4,6 +4,7 @@ import os
 import shutil
 import time
 import sys
+import re
 from pathlib import Path
 
 path = "../bench-repos/regression-verification-tasks/regression-verification-tasks/"
@@ -14,14 +15,19 @@ set_output_path = "../bench/index/sets/ldv"
 
 
 def get_suffix(file):
-    suffix = file[12:]
+    mat = re.match(".*\..*\.(.*)\.", file)
+
+    if mat.groups() == []:
+        print("File name of regression test does not follow expected format, exiting.")
+        exit(1)
+
+    suffix = mat.groups()[0]
     cut_off_index = suffix.find(".")
     suffix = suffix[:cut_off_index]
     return suffix
 
 # Returns sequences of benchmarks in a directory as a dict of lists
 def find_sequences(path):
-    print(path)
     files = os.listdir(path)
     files.sort()
     filtered = []
@@ -36,7 +42,6 @@ def find_sequences(path):
     benchmarks = {}
 
     for file in filtered:
-        print("Looking at file " + file)
         suffix = get_suffix(file)
 
         lst = benchmarks.get(suffix)
@@ -45,11 +50,6 @@ def find_sequences(path):
         else:
             lst.append(file)
         benchmarks[suffix] = lst
-
-    for start in benchmarks.keys():
-        print("Start: " + start)
-        for file in benchmarks.get(start):
-            print("file:" + file)
 
     return benchmarks
 
@@ -62,7 +62,6 @@ def copy_file(input_file, input_dir):
     destination = os.path.join(destination_dir, output_file)
     if Path(destination).is_file():
         os.remove(destination)
-    print("Copying file " + source + " to: " + destination)
     if not os.path.isdir(destination_dir):
         os.makedirs(destination_dir)
     shutil.copyfile(source, destination)
@@ -79,7 +78,6 @@ def diff_files_output_to(current, update, input_dir, output_path, firstfilename,
     output_path = os.path.join(output_path, base_file_name + index + ".patch")
 
     cmd = "diff " + current + " " + update + " >" + output_path
-    # print("Executing: " + cmd)
     stream = os.popen(cmd)
     _ = stream.read()
 
