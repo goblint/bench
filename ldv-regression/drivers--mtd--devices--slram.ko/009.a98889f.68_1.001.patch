@@ -1,0 +1,1772 @@
+108c108
+< #line 10 "include/asm/processor.h"
+---
+> #line 7 "include/asm/processor.h"
+110c110
+< #line 11
+---
+> #line 8
+173c173
+< #line 93 "include/linux/kernel.h"
+---
+> #line 96 "include/linux/kernel.h"
+175c175
+< #line 176
+---
+> #line 179
+225c225
+< #line 88 "include/linux/cpumask.h"
+---
+> #line 92 "include/linux/cpumask.h"
+227c227
+<    unsigned long bits[((8 + 64) - 1) / 64] ;
+---
+>    unsigned long bits[((8UL + 8UL * sizeof(long )) - 1UL) / (8UL * sizeof(long ))] ;
+229c229
+< #line 88 "include/linux/cpumask.h"
+---
+> #line 92 "include/linux/cpumask.h"
+252c252
+< #line 290 "include/asm/processor.h"
+---
+> #line 287 "include/asm/processor.h"
+264c264
+< #line 306 "include/asm/processor.h"
+---
+> #line 303 "include/asm/processor.h"
+269c269
+< #line 306 "include/asm/processor.h"
+---
+> #line 303 "include/asm/processor.h"
+276c276
+< #line 306 "include/asm/processor.h"
+---
+> #line 303 "include/asm/processor.h"
+281c281
+< #line 306 "include/asm/processor.h"
+---
+> #line 303 "include/asm/processor.h"
+294c294
+< #line 336 "include/asm/processor.h"
+---
+> #line 333 "include/asm/processor.h"
+313c313
+< #line 356 "include/asm/processor.h"
+---
+> #line 353 "include/asm/processor.h"
+319c319
+< #line 369
+---
+> #line 366
+321c321
+< #line 374 "include/asm/processor.h"
+---
+> #line 371 "include/asm/processor.h"
+350c350
+< #line 607 "include/asm/processor.h"
+---
+> #line 604 "include/asm/processor.h"
+354c354
+< #line 607 "include/asm/processor.h"
+---
+> #line 604 "include/asm/processor.h"
+356c356
+< #line 21 "include/linux/list.h"
+---
+> #line 19 "include/linux/list.h"
+361c361
+< #line 682
+---
+> #line 690
+363c363
+< #line 682 "include/linux/list.h"
+---
+> #line 690 "include/linux/list.h"
+367c367
+< #line 686 "include/linux/list.h"
+---
+> #line 694 "include/linux/list.h"
+586,591d585
+< #line 33 "include/linux/sysfs.h"
+< struct attribute_group {
+<    char const   *name ;
+<    int (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+<    struct attribute **attrs ;
+< };
+599c593
+< #line 23 "include/linux/kref.h"
+---
+> #line 21 "include/linux/kref.h"
+621c615
+< #line 62 "include/linux/kobject.h"
+---
+> #line 60 "include/linux/kobject.h"
+623c617
+< #line 62
+---
+> #line 60
+625c619
+< #line 62
+---
+> #line 60
+627c621
+< #line 62 "include/linux/kobject.h"
+---
+> #line 60 "include/linux/kobject.h"
+641c635
+< #line 107 "include/linux/kobject.h"
+---
+> #line 105 "include/linux/kobject.h"
+647c641
+< #line 113 "include/linux/kobject.h"
+---
+> #line 111 "include/linux/kobject.h"
+654c648
+< #line 120 "include/linux/kobject.h"
+---
+> #line 118 "include/linux/kobject.h"
+660c654
+< #line 154 "include/linux/kobject.h"
+---
+> #line 152 "include/linux/kobject.h"
+722c716
+< #line 88 "include/linux/nodemask.h"
+---
+> #line 92 "include/linux/nodemask.h"
+724c718
+<    unsigned long bits[(((1 << 6) + 64) - 1) / 64] ;
+---
+>    unsigned long bits[(((unsigned long )(1 << 6) + 8UL * sizeof(long )) - 1UL) / (8UL * sizeof(long ))] ;
+726c720
+< #line 88 "include/linux/nodemask.h"
+---
+> #line 92 "include/linux/nodemask.h"
+745c739
+< #line 19 "include/linux/rwsem.h"
+---
+> #line 17 "include/linux/rwsem.h"
+766c760
+< #line 8 "include/linux/timer.h"
+---
+> #line 9 "include/linux/timer.h"
+768c762
+< #line 10 "include/linux/timer.h"
+---
+> #line 11 "include/linux/timer.h"
+779c773
+< #line 159
+---
+> #line 181
+781c775
+< #line 160
+---
+> #line 182
+816c810,811
+<     NR_SLUB_STAT_ITEMS = 17
+---
+>     ORDER_FALLBACK = 17,
+>     NR_SLUB_STAT_ITEMS = 18
+818c813
+< #line 34 "include/linux/slub_def.h"
+---
+> #line 35 "include/linux/slub_def.h"
+827c822
+< #line 45 "include/linux/slub_def.h"
+---
+> #line 46 "include/linux/slub_def.h"
+832a828
+>    atomic_long_t total_objects ;
+835c831,835
+< #line 58 "include/linux/slub_def.h"
+---
+> #line 62 "include/linux/slub_def.h"
+> struct kmem_cache_order_objects {
+>    unsigned long x ;
+> };
+> #line 69 "include/linux/slub_def.h"
+841c841
+<    int order ;
+---
+>    struct kmem_cache_order_objects oo ;
+843c843,844
+<    int objects ;
+---
+>    struct kmem_cache_order_objects max ;
+>    struct kmem_cache_order_objects min ;
+899,911c900
+< #line 233 "include/linux/module.h"
+< struct module_sect_attr {
+<    struct module_attribute mattr ;
+<    char *name ;
+<    unsigned long address ;
+< };
+< #line 240 "include/linux/module.h"
+< struct module_sect_attrs {
+<    struct attribute_group grp ;
+<    int nsections ;
+<    struct module_sect_attr attrs[0] ;
+< };
+< #line 247
+---
+> #line 232
+913c902,904
+< #line 249
+---
+> #line 232
+> struct module_sect_attrs;
+> #line 232
+915c906
+< #line 249 "include/linux/module.h"
+---
+> #line 232 "include/linux/module.h"
+1032a1024,1028
+> struct __anonstruct____missing_field_name_98 {
+>    u16 inuse ;
+>    u16 objects ;
+> };
+> #line 36 "include/linux/mm_types.h"
+1035c1031
+<    unsigned int inuse ;
+---
+>    struct __anonstruct____missing_field_name_98 __annonCompField10 ;
+1038c1034
+< struct __anonstruct____missing_field_name_99 {
+---
+> struct __anonstruct____missing_field_name_100 {
+1043,1044c1039,1040
+< union __anonunion____missing_field_name_98 {
+<    struct __anonstruct____missing_field_name_99 __annonCompField11 ;
+---
+> union __anonunion____missing_field_name_99 {
+>    struct __anonstruct____missing_field_name_100 __annonCompField12 ;
+1050c1046
+< union __anonunion____missing_field_name_100 {
+---
+> union __anonunion____missing_field_name_101 {
+1058,1060c1054,1056
+<    union __anonunion____missing_field_name_97 __annonCompField10 ;
+<    union __anonunion____missing_field_name_98 __annonCompField12 ;
+<    union __anonunion____missing_field_name_100 __annonCompField13 ;
+---
+>    union __anonunion____missing_field_name_97 __annonCompField11 ;
+>    union __anonunion____missing_field_name_99 __annonCompField13 ;
+>    union __anonunion____missing_field_name_101 __annonCompField14 ;
+1064,1065c1060,1061
+< #line 102 "include/linux/mm_types.h"
+< struct __anonstruct_vm_set_102 {
+---
+> #line 105 "include/linux/mm_types.h"
+> struct __anonstruct_vm_set_103 {
+1070,1072c1066,1068
+< #line 102 "include/linux/mm_types.h"
+< union __anonunion_shared_101 {
+<    struct __anonstruct_vm_set_102 vm_set ;
+---
+> #line 105 "include/linux/mm_types.h"
+> union __anonunion_shared_102 {
+>    struct __anonstruct_vm_set_103 vm_set ;
+1075c1071
+< #line 102
+---
+> #line 105
+1077c1073
+< #line 102
+---
+> #line 105
+1079c1075
+< #line 102
+---
+> #line 105
+1081c1077
+< #line 102 "include/linux/mm_types.h"
+---
+> #line 105 "include/linux/mm_types.h"
+1090c1086
+<    union __anonunion_shared_101 shared ;
+---
+>    union __anonunion_shared_102 shared ;
+1100c1096
+< #line 159
+---
+> #line 162
+1102,1104c1098
+< #line 159
+< struct mem_cgroup;
+< #line 159 "include/linux/mm_types.h"
+---
+> #line 162 "include/linux/mm_types.h"
+1119a1114
+>    int core_waiters ;
+1153d1147
+<    int core_waiters ;
+1158c1152,1154
+<    struct mem_cgroup *mem_cgroup ;
+---
+>    struct task_struct *owner ;
+>    struct file *exe_file ;
+>    unsigned long num_exe_file_vmas ;
+1184c1180
+< struct __anonstruct_sigset_t_103 {
+---
+> struct __anonstruct_sigset_t_104 {
+1188c1184
+< typedef struct __anonstruct_sigset_t_103 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_104 sigset_t;
+1216c1212
+< struct __anonstruct__kill_105 {
+---
+> struct __anonstruct__kill_106 {
+1221c1217
+< struct __anonstruct__timer_106 {
+---
+> struct __anonstruct__timer_107 {
+1229c1225
+< struct __anonstruct__rt_107 {
+---
+> struct __anonstruct__rt_108 {
+1235c1231
+< struct __anonstruct__sigchld_108 {
+---
+> struct __anonstruct__sigchld_109 {
+1243c1239
+< struct __anonstruct__sigfault_109 {
+---
+> struct __anonstruct__sigfault_110 {
+1247c1243
+< struct __anonstruct__sigpoll_110 {
+---
+> struct __anonstruct__sigpoll_111 {
+1252c1248
+< union __anonunion__sifields_104 {
+---
+> union __anonunion__sifields_105 {
+1254,1259c1250,1255
+<    struct __anonstruct__kill_105 _kill ;
+<    struct __anonstruct__timer_106 _timer ;
+<    struct __anonstruct__rt_107 _rt ;
+<    struct __anonstruct__sigchld_108 _sigchld ;
+<    struct __anonstruct__sigfault_109 _sigfault ;
+<    struct __anonstruct__sigpoll_110 _sigpoll ;
+---
+>    struct __anonstruct__kill_106 _kill ;
+>    struct __anonstruct__timer_107 _timer ;
+>    struct __anonstruct__rt_108 _rt ;
+>    struct __anonstruct__sigchld_109 _sigchld ;
+>    struct __anonstruct__sigfault_110 _sigfault ;
+>    struct __anonstruct__sigpoll_111 _sigpoll ;
+1266c1262
+<    union __anonunion__sifields_104 _sifields ;
+---
+>    union __anonunion__sifields_105 _sifields ;
+1295c1291
+< #line 51 "include/linux/rcupdate.h"
+---
+> #line 49 "include/linux/rcupdate.h"
+1320c1316
+<    int level ;
+---
+>    unsigned int level ;
+1328c1324
+< #line 84 "include/linux/proportions.h"
+---
+> #line 97 "include/linux/proportions.h"
+1336c1332
+< struct __anonstruct_seccomp_t_113 {
+---
+> struct __anonstruct_seccomp_t_114 {
+1340c1336
+< typedef struct __anonstruct_seccomp_t_113 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_114 seccomp_t;
+1349c1345
+< #line 42 "include/linux/resource.h"
+---
+> #line 43 "include/linux/resource.h"
+1418c1414
+< #line 96 "include/linux/sched.h"
+---
+> #line 95 "include/linux/sched.h"
+1420c1416
+< #line 97
+---
+> #line 96
+1422c1418
+< #line 98
+---
+> #line 97
+1424c1420
+< #line 140
+---
+> #line 139
+1426c1422
+< #line 141
+---
+> #line 140
+1428c1424
+< #line 142
+---
+> #line 141
+1430c1426
+< #line 332
+---
+> #line 331
+1450c1446
+< union __anonunion_ki_obj_115 {
+---
+> union __anonunion_ki_obj_116 {
+1465c1461
+<    union __anonunion_ki_obj_115 ki_obj ;
+---
+>    union __anonunion_ki_obj_116 ki_obj ;
+1508c1504
+< #line 410 "include/linux/sched.h"
+---
+> #line 409 "include/linux/sched.h"
+1515c1511
+< #line 417 "include/linux/sched.h"
+---
+> #line 416 "include/linux/sched.h"
+1525,1526c1521,1522
+< #line 432 "include/linux/sched.h"
+< union __anonunion____missing_field_name_116 {
+---
+> #line 431 "include/linux/sched.h"
+> union __anonunion____missing_field_name_117 {
+1530,1531c1526,1527
+< #line 432 "include/linux/sched.h"
+< union __anonunion____missing_field_name_117 {
+---
+> #line 431 "include/linux/sched.h"
+> union __anonunion____missing_field_name_118 {
+1535c1531
+< #line 432
+---
+> #line 431
+1537c1533
+< #line 432
+---
+> #line 431
+1539c1535
+< #line 432
+---
+> #line 431
+1541c1537
+< #line 432 "include/linux/sched.h"
+---
+> #line 431 "include/linux/sched.h"
+1561,1562d1556
+<    union __anonunion____missing_field_name_116 __annonCompField14 ;
+<    struct pid *tty_old_pgrp ;
+1563a1558,1559
+>    struct pid *tty_old_pgrp ;
+>    union __anonunion____missing_field_name_118 __annonCompField16 ;
+1594c1590
+< #line 569 "include/linux/sched.h"
+---
+> #line 576 "include/linux/sched.h"
+1612c1608
+< #line 609
+---
+> #line 616
+1614c1610
+< #line 610
+---
+> #line 617
+1616c1612
+< #line 613 "include/linux/sched.h"
+---
+> #line 620 "include/linux/sched.h"
+1625c1621
+< #line 630
+---
+> #line 637
+1627c1623
+< #line 634 "include/linux/sched.h"
+---
+> #line 641 "include/linux/sched.h"
+1638c1634
+< #line 675
+---
+> #line 682
+1645c1641
+< #line 719 "include/linux/sched.h"
+---
+> #line 726 "include/linux/sched.h"
+1652c1648
+< #line 736
+---
+> #line 743
+1662c1658
+< #line 754 "include/linux/sched.h"
+---
+> #line 761 "include/linux/sched.h"
+1705c1701
+< #line 835
+---
+> #line 842
+1707c1703
+< #line 838 "include/linux/sched.h"
+---
+> #line 845 "include/linux/sched.h"
+1715c1711
+< #line 875
+---
+> #line 882
+1717c1713
+< #line 877
+---
+> #line 884
+1719c1715
+< #line 880
+---
+> #line 887
+1721c1717
+< #line 883 "include/linux/sched.h"
+---
+> #line 890 "include/linux/sched.h"
+1751c1747
+< #line 931 "include/linux/sched.h"
+---
+> #line 938 "include/linux/sched.h"
+1756c1752
+< #line 945 "include/linux/sched.h"
+---
+> #line 952 "include/linux/sched.h"
+1799c1795
+< #line 1002
+---
+> #line 1009
+1801c1797
+< #line 1002 "include/linux/sched.h"
+---
+> #line 1009 "include/linux/sched.h"
+1812c1808
+< #line 1018
+---
+> #line 1025
+1814c1810
+< #line 1018
+---
+> #line 1025
+1816c1812
+< #line 1018
+---
+> #line 1025
+1818c1814
+< #line 1018
+---
+> #line 1025
+1820c1816
+< #line 1018 "include/linux/sched.h"
+---
+> #line 1025 "include/linux/sched.h"
+1896c1892
+<    unsigned int keep_capabilities : 1 ;
+---
+>    unsigned int securebits ;
+1987c1983
+< #line 12 "include/linux/dcache.h"
+---
+> #line 10 "include/linux/dcache.h"
+1989c1985
+< #line 34 "include/linux/dcache.h"
+---
+> #line 32 "include/linux/dcache.h"
+1995c1991
+< #line 79
+---
+> #line 77
+1997c1993
+< #line 83
+---
+> #line 81
+1999,2000c1995,1996
+< #line 83 "include/linux/dcache.h"
+< union __anonunion_d_u_118 {
+---
+> #line 81 "include/linux/dcache.h"
+> union __anonunion_d_u_119 {
+2004c2000
+< #line 83
+---
+> #line 81
+2006c2002
+< #line 83
+---
+> #line 81
+2008c2004
+< #line 83 "include/linux/dcache.h"
+---
+> #line 81 "include/linux/dcache.h"
+2018c2014
+<    union __anonunion_d_u_118 d_u ;
+---
+>    union __anonunion_d_u_119 d_u ;
+2029c2025
+< #line 130 "include/linux/dcache.h"
+---
+> #line 128 "include/linux/dcache.h"
+2046c2042
+< enum __anonenum_119 {
+---
+> enum __anonenum_120 {
+2050c2046
+< union __anonunion_intent_120 {
+---
+> union __anonunion_intent_121 {
+2061c2057
+<    union __anonunion_intent_120 intent ;
+---
+>    union __anonunion_intent_121 intent ;
+2189c2185
+< union __anonunion_u_124 {
+---
+> union __anonunion_u_125 {
+2195a2192
+>    int dqi_fmt_id ;
+2200c2197,2199
+<    union __anonunion_u_124 u ;
+---
+>    qsize_t dqi_maxblimit ;
+>    qsize_t dqi_maxilimit ;
+>    union __anonunion_u_125 u ;
+2202c2201
+< #line 249 "include/linux/quota.h"
+---
+> #line 253 "include/linux/quota.h"
+2218c2217
+< #line 271 "include/linux/quota.h"
+---
+> #line 275 "include/linux/quota.h"
+2228c2227
+< #line 282 "include/linux/quota.h"
+---
+> #line 286 "include/linux/quota.h"
+2243c2242
+< #line 298 "include/linux/quota.h"
+---
+> #line 302 "include/linux/quota.h"
+2245,2246c2244,2245
+<    int (*quota_on)(struct super_block * , int  , int  , char * ) ;
+<    int (*quota_off)(struct super_block * , int  ) ;
+---
+>    int (*quota_on)(struct super_block * , int  , int  , char * , int  ) ;
+>    int (*quota_off)(struct super_block * , int  , int  ) ;
+2257c2256
+< #line 312 "include/linux/quota.h"
+---
+> #line 316 "include/linux/quota.h"
+2264c2263
+< #line 322 "include/linux/quota.h"
+---
+> #line 330 "include/linux/quota.h"
+2297c2296
+<    struct page *(*get_xip_page)(struct address_space * , sector_t  , int  ) ;
+---
+>    int (*get_xip_mem)(struct address_space * , unsigned long  , int  , void ** , unsigned long * ) ;
+2352c2351
+< union __anonunion____missing_field_name_125 {
+---
+> union __anonunion____missing_field_name_126 {
+2391c2390
+<    union __anonunion____missing_field_name_125 __annonCompField16 ;
+---
+>    union __anonunion____missing_field_name_126 __annonCompField17 ;
+2424c2423
+< union __anonunion_f_u_126 {
+---
+> union __anonunion_f_u_127 {
+2430c2429
+<    union __anonunion_f_u_126 f_u ;
+---
+>    union __anonunion_f_u_127 f_u ;
+2486c2485
+< struct __anonstruct_afs_128 {
+---
+> struct __anonstruct_afs_129 {
+2491c2490
+< union __anonunion_fl_u_127 {
+---
+> union __anonunion_fl_u_128 {
+2494c2493
+<    struct __anonstruct_afs_128 afs ;
+---
+>    struct __anonstruct_afs_129 afs ;
+2514c2513
+<    union __anonunion_fl_u_127 fl_u ;
+---
+>    union __anonunion_fl_u_128 fl_u ;
+2574c2573
+< #line 1220 "include/linux/fs.h"
+---
+> #line 1221 "include/linux/fs.h"
+2611c2610
+< #line 1250 "include/linux/fs.h"
+---
+> #line 1251 "include/linux/fs.h"
+2636c2635
+< #line 1295 "include/linux/fs.h"
+---
+> #line 1296 "include/linux/fs.h"
+2660c2659
+< #line 1478 "include/linux/fs.h"
+---
+> #line 1479 "include/linux/fs.h"
+2676c2675
+< #line 73 "include/mtd/mtd-abi.h"
+---
+> #line 71 "include/mtd/mtd-abi.h"
+2682c2681
+< #line 110 "include/mtd/mtd-abi.h"
+---
+> #line 108 "include/mtd/mtd-abi.h"
+2687c2686
+< #line 120 "include/mtd/mtd-abi.h"
+---
+> #line 118 "include/mtd/mtd-abi.h"
+2694c2693
+< #line 135 "include/mtd/mtd-abi.h"
+---
+> #line 133 "include/mtd/mtd-abi.h"
+2701c2700
+< #line 33 "include/linux/mtd/mtd.h"
+---
+> #line 31 "include/linux/mtd/mtd.h"
+2716c2715
+< #line 48 "include/linux/mtd/mtd.h"
+---
+> #line 46 "include/linux/mtd/mtd.h"
+2723,2724c2722,2723
+< #line 65
+< enum __anonenum_mtd_oob_mode_t_133 {
+---
+> #line 63
+> enum __anonenum_mtd_oob_mode_t_134 {
+2729,2731c2728,2730
+< #line 65 "include/linux/mtd/mtd.h"
+< typedef enum __anonenum_mtd_oob_mode_t_133 mtd_oob_mode_t;
+< #line 90 "include/linux/mtd/mtd.h"
+---
+> #line 63 "include/linux/mtd/mtd.h"
+> typedef enum __anonenum_mtd_oob_mode_t_134 mtd_oob_mode_t;
+> #line 88 "include/linux/mtd/mtd.h"
+2742c2741
+< #line 101 "include/linux/mtd/mtd.h"
+---
+> #line 99 "include/linux/mtd/mtd.h"
+2794c2793
+< #line 58 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 56 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+2799c2798
+< #line 58 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 56 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+2801c2800
+< #line 63 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 61 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+2806c2805
+< #line 63 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 61 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+2814c2813,2819
+< #line 111 "include/linux/pm.h"
+---
+> #line 33 "include/linux/sysfs.h"
+> struct attribute_group {
+>    char const   *name ;
+>    mode_t (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+>    struct attribute **attrs ;
+> };
+> #line 109 "include/linux/pm.h"
+2816c2821
+< #line 113 "include/linux/pm.h"
+---
+> #line 111 "include/linux/pm.h"
+2820c2825
+< #line 113 "include/linux/pm.h"
+---
+> #line 111 "include/linux/pm.h"
+2822c2827
+< #line 183 "include/linux/pm.h"
+---
+> #line 181 "include/linux/pm.h"
+2830c2835
+< #line 160 "include/linux/timer.h"
+---
+> #line 182 "include/linux/timer.h"
+2832c2837
+< #line 576 "include/linux/module.h"
+---
+> #line 559 "include/linux/module.h"
+2925c2930
+< #line 32 "include/linux/klist.h"
+---
+> #line 40 "include/linux/klist.h"
+2942,2943d2946
+< struct class_device;
+< #line 39
+2945c2948
+< #line 40
+---
+> #line 39
+2947c2950
+< #line 42 "include/linux/device.h"
+---
+> #line 41 "include/linux/device.h"
+2953c2956
+< #line 55
+---
+> #line 54
+2955c2958
+< #line 55
+---
+> #line 54
+2957c2960
+< #line 55 "include/linux/device.h"
+---
+> #line 54 "include/linux/device.h"
+2974c2977
+< #line 121 "include/linux/device.h"
+---
+> #line 120 "include/linux/device.h"
+2988c2991
+< #line 150 "include/linux/device.h"
+---
+> #line 149 "include/linux/device.h"
+2994c2997
+< #line 182
+---
+> #line 181
+2996,2998c2999
+< #line 182
+< struct class_device_attribute;
+< #line 182 "include/linux/device.h"
+---
+> #line 181 "include/linux/device.h"
+3009d3009
+<    struct class_device_attribute *class_dev_attrs ;
+3011d3010
+<    int (*uevent)(struct class_device *dev , struct kobj_uevent_env *env ) ;
+3013d3011
+<    void (*release)(struct class_device *dev ) ;
+3019c3017
+< #line 217 "include/linux/device.h"
+---
+> #line 210 "include/linux/device.h"
+3025,3045c3023
+< #line 231 "include/linux/device.h"
+< struct class_device_attribute {
+<    struct attribute attr ;
+<    ssize_t (*show)(struct class_device * , char *buf ) ;
+<    ssize_t (*store)(struct class_device * , char const   *buf , size_t count ) ;
+< };
+< #line 268 "include/linux/device.h"
+< struct class_device {
+<    struct list_head node ;
+<    struct kobject kobj ;
+<    struct class *class ;
+<    dev_t devt ;
+<    struct device *dev ;
+<    void *class_data ;
+<    struct class_device *parent ;
+<    struct attribute_group **groups ;
+<    void (*release)(struct class_device *dev ) ;
+<    int (*uevent)(struct class_device *dev , struct kobj_uevent_env *env ) ;
+<    char class_id[20] ;
+< };
+< #line 343 "include/linux/device.h"
+---
+> #line 247 "include/linux/device.h"
+3054c3032
+< #line 353 "include/linux/device.h"
+---
+> #line 257 "include/linux/device.h"
+3061c3039
+< #line 413 "include/linux/device.h"
+---
+> #line 317 "include/linux/device.h"
+3066c3044
+< #line 422
+---
+> #line 326
+3068c3046
+< #line 422 "include/linux/device.h"
+---
+> #line 326 "include/linux/device.h"
+3101c3079
+< enum __anonenum_122 {
+---
+> enum __anonenum_123 {
+3296c3274
+< #line 140 "include/linux/kernel.h"
+---
+> #line 143 "include/linux/kernel.h"
+3298c3276
+< #line 182
+---
+> #line 185
+3310c3288
+< #line 95 "include/linux/slab.h"
+---
+> #line 100 "include/linux/slab.h"
+3312c3290
+< #line 190 "include/linux/slub_def.h"
+---
+> #line 202 "include/linux/slub_def.h"
+3314c3292
+< #line 197 "include/linux/slub_def.h"
+---
+> #line 209 "include/linux/slub_def.h"
+3321c3299
+< #line 212
+---
+> #line 224
+3323c3301
+< #line 212
+---
+> #line 224
+3327,3328c3305,3307
+< #line 269 "include/linux/slab.h"
+< __inline static void *kzalloc(size_t size , gfp_t flags ) 
+---
+> #line 274 "include/linux/slab.h"
+> __inline static void *( __attribute__((__always_inline__)) kzalloc)(size_t size ,
+>                                                                     gfp_t flags ) 
+3333c3312
+< #line 271
+---
+> #line 276
+3335c3314
+< #line 271
+---
+> #line 276
+3348c3327,3328
+< __inline static void *ioremap(resource_size_t offset , unsigned long size ) 
+---
+> __inline static void *( __attribute__((__always_inline__)) ioremap)(resource_size_t offset ,
+>                                                                     unsigned long size ) 
+3361c3341
+< #line 227 "include/linux/mtd/mtd.h"
+---
+> #line 225 "include/linux/mtd/mtd.h"
+3363c3343
+< #line 228
+---
+> #line 226
+3365c3345
+< #line 253
+---
+> #line 251
+3367c3347
+< #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 67 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3369c3349
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3372c3352
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3374c3354
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3377,3379c3357,3359
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+< static char const   __mod_maptype71[28]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 71
+---
+> #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+> static char const   __mod_maptype69[28]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 69
+3387,3389c3367,3369
+< #line 72 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+< static char const   __mod_map72[78]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 72
+---
+> #line 70 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+> static char const   __mod_map70[78]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 70
+3410c3390
+< #line 77 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 75 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3412c3392
+< #line 79
+---
+> #line 77
+3414c3394
+< #line 80
+---
+> #line 78
+3417c3397
+< #line 82
+---
+> #line 80
+3419c3399
+< #line 83
+---
+> #line 81
+3422c3402
+< #line 84
+---
+> #line 82
+3425c3405
+< #line 86 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 84 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3431c3411
+< #line 88
+---
+> #line 86
+3433c3413
+< #line 90
+---
+> #line 88
+3435c3415
+< #line 91
+---
+> #line 89
+3440c3420
+< #line 94
+---
+> #line 92
+3442c3422
+< #line 101
+---
+> #line 99
+3444c3424
+< #line 103
+---
+> #line 101
+3446c3426
+< #line 105
+---
+> #line 103
+3450c3430
+< #line 108 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 106 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3457c3437
+< #line 111
+---
+> #line 109
+3459c3439
+< #line 114
+---
+> #line 112
+3461c3441
+< #line 115
+---
+> #line 113
+3466c3446
+< #line 117
+---
+> #line 115
+3468c3448
+< #line 118
+---
+> #line 116
+3473c3453
+< #line 120
+---
+> #line 118
+3475c3455
+< #line 121
+---
+> #line 119
+3477c3457
+< #line 122
+---
+> #line 120
+3481c3461
+< #line 125 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 123 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3487c3467
+< #line 127
+---
+> #line 125
+3491c3471
+< #line 129 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 127 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3500c3480
+< #line 132
+---
+> #line 130
+3502c3482
+< #line 134
+---
+> #line 132
+3504c3484
+< #line 135
+---
+> #line 133
+3509c3489
+< #line 137
+---
+> #line 135
+3511c3491
+< #line 138
+---
+> #line 136
+3516c3496
+< #line 140
+---
+> #line 138
+3518c3498
+< #line 140
+---
+> #line 138
+3520c3500
+< #line 142
+---
+> #line 140
+3522c3502
+< #line 143
+---
+> #line 141
+3526c3506
+< #line 146 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 144 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3535c3515
+< #line 149
+---
+> #line 147
+3537c3517
+< #line 151
+---
+> #line 149
+3539c3519
+< #line 152
+---
+> #line 150
+3544c3524
+< #line 154
+---
+> #line 152
+3546c3526
+< #line 154
+---
+> #line 152
+3548c3528
+< #line 156
+---
+> #line 154
+3550c3530
+< #line 157
+---
+> #line 155
+3554c3534
+< #line 162 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 160 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3565c3545
+< #line 166
+---
+> #line 164
+3567c3547
+< #line 167
+---
+> #line 165
+3569c3549
+< #line 167
+---
+> #line 165
+3573c3553
+< #line 167
+---
+> #line 165
+3576c3556
+< #line 168
+---
+> #line 166
+3579c3559
+< #line 171
+---
+> #line 169
+3581c3561
+< #line 171
+---
+> #line 169
+3583c3563
+< #line 172
+---
+> #line 170
+3585c3565
+< #line 173
+---
+> #line 171
+3587c3567
+< #line 174
+---
+> #line 172
+3592c3572
+< #line 176
+---
+> #line 174
+3594c3574
+< #line 176
+---
+> #line 174
+3596c3576
+< #line 177
+---
+> #line 175
+3598c3578
+< #line 179
+---
+> #line 177
+3600c3580
+< #line 180
+---
+> #line 178
+3602c3582
+< #line 183
+---
+> #line 181
+3604c3584
+< #line 184
+---
+> #line 182
+3606c3586
+< #line 185
+---
+> #line 183
+3614c3594
+< #line 189
+---
+> #line 187
+3616c3596
+< #line 190
+---
+> #line 188
+3618c3598
+< #line 191
+---
+> #line 189
+3623c3603
+< #line 194
+---
+> #line 192
+3625c3605
+< #line 194
+---
+> #line 192
+3627c3607
+< #line 194
+---
+> #line 192
+3629c3609
+< #line 194
+---
+> #line 192
+3633c3613
+< #line 196
+---
+> #line 194
+3635c3615
+< #line 197
+---
+> #line 195
+3638c3618
+< #line 199
+---
+> #line 197
+3640c3620
+< #line 203
+---
+> #line 201
+3642c3622
+< #line 204
+---
+> #line 202
+3644c3624
+< #line 205
+---
+> #line 203
+3646c3626
+< #line 206
+---
+> #line 204
+3648c3628
+< #line 207
+---
+> #line 205
+3650c3630
+< #line 208
+---
+> #line 206
+3652c3632
+< #line 209
+---
+> #line 207
+3654c3634
+< #line 210
+---
+> #line 208
+3656c3636
+< #line 211
+---
+> #line 209
+3658c3638
+< #line 212
+---
+> #line 210
+3660c3640
+< #line 213
+---
+> #line 211
+3662c3642
+< #line 214
+---
+> #line 212
+3664c3644
+< #line 216
+---
+> #line 214
+3666c3646
+< #line 216
+---
+> #line 214
+3668c3648
+< #line 217
+---
+> #line 215
+3670c3650
+< #line 218
+---
+> #line 216
+3672c3652
+< #line 219
+---
+> #line 217
+3674c3654
+< #line 220
+---
+> #line 218
+3676c3656
+< #line 221
+---
+> #line 219
+3681c3661
+< #line 223
+---
+> #line 221
+3684c3664
+< #line 225
+---
+> #line 223
+3687c3667
+< #line 228
+---
+> #line 226
+3691c3671
+< #line 231 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 229 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3697c3677
+< #line 235
+---
+> #line 233
+3699c3679
+< #line 235
+---
+> #line 233
+3703c3683
+< #line 235
+---
+> #line 233
+3706c3686
+< #line 236
+---
+> #line 234
+3708c3688
+< #line 237
+---
+> #line 235
+3710c3690
+< #line 238
+---
+> #line 236
+3712c3692
+< #line 239
+---
+> #line 237
+3714c3694
+< #line 240
+---
+> #line 238
+3716c3696
+< #line 241
+---
+> #line 239
+3718c3698
+< #line 242
+---
+> #line 240
+3721c3701
+< #line 244
+---
+> #line 242
+3725c3705
+< #line 246 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 244 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3731c3711
+< #line 248
+---
+> #line 246
+3733c3713
+< #line 249
+---
+> #line 247
+3736c3716
+< #line 250
+---
+> #line 248
+3738c3718
+< #line 251
+---
+> #line 249
+3743c3723
+< #line 253
+---
+> #line 251
+3747c3727
+< #line 256 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 254 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3757c3737
+< #line 262
+---
+> #line 260
+3759c3739
+< #line 263
+---
+> #line 261
+3761c3741
+< #line 264
+---
+> #line 262
+3766c3746
+< #line 267
+---
+> #line 265
+3768c3748
+< #line 268
+---
+> #line 266
+3770c3750
+< #line 270
+---
+> #line 268
+3772c3752
+< #line 271
+---
+> #line 269
+3774c3754
+< #line 272
+---
+> #line 270
+3776c3756
+< #line 272
+---
+> #line 270
+3779c3759
+< #line 274
+---
+> #line 272
+3781c3761
+< #line 275
+---
+> #line 273
+3784c3764
+< #line 277
+---
+> #line 275
+3787c3767
+< #line 279
+---
+> #line 277
+3789c3769
+< #line 280
+---
+> #line 278
+3791c3771
+< #line 281
+---
+> #line 279
+3796c3776
+< #line 284
+---
+> #line 282
+3798c3778
+< #line 284
+---
+> #line 282
+3800c3780
+< #line 284
+---
+> #line 282
+3802c3782
+< #line 285
+---
+> #line 283
+3804c3784
+< #line 286
+---
+> #line 284
+3809c3789
+< #line 288
+---
+> #line 286
+3813c3793
+< #line 303 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 301 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3822c3802
+< #line 341
+---
+> #line 339
+3824c3804
+< #line 341
+---
+> #line 339
+3826c3806
+< #line 341
+---
+> #line 339
+3830c3810
+< #line 341
+---
+> #line 339
+3833c3813
+< #line 341
+---
+> #line 339
+3836c3816
+< #line 345
+---
+> #line 343
+3838c3818
+< #line 346
+---
+> #line 344
+3840c3820
+< #line 347
+---
+> #line 345
+3845c3825
+< #line 349
+---
+> #line 347
+3847c3827
+< #line 349
+---
+> #line 347
+3849c3829
+< #line 349
+---
+> #line 347
+3853c3833
+< #line 349
+---
+> #line 347
+3856c3836
+< #line 350
+---
+> #line 348
+3858c3838
+< #line 352
+---
+> #line 350
+3860c3840
+< #line 352
+---
+> #line 350
+3862c3842
+< #line 353
+---
+> #line 351
+3867c3847
+< #line 349
+---
+> #line 347
+3870c3850
+< #line 359
+---
+> #line 357
+3874c3854
+< #line 362
+---
+> #line 360
+3876c3856
+< #line 362 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 360 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3882c3862
+< #line 364
+---
+> #line 362
+3884c3864
+< #line 365
+---
+> #line 363
+3888c3868
+< #line 367 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 365 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3894c3874
+< #line 367
+---
+> #line 365
+3896c3876
+< #line 367
+---
+> #line 365
+3900c3880
+< #line 368 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 366 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3906c3886
+< #line 368
+---
+> #line 366
+3908c3888
+< #line 368
+---
+> #line 366
+3912,3914c3892,3894
+< #line 370 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+< static char const   __mod_license370[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 370
+---
+> #line 368 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+> static char const   __mod_license368[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 368
+3918,3920c3898,3900
+< #line 371 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+< static char const   __mod_author371[45]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 371
+---
+> #line 369 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+> static char const   __mod_author369[45]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 369
+3933,3934c3913,3914
+< #line 372 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+< static char const   __mod_description372[47]  __attribute__((__used__, __unused__,
+---
+> #line 370 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+> static char const   __mod_description370[47]  __attribute__((__used__, __unused__,
+3936c3916
+< #line 372
+---
+> #line 370
+3949c3929
+< #line 390
+---
+> #line 388
+3951c3931
+< #line 399
+---
+> #line 397
+3953c3933
+< #line 402
+---
+> #line 400
+3955c3935
+< #line 405
+---
+> #line 403
+3957c3937
+< #line 408 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 406 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3959c3939
+< #line 411 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+---
+> #line 409 "/work/ldvuser/novikov/work/current--X--drivers/mtd/devices/slram.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/devices/slram.c"
+3967c3947
+< #line 423
+---
+> #line 421
+3969c3949
+< #line 432
+---
+> #line 430
+3971c3951
+< #line 448
+---
+> #line 446
+3973c3953
+< #line 449
+---
+> #line 447
+3975c3955
+< #line 449
+---
+> #line 447
+3977c3957
+< #line 450
+---
+> #line 448
+3982c3962
+< #line 452
+---
+> #line 450
+3984c3964
+< #line 452
+---
+> #line 450
+3986c3966
+< #line 452
+---
+> #line 450
+3990c3970
+< #line 452
+---
+> #line 450
+3993c3973
+< #line 455
+---
+> #line 453
+3995c3975
+< #line 455
+---
+> #line 453
+3998c3978
+< #line 457
+---
+> #line 455
+4002c3982
+< #line 482
+---
+> #line 480
+4004c3984
+< #line 483
+---
+> #line 481
+4007c3987
+< #line 486
+---
+> #line 484
+4009c3989
+< #line 489
+---
+> #line 487
+4020c4000
+< __inline static void ldv_error(void) 
+---
+> __inline static void ( __attribute__((__always_inline__)) ldv_error)(void) 
+4031c4011
+< __inline static void ldv_stop(void) 
+---
+> __inline static void ( __attribute__((__always_inline__)) ldv_stop)(void) 

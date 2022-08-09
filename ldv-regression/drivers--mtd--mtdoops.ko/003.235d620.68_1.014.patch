@@ -1,0 +1,1643 @@
+2287a2288
+>    unsigned long *oops_page_used ;
+3549a3551,3611
+> #line 59 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/bitops.h"
+> __inline static void ( __attribute__((__always_inline__)) set_bit)(unsigned int nr ,
+>                                                                    unsigned long volatile   *addr ) 
+> { 
+> 
+> 
+>   {
+> #line 68
+>   __asm__  volatile   (".section .smp_locks,\"a\"\n"
+>                        " "
+>                        ".balign 8"
+>                        " "
+>                        "\n"
+>                        " "
+>                        ".quad"
+>                        " "
+>                        "661f\n"
+>                        ".previous\n"
+>                        "661:\n\tlock; "
+>                        "bts %1,%0": "+m" (*((long volatile   *)addr)): "Ir" (nr): "memory");
+> #line 71
+>   return;
+> }
+> }
+> #line 97 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/bitops.h"
+> __inline static void ( __attribute__((__always_inline__)) clear_bit)(int nr , unsigned long volatile   *addr ) 
+> { 
+> 
+> 
+>   {
+> #line 105
+>   __asm__  volatile   (".section .smp_locks,\"a\"\n"
+>                        " "
+>                        ".balign 8"
+>                        " "
+>                        "\n"
+>                        " "
+>                        ".quad"
+>                        " "
+>                        "661f\n"
+>                        ".previous\n"
+>                        "661:\n\tlock; "
+>                        "btr %1,%0": "+m" (*((long volatile   *)addr)): "Ir" (nr));
+> #line 109
+>   return;
+> }
+> }
+> #line 315 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/bitops.h"
+> __inline static int variable_test_bit(int nr , unsigned long const volatile   *addr ) 
+> { 
+>   int oldbit ;
+> 
+>   {
+> #line 319
+>   __asm__  volatile   ("bt %2,%1\n\t"
+>                        "sbb %0,%0": "=r" (oldbit): "m" (*((unsigned long *)addr)),
+>                        "Ir" (nr));
+> #line 324
+>   return (oldbit);
+> }
+> }
+3779c3841,3865
+< #line 305 "include/linux/mtd/mtd.h"
+---
+> #line 257 "include/linux/mtd/mtd.h"
+> __inline static uint32_t mtd_div_by_eb(uint64_t sz , struct mtd_info *mtd ) 
+> { 
+>   uint32_t __base ;
+>   uint32_t __rem ;
+> 
+>   {
+> #line 259
+>   if (mtd->erasesize_shift) {
+> #line 260
+>     return (sz >> mtd->erasesize_shift);
+>   } else {
+> 
+>   }
+> #line 261
+>   __base = mtd->erasesize;
+> #line 261
+>   __rem = sz % (unsigned long long )__base;
+> #line 261
+>   sz = sz / (uint64_t )__base;
+> #line 262
+>   return (sz);
+> }
+> }
+> #line 305
+3785c3871,3907
+< #line 58 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 59 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static void mark_page_used(struct mtdoops_context *cxt , int page ) 
+> { 
+> 
+> 
+>   {
+> #line 61
+>   set_bit(page, cxt->oops_page_used);
+> #line 62
+>   return;
+> }
+> }
+> #line 64 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static void mark_page_unused(struct mtdoops_context *cxt , int page ) 
+> { 
+> 
+> 
+>   {
+> #line 66
+>   clear_bit(page, cxt->oops_page_used);
+> #line 67
+>   return;
+> }
+> }
+> #line 69 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static int page_is_used(struct mtdoops_context *cxt , int page ) 
+> { 
+>   int tmp___0 ;
+> 
+>   {
+> #line 71
+>   tmp___0 = variable_test_bit(page, cxt->oops_page_used);
+> #line 71
+>   return (tmp___0);
+> }
+> }
+> #line 74 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+3791c3913
+< #line 60
+---
+> #line 76
+3793c3915
+< #line 61
+---
+> #line 77
+3795c3917
+< #line 62
+---
+> #line 78
+3799c3921
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 92 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+3801,3802c3923,3924
+< #line 64 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+< static int mtdoops_erase_block(struct mtd_info *mtd , int offset ) 
+---
+> #line 80 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static int mtdoops_erase_block(struct mtdoops_context *cxt , int offset ) 
+3803a3926,3930
+>   struct mtd_info *mtd ;
+>   u32 start_page_offset ;
+>   uint32_t tmp ;
+>   u32 start_page ;
+>   u32 erase_pages ;
+3806c3933
+<   struct task_struct *tmp ;
+---
+>   struct task_struct *tmp___0 ;
+3809c3936
+<   struct task_struct *tmp___2 ;
+---
+>   int page ;
+3811c3938
+<   struct task_struct *tmp___6 ;
+---
+>   struct task_struct *tmp___4 ;
+3812a3940
+>   struct task_struct *tmp___8 ;
+3815,3817c3943,3955
+< #line 67
+<   tmp = get_current();
+< #line 67
+---
+> #line 82
+>   mtd = cxt->mtd;
+> #line 83
+>   tmp = mtd_div_by_eb(offset, mtd);
+> #line 83
+>   start_page_offset = tmp * mtd->erasesize;
+> #line 84
+>   start_page = start_page_offset / (u32 )4096;
+> #line 85
+>   erase_pages = mtd->erasesize / (uint32_t )4096;
+> #line 87
+>   tmp___0 = get_current();
+> #line 87
+3819,3821c3957,3959
+< #line 67
+<   wait.private = tmp;
+< #line 67
+---
+> #line 87
+>   wait.private = tmp___0;
+> #line 87
+3823c3961
+< #line 67
+---
+> #line 87
+3825c3963
+< #line 67
+---
+> #line 87
+3827c3965
+< #line 71
+---
+> #line 92
+3829c3967
+< #line 71
+---
+> #line 92
+3831c3969
+< #line 71
+---
+> #line 92
+3834c3972
+< #line 72
+---
+> #line 93
+3836c3974
+< #line 73
+---
+> #line 94
+3838c3976
+< #line 74
+---
+> #line 95
+3840c3978
+< #line 75
+---
+> #line 96
+3842c3980
+< #line 76
+---
+> #line 97
+3844c3982
+< #line 78
+---
+> #line 99
+3846,3850c3984,3988
+< #line 78
+<     tmp___3 = get_current();
+< #line 78
+<     __xchg(1UL, & tmp___3->state, sizeof(tmp___2->state));
+< #line 78
+---
+> #line 99
+>     tmp___4 = get_current();
+> #line 99
+>     __xchg(1UL, & tmp___4->state, sizeof(tmp___3->state));
+> #line 99
+3853c3991
+< #line 79
+---
+> #line 100
+3855c3993
+< #line 81
+---
+> #line 102
+3857c3995
+< #line 82
+---
+> #line 103
+3859c3997
+< #line 83
+---
+> #line 104
+3861,3865c3999,4003
+< #line 83
+<       tmp___7 = get_current();
+< #line 83
+<       __xchg(0UL, & tmp___7->state, sizeof(tmp___6->state));
+< #line 83
+---
+> #line 104
+>       tmp___8 = get_current();
+> #line 104
+>       __xchg(0UL, & tmp___8->state, sizeof(tmp___7->state));
+> #line 104
+3868c4006
+< #line 84
+---
+> #line 105
+3870c4008
+< #line 85
+---
+> #line 106
+3873c4011
+< #line 88
+---
+> #line 109
+3878c4016
+< #line 91
+---
+> #line 112
+3880c4018
+< #line 92
+---
+> #line 113
+3882c4020,4036
+< #line 94
+---
+> #line 116
+>   page = start_page;
+> #line 116
+>   while (1) {
+> #line 116
+>     if ((u32 )page < start_page + erase_pages) {
+> 
+>     } else {
+> #line 116
+>       break;
+>     }
+> #line 117
+>     mark_page_unused(cxt, page);
+> #line 116
+>     page = page + 1;
+>   }
+> #line 119
+3886c4040
+< #line 97 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 122 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+3889,3892c4043
+<   struct mtd_info *mtd ;
+<   size_t retlen ;
+<   u32 count ;
+<   int ret ;
+---
+>   int tmp ;
+3895,3897c4046
+< #line 99
+<   mtd = cxt->mtd;
+< #line 104
+---
+> #line 124
+3899c4048
+< #line 105
+---
+> #line 125
+3901c4050
+< #line 106
+---
+> #line 126
+3906c4055
+< #line 107
+---
+> #line 127
+3908c4057
+< #line 108
+---
+> #line 128
+3910c4059
+< #line 109
+---
+> #line 129
+3915,3931c4064,4068
+< #line 111
+<   ret = (*(mtd->read))(mtd, cxt->nextpage * 4096, 4, & retlen, (u_char *)(& count));
+< #line 113
+<   if (retlen != (size_t )4 || (ret < 0 && ret != -117)) {
+< #line 114
+<     printk("<3>mtdoops: read failure at %d (%td of 4 read), err %d\n", cxt->nextpage * 4096,
+<            retlen, ret);
+< #line 116
+<     schedule_work(& cxt->work_erase);
+< #line 117
+<     return;
+<   } else {
+< 
+<   }
+< #line 121
+<   if (count != 4294967295U) {
+< #line 122
+---
+> #line 131
+>   tmp = page_is_used(cxt, cxt->nextpage);
+> #line 131
+>   if (tmp) {
+> #line 132
+3933c4070
+< #line 123
+---
+> #line 133
+3938c4075
+< #line 126
+---
+> #line 136
+3940c4077
+< #line 128
+---
+> #line 138
+3942c4079
+< #line 129
+---
+> #line 139
+3946c4083
+< #line 132 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 142 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+3958c4095
+< #line 135
+---
+> #line 145
+3960c4097
+< #line 135
+---
+> #line 145
+3962c4099
+< #line 136
+---
+> #line 146
+3964c4101
+< #line 137
+---
+> #line 147
+3966c4103
+< #line 140
+---
+> #line 150
+3968c4105
+< #line 141
+---
+> #line 151
+3973c4110
+< #line 143
+---
+> #line 153
+3975c4112
+< #line 144
+---
+> #line 154
+3977c4114
+< #line 145
+---
+> #line 155
+3979c4116
+< #line 146
+---
+> #line 156
+3981c4118
+< #line 147
+---
+> #line 157
+3989c4126
+< #line 150
+---
+> #line 160
+3991c4128
+< #line 150
+---
+> #line 160
+3995c4132
+< #line 150
+---
+> #line 160
+3998c4135
+< #line 151
+---
+> #line 161
+4000c4137
+< #line 152
+---
+> #line 162
+4002c4139
+< #line 153
+---
+> #line 163
+4007c4144
+< #line 154
+---
+> #line 164
+4009c4146
+< #line 155
+---
+> #line 165
+4011c4148
+< #line 156
+---
+> #line 166
+4017c4154
+< #line 159
+---
+> #line 169
+4019c4156
+< #line 161
+---
+> #line 171
+4021c4158
+< #line 162
+---
+> #line 172
+4023c4160
+< #line 163
+---
+> #line 173
+4025c4162
+< #line 164
+---
+> #line 174
+4030c4167
+< #line 165
+---
+> #line 175
+4032c4169
+< #line 166
+---
+> #line 176
+4034c4171
+< #line 167
+---
+> #line 177
+4040c4177
+< #line 171
+---
+> #line 181
+4042c4179
+< #line 171
+---
+> #line 181
+4044c4181
+< #line 171
+---
+> #line 181
+4046c4183
+< #line 171
+---
+> #line 181
+4050c4187
+< #line 171
+---
+> #line 181
+4053,4055c4190,4192
+< #line 172
+<     ret = mtdoops_erase_block(mtd, cxt->nextpage * 4096);
+< #line 171
+---
+> #line 182
+>     ret = mtdoops_erase_block(cxt, cxt->nextpage * 4096);
+> #line 181
+4058c4195
+< #line 174
+---
+> #line 184
+4060c4197
+< #line 175
+---
+> #line 185
+4062c4199
+< #line 177
+---
+> #line 187
+4064c4201
+< #line 178
+---
+> #line 188
+4069c4206
+< #line 181
+---
+> #line 191
+4071c4208
+< #line 182
+---
+> #line 192
+4073c4210
+< #line 183
+---
+> #line 193
+4075c4212
+< #line 184
+---
+> #line 194
+4077c4214
+< #line 185
+---
+> #line 195
+4085c4222
+< #line 188
+---
+> #line 198
+4089c4226
+< #line 191 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 201 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4097c4234
+< #line 193
+---
+> #line 203
+4099c4236
+< #line 197
+---
+> #line 207
+4101c4238
+< #line 198
+---
+> #line 208
+4106c4243
+< #line 201
+---
+> #line 211
+4108c4245
+< #line 202
+---
+> #line 212
+4111c4248
+< #line 205
+---
+> #line 215
+4114c4251
+< #line 208
+---
+> #line 218
+4116c4253
+< #line 210
+---
+> #line 220
+4118c4255
+< #line 211
+---
+> #line 221
+4124c4261,4263
+< #line 214
+---
+> #line 223
+>   mark_page_used(cxt, cxt->nextpage);
+> #line 225
+4126c4265
+< #line 215
+---
+> #line 226
+4130c4269
+< #line 218 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 229 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4137c4276
+< #line 221
+---
+> #line 232
+4139c4278
+< #line 221
+---
+> #line 232
+4141c4280
+< #line 223
+---
+> #line 234
+4143c4282
+< #line 224
+---
+> #line 235
+4147c4286
+< #line 226 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 237 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4159c4298
+< #line 228
+---
+> #line 239
+4161c4300
+< #line 229
+---
+> #line 240
+4163c4302
+< #line 230
+---
+> #line 241
+4165c4304
+< #line 233
+---
+> #line 244
+4167c4306
+< #line 233
+---
+> #line 244
+4169c4308
+< #line 233
+---
+> #line 244
+4173c4312
+< #line 233
+---
+> #line 244
+4176c4315,4317
+< #line 234
+---
+> #line 246
+>     mark_page_used(cxt, page);
+> #line 247
+4178c4319
+< #line 235
+---
+> #line 248
+4180c4321
+< #line 236
+---
+> #line 249
+4183c4324
+< #line 238
+---
+> #line 251
+4188c4329,4336
+< #line 241
+---
+> #line 254
+>     if (count[0] == 4294967295U && count[1] == 4294967295U) {
+> #line 255
+>       mark_page_unused(cxt, page);
+>     } else {
+> 
+>     }
+> #line 256
+4190c4338
+< #line 242
+---
+> #line 257
+4195c4343
+< #line 243
+---
+> #line 258
+4197c4345
+< #line 244
+---
+> #line 259
+4202c4350
+< #line 245
+---
+> #line 260
+4204c4352
+< #line 246
+---
+> #line 261
+4206c4354
+< #line 247
+---
+> #line 262
+4209c4357
+< #line 248
+---
+> #line 263
+4211c4359
+< #line 249
+---
+> #line 264
+4213c4361
+< #line 250
+---
+> #line 265
+4216c4364
+< #line 251
+---
+> #line 266
+4218c4366
+< #line 252
+---
+> #line 267
+4220c4368
+< #line 253
+---
+> #line 268
+4223c4371
+< #line 254
+---
+> #line 269
+4225c4373
+< #line 256
+---
+> #line 271
+4227c4375
+< #line 257
+---
+> #line 272
+4233c4381
+< #line 233
+---
+> #line 244
+4236c4384
+< #line 260
+---
+> #line 275
+4238c4386
+< #line 261
+---
+> #line 276
+4240c4388
+< #line 262
+---
+> #line 277
+4242c4390
+< #line 263
+---
+> #line 278
+4244c4392
+< #line 264
+---
+> #line 279
+4249c4397
+< #line 267
+---
+> #line 282
+4251c4399
+< #line 268
+---
+> #line 283
+4253c4401
+< #line 270
+---
+> #line 285
+4255c4403
+< #line 271
+---
+> #line 286
+4259c4407
+< #line 274 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 289 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4262a4411,4413
+>   u64 mtdoops_pages ;
+>   uint32_t __base ;
+>   uint32_t __rem ;
+4263a4415
+>   void *tmp___0 ;
+4266c4418
+< #line 276
+---
+> #line 291
+4268c4420,4428
+< #line 278
+---
+> #line 292
+>   mtdoops_pages = mtd->size;
+> #line 294
+>   __base = 4096;
+> #line 294
+>   __rem = mtdoops_pages % (unsigned long long )__base;
+> #line 294
+>   mtdoops_pages = mtdoops_pages / (uint64_t )__base;
+> #line 296
+4270c4430
+< #line 278
+---
+> #line 296
+4272c4432
+< #line 278
+---
+> #line 296
+4276c4436
+< #line 279
+---
+> #line 297
+4282c4442
+< #line 281
+---
+> #line 299
+4284c4444
+< #line 282
+---
+> #line 300
+4289c4449
+< #line 284
+---
+> #line 302
+4291c4451
+< #line 285
+---
+> #line 303
+4293c4453
+< #line 287
+---
+> #line 305
+4298c4458
+< #line 290
+---
+> #line 308
+4300c4460
+< #line 291
+---
+> #line 309
+4302c4462
+< #line 293
+---
+> #line 311
+4307c4467,4480
+< #line 296
+---
+> #line 315
+>   tmp___0 = vmalloc(((mtdoops_pages + (u64 )64) - (u64 )1) / (u64 )64);
+> #line 315
+>   cxt->oops_page_used = tmp___0;
+> #line 317
+>   if (! cxt->oops_page_used) {
+> #line 318
+>     printk("<3>Could not allocate page array\n");
+> #line 319
+>     return;
+>   } else {
+> 
+>   }
+> #line 321
+4309c4482
+< #line 297
+---
+> #line 322
+4311c4484
+< #line 298
+---
+> #line 323
+4314c4487
+< #line 300
+---
+> #line 325
+4317c4490
+< #line 302
+---
+> #line 327
+4319c4492
+< #line 304
+---
+> #line 329
+4321c4494
+< #line 305
+---
+> #line 330
+4325c4498
+< #line 307 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 332 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4331c4504
+< #line 309
+---
+> #line 334
+4333c4506
+< #line 311
+---
+> #line 336
+4335c4508
+< #line 312
+---
+> #line 337
+4340c4513
+< #line 314
+---
+> #line 339
+4342c4515
+< #line 315
+---
+> #line 340
+4344c4517
+< #line 316
+---
+> #line 341
+4348c4521
+< #line 318 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 343 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4357c4530
+< #line 320
+---
+> #line 345
+4359c4532
+< #line 321
+---
+> #line 346
+4361c4534
+< #line 324
+---
+> #line 349
+4363c4536
+< #line 325
+---
+> #line 350
+4368c4541
+< #line 331
+---
+> #line 356
+4370c4543
+< #line 331
+---
+> #line 356
+4372c4545
+< #line 331
+---
+> #line 356
+4375c4548
+< #line 332
+---
+> #line 357
+4377c4550
+< #line 333
+---
+> #line 358
+4379c4552
+< #line 333
+---
+> #line 358
+4381c4554
+< #line 333
+---
+> #line 358
+4384c4557
+< #line 334
+---
+> #line 359
+4389c4562
+< #line 336
+---
+> #line 361
+4391c4564
+< #line 337
+---
+> #line 362
+4393c4566
+< #line 337
+---
+> #line 362
+4395c4568
+< #line 337
+---
+> #line 362
+4398c4571
+< #line 339
+---
+> #line 364
+4400c4573
+< #line 339
+---
+> #line 364
+4402c4575
+< #line 339
+---
+> #line 364
+4404c4577
+< #line 341
+---
+> #line 366
+4407c4580
+< #line 343
+---
+> #line 368
+4411c4584
+< #line 343
+---
+> #line 368
+4414c4587
+< #line 344
+---
+> #line 369
+4418c4591
+< #line 346 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 371 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4430c4603
+< #line 349
+---
+> #line 374
+4432c4605
+< #line 350
+---
+> #line 375
+4434c4607
+< #line 353
+---
+> #line 378
+4436c4609
+< #line 354
+---
+> #line 379
+4438c4611
+< #line 355
+---
+> #line 380
+4443c4616
+< #line 358
+---
+> #line 383
+4445c4618
+< #line 359
+---
+> #line 384
+4450c4623
+< #line 362
+---
+> #line 387
+4452c4625
+< #line 362
+---
+> #line 387
+4454c4627
+< #line 362
+---
+> #line 387
+4457c4630
+< #line 365
+---
+> #line 390
+4459c4632
+< #line 366
+---
+> #line 391
+4461c4634
+< #line 366
+---
+> #line 391
+4463c4636
+< #line 366
+---
+> #line 391
+4466c4639
+< #line 367
+---
+> #line 392
+4471c4644
+< #line 370
+---
+> #line 395
+4473c4646
+< #line 371
+---
+> #line 396
+4475c4648
+< #line 372
+---
+> #line 397
+4477c4650
+< #line 372
+---
+> #line 397
+4479c4652
+< #line 372
+---
+> #line 397
+4481c4654
+< #line 373
+---
+> #line 398
+4483c4656
+< #line 374
+---
+> #line 399
+4488c4661
+< #line 377
+---
+> #line 402
+4490c4663
+< #line 378
+---
+> #line 403
+4495c4668
+< #line 380
+---
+> #line 405
+4497c4670
+< #line 380
+---
+> #line 405
+4499c4672
+< #line 381
+---
+> #line 406
+4501c4674
+< #line 383
+---
+> #line 408
+4503c4676
+< #line 383
+---
+> #line 408
+4505c4678
+< #line 383
+---
+> #line 408
+4508c4681
+< #line 385
+---
+> #line 410
+4510c4683
+< #line 386
+---
+> #line 411
+4515c4688
+< #line 387
+---
+> #line 412
+4519c4692
+< #line 389
+---
+> #line 414
+4522c4695
+< #line 389 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 414 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4528c4701
+< #line 391
+---
+> #line 416
+4530c4703
+< #line 393
+---
+> #line 418
+4532c4705
+< #line 394
+---
+> #line 419
+4537c4710
+< #line 395
+---
+> #line 420
+4539c4712
+< #line 396
+---
+> #line 421
+4541c4714
+< #line 397
+---
+> #line 422
+4546c4719
+< #line 399
+---
+> #line 424
+4548c4721
+< #line 400
+---
+> #line 425
+4553c4726
+< #line 402
+---
+> #line 427
+4555c4728
+< #line 403
+---
+> #line 428
+4559c4732
+< #line 406 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 431 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4561c4734
+< #line 411 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 436 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4563c4736
+< #line 411
+---
+> #line 436
+4566c4739
+< #line 431 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 456 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4568c4741
+< #line 432 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 457 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4570c4743
+< #line 433 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 458 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4572c4745
+< #line 420
+---
+> #line 445
+4574c4747
+< #line 420 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 445 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4582c4755
+< #line 422
+---
+> #line 447
+4584c4757
+< #line 424
+---
+> #line 449
+4586c4759
+< #line 425
+---
+> #line 450
+4588c4761
+< #line 426
+---
+> #line 451
+4590c4763
+< #line 427
+---
+> #line 452
+4592c4765
+< #line 428
+---
+> #line 453
+4597c4770
+< #line 431
+---
+> #line 456
+4599c4772
+< #line 431
+---
+> #line 456
+4601c4774
+< #line 431
+---
+> #line 456
+4604c4777
+< #line 432
+---
+> #line 457
+4606c4779
+< #line 432
+---
+> #line 457
+4608c4781
+< #line 432
+---
+> #line 457
+4610c4783
+< #line 432
+---
+> #line 457
+4613c4786
+< #line 432
+---
+> #line 457
+4615c4788
+< #line 432
+---
+> #line 457
+4617c4790
+< #line 432
+---
+> #line 457
+4619c4792
+< #line 432
+---
+> #line 457
+4622c4795
+< #line 432
+---
+> #line 457
+4625c4798
+< #line 433
+---
+> #line 458
+4627c4800
+< #line 433
+---
+> #line 458
+4629c4802
+< #line 433
+---
+> #line 458
+4631c4804
+< #line 433
+---
+> #line 458
+4634c4807
+< #line 433
+---
+> #line 458
+4636c4809
+< #line 433
+---
+> #line 458
+4638c4811
+< #line 433
+---
+> #line 458
+4640c4813
+< #line 433
+---
+> #line 458
+4643c4816
+< #line 433
+---
+> #line 458
+4646c4819
+< #line 435
+---
+> #line 460
+4648c4821
+< #line 436
+---
+> #line 461
+4650c4823
+< #line 437
+---
+> #line 462
+4654c4827
+< #line 440
+---
+> #line 465
+4656c4829
+< #line 440 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 465 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4662c4835
+< #line 442
+---
+> #line 467
+4664c4837
+< #line 444
+---
+> #line 469
+4666c4839
+< #line 445
+---
+> #line 470
+4668c4841
+< #line 446
+---
+> #line 471
+4670c4843
+< #line 447
+---
+> #line 472
+4672c4845,4847
+< #line 448
+---
+> #line 473
+>   vfree(cxt->oops_page_used);
+> #line 474
+4676c4851
+< #line 451 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 477 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4682c4857
+< #line 451
+---
+> #line 477
+4684c4859
+< #line 451
+---
+> #line 477
+4688c4863
+< #line 452 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 478 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4694c4869
+< #line 452
+---
+> #line 478
+4696c4871
+< #line 452
+---
+> #line 478
+4700,4702c4875,4877
+< #line 454 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+< static char const   __mod_license454[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 454
+---
+> #line 480 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static char const   __mod_license480[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 480
+4706,4708c4881,4883
+< #line 455 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+< static char const   __mod_author455[47]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 455
+---
+> #line 481 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static char const   __mod_author481[47]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 481
+4721,4722c4896,4897
+< #line 456 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+< static char const   __mod_description456[49]  __attribute__((__used__, __unused__,
+---
+> #line 482 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+> static char const   __mod_description482[49]  __attribute__((__used__, __unused__,
+4724c4899
+< #line 456
+---
+> #line 482
+4738c4913
+< #line 474
+---
+> #line 500
+4740c4915
+< #line 483
+---
+> #line 509
+4742c4917
+< #line 486
+---
+> #line 512
+4744c4919
+< #line 489
+---
+> #line 515
+4746c4921
+< #line 492 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 518 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4748c4923
+< #line 495 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+---
+> #line 521 "/work/ldvuser/novikov/work/current--X--drivers/mtd/mtdoops.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/mtd/mtdoops.c"
+4753,4755c4928,4930
+<   char const   *var_mtdoops_console_write_10_p1 ;
+<   unsigned int var_mtdoops_console_write_10_p2 ;
+<   char *var_mtdoops_console_setup_11_p1 ;
+---
+>   char const   *var_mtdoops_console_write_13_p1 ;
+>   unsigned int var_mtdoops_console_write_13_p2 ;
+>   char *var_mtdoops_console_setup_14_p1 ;
+4762c4937
+< #line 546
+---
+> #line 572
+4764c4939
+< #line 555
+---
+> #line 581
+4766c4941
+< #line 564
+---
+> #line 590
+4768c4943
+< #line 565
+---
+> #line 591
+4770c4945
+< #line 565
+---
+> #line 591
+4772c4947
+< #line 566
+---
+> #line 592
+4777c4952
+< #line 567
+---
+> #line 593
+4779c4954
+< #line 573
+---
+> #line 599
+4781c4956
+< #line 573
+---
+> #line 599
+4783c4958
+< #line 573
+---
+> #line 599
+4787c4962
+< #line 573
+---
+> #line 599
+4790c4965
+< #line 577
+---
+> #line 603
+4792c4967
+< #line 577
+---
+> #line 603
+4795c4970
+< #line 582
+---
+> #line 608
+4797c4972
+< #line 590
+---
+> #line 616
+4799c4974
+< #line 591
+---
+> #line 617
+4801c4976
+< #line 592
+---
+> #line 618
+4806c4981
+< #line 598
+---
+> #line 624
+4809c4984
+< #line 610
+---
+> #line 636
+4811c4986
+< #line 611
+---
+> #line 637
+4813c4988
+< #line 618
+---
+> #line 644
+4816c4991
+< #line 630
+---
+> #line 656
+4818,4820c4993,4995
+< #line 631
+<     mtdoops_console_write(var_group2, var_mtdoops_console_write_10_p1, var_mtdoops_console_write_10_p2);
+< #line 638
+---
+> #line 657
+>     mtdoops_console_write(var_group2, var_mtdoops_console_write_13_p1, var_mtdoops_console_write_13_p2);
+> #line 664
+4823c4998
+< #line 650
+---
+> #line 676
+4825,4827c5000,5002
+< #line 651
+<     mtdoops_console_setup(var_group2, var_mtdoops_console_setup_11_p1);
+< #line 658
+---
+> #line 677
+>     mtdoops_console_setup(var_group2, var_mtdoops_console_setup_14_p1);
+> #line 684
+4830c5005
+< #line 670
+---
+> #line 696
+4832c5007
+< #line 671
+---
+> #line 697
+4834c5009
+< #line 678
+---
+> #line 704
+4837c5012
+< #line 679
+---
+> #line 705
+4841c5016
+< #line 694
+---
+> #line 720
+4843c5018
+< #line 695
+---
+> #line 721
+4846c5021
+< #line 698
+---
+> #line 724
+4848c5023
+< #line 701
+---
+> #line 727

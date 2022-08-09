@@ -1,0 +1,1315 @@
+4050c4050,4306
+< #line 633 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 628 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+> static int wm831x_boostp_get_status(struct regulator_dev *rdev ) 
+> { 
+>   struct wm831x_dcdc *dcdc ;
+>   void *tmp ;
+>   struct wm831x *wm831x ;
+>   int ret ;
+>   int tmp___0 ;
+>   char const   *tmp___1 ;
+>   char const   *tmp___2 ;
+>   int tmp___3 ;
+>   int tmp___4 ;
+> 
+>   {
+> #line 630
+>   tmp = rdev_get_drvdata(rdev);
+> #line 630
+>   dcdc = (struct wm831x_dcdc *)tmp;
+> #line 631
+>   wm831x = dcdc->wm831x;
+> #line 635
+>   ret = wm831x_reg_read(wm831x, 16468);
+> #line 636
+>   if (ret < 0) {
+> #line 637
+>     return (ret);
+>   } else {
+> 
+>   }
+> #line 639
+>   tmp___3 = rdev_get_id(rdev);
+> #line 639
+>   if ((ret >> tmp___3) & 1) {
+> #line 640
+>     tmp___0 = rdev_get_id(rdev);
+> #line 640
+>     tmp___1 = dev_name((struct device  const  *)wm831x->dev);
+> #line 640
+>     tmp___2 = dev_driver_string((struct device  const  *)wm831x->dev);
+> #line 640
+>     printk("<7>%s %s: DCDC%d under voltage\n", tmp___2, tmp___1, tmp___0 + 1);
+> #line 642
+>     return (2);
+>   } else {
+> 
+>   }
+> #line 646
+>   ret = wm831x_reg_read(wm831x, 16466);
+> #line 647
+>   if (ret < 0) {
+> #line 648
+>     return (ret);
+>   } else {
+> 
+>   }
+> #line 649
+>   tmp___4 = rdev_get_id(rdev);
+> #line 649
+>   if ((ret >> tmp___4) & 1) {
+> #line 650
+>     return (1);
+>   } else {
+> #line 652
+>     return (0);
+>   }
+> }
+> }
+> #line 655 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+> static struct regulator_ops wm831x_boostp_ops  = 
+> #line 655
+>      {0, 0, 0, 0, 0, & wm831x_dcdc_enable, & wm831x_dcdc_disable, & wm831x_dcdc_is_enabled,
+>     0, 0, & wm831x_boostp_get_status, 0, 0, 0, 0, 0};
+> #line 663 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+> static int wm831x_boostp_probe(struct platform_device *pdev ) 
+> { 
+>   struct wm831x *wm831x ;
+>   void *tmp ;
+>   struct wm831x_pdata *pdata ;
+>   int id ;
+>   struct wm831x_dcdc *dcdc ;
+>   struct resource *res ;
+>   int ret ;
+>   int irq ;
+>   char const   *tmp___0 ;
+>   char const   *tmp___1 ;
+>   void *tmp___2 ;
+>   char const   *tmp___3 ;
+>   char const   *tmp___4 ;
+>   char const   *tmp___5 ;
+>   char const   *tmp___6 ;
+>   long tmp___7 ;
+>   char const   *tmp___8 ;
+>   char const   *tmp___9 ;
+>   long tmp___10 ;
+>   char const   *tmp___11 ;
+>   char const   *tmp___12 ;
+> 
+>   {
+> #line 665
+>   tmp = dev_get_drvdata((struct device  const  *)pdev->dev.parent);
+> #line 665
+>   wm831x = (struct wm831x *)tmp;
+> #line 666
+>   pdata = (struct wm831x_pdata *)(wm831x->dev)->platform_data;
+> #line 667
+>   id = pdev->id & 3;
+> #line 672
+>   tmp___0 = dev_name((struct device  const  *)(& pdev->dev));
+> #line 672
+>   tmp___1 = dev_driver_string((struct device  const  *)(& pdev->dev));
+> #line 672
+>   printk("<7>%s %s: Probing DCDC%d\n", tmp___1, tmp___0, id + 1);
+> #line 674
+>   if ((unsigned long )pdata == (unsigned long )((struct wm831x_pdata *)0) || (unsigned long )pdata->dcdc[id] == (unsigned long )((struct regulator_init_data *)0)) {
+> #line 675
+>     return (-19);
+>   } else {
+> 
+>   }
+> #line 677
+>   tmp___2 = kzalloc(72UL, 208U);
+> #line 677
+>   dcdc = (struct wm831x_dcdc *)tmp___2;
+> #line 678
+>   if ((unsigned long )dcdc == (unsigned long )((struct wm831x_dcdc *)0)) {
+> #line 679
+>     tmp___3 = dev_name((struct device  const  *)(& pdev->dev));
+> #line 679
+>     tmp___4 = dev_driver_string((struct device  const  *)(& pdev->dev));
+> #line 679
+>     printk("<3>%s %s: Unable to allocate private data\n", tmp___4, tmp___3);
+> #line 680
+>     return (-12);
+>   } else {
+> 
+>   }
+> #line 683
+>   dcdc->wm831x = wm831x;
+> #line 685
+>   res = platform_get_resource(pdev, 256U, 0U);
+> #line 686
+>   if ((unsigned long )res == (unsigned long )((struct resource *)0)) {
+> #line 687
+>     tmp___5 = dev_name((struct device  const  *)(& pdev->dev));
+> #line 687
+>     tmp___6 = dev_driver_string((struct device  const  *)(& pdev->dev));
+> #line 687
+>     printk("<3>%s %s: No I/O resource\n", tmp___6, tmp___5);
+> #line 688
+>     ret = -22;
+> #line 689
+>     goto err;
+>   } else {
+> 
+>   }
+> #line 691
+>   dcdc->base = (int )res->start;
+> #line 693
+>   snprintf((char *)(& dcdc->name), 6UL, "DCDC%d", id + 1);
+> #line 694
+>   dcdc->desc.name = (char const   *)(& dcdc->name);
+> #line 695
+>   dcdc->desc.id = id;
+> #line 696
+>   dcdc->desc.type = REGULATOR_VOLTAGE;
+> #line 697
+>   dcdc->desc.ops = & wm831x_boostp_ops;
+> #line 698
+>   dcdc->desc.owner = & __this_module;
+> #line 700
+>   dcdc->regulator = regulator_register(& dcdc->desc, & pdev->dev, pdata->dcdc[id],
+>                                        (void *)dcdc);
+> #line 702
+>   tmp___10 = IS_ERR((void const   *)dcdc->regulator);
+> #line 702
+>   if (tmp___10 != 0L) {
+> #line 703
+>     tmp___7 = PTR_ERR((void const   *)dcdc->regulator);
+> #line 703
+>     ret = (int )tmp___7;
+> #line 704
+>     tmp___8 = dev_name((struct device  const  *)wm831x->dev);
+> #line 704
+>     tmp___9 = dev_driver_string((struct device  const  *)wm831x->dev);
+> #line 704
+>     printk("<3>%s %s: Failed to register DCDC%d: %d\n", tmp___9, tmp___8, id + 1,
+>            ret);
+> #line 706
+>     goto err;
+>   } else {
+> 
+>   }
+> #line 709
+>   irq = platform_get_irq_byname(pdev, "UV");
+> #line 710
+>   ret = wm831x_request_irq(wm831x, (unsigned int )irq, & wm831x_dcdc_uv_irq, 1UL,
+>                            (char const   *)(& dcdc->name), (void *)dcdc);
+> #line 713
+>   if (ret != 0) {
+> #line 714
+>     tmp___11 = dev_name((struct device  const  *)(& pdev->dev));
+> #line 714
+>     tmp___12 = dev_driver_string((struct device  const  *)(& pdev->dev));
+> #line 714
+>     printk("<3>%s %s: Failed to request UV IRQ %d: %d\n", tmp___12, tmp___11, irq,
+>            ret);
+> #line 716
+>     goto err_regulator;
+>   } else {
+> 
+>   }
+> #line 719
+>   dev_set_drvdata(& pdev->dev, (void *)dcdc);
+> #line 721
+>   return (0);
+>   err_regulator: 
+> #line 724
+>   regulator_unregister(dcdc->regulator);
+>   err: 
+> #line 726
+>   kfree((void const   *)dcdc);
+> #line 727
+>   return (ret);
+> }
+> }
+> #line 730 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+> static int wm831x_boostp_remove(struct platform_device *pdev ) 
+> { 
+>   struct wm831x_dcdc *dcdc ;
+>   void *tmp ;
+>   struct wm831x *wm831x ;
+>   int tmp___0 ;
+> 
+>   {
+> #line 732
+>   tmp = dev_get_drvdata((struct device  const  *)(& pdev->dev));
+> #line 732
+>   dcdc = (struct wm831x_dcdc *)tmp;
+> #line 733
+>   wm831x = dcdc->wm831x;
+> #line 735
+>   tmp___0 = platform_get_irq_byname(pdev, "UV");
+> #line 735
+>   wm831x_free_irq(wm831x, (unsigned int )tmp___0, (void *)dcdc);
+> #line 736
+>   regulator_unregister(dcdc->regulator);
+> #line 737
+>   kfree((void const   *)dcdc);
+> #line 739
+>   return (0);
+> }
+> }
+> #line 742 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+> static struct platform_driver wm831x_boostp_driver  =    {& wm831x_boostp_probe, & wm831x_boostp_remove, 0, 0, 0, {"wm831x-boostp", 0, 0,
+>                                                              0, 0, 0, 0, 0, 0, 0,
+>                                                              0, 0}, 0};
+> #line 759 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4052c4308
+< #line 633
+---
+> #line 759
+4055c4311
+< #line 640 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 766 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4075c4331
+< #line 642
+---
+> #line 768
+4077c4333
+< #line 642
+---
+> #line 768
+4079c4335
+< #line 643
+---
+> #line 769
+4081c4337
+< #line 644
+---
+> #line 770
+4083c4339
+< #line 648
+---
+> #line 774
+4085c4341
+< #line 648
+---
+> #line 774
+4087c4343
+< #line 648
+---
+> #line 774
+4089c4345
+< #line 650
+---
+> #line 776
+4091c4347
+< #line 651
+---
+> #line 777
+4096c4352
+< #line 653
+---
+> #line 779
+4098c4354
+< #line 653
+---
+> #line 779
+4100c4356
+< #line 654
+---
+> #line 780
+4102c4358
+< #line 655
+---
+> #line 781
+4104c4360
+< #line 655
+---
+> #line 781
+4106c4362
+< #line 655
+---
+> #line 781
+4108c4364
+< #line 656
+---
+> #line 782
+4113c4369
+< #line 659
+---
+> #line 785
+4115c4371
+< #line 664
+---
+> #line 790
+4117c4373
+< #line 665
+---
+> #line 791
+4119c4375
+< #line 666
+---
+> #line 792
+4121c4377
+< #line 667
+---
+> #line 793
+4123c4379
+< #line 668
+---
+> #line 794
+4125c4381
+< #line 669
+---
+> #line 795
+4127c4383
+< #line 671
+---
+> #line 797
+4130c4386
+< #line 673
+---
+> #line 799
+4132c4388
+< #line 673
+---
+> #line 799
+4134c4390
+< #line 674
+---
+> #line 800
+4136c4392
+< #line 674
+---
+> #line 800
+4138c4394
+< #line 675
+---
+> #line 801
+4140c4396
+< #line 675
+---
+> #line 801
+4142c4398
+< #line 675
+---
+> #line 801
+4144c4400
+< #line 677
+---
+> #line 803
+4149c4405
+< #line 680
+---
+> #line 806
+4151c4407
+< #line 682
+---
+> #line 808
+4154c4410
+< #line 685
+---
+> #line 811
+4156c4412
+< #line 686
+---
+> #line 812
+4160c4416
+< #line 689 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 815 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4167c4423
+< #line 691
+---
+> #line 817
+4169c4425
+< #line 691
+---
+> #line 817
+4171c4427
+< #line 693
+---
+> #line 819
+4173c4429
+< #line 694
+---
+> #line 820
+4175c4431
+< #line 696
+---
+> #line 822
+4179c4435
+< #line 699 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 825 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4182c4438
+< #line 707 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 833 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4188c4444
+< #line 710
+---
+> #line 836
+4190c4446
+< #line 711
+---
+> #line 837
+4192c4448
+< #line 712
+---
+> #line 838
+4197c4453
+< #line 714
+---
+> #line 840
+4199c4455
+< #line 715
+---
+> #line 841
+4201c4457
+< #line 716
+---
+> #line 842
+4206c4462,4471
+< #line 718
+---
+> #line 844
+>   ret = platform_driver_register(& wm831x_boostp_driver);
+> #line 845
+>   if (ret != 0) {
+> #line 846
+>     printk("<3>Failed to register WM831x BOOST driver: %d\n", ret);
+>   } else {
+> 
+>   }
+> #line 848
+4208c4473
+< #line 719
+---
+> #line 849
+4210c4475
+< #line 720
+---
+> #line 850
+4215c4480
+< #line 722
+---
+> #line 852
+4219c4484
+< #line 726 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 856 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4225c4490
+< #line 728
+---
+> #line 858
+4227c4492,4494
+< #line 729
+---
+> #line 859
+>   platform_driver_unregister(& wm831x_boostp_driver);
+> #line 860
+4229c4496
+< #line 730
+---
+> #line 861
+4231c4498
+< #line 731
+---
+> #line 862
+4235c4502
+< #line 757
+---
+> #line 888
+4237c4504
+< #line 760
+---
+> #line 891
+4239c4506
+< #line 763
+---
+> #line 894
+4241c4508
+< #line 766
+---
+> #line 897
+4243c4510
+< #line 769
+---
+> #line 900
+4245c4512
+< #line 772
+---
+> #line 903
+4247c4514
+< #line 775 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 906 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4249c4516
+< #line 778 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+---
+> #line 909 "/work/ldvuser/novikov/work/current--X--drivers/regulator/wm831x-dcdc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/regulator/wm831x-dcdc.c.prepared"
+4268c4535,4536
+<   int res_wm831x_epe_probe_26 ;
+---
+>   int res_wm831x_boostp_probe_27 ;
+>   int res_wm831x_epe_probe_29 ;
+4274a4543
+>   int ldv_s_wm831x_boostp_driver_platform_driver ;
+4281c4550
+< #line 1487
+---
+> #line 1726
+4283c4552
+< #line 1491
+---
+> #line 1730
+4285c4554,4556
+< #line 1495
+---
+> #line 1734
+>   ldv_s_wm831x_boostp_driver_platform_driver = 0;
+> #line 1738
+4287c4558
+< #line 1454
+---
+> #line 1693
+4289c4560
+< #line 1463
+---
+> #line 1702
+4291c4562
+< #line 1482
+---
+> #line 1721
+4293c4564
+< #line 1483
+---
+> #line 1722
+4295c4566
+< #line 1483
+---
+> #line 1722
+4297c4568
+< #line 1484
+---
+> #line 1723
+4302,4305c4573,4576
+< #line 1500
+<   goto ldv_17377;
+<   ldv_17376: 
+< #line 1506
+---
+> #line 1743
+>   goto ldv_17410;
+>   ldv_17409: 
+> #line 1750
+4307c4578
+< #line 1506
+---
+> #line 1750
+4310c4581
+< #line 1528
+---
+> #line 1772
+4312c4583
+< #line 1529
+---
+> #line 1773
+4314,4315c4585,4586
+< #line 1539
+<   goto ldv_17338;
+---
+> #line 1783
+>   goto ldv_17365;
+4317c4588
+< #line 1560
+---
+> #line 1804
+4319c4590
+< #line 1561
+---
+> #line 1805
+4321,4322c4592,4593
+< #line 1571
+<   goto ldv_17338;
+---
+> #line 1815
+>   goto ldv_17365;
+4324c4595
+< #line 1592
+---
+> #line 1836
+4326c4597
+< #line 1593
+---
+> #line 1837
+4328,4329c4599,4600
+< #line 1603
+<   goto ldv_17338;
+---
+> #line 1847
+>   goto ldv_17365;
+4331c4602
+< #line 1624
+---
+> #line 1868
+4333c4604
+< #line 1625
+---
+> #line 1869
+4335,4336c4606,4607
+< #line 1635
+<   goto ldv_17338;
+---
+> #line 1879
+>   goto ldv_17365;
+4338c4609
+< #line 1656
+---
+> #line 1900
+4340c4611
+< #line 1657
+---
+> #line 1901
+4343,4344c4614,4615
+< #line 1667
+<   goto ldv_17338;
+---
+> #line 1911
+>   goto ldv_17365;
+4346c4617
+< #line 1688
+---
+> #line 1932
+4348c4619
+< #line 1689
+---
+> #line 1933
+4350,4351c4621,4622
+< #line 1699
+<   goto ldv_17338;
+---
+> #line 1943
+>   goto ldv_17365;
+4353c4624
+< #line 1720
+---
+> #line 1964
+4355c4626
+< #line 1721
+---
+> #line 1965
+4357,4358c4628,4629
+< #line 1731
+<   goto ldv_17338;
+---
+> #line 1975
+>   goto ldv_17365;
+4360c4631
+< #line 1752
+---
+> #line 1996
+4362c4633
+< #line 1753
+---
+> #line 1997
+4364,4365c4635,4636
+< #line 1763
+<   goto ldv_17338;
+---
+> #line 2007
+>   goto ldv_17365;
+4367c4638
+< #line 1784
+---
+> #line 2028
+4369c4640
+< #line 1785
+---
+> #line 2029
+4371,4372c4642,4643
+< #line 1795
+<   goto ldv_17338;
+---
+> #line 2039
+>   goto ldv_17365;
+4374c4645
+< #line 1816
+---
+> #line 2060
+4376c4647
+< #line 1817
+---
+> #line 2061
+4378,4379c4649,4650
+< #line 1827
+<   goto ldv_17338;
+---
+> #line 2071
+>   goto ldv_17365;
+4381c4652
+< #line 1848
+---
+> #line 2092
+4383c4654
+< #line 1849
+---
+> #line 2093
+4385,4386c4656,4657
+< #line 1859
+<   goto ldv_17338;
+---
+> #line 2103
+>   goto ldv_17365;
+4388c4659
+< #line 1880
+---
+> #line 2124
+4390c4661
+< #line 1881
+---
+> #line 2125
+4392,4393c4663,4664
+< #line 1891
+<   goto ldv_17338;
+---
+> #line 2135
+>   goto ldv_17365;
+4395c4666
+< #line 1912
+---
+> #line 2156
+4397c4668
+< #line 1913
+---
+> #line 2157
+4399,4400c4670,4671
+< #line 1923
+<   goto ldv_17338;
+---
+> #line 2167
+>   goto ldv_17365;
+4402c4673
+< #line 1927
+---
+> #line 2171
+4404c4675
+< #line 1944
+---
+> #line 2188
+4406c4677
+< #line 1945
+---
+> #line 2189
+4408c4679
+< #line 1946
+---
+> #line 2190
+4410c4681
+< #line 1947
+---
+> #line 2191
+4412c4683
+< #line 1948
+---
+> #line 2192
+4417c4688
+< #line 1952
+---
+> #line 2196
+4422,4423c4693,4694
+< #line 1958
+<   goto ldv_17338;
+---
+> #line 2202
+>   goto ldv_17365;
+4425c4696
+< #line 1962
+---
+> #line 2206
+4427c4698
+< #line 1979
+---
+> #line 2223
+4429c4700
+< #line 1980
+---
+> #line 2224
+4431c4702
+< #line 1984
+---
+> #line 2228
+4436,4437c4707,4708
+< #line 1990
+<   goto ldv_17338;
+---
+> #line 2234
+>   goto ldv_17365;
+4439c4710
+< #line 2011
+---
+> #line 2255
+4441c4712
+< #line 2012
+---
+> #line 2256
+4443,4444c4714,4715
+< #line 2022
+<   goto ldv_17338;
+---
+> #line 2266
+>   goto ldv_17365;
+4446c4717
+< #line 2043
+---
+> #line 2287
+4448c4719
+< #line 2044
+---
+> #line 2288
+4450,4451c4721,4722
+< #line 2054
+<   goto ldv_17338;
+---
+> #line 2298
+>   goto ldv_17365;
+4453c4724
+< #line 2075
+---
+> #line 2319
+4455c4726
+< #line 2076
+---
+> #line 2320
+4457,4458c4728,4729
+< #line 2086
+<   goto ldv_17338;
+---
+> #line 2330
+>   goto ldv_17365;
+4460c4731
+< #line 2107
+---
+> #line 2351
+4462c4733
+< #line 2108
+---
+> #line 2352
+4464,4465c4735,4736
+< #line 2118
+<   goto ldv_17338;
+---
+> #line 2362
+>   goto ldv_17365;
+4467c4738
+< #line 2139
+---
+> #line 2383
+4469c4740
+< #line 2140
+---
+> #line 2384
+4471,4472c4742,4743
+< #line 2150
+<   goto ldv_17338;
+---
+> #line 2394
+>   goto ldv_17365;
+4474c4745
+< #line 2171
+---
+> #line 2415
+4476c4747
+< #line 2172
+---
+> #line 2416
+4478,4479c4749,4750
+< #line 2182
+<   goto ldv_17338;
+---
+> #line 2426
+>   goto ldv_17365;
+4481c4752
+< #line 2203
+---
+> #line 2447
+4483c4754
+< #line 2204
+---
+> #line 2448
+4485,4486c4756,4757
+< #line 2214
+<   goto ldv_17338;
+---
+> #line 2458
+>   goto ldv_17365;
+4488c4759
+< #line 2235
+---
+> #line 2479
+4490c4761
+< #line 2236
+---
+> #line 2480
+4492,4493c4763,4764
+< #line 2246
+<   goto ldv_17338;
+---
+> #line 2490
+>   goto ldv_17365;
+4495c4766
+< #line 2267
+---
+> #line 2511
+4497c4768
+< #line 2268
+---
+> #line 2512
+4499,4500c4770,4771
+< #line 2278
+<   goto ldv_17338;
+---
+> #line 2522
+>   goto ldv_17365;
+4502c4773
+< #line 2299
+---
+> #line 2543
+4504c4775
+< #line 2300
+---
+> #line 2544
+4506,4507c4777,4778
+< #line 2310
+<   goto ldv_17338;
+---
+> #line 2554
+>   goto ldv_17365;
+4509c4780
+< #line 2331
+---
+> #line 2575
+4511c4782
+< #line 2332
+---
+> #line 2576
+4513,4514c4784,4785
+< #line 2342
+<   goto ldv_17338;
+---
+> #line 2586
+>   goto ldv_17365;
+4516c4787
+< #line 2346
+---
+> #line 2590
+4518c4789
+< #line 2363
+---
+> #line 2607
+4520c4791
+< #line 2364
+---
+> #line 2608
+4522c4793
+< #line 2365
+---
+> #line 2609
+4524c4795
+< #line 2366
+---
+> #line 2610
+4526c4797
+< #line 2367
+---
+> #line 2611
+4531c4802
+< #line 2371
+---
+> #line 2615
+4536,4537c4807,4808
+< #line 2377
+<   goto ldv_17338;
+---
+> #line 2621
+>   goto ldv_17365;
+4539c4810
+< #line 2381
+---
+> #line 2625
+4541c4812
+< #line 2398
+---
+> #line 2642
+4543c4814
+< #line 2399
+---
+> #line 2643
+4545c4816
+< #line 2403
+---
+> #line 2647
+4550,4551c4821,4822
+< #line 2409
+<   goto ldv_17338;
+---
+> #line 2653
+>   goto ldv_17365;
+4553c4824
+< #line 2430
+---
+> #line 2674
+4555,4558c4826,4829
+< #line 2431
+<   wm831x_dcdc_is_enabled(var_group1);
+< #line 2441
+<   goto ldv_17338;
+---
+> #line 2675
+>   wm831x_boostp_get_status(var_group1);
+> #line 2685
+>   goto ldv_17365;
+4560c4831
+< #line 2462
+---
+> #line 2706
+4562,4565c4833,4836
+< #line 2463
+<   wm831x_dcdc_enable(var_group1);
+< #line 2473
+<   goto ldv_17338;
+---
+> #line 2707
+>   wm831x_dcdc_is_enabled(var_group1);
+> #line 2717
+>   goto ldv_17365;
+4567c4838
+< #line 2494
+---
+> #line 2738
+4569,4572c4840,4843
+< #line 2495
+<   wm831x_dcdc_disable(var_group1);
+< #line 2505
+<   goto ldv_17338;
+---
+> #line 2739
+>   wm831x_dcdc_enable(var_group1);
+> #line 2749
+>   goto ldv_17365;
+4574c4845
+< #line 2526
+---
+> #line 2770
+4576,4579c4847,4850
+< #line 2527
+<   wm831x_dcdc_get_status(var_group1);
+< #line 2537
+<   goto ldv_17338;
+---
+> #line 2771
+>   wm831x_dcdc_disable(var_group1);
+> #line 2781
+>   goto ldv_17365;
+4581c4852,4917
+< #line 2541
+---
+> #line 2785
+>   if (ldv_s_wm831x_boostp_driver_platform_driver == 0) {
+> #line 2802
+>     res_wm831x_boostp_probe_27 = wm831x_boostp_probe(var_group2);
+> #line 2803
+>     ldv_check_return_value(res_wm831x_boostp_probe_27);
+> #line 2804
+>     ldv_check_return_value_probe(res_wm831x_boostp_probe_27);
+> #line 2805
+>     if (res_wm831x_boostp_probe_27 != 0) {
+> #line 2806
+>       goto ldv_module_exit;
+>     } else {
+> 
+>     }
+> #line 2810
+>     ldv_s_wm831x_boostp_driver_platform_driver = ldv_s_wm831x_boostp_driver_platform_driver + 1;
+>   } else {
+> 
+>   }
+> #line 2816
+>   goto ldv_17365;
+>   case 33: ;
+> #line 2820
+>   if (ldv_s_wm831x_boostp_driver_platform_driver == 1) {
+> #line 2837
+>     ldv_handler_precall();
+> #line 2838
+>     wm831x_boostp_remove(var_group2);
+> #line 2842
+>     ldv_s_wm831x_boostp_driver_platform_driver = 0;
+>   } else {
+> 
+>   }
+> #line 2848
+>   goto ldv_17365;
+>   case 34: 
+> #line 2869
+>   ldv_handler_precall();
+> #line 2870
+>   wm831x_dcdc_is_enabled(var_group1);
+> #line 2880
+>   goto ldv_17365;
+>   case 35: 
+> #line 2901
+>   ldv_handler_precall();
+> #line 2902
+>   wm831x_dcdc_enable(var_group1);
+> #line 2912
+>   goto ldv_17365;
+>   case 36: 
+> #line 2933
+>   ldv_handler_precall();
+> #line 2934
+>   wm831x_dcdc_disable(var_group1);
+> #line 2944
+>   goto ldv_17365;
+>   case 37: 
+> #line 2965
+>   ldv_handler_precall();
+> #line 2966
+>   wm831x_dcdc_get_status(var_group1);
+> #line 2976
+>   goto ldv_17365;
+>   case 38: ;
+> #line 2980
+4583,4591c4919,4927
+< #line 2559
+<     res_wm831x_epe_probe_26 = wm831x_epe_probe(var_group2);
+< #line 2560
+<     ldv_check_return_value(res_wm831x_epe_probe_26);
+< #line 2561
+<     ldv_check_return_value_probe(res_wm831x_epe_probe_26);
+< #line 2562
+<     if (res_wm831x_epe_probe_26 != 0) {
+< #line 2563
+---
+> #line 2998
+>     res_wm831x_epe_probe_29 = wm831x_epe_probe(var_group2);
+> #line 2999
+>     ldv_check_return_value(res_wm831x_epe_probe_29);
+> #line 3000
+>     ldv_check_return_value_probe(res_wm831x_epe_probe_29);
+> #line 3001
+>     if (res_wm831x_epe_probe_29 != 0) {
+> #line 3002
+4596c4932
+< #line 2564
+---
+> #line 3003
+4601,4604c4937,4940
+< #line 2570
+<   goto ldv_17338;
+<   case 33: ;
+< #line 2574
+---
+> #line 3009
+>   goto ldv_17365;
+>   case 39: ;
+> #line 3013
+4606c4942
+< #line 2592
+---
+> #line 3031
+4608c4944
+< #line 2593
+---
+> #line 3032
+4610c4946
+< #line 2594
+---
+> #line 3033
+4615,4618c4951,4954
+< #line 2600
+<   goto ldv_17338;
+<   case 34: 
+< #line 2604
+---
+> #line 3039
+>   goto ldv_17365;
+>   case 40: 
+> #line 3043
+4620c4956
+< #line 2621
+---
+> #line 3060
+4622c4958
+< #line 2622
+---
+> #line 3061
+4624c4960
+< #line 2626
+---
+> #line 3065
+4626,4629c4962,4965
+< #line 2632
+<   goto ldv_17338;
+<   case 35: 
+< #line 2636
+---
+> #line 3071
+>   goto ldv_17365;
+>   case 41: 
+> #line 3075
+4631c4967
+< #line 2653
+---
+> #line 3092
+4633c4969
+< #line 2654
+---
+> #line 3093
+4635c4971
+< #line 2658
+---
+> #line 3097
+4637,4638c4973,4974
+< #line 2664
+<   goto ldv_17338;
+---
+> #line 3103
+>   goto ldv_17365;
+4640,4641c4976,4977
+< #line 2665
+<   goto ldv_17338;
+---
+> #line 3104
+>   goto ldv_17365;
+4643,4645c4979,4981
+<   ldv_17338: ;
+<   ldv_17377: 
+< #line 1500
+---
+>   ldv_17365: ;
+>   ldv_17410: 
+> #line 1743
+4647,4650c4983,4986
+< #line 1500
+<   if (((tmp___1 != 0 || ldv_s_wm831x_buckv_driver_platform_driver != 0) || ldv_s_wm831x_buckp_driver_platform_driver != 0) || ldv_s_wm831x_epe_driver_platform_driver != 0) {
+< #line 1504
+<     goto ldv_17376;
+---
+> #line 1743
+>   if ((((tmp___1 != 0 || ldv_s_wm831x_buckv_driver_platform_driver != 0) || ldv_s_wm831x_buckp_driver_platform_driver != 0) || ldv_s_wm831x_boostp_driver_platform_driver != 0) || ldv_s_wm831x_epe_driver_platform_driver != 0) {
+> #line 1748
+>     goto ldv_17409;
+4656c4992
+< #line 2690
+---
+> #line 3129
+4658c4994
+< #line 2691
+---
+> #line 3130
+4661c4997
+< #line 2694
+---
+> #line 3133
+4663c4999
+< #line 2697
+---
+> #line 3136

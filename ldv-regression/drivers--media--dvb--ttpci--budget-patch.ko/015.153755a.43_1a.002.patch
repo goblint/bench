@@ -1,0 +1,1420 @@
+132a133,145
+> #line 50 "include/asm/ds.h"
+> typedef void (*ds_ovfl_callback_t)(struct task_struct * );
+> #line 203 "include/asm/ds.h"
+> struct ds_context {
+>    unsigned char *ds ;
+>    struct task_struct *owner[2U] ;
+>    ds_ovfl_callback_t callback[2U] ;
+>    void *buffer[2U] ;
+>    unsigned int pages[2U] ;
+>    unsigned long count ;
+>    struct ds_context **this ;
+>    struct task_struct *task ;
+> };
+190c203
+< struct __anonstruct_pgd_t_6 {
+---
+> struct __anonstruct_pgd_t_7 {
+194c207
+< typedef struct __anonstruct_pgd_t_6 pgd_t;
+---
+> typedef struct __anonstruct_pgd_t_7 pgd_t;
+196c209
+< struct __anonstruct_pgprot_t_7 {
+---
+> struct __anonstruct_pgprot_t_8 {
+200,202c213,215
+< typedef struct __anonstruct_pgprot_t_7 pgprot_t;
+< #line 153 "include/asm/page.h"
+< struct __anonstruct_ldv_1903_11 {
+---
+> typedef struct __anonstruct_pgprot_t_8 pgprot_t;
+> #line 154 "include/asm/page.h"
+> struct __anonstruct_ldv_1975_12 {
+206,207c219,220
+< #line 153 "include/asm/page.h"
+< struct __anonstruct_ldv_1918_12 {
+---
+> #line 154 "include/asm/page.h"
+> struct __anonstruct_ldv_1990_13 {
+222,225c235,238
+< #line 153 "include/asm/page.h"
+< union __anonunion_ldv_1919_10 {
+<    struct __anonstruct_ldv_1903_11 ldv_1903 ;
+<    struct __anonstruct_ldv_1918_12 ldv_1918 ;
+---
+> #line 154 "include/asm/page.h"
+> union __anonunion_ldv_1991_11 {
+>    struct __anonstruct_ldv_1975_12 ldv_1975 ;
+>    struct __anonstruct_ldv_1990_13 ldv_1990 ;
+227c240
+< #line 153 "include/asm/page.h"
+---
+> #line 154 "include/asm/page.h"
+229c242
+<    union __anonunion_ldv_1919_10 ldv_1919 ;
+---
+>    union __anonunion_ldv_1991_11 ldv_1991 ;
+232c245
+< struct __anonstruct_cpumask_t_13 {
+---
+> struct __anonstruct_cpumask_t_14 {
+236c249
+< typedef struct __anonstruct_cpumask_t_13 cpumask_t;
+---
+> typedef struct __anonstruct_cpumask_t_14 cpumask_t;
+239c252
+< #line 326 "include/asm/paravirt.h"
+---
+> #line 321 "include/asm/paravirt.h"
+241c254
+< #line 199 "include/asm/msr.h"
+---
+> #line 222 "include/asm/msr.h"
+260c273,275
+< #line 280 "include/asm/processor.h"
+---
+> #line 144 "include/asm/processor.h"
+> struct seq_operations;
+> #line 282 "include/asm/processor.h"
+272,273c287,288
+< #line 298 "include/asm/processor.h"
+< struct __anonstruct_ldv_4313_15 {
+---
+> #line 300 "include/asm/processor.h"
+> struct __anonstruct_ldv_4392_16 {
+277,278c292,293
+< #line 298 "include/asm/processor.h"
+< struct __anonstruct_ldv_4319_16 {
+---
+> #line 300 "include/asm/processor.h"
+> struct __anonstruct_ldv_4398_17 {
+284,287c299,307
+< #line 298 "include/asm/processor.h"
+< union __anonunion_ldv_4320_14 {
+<    struct __anonstruct_ldv_4313_15 ldv_4313 ;
+<    struct __anonstruct_ldv_4319_16 ldv_4319 ;
+---
+> #line 300 "include/asm/processor.h"
+> union __anonunion_ldv_4399_15 {
+>    struct __anonstruct_ldv_4392_16 ldv_4392 ;
+>    struct __anonstruct_ldv_4398_17 ldv_4398 ;
+> };
+> #line 300 "include/asm/processor.h"
+> union __anonunion_ldv_4408_18 {
+>    u32 padding1[12U] ;
+>    u32 sw_reserved[12U] ;
+289c309
+< #line 298 "include/asm/processor.h"
+---
+> #line 300 "include/asm/processor.h"
+295c315
+<    union __anonunion_ldv_4320_14 ldv_4320 ;
+---
+>    union __anonunion_ldv_4399_15 ldv_4399 ;
+300c320,321
+<    u32 padding[24U] ;
+---
+>    u32 padding[12U] ;
+>    union __anonunion_ldv_4408_18 ldv_4408 ;
+302c323
+< #line 327 "include/asm/processor.h"
+---
+> #line 334 "include/asm/processor.h"
+321c342,353
+< #line 348 "include/asm/processor.h"
+---
+> #line 355 "include/asm/processor.h"
+> struct xsave_hdr_struct {
+>    u64 xstate_bv ;
+>    u64 reserved1[2U] ;
+>    u64 reserved2[5U] ;
+> };
+> #line 361 "include/asm/processor.h"
+> struct xsave_struct {
+>    struct i387_fxsave_struct i387 ;
+>    struct xsave_hdr_struct xsave_hdr ;
+> };
+> #line 366 "include/asm/processor.h"
+325a358
+>    struct xsave_struct xsave ;
+327c360
+< #line 362
+---
+> #line 382
+329c362
+< #line 366 "include/asm/processor.h"
+---
+> #line 386 "include/asm/processor.h"
+356c389,390
+<    unsigned long ds_area_msr ;
+---
+>    struct ds_context *ds_ctx ;
+>    unsigned int bts_ovfl_signal ;
+358,359c392,393
+< #line 601 "include/asm/processor.h"
+< struct __anonstruct_mm_segment_t_17 {
+---
+> #line 626 "include/asm/processor.h"
+> struct __anonstruct_mm_segment_t_19 {
+362,363c396,397
+< #line 601 "include/asm/processor.h"
+< typedef struct __anonstruct_mm_segment_t_17 mm_segment_t;
+---
+> #line 626 "include/asm/processor.h"
+> typedef struct __anonstruct_mm_segment_t_19 mm_segment_t;
+385c419
+< struct __anonstruct_ldv_4761_19 {
+---
+> struct __anonstruct_ldv_4857_21 {
+392c426
+< struct __anonstruct_futex_20 {
+---
+> struct __anonstruct_futex_22 {
+400c434
+< struct __anonstruct_nanosleep_21 {
+---
+> struct __anonstruct_nanosleep_23 {
+407,410c441,444
+< union __anonunion_ldv_4775_18 {
+<    struct __anonstruct_ldv_4761_19 ldv_4761 ;
+<    struct __anonstruct_futex_20 futex ;
+<    struct __anonstruct_nanosleep_21 nanosleep ;
+---
+> union __anonunion_ldv_4871_20 {
+>    struct __anonstruct_ldv_4857_21 ldv_4857 ;
+>    struct __anonstruct_futex_22 futex ;
+>    struct __anonstruct_nanosleep_23 nanosleep ;
+415c449
+<    union __anonunion_ldv_4775_18 ldv_4775 ;
+---
+>    union __anonunion_ldv_4871_20 ldv_4871 ;
+436c470
+< struct __anonstruct_raw_rwlock_t_22 {
+---
+> struct __anonstruct_raw_rwlock_t_24 {
+440c474
+< typedef struct __anonstruct_raw_rwlock_t_22 raw_rwlock_t;
+---
+> typedef struct __anonstruct_raw_rwlock_t_24 raw_rwlock_t;
+450c484
+< #line 29 "include/linux/stacktrace.h"
+---
+> #line 31 "include/linux/stacktrace.h"
+498c532
+< struct __anonstruct_spinlock_t_23 {
+---
+> struct __anonstruct_spinlock_t_25 {
+506c540
+< typedef struct __anonstruct_spinlock_t_23 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_25 spinlock_t;
+508c542
+< struct __anonstruct_rwlock_t_24 {
+---
+> struct __anonstruct_rwlock_t_26 {
+516c550
+< typedef struct __anonstruct_rwlock_t_24 rwlock_t;
+---
+> typedef struct __anonstruct_rwlock_t_26 rwlock_t;
+518c552
+< struct __anonstruct_atomic_t_25 {
+---
+> struct __anonstruct_atomic_t_27 {
+522c556
+< typedef struct __anonstruct_atomic_t_25 atomic_t;
+---
+> typedef struct __anonstruct_atomic_t_27 atomic_t;
+524c558
+< struct __anonstruct_atomic64_t_26 {
+---
+> struct __anonstruct_atomic64_t_28 {
+528c562
+< typedef struct __anonstruct_atomic64_t_26 atomic64_t;
+---
+> typedef struct __anonstruct_atomic64_t_28 atomic64_t;
+532c566
+< struct __anonstruct_seqlock_t_27 {
+---
+> struct __anonstruct_seqlock_t_29 {
+537c571
+< typedef struct __anonstruct_seqlock_t_27 seqlock_t;
+---
+> typedef struct __anonstruct_seqlock_t_29 seqlock_t;
+583c617
+< struct __anonstruct_nodemask_t_28 {
+---
+> struct __anonstruct_nodemask_t_30 {
+587c621
+< typedef struct __anonstruct_nodemask_t_28 nodemask_t;
+---
+> typedef struct __anonstruct_nodemask_t_30 nodemask_t;
+663,664c697,698
+< #line 21 "include/asm/mmu.h"
+< struct __anonstruct_mm_context_t_75 {
+---
+> #line 16 "include/asm/mmu.h"
+> struct __anonstruct_mm_context_t_77 {
+666d699
+<    rwlock_t ldtlock ;
+671,672c704,705
+< #line 21 "include/asm/mmu.h"
+< typedef struct __anonstruct_mm_context_t_75 mm_context_t;
+---
+> #line 16 "include/asm/mmu.h"
+> typedef struct __anonstruct_mm_context_t_77 mm_context_t;
+879,880d911
+< #line 304 "include/linux/slab.h"
+< struct seq_operations;
+882c913
+< struct __anonstruct_local_t_86 {
+---
+> struct __anonstruct_local_t_88 {
+886c917
+< typedef struct __anonstruct_local_t_86 local_t;
+---
+> typedef struct __anonstruct_local_t_88 local_t;
+1030c1061
+< #line 57 "include/linux/completion.h"
+---
+> #line 91 "include/linux/completion.h"
+1035c1066
+< struct __anonstruct_ldv_9497_89 {
+---
+> struct __anonstruct_ldv_9652_91 {
+1040c1071
+< union __anonunion_ldv_9498_88 {
+---
+> union __anonunion_ldv_9653_90 {
+1042c1073
+<    struct __anonstruct_ldv_9497_89 ldv_9497 ;
+---
+>    struct __anonstruct_ldv_9652_91 ldv_9652 ;
+1045c1076
+< struct __anonstruct_ldv_9503_91 {
+---
+> struct __anonstruct_ldv_9658_93 {
+1050,1051c1081,1082
+< union __anonunion_ldv_9507_90 {
+<    struct __anonstruct_ldv_9503_91 ldv_9503 ;
+---
+> union __anonunion_ldv_9662_92 {
+>    struct __anonstruct_ldv_9658_93 ldv_9658 ;
+1057c1088
+< union __anonunion_ldv_9511_92 {
+---
+> union __anonunion_ldv_9666_94 {
+1065,1067c1096,1098
+<    union __anonunion_ldv_9498_88 ldv_9498 ;
+<    union __anonunion_ldv_9507_90 ldv_9507 ;
+<    union __anonunion_ldv_9511_92 ldv_9511 ;
+---
+>    union __anonunion_ldv_9653_90 ldv_9653 ;
+>    union __anonunion_ldv_9662_92 ldv_9662 ;
+>    union __anonunion_ldv_9666_94 ldv_9666 ;
+1072c1103
+< struct __anonstruct_vm_set_94 {
+---
+> struct __anonstruct_vm_set_96 {
+1078,1079c1109,1110
+< union __anonunion_shared_93 {
+<    struct __anonstruct_vm_set_94 vm_set ;
+---
+> union __anonunion_shared_95 {
+>    struct __anonstruct_vm_set_96 vm_set ;
+1097c1128
+<    union __anonunion_shared_93 shared ;
+---
+>    union __anonunion_shared_95 shared ;
+1201c1232
+< struct __anonstruct_sigset_t_95 {
+---
+> struct __anonstruct_sigset_t_97 {
+1205c1236
+< typedef struct __anonstruct_sigset_t_95 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_97 sigset_t;
+1221c1252
+< #line 168 "include/asm/signal.h"
+---
+> #line 171 "include/asm/signal.h"
+1225c1256
+< #line 180 "include/asm/signal.h"
+---
+> #line 183 "include/asm/signal.h"
+1233c1264
+< struct __anonstruct__kill_97 {
+---
+> struct __anonstruct__kill_99 {
+1238c1269
+< struct __anonstruct__timer_98 {
+---
+> struct __anonstruct__timer_100 {
+1246c1277
+< struct __anonstruct__rt_99 {
+---
+> struct __anonstruct__rt_101 {
+1252c1283
+< struct __anonstruct__sigchld_100 {
+---
+> struct __anonstruct__sigchld_102 {
+1260c1291
+< struct __anonstruct__sigfault_101 {
+---
+> struct __anonstruct__sigfault_103 {
+1264c1295
+< struct __anonstruct__sigpoll_102 {
+---
+> struct __anonstruct__sigpoll_104 {
+1269c1300
+< union __anonunion__sifields_96 {
+---
+> union __anonunion__sifields_98 {
+1271,1276c1302,1307
+<    struct __anonstruct__kill_97 _kill ;
+<    struct __anonstruct__timer_98 _timer ;
+<    struct __anonstruct__rt_99 _rt ;
+<    struct __anonstruct__sigchld_100 _sigchld ;
+<    struct __anonstruct__sigfault_101 _sigfault ;
+<    struct __anonstruct__sigpoll_102 _sigpoll ;
+---
+>    struct __anonstruct__kill_99 _kill ;
+>    struct __anonstruct__timer_100 _timer ;
+>    struct __anonstruct__rt_101 _rt ;
+>    struct __anonstruct__sigchld_102 _sigchld ;
+>    struct __anonstruct__sigfault_103 _sigfault ;
+>    struct __anonstruct__sigpoll_104 _sigpoll ;
+1283c1314
+<    union __anonunion__sifields_96 _sifields ;
+---
+>    union __anonunion__sifields_98 _sifields ;
+1342d1372
+<    int shift ;
+1343a1374
+>    int shift ;
+1347c1378
+< struct __anonstruct_seccomp_t_105 {
+---
+> struct __anonstruct_seccomp_t_107 {
+1351c1382
+< typedef struct __anonstruct_seccomp_t_105 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_107 seccomp_t;
+1379c1410,1411
+<     HRTIMER_CB_IRQSAFE_NO_SOFTIRQ = 3
+---
+>     HRTIMER_CB_IRQSAFE_PERCPU = 3,
+>     HRTIMER_CB_IRQSAFE_UNLOCKED = 4
+1381c1413
+< #line 93 "include/linux/resource.h"
+---
+> #line 94 "include/linux/resource.h"
+1394c1426
+< #line 138 "include/linux/hrtimer.h"
+---
+> #line 148 "include/linux/hrtimer.h"
+1407c1439
+< #line 166 "include/linux/hrtimer.h"
+---
+> #line 176 "include/linux/hrtimer.h"
+1416c1448
+< #line 392 "include/linux/hrtimer.h"
+---
+> #line 402 "include/linux/hrtimer.h"
+1460c1492
+< union __anonunion_ki_obj_106 {
+---
+> union __anonunion_ki_obj_108 {
+1475c1507
+<    union __anonunion_ki_obj_106 ki_obj ;
+---
+>    union __anonunion_ki_obj_108 ki_obj ;
+1536c1568
+< union __anonunion_ldv_10896_107 {
+---
+> union __anonunion_ldv_11048_109 {
+1541c1573
+< union __anonunion_ldv_10901_108 {
+---
+> union __anonunion_ldv_11053_110 {
+1559d1590
+<    struct task_struct *group_exit_task ;
+1560a1592
+>    struct task_struct *group_exit_task ;
+1571c1603
+<    union __anonunion_ldv_10896_107 ldv_10896 ;
+---
+>    union __anonunion_ldv_11048_109 ldv_11048 ;
+1573c1605
+<    union __anonunion_ldv_10901_108 ldv_10901 ;
+---
+>    union __anonunion_ldv_11053_110 ldv_11053 ;
+1718a1751
+>    char *name ;
+1720c1753
+< #line 832
+---
+> #line 835
+1722c1755
+< #line 833 "include/linux/sched.h"
+---
+> #line 836 "include/linux/sched.h"
+1730c1763
+< #line 884
+---
+> #line 887
+1732c1765
+< #line 885
+---
+> #line 888
+1734c1767
+< #line 887
+---
+> #line 890
+1736c1769
+< #line 888 "include/linux/sched.h"
+---
+> #line 891 "include/linux/sched.h"
+1743c1776
+<    void (*check_preempt_curr)(struct rq * , struct task_struct * ) ;
+---
+>    void (*check_preempt_curr)(struct rq * , struct task_struct * , int  ) ;
+1765c1798
+< #line 938 "include/linux/sched.h"
+---
+> #line 941 "include/linux/sched.h"
+1770c1803
+< #line 943 "include/linux/sched.h"
+---
+> #line 946 "include/linux/sched.h"
+1813c1846
+< #line 1009
+---
+> #line 1012
+1815c1848
+< #line 1009 "include/linux/sched.h"
+---
+> #line 1012 "include/linux/sched.h"
+1818d1850
+<    unsigned int time_slice ;
+1819a1852
+>    unsigned int time_slice ;
+1826c1859
+< #line 1025
+---
+> #line 1028
+1828c1861
+< #line 1025
+---
+> #line 1028
+1830c1863
+< #line 1025
+---
+> #line 1028
+1832c1865
+< #line 1025
+---
+> #line 1028
+1834c1867
+< #line 1025 "include/linux/sched.h"
+---
+> #line 1028 "include/linux/sched.h"
+2015c2048
+< struct __anonstruct_sync_serial_settings_109 {
+---
+> struct __anonstruct_sync_serial_settings_111 {
+2021c2054
+< typedef struct __anonstruct_sync_serial_settings_109 sync_serial_settings;
+---
+> typedef struct __anonstruct_sync_serial_settings_111 sync_serial_settings;
+2023c2056
+< struct __anonstruct_te1_settings_110 {
+---
+> struct __anonstruct_te1_settings_112 {
+2030c2063
+< typedef struct __anonstruct_te1_settings_110 te1_settings;
+---
+> typedef struct __anonstruct_te1_settings_112 te1_settings;
+2032c2065
+< struct __anonstruct_raw_hdlc_proto_111 {
+---
+> struct __anonstruct_raw_hdlc_proto_113 {
+2037c2070
+< typedef struct __anonstruct_raw_hdlc_proto_111 raw_hdlc_proto;
+---
+> typedef struct __anonstruct_raw_hdlc_proto_113 raw_hdlc_proto;
+2039c2072
+< struct __anonstruct_fr_proto_112 {
+---
+> struct __anonstruct_fr_proto_114 {
+2049c2082
+< typedef struct __anonstruct_fr_proto_112 fr_proto;
+---
+> typedef struct __anonstruct_fr_proto_114 fr_proto;
+2051c2084
+< struct __anonstruct_fr_proto_pvc_113 {
+---
+> struct __anonstruct_fr_proto_pvc_115 {
+2055c2088
+< typedef struct __anonstruct_fr_proto_pvc_113 fr_proto_pvc;
+---
+> typedef struct __anonstruct_fr_proto_pvc_115 fr_proto_pvc;
+2057c2090
+< struct __anonstruct_fr_proto_pvc_info_114 {
+---
+> struct __anonstruct_fr_proto_pvc_info_116 {
+2062c2095
+< typedef struct __anonstruct_fr_proto_pvc_info_114 fr_proto_pvc_info;
+---
+> typedef struct __anonstruct_fr_proto_pvc_info_116 fr_proto_pvc_info;
+2064c2097
+< struct __anonstruct_cisco_proto_115 {
+---
+> struct __anonstruct_cisco_proto_117 {
+2069c2102
+< typedef struct __anonstruct_cisco_proto_115 cisco_proto;
+---
+> typedef struct __anonstruct_cisco_proto_117 cisco_proto;
+2079,2080c2112,2113
+< #line 131 "include/linux/if.h"
+< union __anonunion_ifs_ifsu_116 {
+---
+> #line 132 "include/linux/if.h"
+> union __anonunion_ifs_ifsu_118 {
+2089c2122
+< #line 131 "include/linux/if.h"
+---
+> #line 132 "include/linux/if.h"
+2093c2126
+<    union __anonunion_ifs_ifsu_116 ifs_ifsu ;
+---
+>    union __anonunion_ifs_ifsu_118 ifs_ifsu ;
+2095,2096c2128,2129
+< #line 150 "include/linux/if.h"
+< union __anonunion_ifr_ifrn_117 {
+---
+> #line 151 "include/linux/if.h"
+> union __anonunion_ifr_ifrn_119 {
+2099,2100c2132,2133
+< #line 150 "include/linux/if.h"
+< union __anonunion_ifr_ifru_118 {
+---
+> #line 151 "include/linux/if.h"
+> union __anonunion_ifr_ifru_120 {
+2115c2148
+< #line 150 "include/linux/if.h"
+---
+> #line 151 "include/linux/if.h"
+2117,2118c2150,2151
+<    union __anonunion_ifr_ifrn_117 ifr_ifrn ;
+<    union __anonunion_ifr_ifru_118 ifr_ifru ;
+---
+>    union __anonunion_ifr_ifrn_119 ifr_ifrn ;
+>    union __anonunion_ifr_ifru_120 ifr_ifru ;
+2147c2180
+< #line 168
+---
+> #line 171
+2149c2182
+< #line 169 "include/linux/ioport.h"
+---
+> #line 172 "include/linux/ioport.h"
+2158c2191
+<    struct klist *n_klist ;
+---
+>    void *n_klist ;
+2163c2196
+< #line 70 "include/linux/klist.h"
+---
+> #line 69 "include/linux/klist.h"
+2253c2286,2288
+< #line 220 "include/linux/device.h"
+---
+> #line 201
+> struct device_type;
+> #line 232 "include/linux/device.h"
+2259c2294
+< #line 252 "include/linux/device.h"
+---
+> #line 264 "include/linux/device.h"
+2269c2304
+< #line 281 "include/linux/device.h"
+---
+> #line 293 "include/linux/device.h"
+2276c2311
+< #line 342 "include/linux/device.h"
+---
+> #line 354 "include/linux/device.h"
+2281c2316
+< #line 351
+---
+> #line 363
+2283c2318
+< #line 351 "include/linux/device.h"
+---
+> #line 363 "include/linux/device.h"
+2310c2345
+<    struct list_head node ;
+---
+>    struct klist_node knode_class ;
+2316c2351
+< #line 50 "include/linux/dma-mapping.h"
+---
+> #line 55 "include/linux/dma-mapping.h"
+2354d2388
+<    dma_addr_t (*map_simple)(struct device * , phys_addr_t  , size_t  , int  ) ;
+2385c2419
+< #line 192 "include/linux/skbuff.h"
+---
+> #line 198 "include/linux/skbuff.h"
+2387c2421
+< #line 193
+---
+> #line 199
+2389c2423
+< #line 193
+---
+> #line 199
+2391,2392c2425,2426
+< #line 193 "include/linux/skbuff.h"
+< union __anonunion_ldv_17490_121 {
+---
+> #line 199 "include/linux/skbuff.h"
+> union __anonunion_ldv_17723_123 {
+2396c2430
+< #line 193
+---
+> #line 199
+2398,2399c2432,2433
+< #line 193 "include/linux/skbuff.h"
+< struct __anonstruct_ldv_17503_123 {
+---
+> #line 199 "include/linux/skbuff.h"
+> struct __anonstruct_ldv_17736_125 {
+2403,2404c2437,2438
+< #line 193 "include/linux/skbuff.h"
+< union __anonunion_ldv_17504_122 {
+---
+> #line 199 "include/linux/skbuff.h"
+> union __anonunion_ldv_17737_124 {
+2406c2440
+<    struct __anonstruct_ldv_17503_123 ldv_17503 ;
+---
+>    struct __anonstruct_ldv_17736_125 ldv_17736 ;
+2408c2442
+< #line 193 "include/linux/skbuff.h"
+---
+> #line 199 "include/linux/skbuff.h"
+2415c2449
+<    union __anonunion_ldv_17490_121 ldv_17490 ;
+---
+>    union __anonunion_ldv_17723_123 ldv_17723 ;
+2422c2456
+<    union __anonunion_ldv_17504_122 ldv_17504 ;
+---
+>    union __anonunion_ldv_17737_124 ldv_17737 ;
+2459c2493
+< #line 73 "include/net/net_namespace.h"
+---
+> #line 79 "include/net/net_namespace.h"
+2478c2512
+< #line 225 "include/net/net_namespace.h"
+---
+> #line 35 "include/net/dsa.h"
+2480c2514
+< #line 226
+---
+> #line 36
+2482c2516
+< #line 227
+---
+> #line 37
+2484c2518
+< #line 228
+---
+> #line 38
+2486c2520
+< #line 229 "include/net/net_namespace.h"
+---
+> #line 39 "include/net/dsa.h"
+2512c2546
+< #line 166 "include/linux/netdevice.h"
+---
+> #line 167 "include/linux/netdevice.h"
+2514c2548
+< #line 167
+---
+> #line 168
+2516c2550
+< #line 187 "include/linux/netdevice.h"
+---
+> #line 188 "include/linux/netdevice.h"
+2525c2559
+< #line 197 "include/linux/netdevice.h"
+---
+> #line 198 "include/linux/netdevice.h"
+2535c2569
+< #line 235 "include/linux/netdevice.h"
+---
+> #line 236 "include/linux/netdevice.h"
+2544c2578
+< #line 442
+---
+> #line 443
+2546c2580
+< #line 442 "include/linux/netdevice.h"
+---
+> #line 443 "include/linux/netdevice.h"
+2555,2556c2589,2590
+< #line 452
+< enum ldv_16373 {
+---
+> #line 453
+> enum ldv_16564 {
+2563c2597
+< #line 460
+---
+> #line 461
+2565c2599
+< #line 460
+---
+> #line 461
+2567c2601
+< #line 460
+---
+> #line 461
+2569c2603
+< #line 460
+---
+> #line 461
+2571c2605
+< #line 460
+---
+> #line 461
+2573c2607
+< #line 460
+---
+> #line 461
+2575c2609
+< #line 460 "include/linux/netdevice.h"
+---
+> #line 461 "include/linux/netdevice.h"
+2578a2613
+>    char *ifalias ;
+2620a2656
+>    void *dsa_ptr ;
+2646c2682
+<    enum ldv_16373 reg_state ;
+---
+>    enum ldv_16564 reg_state ;
+2797c2833
+< #line 382 "include/linux/rculist.h"
+---
+> #line 368 "include/linux/rculist.h"
+2799c2835
+< #line 383 "include/linux/rculist.h"
+---
+> #line 369 "include/linux/rculist.h"
+2808c2844
+< union __anonunion_d_u_126 {
+---
+> union __anonunion_d_u_128 {
+2826c2862
+<    union __anonunion_d_u_126 d_u ;
+---
+>    union __anonunion_d_u_128 d_u ;
+2855c2891,2900
+< #line 191
+---
+> #line 191 "include/linux/radix-tree.h"
+> struct fiemap_extent {
+>    __u64 fe_logical ;
+>    __u64 fe_physical ;
+>    __u64 fe_length ;
+>    __u64 fe_reserved64[2U] ;
+>    __u32 fe_flags ;
+>    __u32 fe_reserved[3U] ;
+> };
+> #line 36 "include/linux/fiemap.h"
+2857c2902
+< #line 193
+---
+> #line 38
+2859c2904
+< #line 317 "include/linux/fs.h"
+---
+> #line 322 "include/linux/fs.h"
+2871c2916
+< #line 367 "include/linux/fs.h"
+---
+> #line 372 "include/linux/fs.h"
+2965c3010
+< union __anonunion_u_127 {
+---
+> union __anonunion_u_129 {
+2979c3024
+<    union __anonunion_u_127 u ;
+---
+>    union __anonunion_u_129 u ;
+3053,3054c3098,3099
+< #line 463 "include/linux/fs.h"
+< union __anonunion_arg_129 {
+---
+> #line 468 "include/linux/fs.h"
+> union __anonunion_arg_131 {
+3058,3059c3103,3104
+< #line 463 "include/linux/fs.h"
+< struct __anonstruct_read_descriptor_t_128 {
+---
+> #line 468 "include/linux/fs.h"
+> struct __anonstruct_read_descriptor_t_130 {
+3062c3107
+<    union __anonunion_arg_129 arg ;
+---
+>    union __anonunion_arg_131 arg ;
+3065,3067c3110,3112
+< #line 463 "include/linux/fs.h"
+< typedef struct __anonstruct_read_descriptor_t_128 read_descriptor_t;
+< #line 466 "include/linux/fs.h"
+---
+> #line 468 "include/linux/fs.h"
+> typedef struct __anonstruct_read_descriptor_t_130 read_descriptor_t;
+> #line 471 "include/linux/fs.h"
+3092c3137
+< #line 521 "include/linux/fs.h"
+---
+> #line 526 "include/linux/fs.h"
+3111c3156
+< #line 543
+---
+> #line 548
+3113c3158
+< #line 543
+---
+> #line 548
+3115c3160
+< #line 543 "include/linux/fs.h"
+---
+> #line 548 "include/linux/fs.h"
+3136c3181
+< #line 607
+---
+> #line 612
+3138c3183
+< #line 607
+---
+> #line 612
+3140c3185
+< #line 607
+---
+> #line 612
+3142,3143c3187,3188
+< #line 607 "include/linux/fs.h"
+< union __anonunion_ldv_21179_130 {
+---
+> #line 612 "include/linux/fs.h"
+> union __anonunion_ldv_21537_132 {
+3148c3193
+< #line 607
+---
+> #line 612
+3150c3195
+< #line 607 "include/linux/fs.h"
+---
+> #line 612 "include/linux/fs.h"
+3182c3227
+<    union __anonunion_ldv_21179_130 ldv_21179 ;
+---
+>    union __anonunion_ldv_21537_132 ldv_21537 ;
+3196c3241
+< #line 773 "include/linux/fs.h"
+---
+> #line 778 "include/linux/fs.h"
+3205c3250
+< #line 781 "include/linux/fs.h"
+---
+> #line 786 "include/linux/fs.h"
+3214,3215c3259,3260
+< #line 804 "include/linux/fs.h"
+< union __anonunion_f_u_131 {
+---
+> #line 809 "include/linux/fs.h"
+> union __anonunion_f_u_133 {
+3219c3264
+< #line 804 "include/linux/fs.h"
+---
+> #line 809 "include/linux/fs.h"
+3221c3266
+<    union __anonunion_f_u_131 f_u ;
+---
+>    union __anonunion_f_u_133 f_u ;
+3240c3285
+< #line 927 "include/linux/fs.h"
+---
+> #line 932 "include/linux/fs.h"
+3242c3287
+< #line 928 "include/linux/fs.h"
+---
+> #line 933 "include/linux/fs.h"
+3247c3292
+< #line 933 "include/linux/fs.h"
+---
+> #line 938 "include/linux/fs.h"
+3273c3318
+< struct __anonstruct_afs_133 {
+---
+> struct __anonstruct_afs_135 {
+3278c3323
+< union __anonunion_fl_u_132 {
+---
+> union __anonunion_fl_u_134 {
+3281c3326
+<    struct __anonstruct_afs_133 afs ;
+---
+>    struct __anonstruct_afs_135 afs ;
+3301c3346
+<    union __anonunion_fl_u_132 fl_u ;
+---
+>    union __anonunion_fl_u_134 fl_u ;
+3303c3348
+< #line 1026 "include/linux/fs.h"
+---
+> #line 1031 "include/linux/fs.h"
+3310c3355
+< #line 1059
+---
+> #line 1064
+3312c3357
+< #line 1059
+---
+> #line 1064
+3314c3359
+< #line 1059
+---
+> #line 1064
+3316c3361
+< #line 1059
+---
+> #line 1064
+3318c3363
+< #line 1059 "include/linux/fs.h"
+---
+> #line 1064 "include/linux/fs.h"
+3363c3408,3415
+< #line 1223 "include/linux/fs.h"
+---
+> #line 1185 "include/linux/fs.h"
+> struct fiemap_extent_info {
+>    unsigned int fi_flags ;
+>    unsigned int fi_extents_mapped ;
+>    unsigned int fi_extents_max ;
+>    struct fiemap_extent *fi_extents_start ;
+> };
+> #line 1242 "include/linux/fs.h"
+3400c3452
+< #line 1264 "include/linux/fs.h"
+---
+> #line 1283 "include/linux/fs.h"
+3423a3476
+>    int (*fiemap)(struct inode * , struct fiemap_extent_info * , u64  , u64  ) ;
+3425c3478
+< #line 1304 "include/linux/fs.h"
+---
+> #line 1325 "include/linux/fs.h"
+3448c3501
+< #line 1487 "include/linux/fs.h"
+---
+> #line 1508 "include/linux/fs.h"
+3465c3518
+< enum ldv_18305 {
+---
+> enum ldv_18530 {
+3472c3525
+< typedef enum ldv_18305 dmx_output_t;
+---
+> typedef enum ldv_18530 dmx_output_t;
+3474c3527
+< enum ldv_18307 {
+---
+> enum ldv_18532 {
+3479c3532
+< typedef enum ldv_18307 dmx_input_t;
+---
+> typedef enum ldv_18532 dmx_input_t;
+3481c3534
+< enum ldv_18309 {
+---
+> enum ldv_18534 {
+3505c3558
+< typedef enum ldv_18309 dmx_pes_type_t;
+---
+> typedef enum ldv_18534 dmx_pes_type_t;
+3535c3588
+< enum ldv_18323 {
+---
+> enum ldv_18548 {
+3546c3599
+< typedef enum ldv_18323 dmx_source_t;
+---
+> typedef enum ldv_18548 dmx_source_t;
+3712c3765
+< union __anonunion_feed_141 {
+---
+> union __anonunion_feed_143 {
+3717c3770
+< union __anonunion_cb_142 {
+---
+> union __anonunion_cb_144 {
+3727,3728c3780,3781
+<    union __anonunion_feed_141 feed ;
+<    union __anonunion_cb_142 cb ;
+---
+>    union __anonunion_feed_143 feed ;
+>    union __anonunion_cb_144 cb ;
+3797c3850
+< union __anonunion_filter_143 {
+---
+> union __anonunion_filter_145 {
+3801c3854
+< union __anonunion_feed_144 {
+---
+> union __anonunion_feed_146 {
+3806c3859
+< union __anonunion_params_145 {
+---
+> union __anonunion_params_147 {
+3814,3816c3867,3869
+<    union __anonunion_filter_143 filter ;
+<    union __anonunion_feed_144 feed ;
+<    union __anonunion_params_145 params ;
+---
+>    union __anonunion_filter_145 filter ;
+>    union __anonunion_feed_146 feed ;
+>    union __anonunion_params_147 params ;
+4048c4101
+< union __anonunion_u_146 {
+---
+> union __anonunion_u_148 {
+4058c4111
+<    union __anonunion_u_146 u ;
+---
+>    union __anonunion_u_148 u ;
+4723c4776
+< enum __anonenum_94 {
+---
+> enum __anonenum_96 {
+4797c4850
+< #line 381 "include/linux/skbuff.h"
+---
+> #line 397 "include/linux/skbuff.h"
+4799,4801c4852,4854
+< #line 385
+< struct sk_buff *ldv_skb_clone_14(struct sk_buff *ldv_func_arg1 , gfp_t ldv_func_arg2 ) ;
+< #line 387
+---
+> #line 401
+> struct sk_buff *ldv_skb_clone_15(struct sk_buff *ldv_func_arg1 , gfp_t ldv_func_arg2 ) ;
+> #line 403
+4803,4805c4856,4858
+< #line 391
+< struct sk_buff *ldv_skb_copy_16(struct sk_buff  const  *ldv_func_arg1 , gfp_t ldv_func_arg2 ) ;
+< #line 395
+---
+> #line 407
+> struct sk_buff *ldv_skb_copy_17(struct sk_buff  const  *ldv_func_arg1 , gfp_t ldv_func_arg2 ) ;
+> #line 411
+4807,4808c4860,4861
+< #line 400
+< int ldv_pskb_expand_head_18(struct sk_buff *ldv_func_arg1 , int ldv_func_arg2 , int ldv_func_arg3 ,
+---
+> #line 416
+> int ldv_pskb_expand_head_19(struct sk_buff *ldv_func_arg1 , int ldv_func_arg2 , int ldv_func_arg3 ,
+4810c4863
+< #line 1224
+---
+> #line 1366
+4812,4813c4865,4866
+< #line 1228
+< struct sk_buff *ldv___netdev_alloc_skb_17(struct net_device *ldv_func_arg1 , unsigned int ldv_func_arg2 ,
+---
+> #line 1370
+> struct sk_buff *ldv___netdev_alloc_skb_18(struct net_device *ldv_func_arg1 , unsigned int ldv_func_arg2 ,
+5113,5114c5166,5167
+<   goto ldv_27899;
+<   ldv_27898: 
+---
+>   goto ldv_28288;
+>   ldv_28287: 
+5123c5176
+<   ldv_27899: ;
+---
+>   ldv_28288: ;
+5127c5180
+<     goto ldv_27898;
+---
+>     goto ldv_28287;
+5166,5167c5219,5220
+<   goto ldv_27912;
+<   ldv_27911: 
+---
+>   goto ldv_28301;
+>   ldv_28300: 
+5170c5223
+<   ldv_27912: 
+---
+>   ldv_28301: 
+5178c5231
+<     goto ldv_27911;
+---
+>     goto ldv_28300;
+5185,5186c5238,5239
+<   goto ldv_27915;
+<   ldv_27914: 
+---
+>   goto ldv_28304;
+>   ldv_28303: 
+5191c5244
+<   ldv_27915: ;
+---
+>   ldv_28304: ;
+5195c5248
+<     goto ldv_27914;
+---
+>     goto ldv_28303;
+5202,5203c5255,5256
+<   goto ldv_27919;
+<   ldv_27918: 
+---
+>   goto ldv_28308;
+>   ldv_28307: 
+5206c5259
+<   ldv_27919: 
+---
+>   ldv_28308: 
+5214c5267
+<     goto ldv_27918;
+---
+>     goto ldv_28307;
+5231,5232c5284,5285
+<       goto ldv_27923;
+<       ldv_27922: 
+---
+>       goto ldv_28312;
+>       ldv_28311: 
+5235c5288
+<       ldv_27923: 
+---
+>       ldv_28312: 
+5243c5296
+<         goto ldv_27922;
+---
+>         goto ldv_28311;
+5275c5328
+<   goto ldv_27931;
+---
+>   goto ldv_28320;
+5280c5333
+<   goto ldv_27931;
+---
+>   goto ldv_28320;
+5285c5338
+<   ldv_27931: ;
+---
+>   ldv_28320: ;
+5336,5337c5389,5390
+<   goto ldv_27952;
+<   ldv_27951: 
+---
+>   goto ldv_28341;
+>   ldv_28340: 
+5345c5398
+<   ldv_27952: ;
+---
+>   ldv_28341: ;
+5349c5402
+<     goto ldv_27951;
+---
+>     goto ldv_28340;
+5472,5473c5525,5526
+<   goto ldv_27970;
+<   ldv_27969: 
+---
+>   goto ldv_28359;
+>   ldv_28358: 
+5478c5531
+<   ldv_27970: ;
+---
+>   ldv_28359: ;
+5482c5535
+<     goto ldv_27969;
+---
+>     goto ldv_28358;
+5506c5559
+<   goto ldv_27978;
+---
+>   goto ldv_28367;
+5511c5564
+<   goto ldv_27978;
+---
+>   goto ldv_28367;
+5516c5569
+<   ldv_27978: ;
+---
+>   ldv_28367: ;
+5770c5823
+<     goto ldv_28018;
+---
+>     goto ldv_28407;
+5830c5883
+<     goto ldv_28018;
+---
+>     goto ldv_28407;
+5888c5941
+<     goto ldv_28018;
+---
+>     goto ldv_28407;
+5893c5946
+<   goto ldv_28018;
+---
+>   goto ldv_28407;
+5895c5948
+<   ldv_28018: ;
+---
+>   ldv_28407: ;
+5899c5952
+<     printk("dvb-ttpci: A frontend driver was not found for device %04x/%04x subsystem %04x/%04x\n",
+---
+>     printk("dvb-ttpci: A frontend driver was not found for device [%04x:%04x] subsystem [%04x:%04x]\n",
+6000,6001c6053,6054
+<   goto ldv_28035;
+<   ldv_28034: 
+---
+>   goto ldv_28424;
+>   ldv_28423: 
+6004c6057
+<   ldv_28035: 
+---
+>   ldv_28424: 
+6012c6065
+<     goto ldv_28034;
+---
+>     goto ldv_28423;
+6021,6022c6074,6075
+<   goto ldv_28039;
+<   ldv_28038: 
+---
+>   goto ldv_28428;
+>   ldv_28427: 
+6025c6078
+<   ldv_28039: 
+---
+>   ldv_28428: 
+6033c6086
+<     goto ldv_28038;
+---
+>     goto ldv_28427;
+6123c6176
+<   tmp___17 = kmalloc(3424UL, 208U);
+---
+>   tmp___17 = kmalloc(3520UL, 208U);
+6268,6269c6321,6322
+<   goto ldv_28091;
+<   ldv_28090: 
+---
+>   goto ldv_28480;
+>   ldv_28479: 
+6280c6333
+<   goto ldv_28087;
+---
+>   goto ldv_28476;
+6287c6340
+<   goto ldv_28087;
+---
+>   goto ldv_28476;
+6290c6343
+<   goto ldv_28087;
+---
+>   goto ldv_28476;
+6292,6293c6345,6346
+<   ldv_28087: ;
+<   ldv_28091: 
+---
+>   ldv_28476: ;
+>   ldv_28480: 
+6299c6352
+<     goto ldv_28090;
+---
+>     goto ldv_28479;
+6371,6372c6424,6425
+< #line 1057 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+< struct sk_buff *ldv_skb_clone_14(struct sk_buff *ldv_func_arg1 , gfp_t ldv_func_arg2 ) 
+---
+> #line 1070 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+> struct sk_buff *ldv_skb_clone_15(struct sk_buff *ldv_func_arg1 , gfp_t ldv_func_arg2 ) 
+6377c6430
+< #line 1063
+---
+> #line 1076
+6379c6432
+< #line 1065
+---
+> #line 1078
+6381c6434
+< #line 1065
+---
+> #line 1078
+6385,6386c6438,6439
+< #line 1079 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+< struct sk_buff *ldv_skb_copy_16(struct sk_buff  const  *ldv_func_arg1 , gfp_t ldv_func_arg2 ) 
+---
+> #line 1092 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+> struct sk_buff *ldv_skb_copy_17(struct sk_buff  const  *ldv_func_arg1 , gfp_t ldv_func_arg2 ) 
+6391c6444
+< #line 1085
+---
+> #line 1098
+6393c6446
+< #line 1087
+---
+> #line 1100
+6395c6448
+< #line 1087
+---
+> #line 1100
+6399,6400c6452,6453
+< #line 1090 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+< struct sk_buff *ldv___netdev_alloc_skb_17(struct net_device *ldv_func_arg1 , unsigned int ldv_func_arg2 ,
+---
+> #line 1103 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+> struct sk_buff *ldv___netdev_alloc_skb_18(struct net_device *ldv_func_arg1 , unsigned int ldv_func_arg2 ,
+6406c6459
+< #line 1097
+---
+> #line 1110
+6408c6461
+< #line 1099
+---
+> #line 1112
+6410c6463
+< #line 1099
+---
+> #line 1112
+6414,6415c6467,6468
+< #line 1102 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+< int ldv_pskb_expand_head_18(struct sk_buff *ldv_func_arg1 , int ldv_func_arg2 , int ldv_func_arg3 ,
+---
+> #line 1115 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/43_1a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+> int ldv_pskb_expand_head_19(struct sk_buff *ldv_func_arg1 , int ldv_func_arg2 , int ldv_func_arg3 ,
+6421c6474
+< #line 1110
+---
+> #line 1123
+6423c6476
+< #line 1112
+---
+> #line 1125
+6425c6478
+< #line 1112
+---
+> #line 1125

@@ -1,0 +1,2689 @@
+683a684,689
+> #line 170 "include/linux/srcu.h"
+> struct notifier_block {
+>    int (*notifier_call)(struct notifier_block * , unsigned long  , void * ) ;
+>    struct notifier_block *next ;
+>    int priority ;
+> };
+1315c1321,1323
+< #line 26 "include/linux/mmc/pm.h"
+---
+> #line 25 "include/linux/mmc/pm.h"
+> typedef unsigned int mmc_pm_flag_t;
+> #line 26
+1428a1437,1452
+> #line 653
+> struct mmc_data;
+> #line 654
+> struct mmc_request;
+> #line 655 "include/linux/interrupt.h"
+> struct mmc_command {
+>    u32 opcode ;
+>    u32 arg ;
+>    u32 resp[4U] ;
+>    unsigned int flags ;
+>    unsigned int retries ;
+>    unsigned int error ;
+>    unsigned int erase_timeout ;
+>    struct mmc_data *data ;
+>    struct mmc_request *mrq ;
+> };
+1430a1455,1476
+> #line 100 "include/linux/mmc/core.h"
+> struct mmc_data {
+>    unsigned int timeout_ns ;
+>    unsigned int timeout_clks ;
+>    unsigned int blksz ;
+>    unsigned int blocks ;
+>    unsigned int error ;
+>    unsigned int flags ;
+>    unsigned int bytes_xfered ;
+>    struct mmc_command *stop ;
+>    struct mmc_request *mrq ;
+>    unsigned int sg_len ;
+>    struct scatterlist *sg ;
+> };
+> #line 121 "include/linux/mmc/core.h"
+> struct mmc_request {
+>    struct mmc_command *cmd ;
+>    struct mmc_data *data ;
+>    struct mmc_command *stop ;
+>    void *done_data ;
+>    void (*done)(struct mmc_request * ) ;
+> };
+1542,1547c1588,1615
+< #line 57 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/gpio.h"
+< struct wl12xx_platform_data {
+<    void (*set_power)(bool  ) ;
+<    int irq ;
+<    bool use_eeprom ;
+<    int board_ref_clock ;
+---
+> #line 199
+> enum led_brightness {
+>     LED_OFF = 0,
+>     LED_HALF = 127,
+>     LED_FULL = 255
+> } ;
+> #line 205
+> struct led_trigger;
+> #line 205 "include/linux/mmc/card.h"
+> struct led_classdev {
+>    char const   *name ;
+>    int brightness ;
+>    int max_brightness ;
+>    int flags ;
+>    void (*brightness_set)(struct led_classdev * , enum led_brightness  ) ;
+>    enum led_brightness (*brightness_get)(struct led_classdev * ) ;
+>    int (*blink_set)(struct led_classdev * , unsigned long * , unsigned long * ) ;
+>    struct device *dev ;
+>    struct list_head node ;
+>    char const   *default_trigger ;
+>    unsigned long blink_delay_on ;
+>    unsigned long blink_delay_off ;
+>    struct timer_list blink_timer ;
+>    int blink_brightness ;
+>    struct rw_semaphore trigger_lock ;
+>    struct led_trigger *trigger ;
+>    struct list_head trig_list ;
+>    void *trigger_data ;
+1549,1553c1617,1624
+< #line 241 "include/linux/pm_runtime.h"
+< struct ethhdr {
+<    unsigned char h_dest[6U] ;
+<    unsigned char h_source[6U] ;
+<    __be16 h_proto ;
+---
+> #line 113 "include/linux/leds.h"
+> struct led_trigger {
+>    char const   *name ;
+>    void (*activate)(struct led_classdev * ) ;
+>    void (*deactivate)(struct led_classdev * ) ;
+>    rwlock_t leddev_list_lock ;
+>    struct list_head led_cdevs ;
+>    struct list_head next_trig ;
+1555c1626,1632
+< #line 124 "include/linux/if_ether.h"
+---
+> #line 93 "include/linux/capability.h"
+> struct kernel_cap_struct {
+>    __u32 cap[2U] ;
+> };
+> #line 96 "include/linux/capability.h"
+> typedef struct kernel_cap_struct kernel_cap_t;
+> #line 568
+1557c1634
+< #line 124 "include/linux/if_ether.h"
+---
+> #line 568 "include/linux/capability.h"
+1580c1657
+< struct __anonstruct_ldv_15054_116 {
+---
+> struct __anonstruct_ldv_14975_117 {
+1585c1662
+< union __anonunion_ldv_15055_115 {
+---
+> union __anonunion_ldv_14976_116 {
+1587c1664
+<    struct __anonstruct_ldv_15054_116 ldv_15054 ;
+---
+>    struct __anonstruct_ldv_14975_117 ldv_14975 ;
+1590c1667
+< struct __anonstruct_ldv_15060_118 {
+---
+> struct __anonstruct_ldv_14981_119 {
+1595,1596c1672,1673
+< union __anonunion_ldv_15063_117 {
+<    struct __anonstruct_ldv_15060_118 ldv_15060 ;
+---
+> union __anonunion_ldv_14984_118 {
+>    struct __anonstruct_ldv_14981_119 ldv_14981 ;
+1601c1678
+< union __anonunion_ldv_15067_119 {
+---
+> union __anonunion_ldv_14988_120 {
+1609,1611c1686,1688
+<    union __anonunion_ldv_15055_115 ldv_15055 ;
+<    union __anonunion_ldv_15063_117 ldv_15063 ;
+<    union __anonunion_ldv_15067_119 ldv_15067 ;
+---
+>    union __anonunion_ldv_14976_116 ldv_14976 ;
+>    union __anonunion_ldv_14984_118 ldv_14984 ;
+>    union __anonunion_ldv_14988_120 ldv_14988 ;
+1615c1692
+< struct __anonstruct_vm_set_121 {
+---
+> struct __anonstruct_vm_set_122 {
+1621,1622c1698,1699
+< union __anonunion_shared_120 {
+<    struct __anonstruct_vm_set_121 vm_set ;
+---
+> union __anonunion_shared_121 {
+>    struct __anonstruct_vm_set_122 vm_set ;
+1641c1718
+<    union __anonunion_shared_120 shared ;
+---
+>    union __anonunion_shared_121 shared ;
+1729,2127c1806,1807
+< #line 16 "include/linux/socket.h"
+< struct iovec {
+<    void *iov_base ;
+<    __kernel_size_t iov_len ;
+< };
+< #line 54 "include/linux/uio.h"
+< struct cred;
+< #line 38 "include/linux/socket.h"
+< typedef unsigned short sa_family_t;
+< #line 39 "include/linux/socket.h"
+< struct sockaddr {
+<    sa_family_t sa_family ;
+<    char sa_data[14U] ;
+< };
+< #line 175 "include/asm-generic/fcntl.h"
+< struct poll_table_struct;
+< #line 176
+< struct pipe_inode_info;
+< #line 177
+< struct inode;
+< #line 178
+< struct net;
+< #line 195
+< struct fasync_struct;
+< #line 151 "include/linux/net.h"
+< struct kiocb;
+< #line 835 "include/linux/sysctl.h"
+< struct nsproxy;
+< #line 836
+< struct ctl_table_root;
+< #line 837 "include/linux/sysctl.h"
+< struct ctl_table_set {
+<    struct list_head list ;
+<    struct ctl_table_set *parent ;
+<    int (*is_seen)(struct ctl_table_set * ) ;
+< };
+< #line 946
+< struct ctl_table_header;
+< #line 964 "include/linux/sysctl.h"
+< typedef int proc_handler(struct ctl_table * , int  , void * , size_t * , loff_t * );
+< #line 984 "include/linux/sysctl.h"
+< struct ctl_table {
+<    char const   *procname ;
+<    void *data ;
+<    int maxlen ;
+<    mode_t mode ;
+<    struct ctl_table *child ;
+<    struct ctl_table *parent ;
+<    proc_handler *proc_handler ;
+<    void *extra1 ;
+<    void *extra2 ;
+< };
+< #line 1026 "include/linux/sysctl.h"
+< struct ctl_table_root {
+<    struct list_head root_list ;
+<    struct ctl_table_set default_set ;
+<    struct ctl_table_set *(*lookup)(struct ctl_table_root * , struct nsproxy * ) ;
+<    int (*permissions)(struct ctl_table_root * , struct nsproxy * , struct ctl_table * ) ;
+< };
+< #line 1034 "include/linux/sysctl.h"
+< struct ctl_table_header {
+<    struct ctl_table *ctl_table ;
+<    struct list_head ctl_entry ;
+<    int used ;
+<    int count ;
+<    struct completion *unregistering ;
+<    struct ctl_table *ctl_table_arg ;
+<    struct ctl_table_root *root ;
+<    struct ctl_table_set *set ;
+<    struct ctl_table *attached_by ;
+<    struct ctl_table *attached_to ;
+<    struct ctl_table_header *parent ;
+< };
+< #line 117 "include/linux/kmemleak.h"
+< struct kmem_cache_cpu {
+<    void **freelist ;
+<    struct page *page ;
+<    int node ;
+<    unsigned int stat[18U] ;
+< };
+< #line 44 "include/linux/slub_def.h"
+< struct kmem_cache_node {
+<    spinlock_t list_lock ;
+<    unsigned long nr_partial ;
+<    struct list_head partial ;
+<    atomic_long_t nr_slabs ;
+<    atomic_long_t total_objects ;
+<    struct list_head full ;
+< };
+< #line 55 "include/linux/slub_def.h"
+< struct kmem_cache_order_objects {
+<    unsigned long x ;
+< };
+< #line 65 "include/linux/slub_def.h"
+< struct kmem_cache {
+<    struct kmem_cache_cpu *cpu_slab ;
+<    unsigned long flags ;
+<    int size ;
+<    int objsize ;
+<    int offset ;
+<    struct kmem_cache_order_objects oo ;
+<    struct kmem_cache_order_objects max ;
+<    struct kmem_cache_order_objects min ;
+<    gfp_t allocflags ;
+<    int refcount ;
+<    void (*ctor)(void * ) ;
+<    int inuse ;
+<    int align ;
+<    unsigned long min_partial ;
+<    char const   *name ;
+<    struct list_head list ;
+<    struct kobject kobj ;
+<    int remote_node_defrag_ratio ;
+<    struct kmem_cache_node *node[1024U] ;
+< };
+< #line 108 "include/net/checksum.h"
+< struct sk_buff;
+< #line 34 "include/linux/bug.h"
+< struct dma_attrs {
+<    unsigned long flags[1U] ;
+< };
+< #line 65 "include/linux/dma-attrs.h"
+< struct scatterlist {
+<    unsigned long sg_magic ;
+<    unsigned long page_link ;
+<    unsigned int offset ;
+<    unsigned int length ;
+<    dma_addr_t dma_address ;
+<    unsigned int dma_length ;
+< };
+< #line 92 "include/linux/bit_spinlock.h"
+< struct file_ra_state;
+< #line 93
+< struct user_struct;
+< #line 94
+< struct writeback_control;
+< #line 172 "include/linux/mm.h"
+< struct vm_fault {
+<    unsigned int flags ;
+<    unsigned long pgoff ;
+<    void *virtual_address ;
+<    struct page *page ;
+< };
+< #line 189 "include/linux/mm.h"
+< struct vm_operations_struct {
+<    void (*open)(struct vm_area_struct * ) ;
+<    void (*close)(struct vm_area_struct * ) ;
+<    int (*fault)(struct vm_area_struct * , struct vm_fault * ) ;
+<    int (*page_mkwrite)(struct vm_area_struct * , struct vm_fault * ) ;
+<    int (*access)(struct vm_area_struct * , unsigned long  , void * , int  , int  ) ;
+<    int (*set_policy)(struct vm_area_struct * , struct mempolicy * ) ;
+<    struct mempolicy *(*get_policy)(struct vm_area_struct * , unsigned long  ) ;
+<    int (*migrate)(struct vm_area_struct * , nodemask_t const   * , nodemask_t const   * ,
+<                   unsigned long  ) ;
+< };
+< #line 266 "include/linux/scatterlist.h"
+< enum dma_data_direction {
+<     DMA_BIDIRECTIONAL = 0,
+<     DMA_TO_DEVICE = 1,
+<     DMA_FROM_DEVICE = 2,
+<     DMA_NONE = 3
+< } ;
+< #line 273 "include/linux/scatterlist.h"
+< struct dma_map_ops {
+<    void *(*alloc_coherent)(struct device * , size_t  , dma_addr_t * , gfp_t  ) ;
+<    void (*free_coherent)(struct device * , size_t  , void * , dma_addr_t  ) ;
+<    dma_addr_t (*map_page)(struct device * , struct page * , unsigned long  , size_t  ,
+<                           enum dma_data_direction  , struct dma_attrs * ) ;
+<    void (*unmap_page)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ,
+<                       struct dma_attrs * ) ;
+<    int (*map_sg)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ,
+<                  struct dma_attrs * ) ;
+<    void (*unmap_sg)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ,
+<                     struct dma_attrs * ) ;
+<    void (*sync_single_for_cpu)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ) ;
+<    void (*sync_single_for_device)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ) ;
+<    void (*sync_sg_for_cpu)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ) ;
+<    void (*sync_sg_for_device)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ) ;
+<    int (*mapping_error)(struct device * , dma_addr_t  ) ;
+<    int (*dma_supported)(struct device * , u64  ) ;
+<    int (*set_dma_mask)(struct device * , u64  ) ;
+<    int is_phys ;
+< };
+< #line 33 "include/linux/dmaengine.h"
+< typedef s32 dma_cookie_t;
+< #line 874
+< struct net_device;
+< #line 875 "include/linux/dmaengine.h"
+< struct nf_conntrack {
+<    atomic_t use ;
+< };
+< #line 102 "include/linux/skbuff.h"
+< struct nf_bridge_info {
+<    atomic_t use ;
+<    struct net_device *physindev ;
+<    struct net_device *physoutdev ;
+<    unsigned int mask ;
+<    unsigned long data[4U] ;
+< };
+< #line 112 "include/linux/skbuff.h"
+< struct sk_buff_head {
+<    struct sk_buff *next ;
+<    struct sk_buff *prev ;
+<    __u32 qlen ;
+<    spinlock_t lock ;
+< };
+< #line 253 "include/linux/skbuff.h"
+< typedef unsigned int sk_buff_data_t;
+< #line 254
+< struct sec_path;
+< #line 254 "include/linux/skbuff.h"
+< struct __anonstruct_ldv_20988_140 {
+<    __u16 csum_start ;
+<    __u16 csum_offset ;
+< };
+< #line 254 "include/linux/skbuff.h"
+< union __anonunion_ldv_20989_139 {
+<    __wsum csum ;
+<    struct __anonstruct_ldv_20988_140 ldv_20988 ;
+< };
+< #line 254 "include/linux/skbuff.h"
+< union __anonunion_ldv_21020_141 {
+<    __u32 mark ;
+<    __u32 dropcount ;
+< };
+< #line 254 "include/linux/skbuff.h"
+< struct sk_buff {
+<    struct sk_buff *next ;
+<    struct sk_buff *prev ;
+<    ktime_t tstamp ;
+<    struct sock *sk ;
+<    struct net_device *dev ;
+<    char cb[48U] ;
+<    unsigned long _skb_refdst ;
+<    struct sec_path *sp ;
+<    unsigned int len ;
+<    unsigned int data_len ;
+<    __u16 mac_len ;
+<    __u16 hdr_len ;
+<    union __anonunion_ldv_20989_139 ldv_20989 ;
+<    __u32 priority ;
+<    unsigned char local_df : 1 ;
+<    unsigned char cloned : 1 ;
+<    unsigned char ip_summed : 2 ;
+<    unsigned char nohdr : 1 ;
+<    unsigned char nfctinfo : 3 ;
+<    unsigned char pkt_type : 3 ;
+<    unsigned char fclone : 2 ;
+<    unsigned char ipvs_property : 1 ;
+<    unsigned char peeked : 1 ;
+<    unsigned char nf_trace : 1 ;
+<    __be16 protocol ;
+<    void (*destructor)(struct sk_buff * ) ;
+<    struct nf_conntrack *nfct ;
+<    struct sk_buff *nfct_reasm ;
+<    struct nf_bridge_info *nf_bridge ;
+<    int skb_iif ;
+<    __u16 tc_index ;
+<    __u16 tc_verd ;
+<    __u32 rxhash ;
+<    __u16 queue_mapping ;
+<    unsigned char ndisc_nodetype : 2 ;
+<    unsigned char deliver_no_wcard : 1 ;
+<    unsigned char ooo_okay : 1 ;
+<    dma_cookie_t dma_cookie ;
+<    __u32 secmark ;
+<    union __anonunion_ldv_21020_141 ldv_21020 ;
+<    __u16 vlan_tci ;
+<    sk_buff_data_t transport_header ;
+<    sk_buff_data_t network_header ;
+<    sk_buff_data_t mac_header ;
+<    sk_buff_data_t tail ;
+<    sk_buff_data_t end ;
+<    unsigned char *head ;
+<    unsigned char *data ;
+<    unsigned int truesize ;
+<    atomic_t users ;
+< };
+< #line 447
+< struct dst_entry;
+< #line 41 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_sync_serial_settings_142 {
+<    unsigned int clock_rate ;
+<    unsigned int clock_type ;
+<    unsigned short loopback ;
+< };
+< #line 41 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_sync_serial_settings_142 sync_serial_settings;
+< #line 48 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_te1_settings_143 {
+<    unsigned int clock_rate ;
+<    unsigned int clock_type ;
+<    unsigned short loopback ;
+<    unsigned int slot_map ;
+< };
+< #line 48 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_te1_settings_143 te1_settings;
+< #line 53 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_raw_hdlc_proto_144 {
+<    unsigned short encoding ;
+<    unsigned short parity ;
+< };
+< #line 53 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_raw_hdlc_proto_144 raw_hdlc_proto;
+< #line 63 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_fr_proto_145 {
+<    unsigned int t391 ;
+<    unsigned int t392 ;
+<    unsigned int n391 ;
+<    unsigned int n392 ;
+<    unsigned int n393 ;
+<    unsigned short lmi ;
+<    unsigned short dce ;
+< };
+< #line 63 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_fr_proto_145 fr_proto;
+< #line 67 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_fr_proto_pvc_146 {
+<    unsigned int dlci ;
+< };
+< #line 67 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_fr_proto_pvc_146 fr_proto_pvc;
+< #line 72 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_fr_proto_pvc_info_147 {
+<    unsigned int dlci ;
+<    char master[16U] ;
+< };
+< #line 72 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_fr_proto_pvc_info_147 fr_proto_pvc_info;
+< #line 77 "include/linux/hdlc/ioctl.h"
+< struct __anonstruct_cisco_proto_148 {
+<    unsigned int interval ;
+<    unsigned int timeout ;
+< };
+< #line 77 "include/linux/hdlc/ioctl.h"
+< typedef struct __anonstruct_cisco_proto_148 cisco_proto;
+< #line 93 "include/linux/hdlc/ioctl.h"
+< struct ifmap {
+<    unsigned long mem_start ;
+<    unsigned long mem_end ;
+<    unsigned short base_addr ;
+<    unsigned char irq ;
+<    unsigned char dma ;
+<    unsigned char port ;
+< };
+< #line 143 "include/linux/if.h"
+< union __anonunion_ifs_ifsu_149 {
+<    raw_hdlc_proto *raw_hdlc ;
+<    cisco_proto *cisco ;
+<    fr_proto *fr ;
+<    fr_proto_pvc *fr_pvc ;
+<    fr_proto_pvc_info *fr_pvc_info ;
+<    sync_serial_settings *sync ;
+<    te1_settings *te1 ;
+< };
+< #line 143 "include/linux/if.h"
+< struct if_settings {
+<    unsigned int type ;
+<    unsigned int size ;
+<    union __anonunion_ifs_ifsu_149 ifs_ifsu ;
+< };
+< #line 161 "include/linux/if.h"
+< union __anonunion_ifr_ifrn_150 {
+<    char ifrn_name[16U] ;
+< };
+< #line 161 "include/linux/if.h"
+< union __anonunion_ifr_ifru_151 {
+<    struct sockaddr ifru_addr ;
+<    struct sockaddr ifru_dstaddr ;
+<    struct sockaddr ifru_broadaddr ;
+<    struct sockaddr ifru_netmask ;
+<    struct sockaddr ifru_hwaddr ;
+<    short ifru_flags ;
+<    int ifru_ivalue ;
+<    int ifru_mtu ;
+<    struct ifmap ifru_map ;
+<    char ifru_slave[16U] ;
+<    char ifru_newname[16U] ;
+<    void *ifru_data ;
+<    struct if_settings ifru_settings ;
+< };
+< #line 161 "include/linux/if.h"
+< struct ifreq {
+<    union __anonunion_ifr_ifrn_150 ifr_ifrn ;
+<    union __anonunion_ifr_ifru_151 ifr_ifru ;
+< };
+< #line 225 "include/linux/if.h"
+< struct iw_param {
+<    __s32 value ;
+<    __u8 fixed ;
+<    __u8 disabled ;
+<    __u16 flags ;
+< };
+< #line 680 "include/linux/wireless.h"
+< struct iw_point {
+<    void *pointer ;
+<    __u16 length ;
+<    __u16 flags ;
+< };
+---
+> #line 7 "include/asm-generic/cputime.h"
+> typedef unsigned long cputime_t;
+2140,2148c1820
+< #line 93 "include/linux/capability.h"
+< struct kernel_cap_struct {
+<    __u32 cap[2U] ;
+< };
+< #line 96 "include/linux/capability.h"
+< typedef struct kernel_cap_struct kernel_cap_t;
+< #line 7 "include/asm-generic/cputime.h"
+< typedef unsigned long cputime_t;
+< #line 26
+---
+> #line 149
+2151c1823
+< struct __anonstruct_sigset_t_154 {
+---
+> struct __anonstruct_sigset_t_123 {
+2155c1827
+< typedef struct __anonstruct_sigset_t_154 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_123 sigset_t;
+2183c1855
+< struct __anonstruct__kill_156 {
+---
+> struct __anonstruct__kill_125 {
+2188c1860
+< struct __anonstruct__timer_157 {
+---
+> struct __anonstruct__timer_126 {
+2196c1868
+< struct __anonstruct__rt_158 {
+---
+> struct __anonstruct__rt_127 {
+2202c1874
+< struct __anonstruct__sigchld_159 {
+---
+> struct __anonstruct__sigchld_128 {
+2210c1882
+< struct __anonstruct__sigfault_160 {
+---
+> struct __anonstruct__sigfault_129 {
+2215c1887
+< struct __anonstruct__sigpoll_161 {
+---
+> struct __anonstruct__sigpoll_130 {
+2220c1892
+< union __anonunion__sifields_155 {
+---
+> union __anonunion__sifields_124 {
+2222,2227c1894,1899
+<    struct __anonstruct__kill_156 _kill ;
+<    struct __anonstruct__timer_157 _timer ;
+<    struct __anonstruct__rt_158 _rt ;
+<    struct __anonstruct__sigchld_159 _sigchld ;
+<    struct __anonstruct__sigfault_160 _sigfault ;
+<    struct __anonstruct__sigpoll_161 _sigpoll ;
+---
+>    struct __anonstruct__kill_125 _kill ;
+>    struct __anonstruct__timer_126 _timer ;
+>    struct __anonstruct__rt_127 _rt ;
+>    struct __anonstruct__sigchld_128 _sigchld ;
+>    struct __anonstruct__sigfault_129 _sigfault ;
+>    struct __anonstruct__sigpoll_130 _sigpoll ;
+2234c1906
+<    union __anonunion__sifields_155 _sifields ;
+---
+>    union __anonunion__sifields_124 _sifields ;
+2237a1910,1911
+> #line 12 "include/linux/signal.h"
+> struct user_struct;
+2286c1960
+< struct __anonstruct_seccomp_t_164 {
+---
+> struct __anonstruct_seccomp_t_133 {
+2290c1964
+< typedef struct __anonstruct_seccomp_t_164 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_133 seccomp_t;
+2326a2001,2047
+> #line 835 "include/linux/sysctl.h"
+> struct nsproxy;
+> #line 836
+> struct ctl_table_root;
+> #line 837 "include/linux/sysctl.h"
+> struct ctl_table_set {
+>    struct list_head list ;
+>    struct ctl_table_set *parent ;
+>    int (*is_seen)(struct ctl_table_set * ) ;
+> };
+> #line 946
+> struct ctl_table_header;
+> #line 964 "include/linux/sysctl.h"
+> typedef int proc_handler(struct ctl_table * , int  , void * , size_t * , loff_t * );
+> #line 984 "include/linux/sysctl.h"
+> struct ctl_table {
+>    char const   *procname ;
+>    void *data ;
+>    int maxlen ;
+>    mode_t mode ;
+>    struct ctl_table *child ;
+>    struct ctl_table *parent ;
+>    proc_handler *proc_handler ;
+>    void *extra1 ;
+>    void *extra2 ;
+> };
+> #line 1026 "include/linux/sysctl.h"
+> struct ctl_table_root {
+>    struct list_head root_list ;
+>    struct ctl_table_set default_set ;
+>    struct ctl_table_set *(*lookup)(struct ctl_table_root * , struct nsproxy * ) ;
+>    int (*permissions)(struct ctl_table_root * , struct nsproxy * , struct ctl_table * ) ;
+> };
+> #line 1034 "include/linux/sysctl.h"
+> struct ctl_table_header {
+>    struct ctl_table *ctl_table ;
+>    struct list_head ctl_entry ;
+>    int used ;
+>    int count ;
+>    struct completion *unregistering ;
+>    struct ctl_table *ctl_table_arg ;
+>    struct ctl_table_root *root ;
+>    struct ctl_table_set *set ;
+>    struct ctl_table *attached_by ;
+>    struct ctl_table *attached_to ;
+>    struct ctl_table_header *parent ;
+> };
+2333a2055,2056
+> struct cred;
+> #line 35
+2335c2058
+< #line 36
+---
+> #line 37
+2340c2063
+< union __anonunion_ldv_22970_165 {
+---
+> union __anonunion_ldv_16818_134 {
+2345c2068
+< union __anonunion_type_data_166 {
+---
+> union __anonunion_type_data_135 {
+2351c2074
+< union __anonunion_payload_167 {
+---
+> union __anonunion_payload_136 {
+2366c2089
+<    union __anonunion_ldv_22970_165 ldv_22970 ;
+---
+>    union __anonunion_ldv_16818_134 ldv_16818 ;
+2374,2375c2097,2098
+<    union __anonunion_type_data_166 type_data ;
+<    union __anonunion_payload_167 payload ;
+---
+>    union __anonunion_type_data_135 type_data ;
+>    union __anonunion_payload_136 payload ;
+2379a2103,2104
+> struct inode;
+> #line 28 "include/linux/selinux.h"
+2445c2170,2175
+< #line 106
+---
+> #line 106 "include/linux/aio_abi.h"
+> struct iovec {
+>    void *iov_base ;
+>    __kernel_size_t iov_len ;
+> };
+> #line 54 "include/linux/uio.h"
+2447,2448c2177,2178
+< #line 107 "include/linux/aio_abi.h"
+< union __anonunion_ki_obj_168 {
+---
+> #line 55 "include/linux/uio.h"
+> union __anonunion_ki_obj_137 {
+2452c2182
+< #line 107
+---
+> #line 55
+2454c2184
+< #line 107 "include/linux/aio_abi.h"
+---
+> #line 55 "include/linux/uio.h"
+2465c2195
+<    union __anonunion_ki_obj_168 ki_obj ;
+---
+>    union __anonunion_ki_obj_137 ki_obj ;
+2659c2389,2391
+< #line 1036
+---
+> #line 1035
+> struct pipe_inode_info;
+> #line 1037
+2661c2393
+< #line 1037 "include/linux/sched.h"
+---
+> #line 1038 "include/linux/sched.h"
+2930a2663,3094
+> #line 2622 "include/linux/sched.h"
+> struct mmc_ios {
+>    unsigned int clock ;
+>    unsigned short vdd ;
+>    unsigned char bus_mode ;
+>    unsigned char chip_select ;
+>    unsigned char power_mode ;
+>    unsigned char bus_width ;
+>    unsigned char timing ;
+>    unsigned char ddr ;
+> };
+> #line 56 "include/linux/mmc/host.h"
+> struct mmc_host_ops {
+>    int (*enable)(struct mmc_host * ) ;
+>    int (*disable)(struct mmc_host * , int  ) ;
+>    void (*request)(struct mmc_host * , struct mmc_request * ) ;
+>    void (*set_ios)(struct mmc_host * , struct mmc_ios * ) ;
+>    int (*get_ro)(struct mmc_host * ) ;
+>    int (*get_cd)(struct mmc_host * ) ;
+>    void (*enable_sdio_irq)(struct mmc_host * , int  ) ;
+>    void (*init_card)(struct mmc_host * , struct mmc_card * ) ;
+> };
+> #line 121
+> struct mmc_bus_ops;
+> #line 121 "include/linux/mmc/host.h"
+> struct mmc_host {
+>    struct device *parent ;
+>    struct device class_dev ;
+>    int index ;
+>    struct mmc_host_ops  const  *ops ;
+>    unsigned int f_min ;
+>    unsigned int f_max ;
+>    unsigned int f_init ;
+>    u32 ocr_avail ;
+>    u32 ocr_avail_sdio ;
+>    u32 ocr_avail_sd ;
+>    u32 ocr_avail_mmc ;
+>    struct notifier_block pm_notify ;
+>    unsigned long caps ;
+>    mmc_pm_flag_t pm_caps ;
+>    int clk_requests ;
+>    unsigned int clk_delay ;
+>    bool clk_gated ;
+>    struct work_struct clk_gate_work ;
+>    unsigned int clk_old ;
+>    spinlock_t clk_lock ;
+>    struct mutex clk_gate_mutex ;
+>    unsigned int max_seg_size ;
+>    unsigned short max_segs ;
+>    unsigned short unused ;
+>    unsigned int max_req_size ;
+>    unsigned int max_blk_size ;
+>    unsigned int max_blk_count ;
+>    spinlock_t lock ;
+>    struct mmc_ios ios ;
+>    u32 ocr ;
+>    unsigned char use_spi_crc : 1 ;
+>    unsigned char claimed : 1 ;
+>    unsigned char bus_dead : 1 ;
+>    unsigned char removed : 1 ;
+>    int enabled ;
+>    int rescan_disable ;
+>    int nesting_cnt ;
+>    int en_dis_recurs ;
+>    unsigned int disable_delay ;
+>    struct delayed_work disable ;
+>    struct mmc_card *card ;
+>    wait_queue_head_t wq ;
+>    struct task_struct *claimer ;
+>    int claim_cnt ;
+>    struct delayed_work detect ;
+>    struct mmc_bus_ops  const  *bus_ops ;
+>    unsigned int bus_refs ;
+>    unsigned int sdio_irqs ;
+>    struct task_struct *sdio_irq_thread ;
+>    atomic_t sdio_irq_thread_abort ;
+>    mmc_pm_flag_t pm_flags ;
+>    struct led_trigger *led ;
+>    bool regulator_enabled ;
+>    struct dentry *debugfs_root ;
+>    unsigned long private[0U] ;
+> };
+> #line 57 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/gpio.h"
+> struct wl12xx_platform_data {
+>    void (*set_power)(bool  ) ;
+>    int irq ;
+>    bool use_eeprom ;
+>    int board_ref_clock ;
+> };
+> #line 241 "include/linux/pm_runtime.h"
+> struct ethhdr {
+>    unsigned char h_dest[6U] ;
+>    unsigned char h_source[6U] ;
+>    __be16 h_proto ;
+> };
+> #line 38 "include/linux/socket.h"
+> typedef unsigned short sa_family_t;
+> #line 39 "include/linux/socket.h"
+> struct sockaddr {
+>    sa_family_t sa_family ;
+>    char sa_data[14U] ;
+> };
+> #line 175 "include/asm-generic/fcntl.h"
+> struct poll_table_struct;
+> #line 176
+> struct net;
+> #line 193
+> struct fasync_struct;
+> #line 117 "include/linux/kmemleak.h"
+> struct kmem_cache_cpu {
+>    void **freelist ;
+>    struct page *page ;
+>    int node ;
+>    unsigned int stat[18U] ;
+> };
+> #line 44 "include/linux/slub_def.h"
+> struct kmem_cache_node {
+>    spinlock_t list_lock ;
+>    unsigned long nr_partial ;
+>    struct list_head partial ;
+>    atomic_long_t nr_slabs ;
+>    atomic_long_t total_objects ;
+>    struct list_head full ;
+> };
+> #line 55 "include/linux/slub_def.h"
+> struct kmem_cache_order_objects {
+>    unsigned long x ;
+> };
+> #line 65 "include/linux/slub_def.h"
+> struct kmem_cache {
+>    struct kmem_cache_cpu *cpu_slab ;
+>    unsigned long flags ;
+>    int size ;
+>    int objsize ;
+>    int offset ;
+>    struct kmem_cache_order_objects oo ;
+>    struct kmem_cache_order_objects max ;
+>    struct kmem_cache_order_objects min ;
+>    gfp_t allocflags ;
+>    int refcount ;
+>    void (*ctor)(void * ) ;
+>    int inuse ;
+>    int align ;
+>    unsigned long min_partial ;
+>    char const   *name ;
+>    struct list_head list ;
+>    struct kobject kobj ;
+>    int remote_node_defrag_ratio ;
+>    struct kmem_cache_node *node[1024U] ;
+> };
+> #line 108 "include/net/checksum.h"
+> struct sk_buff;
+> #line 34 "include/linux/bug.h"
+> struct dma_attrs {
+>    unsigned long flags[1U] ;
+> };
+> #line 65 "include/linux/dma-attrs.h"
+> struct scatterlist {
+>    unsigned long sg_magic ;
+>    unsigned long page_link ;
+>    unsigned int offset ;
+>    unsigned int length ;
+>    dma_addr_t dma_address ;
+>    unsigned int dma_length ;
+> };
+> #line 92 "include/linux/bit_spinlock.h"
+> struct file_ra_state;
+> #line 93
+> struct writeback_control;
+> #line 172 "include/linux/mm.h"
+> struct vm_fault {
+>    unsigned int flags ;
+>    unsigned long pgoff ;
+>    void *virtual_address ;
+>    struct page *page ;
+> };
+> #line 189 "include/linux/mm.h"
+> struct vm_operations_struct {
+>    void (*open)(struct vm_area_struct * ) ;
+>    void (*close)(struct vm_area_struct * ) ;
+>    int (*fault)(struct vm_area_struct * , struct vm_fault * ) ;
+>    int (*page_mkwrite)(struct vm_area_struct * , struct vm_fault * ) ;
+>    int (*access)(struct vm_area_struct * , unsigned long  , void * , int  , int  ) ;
+>    int (*set_policy)(struct vm_area_struct * , struct mempolicy * ) ;
+>    struct mempolicy *(*get_policy)(struct vm_area_struct * , unsigned long  ) ;
+>    int (*migrate)(struct vm_area_struct * , nodemask_t const   * , nodemask_t const   * ,
+>                   unsigned long  ) ;
+> };
+> #line 266 "include/linux/scatterlist.h"
+> enum dma_data_direction {
+>     DMA_BIDIRECTIONAL = 0,
+>     DMA_TO_DEVICE = 1,
+>     DMA_FROM_DEVICE = 2,
+>     DMA_NONE = 3
+> } ;
+> #line 273 "include/linux/scatterlist.h"
+> struct dma_map_ops {
+>    void *(*alloc_coherent)(struct device * , size_t  , dma_addr_t * , gfp_t  ) ;
+>    void (*free_coherent)(struct device * , size_t  , void * , dma_addr_t  ) ;
+>    dma_addr_t (*map_page)(struct device * , struct page * , unsigned long  , size_t  ,
+>                           enum dma_data_direction  , struct dma_attrs * ) ;
+>    void (*unmap_page)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ,
+>                       struct dma_attrs * ) ;
+>    int (*map_sg)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ,
+>                  struct dma_attrs * ) ;
+>    void (*unmap_sg)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ,
+>                     struct dma_attrs * ) ;
+>    void (*sync_single_for_cpu)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ) ;
+>    void (*sync_single_for_device)(struct device * , dma_addr_t  , size_t  , enum dma_data_direction  ) ;
+>    void (*sync_sg_for_cpu)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ) ;
+>    void (*sync_sg_for_device)(struct device * , struct scatterlist * , int  , enum dma_data_direction  ) ;
+>    int (*mapping_error)(struct device * , dma_addr_t  ) ;
+>    int (*dma_supported)(struct device * , u64  ) ;
+>    int (*set_dma_mask)(struct device * , u64  ) ;
+>    int is_phys ;
+> };
+> #line 33 "include/linux/dmaengine.h"
+> typedef s32 dma_cookie_t;
+> #line 874
+> struct net_device;
+> #line 875 "include/linux/dmaengine.h"
+> struct nf_conntrack {
+>    atomic_t use ;
+> };
+> #line 102 "include/linux/skbuff.h"
+> struct nf_bridge_info {
+>    atomic_t use ;
+>    struct net_device *physindev ;
+>    struct net_device *physoutdev ;
+>    unsigned int mask ;
+>    unsigned long data[4U] ;
+> };
+> #line 112 "include/linux/skbuff.h"
+> struct sk_buff_head {
+>    struct sk_buff *next ;
+>    struct sk_buff *prev ;
+>    __u32 qlen ;
+>    spinlock_t lock ;
+> };
+> #line 253 "include/linux/skbuff.h"
+> typedef unsigned int sk_buff_data_t;
+> #line 254
+> struct sec_path;
+> #line 254 "include/linux/skbuff.h"
+> struct __anonstruct_ldv_23930_156 {
+>    __u16 csum_start ;
+>    __u16 csum_offset ;
+> };
+> #line 254 "include/linux/skbuff.h"
+> union __anonunion_ldv_23931_155 {
+>    __wsum csum ;
+>    struct __anonstruct_ldv_23930_156 ldv_23930 ;
+> };
+> #line 254 "include/linux/skbuff.h"
+> union __anonunion_ldv_23962_157 {
+>    __u32 mark ;
+>    __u32 dropcount ;
+> };
+> #line 254 "include/linux/skbuff.h"
+> struct sk_buff {
+>    struct sk_buff *next ;
+>    struct sk_buff *prev ;
+>    ktime_t tstamp ;
+>    struct sock *sk ;
+>    struct net_device *dev ;
+>    char cb[48U] ;
+>    unsigned long _skb_refdst ;
+>    struct sec_path *sp ;
+>    unsigned int len ;
+>    unsigned int data_len ;
+>    __u16 mac_len ;
+>    __u16 hdr_len ;
+>    union __anonunion_ldv_23931_155 ldv_23931 ;
+>    __u32 priority ;
+>    unsigned char local_df : 1 ;
+>    unsigned char cloned : 1 ;
+>    unsigned char ip_summed : 2 ;
+>    unsigned char nohdr : 1 ;
+>    unsigned char nfctinfo : 3 ;
+>    unsigned char pkt_type : 3 ;
+>    unsigned char fclone : 2 ;
+>    unsigned char ipvs_property : 1 ;
+>    unsigned char peeked : 1 ;
+>    unsigned char nf_trace : 1 ;
+>    __be16 protocol ;
+>    void (*destructor)(struct sk_buff * ) ;
+>    struct nf_conntrack *nfct ;
+>    struct sk_buff *nfct_reasm ;
+>    struct nf_bridge_info *nf_bridge ;
+>    int skb_iif ;
+>    __u16 tc_index ;
+>    __u16 tc_verd ;
+>    __u32 rxhash ;
+>    __u16 queue_mapping ;
+>    unsigned char ndisc_nodetype : 2 ;
+>    unsigned char deliver_no_wcard : 1 ;
+>    unsigned char ooo_okay : 1 ;
+>    dma_cookie_t dma_cookie ;
+>    __u32 secmark ;
+>    union __anonunion_ldv_23962_157 ldv_23962 ;
+>    __u16 vlan_tci ;
+>    sk_buff_data_t transport_header ;
+>    sk_buff_data_t network_header ;
+>    sk_buff_data_t mac_header ;
+>    sk_buff_data_t tail ;
+>    sk_buff_data_t end ;
+>    unsigned char *head ;
+>    unsigned char *data ;
+>    unsigned int truesize ;
+>    atomic_t users ;
+> };
+> #line 447
+> struct dst_entry;
+> #line 41 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_sync_serial_settings_158 {
+>    unsigned int clock_rate ;
+>    unsigned int clock_type ;
+>    unsigned short loopback ;
+> };
+> #line 41 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_sync_serial_settings_158 sync_serial_settings;
+> #line 48 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_te1_settings_159 {
+>    unsigned int clock_rate ;
+>    unsigned int clock_type ;
+>    unsigned short loopback ;
+>    unsigned int slot_map ;
+> };
+> #line 48 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_te1_settings_159 te1_settings;
+> #line 53 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_raw_hdlc_proto_160 {
+>    unsigned short encoding ;
+>    unsigned short parity ;
+> };
+> #line 53 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_raw_hdlc_proto_160 raw_hdlc_proto;
+> #line 63 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_fr_proto_161 {
+>    unsigned int t391 ;
+>    unsigned int t392 ;
+>    unsigned int n391 ;
+>    unsigned int n392 ;
+>    unsigned int n393 ;
+>    unsigned short lmi ;
+>    unsigned short dce ;
+> };
+> #line 63 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_fr_proto_161 fr_proto;
+> #line 67 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_fr_proto_pvc_162 {
+>    unsigned int dlci ;
+> };
+> #line 67 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_fr_proto_pvc_162 fr_proto_pvc;
+> #line 72 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_fr_proto_pvc_info_163 {
+>    unsigned int dlci ;
+>    char master[16U] ;
+> };
+> #line 72 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_fr_proto_pvc_info_163 fr_proto_pvc_info;
+> #line 77 "include/linux/hdlc/ioctl.h"
+> struct __anonstruct_cisco_proto_164 {
+>    unsigned int interval ;
+>    unsigned int timeout ;
+> };
+> #line 77 "include/linux/hdlc/ioctl.h"
+> typedef struct __anonstruct_cisco_proto_164 cisco_proto;
+> #line 93 "include/linux/hdlc/ioctl.h"
+> struct ifmap {
+>    unsigned long mem_start ;
+>    unsigned long mem_end ;
+>    unsigned short base_addr ;
+>    unsigned char irq ;
+>    unsigned char dma ;
+>    unsigned char port ;
+> };
+> #line 143 "include/linux/if.h"
+> union __anonunion_ifs_ifsu_165 {
+>    raw_hdlc_proto *raw_hdlc ;
+>    cisco_proto *cisco ;
+>    fr_proto *fr ;
+>    fr_proto_pvc *fr_pvc ;
+>    fr_proto_pvc_info *fr_pvc_info ;
+>    sync_serial_settings *sync ;
+>    te1_settings *te1 ;
+> };
+> #line 143 "include/linux/if.h"
+> struct if_settings {
+>    unsigned int type ;
+>    unsigned int size ;
+>    union __anonunion_ifs_ifsu_165 ifs_ifsu ;
+> };
+> #line 161 "include/linux/if.h"
+> union __anonunion_ifr_ifrn_166 {
+>    char ifrn_name[16U] ;
+> };
+> #line 161 "include/linux/if.h"
+> union __anonunion_ifr_ifru_167 {
+>    struct sockaddr ifru_addr ;
+>    struct sockaddr ifru_dstaddr ;
+>    struct sockaddr ifru_broadaddr ;
+>    struct sockaddr ifru_netmask ;
+>    struct sockaddr ifru_hwaddr ;
+>    short ifru_flags ;
+>    int ifru_ivalue ;
+>    int ifru_mtu ;
+>    struct ifmap ifru_map ;
+>    char ifru_slave[16U] ;
+>    char ifru_newname[16U] ;
+>    void *ifru_data ;
+>    struct if_settings ifru_settings ;
+> };
+> #line 161 "include/linux/if.h"
+> struct ifreq {
+>    union __anonunion_ifr_ifrn_166 ifr_ifrn ;
+>    union __anonunion_ifr_ifru_167 ifr_ifru ;
+> };
+> #line 225 "include/linux/if.h"
+> struct iw_param {
+>    __s32 value ;
+>    __u8 fixed ;
+>    __u8 disabled ;
+>    __u16 flags ;
+> };
+> #line 680 "include/linux/wireless.h"
+> struct iw_point {
+>    void *pointer ;
+>    __u16 length ;
+>    __u16 flags ;
+> };
+3901c4065
+< union __anonunion_ldv_28940_218 {
+---
+> union __anonunion_ldv_29180_218 {
+3910c4074
+< union __anonunion_ldv_28966_219 {
+---
+> union __anonunion_ldv_29206_219 {
+3931c4095
+<    union __anonunion_ldv_28940_218 ldv_28940 ;
+---
+>    union __anonunion_ldv_29180_218 ldv_29180 ;
+3951c4115
+<    union __anonunion_ldv_28966_219 ldv_28966 ;
+---
+>    union __anonunion_ldv_29206_219 ldv_29206 ;
+4644c4808
+< union __anonunion_ldv_32579_224 {
+---
+> union __anonunion_ldv_32819_224 {
+4741c4905
+<    union __anonunion_ldv_32579_224 ldv_32579 ;
+---
+>    union __anonunion_ldv_32819_224 ldv_32819 ;
+4768c4932
+< #line 1279 "include/linux/nl80211.h"
+---
+> #line 1280 "include/linux/nl80211.h"
+4775c4939
+< #line 1390
+---
+> #line 1391
+4782c4946
+< #line 1420
+---
+> #line 1421
+4792c4956
+< #line 1506
+---
+> #line 1507
+4798c4962
+< #line 1512 "include/linux/nl80211.h"
+---
+> #line 1513 "include/linux/nl80211.h"
+4910c5074
+< #line 685
+---
+> #line 688
+4912c5076
+< #line 686 "include/net/cfg80211.h"
+---
+> #line 689 "include/net/cfg80211.h"
+4917c5081
+< #line 721 "include/net/cfg80211.h"
+---
+> #line 724 "include/net/cfg80211.h"
+4929c5093
+< #line 750
+---
+> #line 753
+4935c5099
+< #line 815 "include/net/cfg80211.h"
+---
+> #line 818 "include/net/cfg80211.h"
+4947c5111
+< #line 936 "include/net/cfg80211.h"
+---
+> #line 939 "include/net/cfg80211.h"
+4961c5125
+< #line 970 "include/net/cfg80211.h"
+---
+> #line 973 "include/net/cfg80211.h"
+4976c5140
+< #line 1378 "include/net/cfg80211.h"
+---
+> #line 1381 "include/net/cfg80211.h"
+4980c5144
+< #line 1425 "include/net/cfg80211.h"
+---
+> #line 1428 "include/net/cfg80211.h"
+4985c5149
+< #line 1429 "include/net/cfg80211.h"
+---
+> #line 1432 "include/net/cfg80211.h"
+5021c5185
+< #line 1680
+---
+> #line 1683
+5023c5187
+< #line 1681
+---
+> #line 1684
+5025c5189
+< #line 1682
+---
+> #line 1685
+5027,5028c5191,5192
+< #line 1683
+< enum ldv_24737 {
+---
+> #line 1686
+> enum ldv_24825 {
+5033c5197
+< #line 1689 "include/net/cfg80211.h"
+---
+> #line 1692 "include/net/cfg80211.h"
+5047c5211
+< #line 1689 "include/net/cfg80211.h"
+---
+> #line 1692 "include/net/cfg80211.h"
+5062c5226
+<    enum ldv_24737 sme_state ;
+---
+>    enum ldv_24825 sme_state ;
+5101c5265
+< #line 466
+---
+> #line 470
+5103c5267
+< #line 668
+---
+> #line 673
+5111c5275
+< #line 676 "include/net/mac80211.h"
+---
+> #line 681 "include/net/mac80211.h"
+5125c5289
+< #line 796 "include/net/mac80211.h"
+---
+> #line 801 "include/net/mac80211.h"
+5133c5297
+< #line 963 "include/net/mac80211.h"
+---
+> #line 969 "include/net/mac80211.h"
+5154c5318
+< #line 3094 "include/net/mac80211.h"
+---
+> #line 3161 "include/net/mac80211.h"
+5253a5418
+>    u8 psm_exit_retries ;
+5259c5424
+< #line 1021 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1029 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5264c5429
+< #line 1029 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1037 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5269c5434
+< #line 1045 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1053 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5277c5442
+< #line 1082 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1090 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5279,5282c5444,5447
+<    u16 min_dwell_time_active ;
+<    u16 max_dwell_time_active ;
+<    u16 min_dwell_time_passive ;
+<    u16 max_dwell_time_passive ;
+---
+>    u32 min_dwell_time_active ;
+>    u32 max_dwell_time_active ;
+>    u32 min_dwell_time_passive ;
+>    u32 max_dwell_time_passive ;
+5285c5450
+< #line 1119 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1127 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5290c5455,5471
+< #line 1140 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1148 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+> struct conf_ht_setting {
+>    u16 tx_ba_win_size ;
+>    u16 inactivity_timeout ;
+> };
+> #line 1153 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+> struct conf_memory_settings {
+>    u8 num_stations ;
+>    u8 ssid_profiles ;
+>    u8 rx_block_num ;
+>    u8 tx_min_block_num ;
+>    u8 dynamic_memory ;
+>    u8 min_req_tx_blocks ;
+>    u8 min_req_rx_blocks ;
+>    u8 tx_min ;
+> };
+> #line 1193 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5300a5482,5483
+>    struct conf_ht_setting ht ;
+>    struct conf_memory_settings mem ;
+5302c5485
+< #line 1152 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+---
+> #line 1207 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+5382c5565
+< #line 66 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 73 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5388c5571
+< #line 79 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 86 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5393c5576
+< #line 175 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 193 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5400c5583
+< #line 182
+---
+> #line 200
+5402c5585
+< #line 183 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 201 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5405c5588,5589
+<    char fw_ver[21U] ;
+---
+>    char fw_ver_str[32U] ;
+>    unsigned int fw_ver[5U] ;
+5407c5591
+< #line 190
+---
+> #line 211
+5409c5593
+< #line 190 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 211 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5416,5417c5600,5601
+< #line 198 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+< struct wl1271_fw_status {
+---
+> #line 219 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> struct wl1271_fw_common_status {
+5425a5610,5613
+> };
+> #line 239 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> struct wl1271_fw_ap_status {
+>    struct wl1271_fw_common_status common ;
+5430c5618,5635
+< #line 230 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 256 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> struct wl1271_fw_sta_status {
+>    struct wl1271_fw_common_status common ;
+>    u8 tx_total ;
+>    u8 reserved1 ;
+>    __le16 reserved2 ;
+> };
+> #line 265 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> union __anonunion_ldv_36881_235 {
+>    struct wl1271_fw_common_status common ;
+>    struct wl1271_fw_sta_status sta ;
+>    struct wl1271_fw_ap_status ap ;
+> };
+> #line 265 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> struct wl1271_fw_full_status {
+>    union __anonunion_ldv_36881_235 ldv_36881 ;
+> };
+> #line 273 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5435c5640
+< #line 235 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 279 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5444c5649
+< #line 244 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 288 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5455c5660
+< #line 257 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 301 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5465c5670,5677
+< #line 270
+---
+> #line 332 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+> struct wl1271_link {
+>    struct sk_buff_head tx_queue[4U] ;
+>    u8 allocated_blks ;
+>    u8 prev_freed_blks ;
+>    u8 addr[6U] ;
+> };
+> #line 343
+5467c5679
+< #line 270
+---
+> #line 343
+5469c5681
+< #line 270
+---
+> #line 343
+5471c5683
+< #line 270 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 343 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5528d5739
+<    u32 sta_rate_set ;
+5550c5761
+<    struct wl1271_fw_status *fw_status ;
+---
+>    struct wl1271_fw_full_status *fw_status ;
+5560a5772,5777
+>    bool ba_support ;
+>    u8 ba_rx_bitmap ;
+>    struct wl1271_link links[7U] ;
+>    int last_tx_hlid ;
+>    u32 ap_fw_ps_map ;
+>    unsigned long ap_ps_map ;
+5820a6038,6041
+> #line 268 "include/linux/mmc/host.h"
+> extern int mmc_power_save_host(struct mmc_host * ) ;
+> #line 269
+> extern int mmc_power_restore_host(struct mmc_host * ) ;
+5875c6096
+< #line 2509 "include/net/mac80211.h"
+---
+> #line 2576 "include/net/mac80211.h"
+5877c6098
+< #line 65 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+---
+> #line 72 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/wl12xx.h"
+5889c6110
+< #line 55 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 56 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5891c6112
+< #line 59 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 60 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5893c6114
+< #line 61 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 62 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5899c6120
+< #line 63
+---
+> #line 64
+5903c6124
+< #line 66 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 67 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5909c6130
+< #line 68
+---
+> #line 69
+5911c6132
+< #line 68
+---
+> #line 69
+5915c6136
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 72 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5926c6147
+< #line 73
+---
+> #line 74
+5928c6149
+< #line 76
+---
+> #line 77
+5930c6151
+< #line 76
+---
+> #line 77
+5932c6153
+< #line 76
+---
+> #line 77
+5934c6155
+< #line 76
+---
+> #line 77
+5936c6157
+< #line 76
+---
+> #line 77
+5938,5940c6159,6161
+< #line 76
+<     descriptor.lineno = 76U;
+< #line 76
+---
+> #line 77
+>     descriptor.lineno = 77U;
+> #line 77
+5942c6163
+< #line 76
+---
+> #line 77
+5944c6165
+< #line 76
+---
+> #line 77
+5946c6167
+< #line 76
+---
+> #line 77
+5948c6169
+< #line 76
+---
+> #line 77
+5956c6177
+< #line 79
+---
+> #line 80
+5958,5959d6178
+< #line 79
+<   flags = _raw_spin_lock_irqsave(tmp___0);
+5961c6180
+<   if ((unsigned long )wl->elp_compl != (unsigned long )((struct completion *)0)) {
+---
+>   flags = _raw_spin_lock_irqsave(tmp___0);
+5963c6182
+<     complete(wl->elp_compl);
+---
+>   if ((unsigned long )wl->elp_compl != (unsigned long )((struct completion *)0)) {
+5964a6184,6185
+>     complete(wl->elp_compl);
+> #line 83
+5969,5972d6189
+< #line 85
+<   tmp___1 = test_and_set_bit(9, (unsigned long volatile   *)(& wl->flags));
+< #line 85
+<   if (tmp___1 == 0) {
+5973a6191,6194
+>   tmp___1 = test_and_set_bit(8, (unsigned long volatile   *)(& wl->flags));
+> #line 86
+>   if (tmp___1 == 0) {
+> #line 87
+5978,5979d6198
+< #line 87
+<   set_bit(8U, (unsigned long volatile   *)(& wl->flags));
+5980a6200,6201
+>   set_bit(7U, (unsigned long volatile   *)(& wl->flags));
+> #line 89
+5982c6203
+< #line 90
+---
+> #line 91
+5986c6207
+< #line 93 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 94 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+5992,5993d6212
+< #line 95
+<   disable_irq((unsigned int )wl->irq);
+5994a6214,6215
+>   disable_irq((unsigned int )wl->irq);
+> #line 97
+5998c6219
+< #line 98 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 99 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6004,6005d6224
+< #line 100
+<   enable_irq((unsigned int )wl->irq);
+6006a6226,6227
+>   enable_irq((unsigned int )wl->irq);
+> #line 102
+6010c6231
+< #line 103 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 104 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6016c6237
+< #line 105
+---
+> #line 106
+6020c6241
+< #line 107 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 108 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6026c6247
+< #line 109
+---
+> #line 110
+6030c6251
+< #line 111 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 112 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6046c6267
+< #line 115
+---
+> #line 116
+6048c6269
+< #line 115
+---
+> #line 116
+6050c6271
+< #line 117
+---
+> #line 118
+6052c6273
+< #line 119
+---
+> #line 120
+6054,6055d6274
+< #line 119
+<   if (tmp___2 != 0L) {
+6057c6276
+<     *((u8 *)buf) = sdio_f0_readb(func, (unsigned int )addr, & ret);
+---
+>   if (tmp___2 != 0L) {
+6058a6278,6279
+>     *((u8 *)buf) = sdio_f0_readb(func, (unsigned int )addr, & ret);
+> #line 122
+6060c6281
+< #line 121
+---
+> #line 122
+6062c6283
+< #line 121
+---
+> #line 122
+6064c6285
+< #line 121
+---
+> #line 122
+6066c6287
+< #line 121
+---
+> #line 122
+6068,6070c6289,6291
+< #line 121
+<       descriptor.lineno = 122U;
+< #line 121
+---
+> #line 122
+>       descriptor.lineno = 123U;
+> #line 122
+6072c6293
+< #line 121
+---
+> #line 122
+6074c6295
+< #line 121
+---
+> #line 122
+6076c6297
+< #line 121
+---
+> #line 122
+6078c6299
+< #line 121
+---
+> #line 122
+6087,6088d6307
+< #line 124
+<     if ((int )fixed) {
+6089a6309,6310
+>     if ((int )fixed) {
+> #line 126
+6092c6313
+< #line 127
+---
+> #line 128
+6095c6316
+< #line 129
+---
+> #line 130
+6097c6318
+< #line 129
+---
+> #line 130
+6099c6320
+< #line 129
+---
+> #line 130
+6101c6322
+< #line 129
+---
+> #line 130
+6103c6324
+< #line 129
+---
+> #line 130
+6105,6107c6326,6328
+< #line 129
+<       descriptor___0.lineno = 130U;
+< #line 129
+---
+> #line 130
+>       descriptor___0.lineno = 131U;
+> #line 130
+6109c6330
+< #line 129
+---
+> #line 130
+6111c6332
+< #line 129
+---
+> #line 130
+6114c6335
+< #line 129
+---
+> #line 130
+6116c6337
+< #line 129
+---
+> #line 130
+6124c6345
+< #line 131
+---
+> #line 132
+6126c6347
+< #line 131
+---
+> #line 132
+6128c6349
+< #line 131
+---
+> #line 132
+6130c6351
+< #line 131
+---
+> #line 132
+6137c6358
+< #line 134
+---
+> #line 135
+6139,6140d6359
+< #line 136
+<   if (ret != 0) {
+6141a6361,6362
+>   if (ret != 0) {
+> #line 138
+6146c6367
+< #line 138
+---
+> #line 139
+6150c6371
+< #line 140 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 141 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6166c6387
+< #line 144
+---
+> #line 145
+6168c6389
+< #line 144
+---
+> #line 145
+6170c6391
+< #line 146
+---
+> #line 147
+6172c6393
+< #line 148
+---
+> #line 149
+6174,6175d6394
+< #line 148
+<   if (tmp___2 != 0L) {
+6177c6396
+<     sdio_f0_writeb(func, (int )*((u8 *)buf), (unsigned int )addr, & ret);
+---
+>   if (tmp___2 != 0L) {
+6178a6398,6399
+>     sdio_f0_writeb(func, (int )*((u8 *)buf), (unsigned int )addr, & ret);
+> #line 151
+6180c6401
+< #line 150
+---
+> #line 151
+6182c6403
+< #line 150
+---
+> #line 151
+6184c6405
+< #line 150
+---
+> #line 151
+6186c6407
+< #line 150
+---
+> #line 151
+6188,6190c6409,6411
+< #line 150
+<       descriptor.lineno = 151U;
+< #line 150
+---
+> #line 151
+>       descriptor.lineno = 152U;
+> #line 151
+6192c6413
+< #line 150
+---
+> #line 151
+6194c6415
+< #line 150
+---
+> #line 151
+6196c6417
+< #line 150
+---
+> #line 151
+6198c6419
+< #line 150
+---
+> #line 151
+6207c6428
+< #line 153
+---
+> #line 154
+6209c6430
+< #line 153
+---
+> #line 154
+6211c6432
+< #line 153
+---
+> #line 154
+6213c6434
+< #line 153
+---
+> #line 154
+6215c6436
+< #line 153
+---
+> #line 154
+6217,6219c6438,6440
+< #line 153
+<       descriptor___0.lineno = 154U;
+< #line 153
+---
+> #line 154
+>       descriptor___0.lineno = 155U;
+> #line 154
+6221c6442
+< #line 153
+---
+> #line 154
+6223c6444
+< #line 153
+---
+> #line 154
+6226c6447
+< #line 153
+---
+> #line 154
+6228c6449
+< #line 153
+---
+> #line 154
+6236c6457
+< #line 155
+---
+> #line 156
+6238c6459
+< #line 155
+---
+> #line 156
+6240c6461
+< #line 155
+---
+> #line 156
+6242c6463
+< #line 155
+---
+> #line 156
+6248,6249d6468
+< #line 157
+<     if ((int )fixed) {
+6250a6470,6471
+>     if ((int )fixed) {
+> #line 159
+6253c6474
+< #line 160
+---
+> #line 161
+6257c6478
+< #line 163
+---
+> #line 164
+6259,6260d6479
+< #line 165
+<   if (ret != 0) {
+6261a6481,6482
+>   if (ret != 0) {
+> #line 167
+6266c6487
+< #line 167
+---
+> #line 168
+6270c6491
+< #line 169 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 170 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6278c6499
+< #line 171
+---
+> #line 172
+6280c6501
+< #line 171
+---
+> #line 172
+6282,6283d6502
+< #line 175
+<   ret = pm_runtime_get_sync(& func->dev);
+6285c6504
+<   if (ret < 0) {
+---
+>   ret = pm_runtime_get_sync(& func->dev);
+6286a6506,6516
+>   if (ret < 0) {
+> #line 178
+>     goto out;
+>   } else {
+> 
+>   }
+> #line 181
+>   ret = mmc_power_restore_host((func->card)->host);
+> #line 182
+>   if (ret < 0) {
+> #line 183
+6291c6521
+< #line 179
+---
+> #line 185
+6293c6523
+< #line 180
+---
+> #line 186
+6295c6525
+< #line 181
+---
+> #line 187
+6298c6528
+< #line 184
+---
+> #line 190
+6302c6532
+< #line 187 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 193 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6306a6537
+>   int ret ;
+6310c6541
+< #line 189
+---
+> #line 195
+6312c6543
+< #line 189
+---
+> #line 195
+6314c6545
+< #line 191
+---
+> #line 198
+6316c6547
+< #line 192
+---
+> #line 199
+6318c6549
+< #line 193
+---
+> #line 200
+6320c6551,6560
+< #line 196
+---
+> #line 203
+>   ret = mmc_power_save_host((func->card)->host);
+> #line 204
+>   if (ret < 0) {
+> #line 205
+>     return (ret);
+>   } else {
+> 
+>   }
+> #line 208
+6322c6562
+< #line 196
+---
+> #line 208
+6326c6566
+< #line 199 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 211 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6333c6573
+< #line 201
+---
+> #line 213
+6335c6575
+< #line 202
+---
+> #line 214
+6337c6577
+< #line 202
+---
+> #line 214
+6340c6580
+< #line 204
+---
+> #line 216
+6342c6582
+< #line 204
+---
+> #line 216
+6347c6587
+< #line 207 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 219 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6349c6589
+< #line 207
+---
+> #line 219
+6353c6593
+< #line 218 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 230 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6366c6606
+< #line 227
+---
+> #line 239
+6368c6608
+< #line 228
+---
+> #line 240
+6373c6613
+< #line 230
+---
+> #line 242
+6375c6615
+< #line 231
+---
+> #line 243
+6377c6617
+< #line 231
+---
+> #line 243
+6379c6619
+< #line 232
+---
+> #line 244
+6381c6621
+< #line 232
+---
+> #line 244
+6386c6626
+< #line 234
+---
+> #line 246
+6388c6628
+< #line 236
+---
+> #line 248
+6390c6630
+< #line 237
+---
+> #line 249
+6392c6632
+< #line 240
+---
+> #line 252
+6394c6634
+< #line 242
+---
+> #line 254
+6396c6636
+< #line 243
+---
+> #line 255
+6398c6638
+< #line 243
+---
+> #line 255
+6400c6640
+< #line 244
+---
+> #line 256
+6402c6642
+< #line 244
+---
+> #line 256
+6404c6644
+< #line 245
+---
+> #line 257
+6406c6646
+< #line 246
+---
+> #line 258
+6411c6651
+< #line 249
+---
+> #line 261
+6413c6653
+< #line 250
+---
+> #line 262
+6415c6655
+< #line 252
+---
+> #line 264
+6417c6657
+< #line 253
+---
+> #line 265
+6419c6659
+< #line 254
+---
+> #line 266
+6421c6661
+< #line 255
+---
+> #line 267
+6426c6666
+< #line 258
+---
+> #line 270
+6428c6668
+< #line 260
+---
+> #line 272
+6430c6670
+< #line 262
+---
+> #line 274
+6432c6672
+< #line 263
+---
+> #line 275
+6434c6674
+< #line 264
+---
+> #line 276
+6439c6679
+< #line 266
+---
+> #line 278
+6441c6681
+< #line 267
+---
+> #line 279
+6443c6683
+< #line 268
+---
+> #line 280
+6448c6688
+< #line 270
+---
+> #line 282
+6450c6690
+< #line 273
+---
+> #line 285
+6452c6692
+< #line 275
+---
+> #line 287
+6454c6694
+< #line 277
+---
+> #line 289
+6457c6697
+< #line 280
+---
+> #line 292
+6460c6700
+< #line 284
+---
+> #line 296
+6462c6702
+< #line 286
+---
+> #line 298
+6466c6706
+< #line 289 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 301 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6473c6713
+< #line 291
+---
+> #line 303
+6475c6715
+< #line 291
+---
+> #line 303
+6477c6717
+< #line 294
+---
+> #line 306
+6479c6719
+< #line 296
+---
+> #line 308
+6481c6721
+< #line 297
+---
+> #line 309
+6483c6723
+< #line 298
+---
+> #line 310
+6485c6725
+< #line 299
+---
+> #line 311
+6489c6729
+< #line 301 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 313 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6495c6735
+< #line 305
+---
+> #line 317
+6499c6739
+< #line 308 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 320 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6505c6745
+< #line 310
+---
+> #line 322
+6509c6749
+< #line 313 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 325 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6511c6751
+< #line 313
+---
+> #line 325
+6513c6753
+< #line 318 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 330 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6517c6757
+< #line 328 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 340 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6523c6763
+< #line 332
+---
+> #line 344
+6525c6765
+< #line 333
+---
+> #line 345
+6527c6767
+< #line 334
+---
+> #line 346
+6529c6769
+< #line 335
+---
+> #line 347
+6535c6775
+< #line 339
+---
+> #line 351
+6539c6779
+< #line 342 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 354 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6545c6785
+< #line 344
+---
+> #line 356
+6547c6787
+< #line 346
+---
+> #line 358
+6549c6789
+< #line 347
+---
+> #line 359
+6553c6793
+< #line 374
+---
+> #line 386
+6555c6795
+< #line 377
+---
+> #line 389
+6557c6797
+< #line 380
+---
+> #line 392
+6559c6799
+< #line 383
+---
+> #line 395
+6561c6801
+< #line 386
+---
+> #line 398
+6563c6803
+< #line 389
+---
+> #line 401
+6565c6805
+< #line 392 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 404 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6567c6807
+< #line 395 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 407 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6592c6832
+< #line 593
+---
+> #line 605
+6594c6834
+< #line 564
+---
+> #line 576
+6596c6836
+< #line 573
+---
+> #line 585
+6598c6838
+< #line 586
+---
+> #line 598
+6600c6840
+< #line 587
+---
+> #line 599
+6602c6842
+< #line 587
+---
+> #line 599
+6604c6844
+< #line 588
+---
+> #line 600
+6609,6612c6849,6852
+< #line 598
+<   goto ldv_37102;
+<   ldv_37101: 
+< #line 602
+---
+> #line 610
+>   goto ldv_37419;
+>   ldv_37418: 
+> #line 614
+6614c6854
+< #line 602
+---
+> #line 614
+6617c6857
+< #line 619
+---
+> #line 631
+6619c6859
+< #line 620
+---
+> #line 632
+6622,6623c6862,6863
+< #line 627
+<   goto ldv_37086;
+---
+> #line 639
+>   goto ldv_37403;
+6625c6865
+< #line 643
+---
+> #line 655
+6627c6867
+< #line 644
+---
+> #line 656
+6630,6631c6870,6871
+< #line 651
+<   goto ldv_37086;
+---
+> #line 663
+>   goto ldv_37403;
+6633c6873
+< #line 667
+---
+> #line 679
+6635c6875
+< #line 668
+---
+> #line 680
+6637,6638c6877,6878
+< #line 675
+<   goto ldv_37086;
+---
+> #line 687
+>   goto ldv_37403;
+6640c6880
+< #line 691
+---
+> #line 703
+6642c6882
+< #line 692
+---
+> #line 704
+6644,6645c6884,6885
+< #line 699
+<   goto ldv_37086;
+---
+> #line 711
+>   goto ldv_37403;
+6647c6887
+< #line 715
+---
+> #line 727
+6649c6889
+< #line 716
+---
+> #line 728
+6651,6652c6891,6892
+< #line 723
+<   goto ldv_37086;
+---
+> #line 735
+>   goto ldv_37403;
+6654c6894
+< #line 739
+---
+> #line 751
+6656c6896
+< #line 740
+---
+> #line 752
+6658,6659c6898,6899
+< #line 747
+<   goto ldv_37086;
+---
+> #line 759
+>   goto ldv_37403;
+6661c6901
+< #line 763
+---
+> #line 775
+6663c6903
+< #line 764
+---
+> #line 776
+6665,6666c6905,6906
+< #line 771
+<   goto ldv_37086;
+---
+> #line 783
+>   goto ldv_37403;
+6668c6908
+< #line 787
+---
+> #line 799
+6670c6910
+< #line 788
+---
+> #line 800
+6672,6673c6912,6913
+< #line 795
+<   goto ldv_37086;
+---
+> #line 807
+>   goto ldv_37403;
+6675c6915
+< #line 811
+---
+> #line 823
+6677c6917
+< #line 812
+---
+> #line 824
+6679,6680c6919,6920
+< #line 819
+<   goto ldv_37086;
+---
+> #line 831
+>   goto ldv_37403;
+6682c6922
+< #line 835
+---
+> #line 847
+6684c6924
+< #line 836
+---
+> #line 848
+6686,6687c6926,6927
+< #line 843
+<   goto ldv_37086;
+---
+> #line 855
+>   goto ldv_37403;
+6689,6690d6928
+< #line 847
+<   if (ldv_s_wl1271_sdio_driver_sdio_driver == 0) {
+6691a6930,6931
+>   if (ldv_s_wl1271_sdio_driver_sdio_driver == 0) {
+> #line 871
+6693c6933
+< #line 860
+---
+> #line 872
+6695c6935
+< #line 861
+---
+> #line 873
+6697c6937
+< #line 862
+---
+> #line 874
+6699c6939
+< #line 863
+---
+> #line 875
+6704c6944
+< #line 864
+---
+> #line 876
+6709,6710c6949,6950
+< #line 870
+<   goto ldv_37086;
+---
+> #line 882
+>   goto ldv_37403;
+6712,6713d6951
+< #line 874
+<   if (ldv_s_wl1271_sdio_driver_sdio_driver == 1) {
+6714a6953,6954
+>   if (ldv_s_wl1271_sdio_driver_sdio_driver == 1) {
+> #line 898
+6716c6956
+< #line 887
+---
+> #line 899
+6718c6958
+< #line 888
+---
+> #line 900
+6723,6724c6963,6964
+< #line 894
+<   goto ldv_37086;
+---
+> #line 906
+>   goto ldv_37403;
+6726,6727d6965
+< #line 898
+<   LDV_IN_INTERRUPT = 2;
+6728a6967,6968
+>   LDV_IN_INTERRUPT = 2;
+> #line 922
+6730c6970
+< #line 911
+---
+> #line 923
+6732c6972
+< #line 912
+---
+> #line 924
+6734,6735c6974,6975
+< #line 918
+<   goto ldv_37086;
+---
+> #line 930
+>   goto ldv_37403;
+6737,6738c6977,6978
+< #line 919
+<   goto ldv_37086;
+---
+> #line 931
+>   goto ldv_37403;
+6740,6742c6980,6982
+<   ldv_37086: ;
+<   ldv_37102: 
+< #line 598
+---
+>   ldv_37403: ;
+>   ldv_37419: 
+> #line 610
+6744c6984
+< #line 598
+---
+> #line 610
+6746,6747c6986,6987
+< #line 600
+<     goto ldv_37101;
+---
+> #line 612
+>     goto ldv_37418;
+6753c6993
+< #line 938
+---
+> #line 950
+6755c6995
+< #line 939
+---
+> #line 951
+6758c6998
+< #line 942
+---
+> #line 954
+6760c7000
+< #line 945
+---
+> #line 957

@@ -1,0 +1,556 @@
+3376,3382c3376,3382
+<    unsigned int buffer_id ;
+<    unsigned int width ;
+<    unsigned int height ;
+<    unsigned int pitch ;
+<    unsigned int bpp ;
+<    unsigned int depth ;
+<    unsigned int handle ;
+---
+>    uint32_t fb_id ;
+>    uint32_t width ;
+>    uint32_t height ;
+>    uint32_t pitch ;
+>    uint32_t bpp ;
+>    uint32_t depth ;
+>    uint32_t handle ;
+3756,3757d3755
+<    int (*resize_fb)(struct drm_device *dev , struct drm_file *file_priv , struct drm_framebuffer *fb ,
+<                     struct drm_mode_fb_cmd *mode_cmd ) ;
+3762c3760
+< #line 518 "include/drm/drm_crtc.h"
+---
+> #line 517 "include/drm/drm_crtc.h"
+3769c3767
+< #line 531 "include/drm/drm_crtc.h"
+---
+> #line 530 "include/drm/drm_crtc.h"
+3803d3800
+<    uint32_t hotplug_counter ;
+5233c5230
+< #line 617 "include/drm/drm_crtc.h"
+---
+> #line 613 "include/drm/drm_crtc.h"
+21369c21366
+< #line 590 "include/drm/drm_crtc.h"
+---
+> #line 586 "include/drm/drm_crtc.h"
+21371c21368
+< #line 593
+---
+> #line 589
+21373c21370
+< #line 625
+---
+> #line 621
+21375c21372
+< #line 626
+---
+> #line 622
+21377c21374
+< #line 627
+---
+> #line 623
+21379c21376
+< #line 628
+---
+> #line 624
+21381c21378
+< #line 650
+---
+> #line 646
+21383c21380
+< #line 664
+---
+> #line 660
+21386c21383
+< #line 667
+---
+> #line 663
+21388c21385
+< #line 691
+---
+> #line 687
+24052,24120c24049,24050
+< static int intel_insert_new_fb(struct drm_device *dev , struct drm_file *file_priv ,
+<                                struct drm_framebuffer *fb , struct drm_mode_fb_cmd *mode_cmd ) 
+< { 
+<   struct intel_framebuffer *intel_fb ;
+<   struct drm_gem_object *obj ;
+<   struct drm_crtc *crtc ;
+<   struct drm_framebuffer  const  *__mptr ;
+<   struct list_head  const  *__mptr___0 ;
+<   struct list_head  const  *__mptr___1 ;
+<   struct drm_crtc_helper_funcs *crtc_funcs ;
+< 
+<   {
+< #line 1541
+<   __mptr = fb;
+< #line 1541
+<   intel_fb = (struct intel_framebuffer *)((char *)__mptr - (unsigned int )(& ((struct intel_framebuffer *)0)->base));
+< #line 1543
+<   obj = drm_gem_object_lookup(dev, file_priv, mode_cmd->handle);
+< #line 1545
+<   if (! obj) {
+< #line 1546
+<     return (-22);
+<   } else {
+< 
+<   }
+< #line 1548
+<   intel_fb->obj = obj;
+< #line 1549
+<   drm_gem_object_unreference(intel_fb->obj);
+< #line 1550
+<   drm_helper_mode_fill_fb_struct(fb, mode_cmd);
+< #line 1551
+<   mutex_unlock(& dev->struct_mutex);
+< #line 1553
+<   __mptr___0 = dev->mode_config.crtc_list.next;
+< #line 1553
+<   crtc = (struct drm_crtc *)((char *)__mptr___0 - (unsigned int )(& ((struct drm_crtc *)0)->head));
+< #line 1553
+<   while (1) {
+< #line 1553
+<     __builtin_prefetch(crtc->head.next);
+< #line 1553
+<     if ((unsigned long )(& crtc->head) != (unsigned long )(& dev->mode_config.crtc_list)) {
+< 
+<     } else {
+< #line 1553
+<       break;
+<     }
+< #line 1554
+<     if ((unsigned long )crtc->fb == (unsigned long )fb) {
+< #line 1555
+<       crtc_funcs = crtc->helper_private;
+< #line 1556
+<       (*(crtc_funcs->mode_set_base))(crtc, crtc->x, crtc->y);
+<     } else {
+< 
+<     }
+< #line 1553
+<     __mptr___1 = crtc->head.next;
+< #line 1553
+<     crtc = (struct drm_crtc *)((char *)__mptr___1 - (unsigned int )(& ((struct drm_crtc *)0)->head));
+<   }
+< #line 1559
+<   return (0);
+< }
+< }
+< #line 1562 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+< static struct drm_mode_config_funcs  const  intel_mode_funcs  =    {& intel_insert_new_fb, & intel_user_framebuffer_create, & intelfb_probe};
+< #line 1568 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+---
+> static struct drm_mode_config_funcs  const  intel_mode_funcs  =    {& intel_user_framebuffer_create, & intelfb_probe};
+> #line 1537 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+24127c24057
+< #line 1573
+---
+> #line 1542
+24129c24059
+< #line 1575
+---
+> #line 1544
+24131c24061
+< #line 1576
+---
+> #line 1545
+24133c24063
+< #line 1578
+---
+> #line 1547
+24135c24065
+< #line 1580
+---
+> #line 1549
+24137c24067
+< #line 1581
+---
+> #line 1550
+24139c24069
+< #line 1582
+---
+> #line 1551
+24142c24072
+< #line 1584
+---
+> #line 1553
+24144c24074
+< #line 1585
+---
+> #line 1554
+24147c24077
+< #line 1589
+---
+> #line 1558
+24149c24079
+< #line 1590
+---
+> #line 1559
+24152c24082
+< #line 1592
+---
+> #line 1561
+24155c24085
+< #line 1594
+---
+> #line 1563
+24157c24087
+< #line 1595
+---
+> #line 1564
+24160c24090
+< #line 1597
+---
+> #line 1566
+24163c24093
+< #line 1598
+---
+> #line 1567
+24165c24095
+< #line 1598
+---
+> #line 1567
+24167c24097
+< #line 1598
+---
+> #line 1567
+24173c24103
+< #line 1598
+---
+> #line 1567
+24176c24106
+< #line 1601
+---
+> #line 1570
+24178c24108
+< #line 1601
+---
+> #line 1570
+24180c24110
+< #line 1601
+---
+> #line 1570
+24184c24114
+< #line 1601
+---
+> #line 1570
+24187c24117
+< #line 1602
+---
+> #line 1571
+24189c24119
+< #line 1601
+---
+> #line 1570
+24192c24122
+< #line 1605
+---
+> #line 1574
+24194c24124
+< #line 1606
+---
+> #line 1575
+24198c24128
+< #line 1608 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+---
+> #line 1577 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+24204c24134
+< #line 1610
+---
+> #line 1579
+24206c24136
+< #line 1611
+---
+> #line 1580
+24210c24140
+< #line 1617 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+---
+> #line 1586 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+24217c24147
+< #line 1619
+---
+> #line 1588
+24219c24149
+< #line 1619
+---
+> #line 1588
+24221c24151
+< #line 1621
+---
+> #line 1590
+24225c24155
+< #line 1661 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+---
+> #line 1630 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/36/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/intel_display.c"
+24250,24251d24179
+<   struct drm_framebuffer *var_intel_insert_new_fb_36_p2 ;
+<   struct drm_mode_fb_cmd *var_intel_insert_new_fb_36_p3 ;
+24257c24185
+< #line 2515
+---
+> #line 2424
+24259c24187
+< #line 2524
+---
+> #line 2433
+24261c24189
+< #line 2534
+---
+> #line 2443
+24263c24191
+< #line 2534
+---
+> #line 2443
+24265c24193
+< #line 2534
+---
+> #line 2443
+24269c24197
+< #line 2534
+---
+> #line 2443
+24272c24200
+< #line 2537
+---
+> #line 2446
+24274c24202
+< #line 2537
+---
+> #line 2446
+24277c24205
+< #line 2601
+---
+> #line 2510
+24279c24207
+< #line 2602
+---
+> #line 2511
+24281c24209
+< #line 2609
+---
+> #line 2518
+24284c24212
+< #line 2672
+---
+> #line 2581
+24286c24214
+< #line 2673
+---
+> #line 2582
+24288c24216
+< #line 2680
+---
+> #line 2589
+24291c24219
+< #line 2743
+---
+> #line 2652
+24293c24221
+< #line 2744
+---
+> #line 2653
+24296c24224
+< #line 2751
+---
+> #line 2660
+24299c24227
+< #line 2814
+---
+> #line 2723
+24301c24229
+< #line 2815
+---
+> #line 2724
+24303c24231
+< #line 2822
+---
+> #line 2731
+24306c24234
+< #line 2885
+---
+> #line 2794
+24308c24236
+< #line 2886
+---
+> #line 2795
+24310c24238
+< #line 2893
+---
+> #line 2802
+24313c24241
+< #line 2956
+---
+> #line 2865
+24315c24243
+< #line 2957
+---
+> #line 2866
+24317c24245
+< #line 2964
+---
+> #line 2873
+24320c24248
+< #line 3027
+---
+> #line 2936
+24322c24250
+< #line 3028
+---
+> #line 2937
+24325c24253
+< #line 3035
+---
+> #line 2944
+24328c24256
+< #line 3098
+---
+> #line 3007
+24330c24258
+< #line 3099
+---
+> #line 3008
+24332c24260
+< #line 3106
+---
+> #line 3015
+24335c24263
+< #line 3169
+---
+> #line 3078
+24337c24265
+< #line 3170
+---
+> #line 3079
+24340c24268
+< #line 3177
+---
+> #line 3086
+24343c24271
+< #line 3240
+---
+> #line 3149
+24345c24273
+< #line 3241
+---
+> #line 3150
+24347c24275
+< #line 3248
+---
+> #line 3157
+24350c24278
+< #line 3311
+---
+> #line 3220
+24352c24280
+< #line 3312
+---
+> #line 3221
+24354c24282
+< #line 3319
+---
+> #line 3228
+24357c24285
+< #line 3382
+---
+> #line 3291
+24359c24287
+< #line 3383
+---
+> #line 3292
+24361c24289
+< #line 3390
+---
+> #line 3299
+24364,24371c24292
+< #line 3453
+<     ldv_handler_precall();
+< #line 3454
+<     intel_insert_new_fb(var_group5, var_group3, var_intel_insert_new_fb_36_p2, var_intel_insert_new_fb_36_p3);
+< #line 3461
+<     break;
+<     case 13: 
+< #line 3524
+---
+> #line 3362
+24373c24294
+< #line 3525
+---
+> #line 3363
+24375c24296
+< #line 3532
+---
+> #line 3370
+24378c24299
+< #line 3533
+---
+> #line 3371
+24382c24303
+< #line 3542
+---
+> #line 3380
+24384c24305
+< #line 3545
+---
+> #line 3383
+24402c24323
+< #line 595 "include/drm/drm_crtc.h"
+---
+> #line 591 "include/drm/drm_crtc.h"
+24405c24326
+< #line 600
+---
+> #line 596
+24407c24328
+< #line 602
+---
+> #line 598
+24410c24331
+< #line 607
+---
+> #line 603
+24412c24333
+< #line 687
+---
+> #line 683
+24982c24903
+< #line 621 "include/drm/drm_crtc.h"
+---
+> #line 617 "include/drm/drm_crtc.h"
+24984c24905
+< #line 623
+---
+> #line 619
+27917c27838
+< #line 617 "include/drm/drm_crtc.h"
+---
+> #line 613 "include/drm/drm_crtc.h"
+27919c27840
+< #line 620
+---
+> #line 616
+27921c27842
+< #line 653
+---
+> #line 649
+29204c29125
+<   mode_cmd.pitch = mode_cmd.width * ((mode_cmd.bpp + 1U) / 8U);
+---
+>   mode_cmd.pitch = mode_cmd.width * ((mode_cmd.bpp + (uint32_t )1) / (uint32_t )8);
+30320c30241
+< #line 649 "include/drm/drm_crtc.h"
+---
+> #line 645 "include/drm/drm_crtc.h"
+30322c30243
+< #line 655
+---
+> #line 651
+30325c30246
+< #line 673
+---
+> #line 669
+30328c30249
+< #line 681
+---
+> #line 677

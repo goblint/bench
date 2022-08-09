@@ -1,0 +1,709 @@
+2601c2601,2603
+< #line 792 "include/linux/device.h"
+---
+> #line 553 "include/linux/device.h"
+> extern void *devm_kzalloc(struct device * , size_t  , gfp_t  ) ;
+> #line 792
+2681,2706d2682
+< #line 221 "include/linux/slub_def.h"
+< extern void *__kmalloc(size_t  , gfp_t  ) ;
+< #line 268 "include/linux/slub_def.h"
+< __inline static void *kmalloc(size_t size , gfp_t flags ) 
+< { 
+<   void *tmp___2 ;
+< 
+<   {
+< #line 283
+<   tmp___2 = __kmalloc(size, flags);
+< #line 283
+<   return (tmp___2);
+< }
+< }
+< #line 349 "include/linux/slab.h"
+< __inline static void *kzalloc(size_t size , gfp_t flags ) 
+< { 
+<   void *tmp ;
+< 
+<   {
+< #line 351
+<   tmp = kmalloc(size, flags | 32768U);
+< #line 351
+<   return (tmp);
+< }
+< }
+2983c2959
+<   tmp = kzalloc(104UL, 208U);
+---
+>   tmp = devm_kzalloc(& pdev->dev, 104UL, 208U);
+2986,2987d2961
+< #line 222
+<   if ((unsigned long )drvdata == (unsigned long )((struct gpio_regulator_data *)0)) {
+2989c2963
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate device data\n");
+---
+>   if ((unsigned long )drvdata == (unsigned long )((struct gpio_regulator_data *)0)) {
+2990a2965,2966
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate device data\n");
+> #line 225
+2995c2971
+< #line 227
+---
+> #line 228
+2997,2998d2972
+< #line 227
+<   drvdata->desc.name = (char const   *)tmp___0;
+3000c2974
+<   if ((unsigned long )drvdata->desc.name == (unsigned long )((char const   *)0)) {
+---
+>   drvdata->desc.name = (char const   *)tmp___0;
+3002c2976
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate supply name\n");
+---
+>   if ((unsigned long )drvdata->desc.name == (unsigned long )((char const   *)0)) {
+3004c2978
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate supply name\n");
+3005a2980,2981
+>     ret = -12;
+> #line 232
+3010c2986
+< #line 234
+---
+> #line 235
+3013c2989
+< #line 234
+---
+> #line 235
+3015,3016d2990
+< #line 237
+<   if ((unsigned long )drvdata->gpios == (unsigned long )((struct gpio *)0)) {
+3018c2992
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate gpio data\n");
+---
+>   if ((unsigned long )drvdata->gpios == (unsigned long )((struct gpio *)0)) {
+3020c2994
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate gpio data\n");
+3021a2996,2997
+>     ret = -12;
+> #line 241
+3026c3002
+< #line 243
+---
+> #line 244
+3029c3005
+< #line 243
+---
+> #line 244
+3031,3032d3006
+< #line 247
+<   if ((unsigned long )drvdata->states == (unsigned long )((struct gpio_regulator_state *)0)) {
+3034c3008
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate state data\n");
+---
+>   if ((unsigned long )drvdata->states == (unsigned long )((struct gpio_regulator_state *)0)) {
+3036c3010
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate state data\n");
+3037a3012,3013
+>     ret = -12;
+> #line 251
+3042c3018
+< #line 252
+---
+> #line 253
+3044c3020
+< #line 254
+---
+> #line 255
+3046c3022
+< #line 257
+---
+> #line 258
+3049,3050d3024
+< #line 259
+<   drvdata->desc.type = REGULATOR_VOLTAGE;
+3052c3026
+<   drvdata->desc.ops = & gpio_regulator_voltage_ops;
+---
+>   drvdata->desc.type = REGULATOR_VOLTAGE;
+3054c3028
+<   drvdata->desc.n_voltages = (unsigned int )config->nr_states;
+---
+>   drvdata->desc.ops = & gpio_regulator_voltage_ops;
+3055a3030,3031
+>   drvdata->desc.n_voltages = (unsigned int )config->nr_states;
+> #line 263
+3058,3059d3033
+< #line 264
+<   drvdata->desc.type = REGULATOR_CURRENT;
+3061c3035
+<   drvdata->desc.ops = & gpio_regulator_current_ops;
+---
+>   drvdata->desc.type = REGULATOR_CURRENT;
+3062a3037,3038
+>   drvdata->desc.ops = & gpio_regulator_current_ops;
+> #line 267
+3065,3066d3040
+< #line 268
+<   dev_err((struct device  const  *)(& pdev->dev), "No regulator type set\n");
+3068c3042
+<   ret = -22;
+---
+>   dev_err((struct device  const  *)(& pdev->dev), "No regulator type set\n");
+3069a3044,3045
+>   ret = -22;
+> #line 271
+3073,3074d3048
+< #line 274
+<   drvdata->enable_gpio = config->enable_gpio;
+3075a3050,3051
+>   drvdata->enable_gpio = config->enable_gpio;
+> #line 276
+3077c3053
+< #line 277
+---
+> #line 278
+3079,3080d3054
+< #line 277
+<   if ((int )tmp___3) {
+3081a3056,3057
+>   if ((int )tmp___3) {
+> #line 279
+3083,3084d3058
+< #line 280
+<     ret = gpio_request((unsigned int )config->enable_gpio, config->supply_name);
+3086c3060
+<     if (ret != 0) {
+---
+>     ret = gpio_request((unsigned int )config->enable_gpio, config->supply_name);
+3087a3062,3063
+>     if (ret != 0) {
+> #line 283
+3090c3066
+< #line 285
+---
+> #line 286
+3095,3096d3070
+< #line 291
+<     if ((unsigned int )*((unsigned char *)config + 12UL) != 0U) {
+3098c3072
+<       drvdata->is_enabled = 1;
+---
+>     if ((unsigned int )*((unsigned char *)config + 12UL) != 0U) {
+3099a3074,3075
+>       drvdata->is_enabled = 1;
+> #line 294
+3102,3103d3077
+< #line 296
+<       drvdata->is_enabled = 0;
+3104a3079,3080
+>       drvdata->is_enabled = 0;
+> #line 298
+3107,3108d3082
+< #line 301
+<     if (ret != 0) {
+3109a3084,3085
+>     if (ret != 0) {
+> #line 303
+3112c3088
+< #line 305
+---
+> #line 306
+3118c3094
+< #line 311
+---
+> #line 312
+3121,3122d3096
+< #line 314
+<   drvdata->nr_gpios = config->nr_gpios;
+3124c3098
+<   ret = gpio_request_array((struct gpio  const  *)drvdata->gpios, (size_t )drvdata->nr_gpios);
+---
+>   drvdata->nr_gpios = config->nr_gpios;
+3126c3100
+<   if (ret != 0) {
+---
+>   ret = gpio_request_array((struct gpio  const  *)drvdata->gpios, (size_t )drvdata->nr_gpios);
+3127a3102,3103
+>   if (ret != 0) {
+> #line 318
+3130c3106
+< #line 319
+---
+> #line 320
+3135,3136d3110
+< #line 323
+<   state = 0;
+3137a3112,3113
+>   state = 0;
+> #line 325
+3139c3115
+< #line 324
+---
+> #line 325
+3142,3143d3117
+< #line 325
+<   if (((config->gpios + (unsigned long )ptr)->flags & 2UL) != 0UL) {
+3144a3119,3120
+>   if (((config->gpios + (unsigned long )ptr)->flags & 2UL) != 0UL) {
+> #line 327
+3149c3125
+< #line 324
+---
+> #line 325
+3152,3153d3127
+< #line 324
+<   if (drvdata->nr_gpios > ptr) {
+3154a3129,3130
+>   if (drvdata->nr_gpios > ptr) {
+> #line 326
+3159c3135
+< #line 328
+---
+> #line 329
+3161c3137
+< #line 330
+---
+> #line 331
+3164c3140
+< #line 332
+---
+> #line 333
+3166,3167d3141
+< #line 332
+<   if (tmp___5 != 0L) {
+3168a3143,3144
+>   if (tmp___5 != 0L) {
+> #line 334
+3170,3171d3145
+< #line 333
+<     ret = (int )tmp___4;
+3172a3147,3148
+>     ret = (int )tmp___4;
+> #line 335
+3175c3151
+< #line 335
+---
+> #line 336
+3180c3156
+< #line 338
+---
+> #line 339
+3182c3158
+< #line 340
+---
+> #line 341
+3185c3161
+< #line 343
+---
+> #line 344
+3188c3164
+< #line 345
+---
+> #line 346
+3190,3191d3165
+< #line 345
+<   if ((int )tmp___6) {
+3192a3167,3168
+>   if ((int )tmp___6) {
+> #line 347
+3198c3174
+< #line 348
+---
+> #line 349
+3201c3177
+< #line 350
+---
+> #line 351
+3204c3180
+< #line 352
+---
+> #line 353
+3206,3208c3182
+<   err: 
+< #line 354
+<   kfree((void const   *)drvdata);
+---
+>   err: ;
+3244,3246c3218
+< #line 373
+<   kfree((void const   *)drvdata);
+< #line 375
+---
+> #line 374
+3250c3222
+< #line 378 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 377 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3256c3228
+< #line 387 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 386 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3262c3234
+< #line 389
+---
+> #line 388
+3264c3236
+< #line 389
+---
+> #line 388
+3268c3240
+< #line 393 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 392 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3274c3246
+< #line 395
+---
+> #line 394
+3276c3248
+< #line 396
+---
+> #line 395
+3280c3252
+< #line 420
+---
+> #line 419
+3282c3254
+< #line 423
+---
+> #line 422
+3284c3256
+< #line 426
+---
+> #line 425
+3286c3258
+< #line 429
+---
+> #line 428
+3288c3260
+< #line 432
+---
+> #line 431
+3290c3262
+< #line 435
+---
+> #line 434
+3292c3264
+< #line 438 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 437 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3294c3266
+< #line 441 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 440 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3312c3284
+< #line 529
+---
+> #line 528
+3314c3286
+< #line 507
+---
+> #line 506
+3316c3288
+< #line 516
+---
+> #line 515
+3318c3290
+< #line 522
+---
+> #line 521
+3320c3292
+< #line 523
+---
+> #line 522
+3322c3294
+< #line 523
+---
+> #line 522
+3324c3296
+< #line 524
+---
+> #line 523
+3329c3301
+< #line 532
+---
+> #line 531
+3332c3304
+< #line 536
+---
+> #line 535
+3334c3306
+< #line 536
+---
+> #line 535
+3337c3309
+< #line 546
+---
+> #line 545
+3339c3311
+< #line 547
+---
+> #line 546
+3341c3313
+< #line 554
+---
+> #line 553
+3344c3316
+< #line 563
+---
+> #line 562
+3346c3318
+< #line 564
+---
+> #line 563
+3348c3320
+< #line 571
+---
+> #line 570
+3351c3323
+< #line 580
+---
+> #line 579
+3353c3325
+< #line 581
+---
+> #line 580
+3355c3327
+< #line 588
+---
+> #line 587
+3358c3330
+< #line 597
+---
+> #line 596
+3360c3332
+< #line 598
+---
+> #line 597
+3362c3334
+< #line 605
+---
+> #line 604
+3365c3337
+< #line 614
+---
+> #line 613
+3367c3339
+< #line 615
+---
+> #line 614
+3369c3341
+< #line 622
+---
+> #line 621
+3372c3344
+< #line 631
+---
+> #line 630
+3374c3346
+< #line 632
+---
+> #line 631
+3377c3349
+< #line 639
+---
+> #line 638
+3380c3352
+< #line 648
+---
+> #line 647
+3382c3354
+< #line 649
+---
+> #line 648
+3384c3356
+< #line 656
+---
+> #line 655
+3387c3359
+< #line 665
+---
+> #line 664
+3389c3361
+< #line 666
+---
+> #line 665
+3391c3363
+< #line 673
+---
+> #line 672
+3394c3366
+< #line 682
+---
+> #line 681
+3396c3368
+< #line 683
+---
+> #line 682
+3398c3370
+< #line 690
+---
+> #line 689
+3401c3373
+< #line 699
+---
+> #line 698
+3403c3375
+< #line 700
+---
+> #line 699
+3405c3377
+< #line 707
+---
+> #line 706
+3408c3380
+< #line 716
+---
+> #line 715
+3410c3382
+< #line 717
+---
+> #line 716
+3412c3384
+< #line 724
+---
+> #line 723
+3415c3387
+< #line 733
+---
+> #line 732
+3417c3389
+< #line 734
+---
+> #line 733
+3419c3391
+< #line 741
+---
+> #line 740
+3422c3394
+< #line 750
+---
+> #line 749
+3424c3396
+< #line 751
+---
+> #line 750
+3427c3399
+< #line 758
+---
+> #line 757
+3430c3402
+< #line 762
+---
+> #line 761
+3432c3404
+< #line 767
+---
+> #line 766
+3434c3406
+< #line 768
+---
+> #line 767
+3436c3408
+< #line 769
+---
+> #line 768
+3438c3410
+< #line 770
+---
+> #line 769
+3440c3412
+< #line 771
+---
+> #line 770
+3445c3417
+< #line 772
+---
+> #line 771
+3450c3422
+< #line 778
+---
+> #line 777
+3453c3425
+< #line 782
+---
+> #line 781
+3455c3427
+< #line 787
+---
+> #line 786
+3457c3429
+< #line 788
+---
+> #line 787
+3459c3431
+< #line 789
+---
+> #line 788
+3464c3436
+< #line 795
+---
+> #line 794
+3467c3439
+< #line 796
+---
+> #line 795
+3472c3444
+< #line 532
+---
+> #line 531
+3474c3446
+< #line 532
+---
+> #line 531
+3476c3448
+< #line 534
+---
+> #line 533
+3483c3455
+< #line 808
+---
+> #line 807
+3485c3457
+< #line 809
+---
+> #line 808
+3488c3460
+< #line 812
+---
+> #line 811
+3490c3462
+< #line 815
+---
+> #line 814
+3494c3466
+< #line 851 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 850 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3500c3472
+< #line 856
+---
+> #line 855
+3502c3474
+< #line 858
+---
+> #line 857
+3504c3476
+< #line 859
+---
+> #line 858
+3508c3480
+< #line 872 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 871 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3514c3486
+< #line 877
+---
+> #line 876
+3516c3488
+< #line 879
+---
+> #line 878
+3518c3490
+< #line 880
+---
+> #line 879

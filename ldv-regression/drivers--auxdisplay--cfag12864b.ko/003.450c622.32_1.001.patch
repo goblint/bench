@@ -1,0 +1,533 @@
+40c40
+< #line 97 "include/asm/ptrace.h"
+---
+> #line 99 "include/asm/ptrace.h"
+77c77
+< #line 77 "include/asm/page_64.h"
+---
+> #line 84 "include/asm/page_64.h"
+78a79,80
+> #line 328 "include/asm/paravirt.h"
+> struct raw_spinlock;
+98c100
+< #line 366 "include/asm/processor.h"
+---
+> #line 362 "include/asm/processor.h"
+100c102
+< #line 604 "include/asm/processor.h"
+---
+> #line 599 "include/asm/processor.h"
+104c106
+< #line 604 "include/asm/processor.h"
+---
+> #line 599 "include/asm/processor.h"
+148c150
+< #line 26 "include/asm/thread_info_64.h"
+---
+> #line 24 "include/asm/thread_info.h"
+152c154
+<    __u32 flags ;
+---
+>    unsigned long flags ;
+161c163
+< struct __anonstruct_raw_spinlock_t_28 {
+---
+> struct raw_spinlock {
+165,166c167,168
+< typedef struct __anonstruct_raw_spinlock_t_28 raw_spinlock_t;
+< #line 340 "include/linux/lockdep.h"
+---
+> typedef struct raw_spinlock raw_spinlock_t;
+> #line 335 "include/linux/lockdep.h"
+171c173
+< struct __anonstruct_spinlock_t_30 {
+---
+> struct __anonstruct_spinlock_t_29 {
+178,180c180,182
+< typedef struct __anonstruct_spinlock_t_30 spinlock_t;
+< #line 25 "include/asm/atomic_64.h"
+< struct __anonstruct_atomic_t_32 {
+---
+> typedef struct __anonstruct_spinlock_t_29 spinlock_t;
+> #line 19 "include/asm/atomic_64.h"
+> struct __anonstruct_atomic_t_31 {
+183,186c185,188
+< #line 25 "include/asm/atomic_64.h"
+< typedef struct __anonstruct_atomic_t_32 atomic_t;
+< #line 202 "include/asm/atomic_64.h"
+< struct __anonstruct_atomic64_t_33 {
+---
+> #line 19 "include/asm/atomic_64.h"
+> typedef struct __anonstruct_atomic_t_31 atomic_t;
+> #line 196 "include/asm/atomic_64.h"
+> struct __anonstruct_atomic64_t_32 {
+189,190c191,192
+< #line 202 "include/asm/atomic_64.h"
+< typedef struct __anonstruct_atomic64_t_33 atomic64_t;
+---
+> #line 196 "include/asm/atomic_64.h"
+> typedef struct __anonstruct_atomic64_t_32 atomic64_t;
+234c236
+< #line 60 "include/linux/kobject.h"
+---
+> #line 59 "include/linux/kobject.h"
+236c238
+< #line 60
+---
+> #line 59
+238c240
+< #line 60
+---
+> #line 59
+240c242
+< #line 60 "include/linux/kobject.h"
+---
+> #line 59 "include/linux/kobject.h"
+243d244
+<    struct kref kref ;
+248a250
+>    struct kref kref ;
+254c256
+< #line 105 "include/linux/kobject.h"
+---
+> #line 104 "include/linux/kobject.h"
+260c262
+< #line 111 "include/linux/kobject.h"
+---
+> #line 110 "include/linux/kobject.h"
+267c269
+< #line 118 "include/linux/kobject.h"
+---
+> #line 117 "include/linux/kobject.h"
+273c275
+< #line 152 "include/linux/kobject.h"
+---
+> #line 151 "include/linux/kobject.h"
+287c289
+< union __anonunion____missing_field_name_39 {
+---
+> union __anonunion____missing_field_name_38 {
+298c300
+<    union __anonunion____missing_field_name_39 __annonCompField9 ;
+---
+>    union __anonunion____missing_field_name_38 __annonCompField9 ;
+330,331c332
+<    void (*call)(struct marker  const  *mdata , void *call_private , char const   *fmt 
+<                 , ...) ;
+---
+>    void (*call)(struct marker  const  *mdata , void *call_private  , ...) ;
+435,436c436,437
+<    struct kmem_cache_node *node[1 << 6] ;
+<    struct kmem_cache_cpu *cpu_slab[8] ;
+---
+>    struct kmem_cache_node *node[1 << 9] ;
+>    struct kmem_cache_cpu *cpu_slab[4096] ;
+439c440
+< struct __anonstruct_local_t_94 {
+---
+> struct __anonstruct_local_t_93 {
+443c444
+< typedef struct __anonstruct_local_t_94 local_t;
+---
+> typedef struct __anonstruct_local_t_93 local_t;
+499d499
+<    unsigned int num_syms ;
+501c501
+<    struct kernel_symbol  const  *gpl_syms ;
+---
+>    unsigned int num_syms ;
+502a503
+>    struct kernel_symbol  const  *gpl_syms ;
+505d505
+<    unsigned int num_unused_syms ;
+507c507
+<    struct kernel_symbol  const  *unused_gpl_syms ;
+---
+>    unsigned int num_unused_syms ;
+508a509
+>    struct kernel_symbol  const  *unused_gpl_syms ;
+511d511
+<    unsigned int num_gpl_future_syms ;
+512a513
+>    unsigned int num_gpl_future_syms ;
+518,521c519,522
+<    unsigned long init_size ;
+<    unsigned long core_size ;
+<    unsigned long init_text_size ;
+<    unsigned long core_text_size ;
+---
+>    unsigned int init_size ;
+>    unsigned int core_size ;
+>    unsigned int init_text_size ;
+>    unsigned int core_text_size ;
+524a526
+>    unsigned int num_bugs ;
+527,531d528
+<    unsigned int num_bugs ;
+<    struct module_ref ref[8] ;
+<    struct list_head modules_which_use_me ;
+<    struct task_struct *waiter ;
+<    void (*exit)(void) ;
+533c530
+<    unsigned long num_symtab ;
+---
+>    unsigned int num_symtab ;
+540a538,541
+>    struct list_head modules_which_use_me ;
+>    struct task_struct *waiter ;
+>    void (*exit)(void) ;
+>    struct module_ref ref[4096] ;
+542c543
+< #line 67 "include/asm/uaccess_64.h"
+---
+> #line 95 "include/asm/uaccess.h"
+549,550c550,551
+< #line 75 "include/asm/bitops.h"
+< __inline static void ( __attribute__((__always_inline__)) clear_bit)(int nr , void volatile   *addr ) 
+---
+> #line 93 "include/asm/bitops.h"
+> __inline static void clear_bit(int nr , unsigned long volatile   *addr ) 
+555c556
+< #line 77
+---
+> #line 100
+557c558,560
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+559c562,564
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+564c569
+< #line 78
+---
+> #line 104
+568c573
+< #line 185 "include/linux/kernel.h"
+---
+> #line 188 "include/linux/kernel.h"
+572,573d576
+< #line 47
+< extern void *memset(void *s , int c , size_t n ) ;
+584,586c587,589
+< #line 215 "include/linux/gfp.h"
+< extern unsigned long __get_free_pages(gfp_t gfp_mask , unsigned int order ) ;
+< #line 225
+---
+> #line 229 "include/linux/gfp.h"
+> extern unsigned long get_zeroed_page(gfp_t gfp_mask ) ;
+> #line 241
+600c603
+< #line 182
+---
+> #line 184
+603c606
+< #line 187
+---
+> #line 189
+605,606c608,609
+< #line 209 "include/linux/workqueue.h"
+< __inline static int ( __attribute__((__always_inline__)) cancel_delayed_work)(struct delayed_work *work ) 
+---
+> #line 212 "include/linux/workqueue.h"
+> __inline static int cancel_delayed_work(struct delayed_work *work ) 
+611c614
+< #line 213
+---
+> #line 216
+613c616
+< #line 214
+---
+> #line 217
+615c618
+< #line 215
+---
+> #line 218
+620c623
+< #line 216
+---
+> #line 219
+1380,1381d1382
+< #line 341
+<   if (1UL << 12 < (unsigned long )((2 * 8) * 64)) {
+1383,1394c1384,1385
+<     printk("<3>cfag12864b: ERROR: page size (%i) < cfag12864b size (%i)\n", (unsigned int )(1UL << 12),
+<            (2 * 8) * 64);
+< #line 345
+<     ret = -12;
+< #line 346
+<     goto none;
+<   } else {
+< 
+<   }
+< #line 349
+<   tmp___0 = __get_free_pages((16U | 64U) | 128U, 0);
+< #line 349
+---
+>   tmp___0 = get_zeroed_page((16U | 64U) | 128U);
+> #line 342
+1396c1387
+< #line 350
+---
+> #line 343
+1398c1389
+< #line 351
+---
+> #line 344
+1400c1391
+< #line 353
+---
+> #line 346
+1402c1393
+< #line 354
+---
+> #line 347
+1407c1398
+< #line 357
+---
+> #line 350
+1409c1400
+< #line 357
+---
+> #line 350
+1411c1402
+< #line 359
+---
+> #line 352
+1413c1404
+< #line 360
+---
+> #line 353
+1415c1406
+< #line 363
+---
+> #line 356
+1417c1408
+< #line 364
+---
+> #line 357
+1422c1413
+< #line 367
+---
+> #line 360
+1424c1415
+< #line 368
+---
+> #line 361
+1426c1417
+< #line 369
+---
+> #line 362
+1431,1433c1422
+< #line 371
+<   memset(cfag12864b_buffer, 0, (2 * 8) * 64);
+< #line 373
+---
+> #line 364
+1435c1424
+< #line 374
+---
+> #line 365
+1437c1426
+< #line 376
+---
+> #line 367
+1439c1428
+< #line 377
+---
+> #line 368
+1442c1431
+< #line 380
+---
+> #line 371
+1445c1434
+< #line 383
+---
+> #line 374
+1448c1437
+< #line 386
+---
+> #line 377
+1452c1441
+< #line 389
+---
+> #line 380
+1454c1443
+< #line 389 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+---
+> #line 380 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+1460c1449
+< #line 391
+---
+> #line 382
+1462c1451
+< #line 392
+---
+> #line 383
+1464c1453
+< #line 393
+---
+> #line 384
+1466c1455
+< #line 394
+---
+> #line 385
+1468c1457
+< #line 395
+---
+> #line 386
+1470c1459
+< #line 396
+---
+> #line 387
+1474c1463
+< #line 398 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+---
+> #line 389 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+1480c1469
+< #line 398
+---
+> #line 389
+1482c1471
+< #line 398
+---
+> #line 389
+1486c1475
+< #line 399 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+---
+> #line 390 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+1492c1481
+< #line 399
+---
+> #line 390
+1494c1483
+< #line 399
+---
+> #line 390
+1498,1500c1487,1489
+< #line 401 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+< static char const   __mod_license401[15]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 401
+---
+> #line 392 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+> static char const   __mod_license392[15]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 392
+1505,1507c1494,1496
+< #line 402 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+< static char const   __mod_author402[63]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 402
+---
+> #line 393 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+> static char const   __mod_author393[63]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 393
+1524,1525c1513,1514
+< #line 403 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+< static char const   __mod_description403[34]  __attribute__((__used__, __unused__,
+---
+> #line 394 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+> static char const   __mod_description394[34]  __attribute__((__used__, __unused__,
+1527c1516
+< #line 403
+---
+> #line 394
+1537c1526
+< #line 421
+---
+> #line 412
+1539c1528
+< #line 430
+---
+> #line 421
+1541c1530
+< #line 433
+---
+> #line 424
+1543c1532
+< #line 436
+---
+> #line 427
+1545c1534
+< #line 439 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+---
+> #line 430 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+1547c1536
+< #line 442 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+---
+> #line 433 "/work/ldvuser/novikov/work/current--X--drivers/auxdisplay/cfag12864b.ko--X--defaultlinux--X--32_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_1/drivers/auxdisplay/cfag12864b.c"
+1555c1544
+< #line 454
+---
+> #line 445
+1557c1546
+< #line 463
+---
+> #line 454
+1559c1548
+< #line 476
+---
+> #line 467
+1561c1550
+< #line 477
+---
+> #line 468
+1563c1552
+< #line 477
+---
+> #line 468
+1565c1554
+< #line 478
+---
+> #line 469
+1570c1559
+< #line 480
+---
+> #line 471
+1572c1561
+< #line 480
+---
+> #line 471
+1574c1563
+< #line 480
+---
+> #line 471
+1578c1567
+< #line 480
+---
+> #line 471
+1581c1570
+< #line 483
+---
+> #line 474
+1583c1572
+< #line 483
+---
+> #line 474
+1586c1575
+< #line 485
+---
+> #line 476
+1590c1579
+< #line 504
+---
+> #line 495
+1592c1581
+< #line 505
+---
+> #line 496
+1595c1584
+< #line 508
+---
+> #line 499
+1597c1586
+< #line 511
+---
+> #line 502
+1610c1599
+< __inline static void ( __attribute__((__always_inline__)) ldv_error)(void) 
+---
+> __inline static void ldv_error(void) 

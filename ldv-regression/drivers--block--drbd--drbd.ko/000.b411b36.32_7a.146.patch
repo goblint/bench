@@ -1,0 +1,4397 @@
+9111,9112c9111,9112
+< void wait_until_done_or_disk_failure(struct drbd_conf *mdev , struct drbd_backing_dev *bdev ,
+<                                      unsigned int *done ) ;
+---
+> void wait_until_done_or_force_detached(struct drbd_conf *mdev , struct drbd_backing_dev *bdev ,
+>                                        unsigned int *done ) ;
+11743c11743
+<     wait_until_done_or_disk_failure(mdev, mdev->ldev, & ctx->done);
+---
+>     wait_until_done_or_force_detached(mdev, mdev->ldev, & ctx->done);
+11943c11943
+<   wait_until_done_or_disk_failure(mdev, mdev->ldev, & ctx->done);
+---
+>   wait_until_done_or_force_detached(mdev, mdev->ldev, & ctx->done);
+36046,36059c36046,36047
+< static bool md_io_allowed(struct drbd_conf *mdev ) 
+< { 
+<   enum drbd_disk_state ds ;
+< 
+<   {
+< #line 158
+<   ds = (enum drbd_disk_state )mdev->state.ldv_39979.disk;
+< #line 159
+<   return ((bool )((unsigned int )ds > 2U || (unsigned int )ds == 1U));
+< }
+< }
+< #line 162 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+< void wait_until_done_or_disk_failure(struct drbd_conf *mdev , struct drbd_backing_dev *bdev ,
+<                                      unsigned int *done ) 
+---
+> void wait_until_done_or_force_detached(struct drbd_conf *mdev , struct drbd_backing_dev *bdev ,
+>                                        unsigned int *done ) 
+36065c36053
+<   bool tmp___0 ;
+---
+>   int tmp___0 ;
+36067d36054
+<   bool tmp___2 ;
+36070c36057
+< #line 165
+---
+> #line 159
+36072c36059
+< #line 166
+---
+> #line 160
+36074c36061
+< #line 167
+---
+> #line 161
+36079c36066
+< #line 169
+---
+> #line 163
+36081c36068
+< #line 169
+---
+> #line 163
+36083,36087c36070,36074
+< #line 169
+<     tmp___2 = md_io_allowed(mdev);
+< #line 169
+<     if ((int )tmp___2) {
+< #line 169
+---
+> #line 163
+>     tmp___1 = constant_test_bit(18U, (unsigned long const volatile   *)(& mdev->flags));
+> #line 163
+>     if (tmp___1 == 0) {
+> #line 163
+36089c36076
+< #line 169
+---
+> #line 163
+36091c36078
+< #line 169
+---
+> #line 163
+36093c36080
+< #line 169
+---
+> #line 163
+36095c36082
+< #line 169
+---
+> #line 163
+36097c36084
+< #line 169
+---
+> #line 163
+36099,36100c36086,36087
+<       ldv_50539: 
+< #line 169
+---
+>       ldv_50535: 
+> #line 163
+36102c36089
+< #line 169
+---
+> #line 163
+36104,36105c36091,36092
+< #line 169
+<         goto ldv_50538;
+---
+> #line 163
+>         goto ldv_50534;
+36107,36120c36094,36099
+< #line 169
+<         tmp___0 = md_io_allowed(mdev);
+< #line 169
+<         if (tmp___0) {
+< #line 169
+<           tmp___1 = 0;
+<         } else {
+< #line 169
+<           tmp___1 = 1;
+<         }
+< #line 169
+<         if (tmp___1) {
+< #line 169
+<           goto ldv_50538;
+---
+> #line 163
+>         tmp___0 = constant_test_bit(18U, (unsigned long const volatile   *)(& mdev->flags));
+> #line 163
+>         if (tmp___0 != 0) {
+> #line 163
+>           goto ldv_50534;
+36125c36104
+< #line 169
+---
+> #line 163
+36127c36106
+< #line 169
+---
+> #line 163
+36129,36130c36108,36109
+< #line 169
+<         goto ldv_50538;
+---
+> #line 163
+>         goto ldv_50534;
+36134,36137c36113,36116
+< #line 169
+<       goto ldv_50539;
+<       ldv_50538: 
+< #line 169
+---
+> #line 163
+>       goto ldv_50535;
+>       ldv_50534: 
+> #line 163
+36145c36124
+< #line 169
+---
+> #line 163
+36147c36126
+< #line 170
+---
+> #line 165
+36149c36128
+< #line 171
+---
+> #line 166
+36150a36130,36131
+> #line 167
+>     drbd_chk_io_error____0(mdev, 1, DRBD_FORCE_DETACH, "wait_until_done_or_force_detached");
+36154c36135
+< #line 172
+---
+> #line 169
+36158c36139
+< #line 174 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 171 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36170c36151
+< #line 182
+---
+> #line 179
+36172c36153
+< #line 183
+---
+> #line 180
+36174c36155
+< #line 185
+---
+> #line 182
+36176c36157
+< #line 185
+---
+> #line 182
+36178c36159
+< #line 185
+---
+> #line 182
+36180c36161
+< #line 186
+---
+> #line 183
+36188c36169
+< #line 187
+---
+> #line 184
+36190c36171
+< #line 189
+---
+> #line 186
+36192c36173
+< #line 190
+---
+> #line 187
+36194c36175
+< #line 191
+---
+> #line 188
+36196c36177
+< #line 192
+---
+> #line 189
+36198c36179
+< #line 192
+---
+> #line 189
+36200c36181
+< #line 193
+---
+> #line 190
+36202c36183
+< #line 194
+---
+> #line 191
+36207c36188
+< #line 195
+---
+> #line 192
+36209c36190
+< #line 196
+---
+> #line 193
+36211c36192
+< #line 197
+---
+> #line 194
+36213c36194
+< #line 199
+---
+> #line 196
+36215c36196
+< #line 199
+---
+> #line 196
+36217c36198
+< #line 200
+---
+> #line 197
+36219c36200
+< #line 201
+---
+> #line 198
+36221c36202
+< #line 202
+---
+> #line 199
+36226c36207
+< #line 205
+---
+> #line 202
+36228c36209
+< #line 206
+---
+> #line 203
+36230c36211
+< #line 207
+---
+> #line 204
+36232c36213
+< #line 207
+---
+> #line 204
+36234c36215
+< #line 208
+---
+> #line 205
+36237c36218
+< #line 210
+---
+> #line 207
+36240,36242c36221,36223
+< #line 211
+<   wait_until_done_or_disk_failure(mdev, bdev, & mdev->md_io.done);
+< #line 212
+---
+> #line 208
+>   wait_until_done_or_force_detached(mdev, bdev, & mdev->md_io.done);
+> #line 209
+36245c36226
+< #line 215
+---
+> #line 212
+36247c36228
+< #line 216
+---
+> #line 213
+36251c36232
+< #line 219 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 216 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36283c36264
+< #line 223
+---
+> #line 220
+36285c36266
+< #line 224
+---
+> #line 221
+36287c36268
+< #line 226
+---
+> #line 223
+36289c36270
+< #line 226
+---
+> #line 223
+36291c36272
+< #line 226
+---
+> #line 223
+36294c36275
+<             226);
+---
+>             223);
+36298c36279
+< #line 228
+---
+> #line 225
+36301c36282
+< #line 228
+---
+> #line 225
+36303c36284
+< #line 228
+---
+> #line 225
+36305,36308c36286,36289
+<                          "i" (228), "i" (12UL));
+<     ldv_50563: ;
+< #line 228
+<     goto ldv_50563;
+---
+>                          "i" (225), "i" (12UL));
+>     ldv_50560: ;
+> #line 225
+>     goto ldv_50560;
+36312c36293
+< #line 230
+---
+> #line 227
+36314c36295
+< #line 230
+---
+> #line 227
+36316c36297
+< #line 231
+---
+> #line 228
+36318c36299
+< #line 232
+---
+> #line 229
+36323c36304
+< #line 235
+---
+> #line 232
+36325c36306
+< #line 236
+---
+> #line 233
+36327c36308
+< #line 237
+---
+> #line 234
+36329c36310
+< #line 237
+---
+> #line 234
+36332c36313
+<               237);
+---
+>               234);
+36336c36317
+< #line 238
+---
+> #line 235
+36338c36319
+< #line 238
+---
+> #line 235
+36341c36322
+<               238);
+---
+>               235);
+36345c36326
+< #line 239
+---
+> #line 236
+36347c36328
+< #line 240
+---
+> #line 237
+36349c36330
+< #line 241
+---
+> #line 238
+36351c36332
+< #line 243
+---
+> #line 240
+36353c36334
+< #line 246
+---
+> #line 243
+36355c36336
+< #line 246
+---
+> #line 243
+36357c36338
+< #line 247
+---
+> #line 244
+36359c36340
+< #line 247
+---
+> #line 244
+36361c36342
+< #line 249
+---
+> #line 246
+36363c36344
+< #line 252
+---
+> #line 249
+36365c36346
+< #line 252
+---
+> #line 249
+36367c36348
+< #line 253
+---
+> #line 250
+36370c36351
+< #line 256
+---
+> #line 253
+36375c36356
+< #line 259
+---
+> #line 256
+36377c36358
+< #line 259
+---
+> #line 256
+36379c36360
+< #line 259
+---
+> #line 256
+36382c36363
+< #line 259
+---
+> #line 256
+36392c36373
+< #line 263
+---
+> #line 260
+36394c36375
+< #line 263
+---
+> #line 260
+36396c36377
+< #line 265
+---
+> #line 262
+36398c36379
+< #line 265
+---
+> #line 262
+36400c36381
+< #line 265
+---
+> #line 262
+36405c36386
+< #line 263
+---
+> #line 260
+36407c36388
+< #line 263
+---
+> #line 260
+36409c36390
+< #line 265
+---
+> #line 262
+36411c36392
+< #line 265
+---
+> #line 262
+36413c36394
+< #line 265
+---
+> #line 262
+36421c36402
+< #line 269
+---
+> #line 266
+36423c36404
+< #line 270
+---
+> #line 267
+36425c36406
+< #line 270
+---
+> #line 267
+36427c36408
+< #line 271
+---
+> #line 268
+36430c36411
+< #line 273
+---
+> #line 270
+36435c36416
+< #line 276
+---
+> #line 273
+36437c36418
+< #line 277
+---
+> #line 274
+36439c36420
+< #line 277
+---
+> #line 274
+36441c36422
+< #line 278
+---
+> #line 275
+36443c36424
+< #line 278
+---
+> #line 275
+36445c36426
+< #line 280
+---
+> #line 277
+36447c36428
+< #line 280
+---
+> #line 277
+36449c36430
+< #line 280
+---
+> #line 277
+36453c36434
+< #line 280
+---
+> #line 277
+36460c36441
+< #line 283
+---
+> #line 280
+36464c36445
+< #line 286 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 283 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36478c36459
+< #line 290
+---
+> #line 287
+36480c36461
+< #line 293
+---
+> #line 290
+36482c36463
+< #line 294
+---
+> #line 291
+36484c36465
+< #line 295
+---
+> #line 292
+36487c36468
+< #line 295
+---
+> #line 292
+36489c36470
+< #line 296
+---
+> #line 293
+36491c36472
+< #line 296
+---
+> #line 293
+36493c36474
+< #line 297
+---
+> #line 294
+36495c36476
+< #line 297
+---
+> #line 294
+36497c36478
+< #line 298
+---
+> #line 295
+36499c36480
+< #line 298
+---
+> #line 295
+36501c36482
+< #line 299
+---
+> #line 296
+36503c36484
+< #line 300
+---
+> #line 297
+36505c36486
+< #line 301
+---
+> #line 298
+36510c36491
+< #line 302
+---
+> #line 299
+36518c36499
+< #line 305
+---
+> #line 302
+36520c36501
+< #line 306
+---
+> #line 303
+36522c36503
+< #line 307
+---
+> #line 304
+36524c36505
+< #line 318
+---
+> #line 315
+36528c36509
+< #line 321 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 318 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36539c36520
+< #line 323
+---
+> #line 320
+36541c36522
+< #line 327
+---
+> #line 324
+36543c36524
+< #line 327
+---
+> #line 324
+36545c36526
+< #line 327
+---
+> #line 324
+36548c36529
+<             327);
+---
+>             324);
+36552c36533
+< #line 329
+---
+> #line 326
+36554c36535
+< #line 329
+---
+> #line 326
+36556,36557c36537,36538
+< #line 329
+<     goto ldv_50593;
+---
+> #line 326
+>     goto ldv_50590;
+36561c36542
+< #line 329
+---
+> #line 326
+36563c36544
+< #line 329
+---
+> #line 326
+36565c36546
+< #line 329
+---
+> #line 326
+36567c36548
+< #line 329
+---
+> #line 326
+36569c36550
+< #line 329
+---
+> #line 326
+36571c36552
+< #line 329
+---
+> #line 326
+36573,36574c36554,36555
+<   ldv_50596: 
+< #line 329
+---
+>   ldv_50593: 
+> #line 326
+36576c36557
+< #line 329
+---
+> #line 326
+36578c36559
+< #line 329
+---
+> #line 326
+36580,36581c36561,36562
+< #line 329
+<     goto ldv_50595;
+---
+> #line 326
+>     goto ldv_50592;
+36585c36566
+< #line 329
+---
+> #line 326
+36587,36590c36568,36571
+< #line 329
+<   goto ldv_50596;
+<   ldv_50595: 
+< #line 329
+---
+> #line 326
+>   goto ldv_50593;
+>   ldv_50592: 
+> #line 326
+36592,36593c36573,36574
+<   ldv_50593: ;
+< #line 331
+---
+>   ldv_50590: ;
+> #line 328
+36595c36576
+< #line 338
+---
+> #line 335
+36597c36578
+< #line 339
+---
+> #line 336
+36599c36580
+< #line 340
+---
+> #line 337
+36601c36582
+< #line 341
+---
+> #line 338
+36603c36584
+< #line 342
+---
+> #line 339
+36605c36586
+< #line 343
+---
+> #line 340
+36607c36588
+< #line 344
+---
+> #line 341
+36609c36590
+< #line 346
+---
+> #line 343
+36611c36592
+< #line 348
+---
+> #line 345
+36613c36594
+< #line 349
+---
+> #line 346
+36615c36596
+< #line 350
+---
+> #line 347
+36617c36598
+< #line 351
+---
+> #line 348
+36622c36603
+< #line 353
+---
+> #line 350
+36626c36607
+< #line 355 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 352 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36636c36617
+< #line 357
+---
+> #line 354
+36638c36619
+< #line 361
+---
+> #line 358
+36640c36621
+< #line 361
+---
+> #line 358
+36642c36623
+< #line 363
+---
+> #line 360
+36644c36625
+< #line 365
+---
+> #line 362
+36646c36627
+< #line 366
+---
+> #line 363
+36648c36629
+< #line 367
+---
+> #line 364
+36651c36632
+< #line 368
+---
+> #line 365
+36656c36637
+< #line 371
+---
+> #line 368
+36658c36639
+< #line 371
+---
+> #line 368
+36660c36641
+< #line 372
+---
+> #line 369
+36665c36646
+< #line 374
+---
+> #line 371
+36667c36648
+< #line 375
+---
+> #line 372
+36671c36652
+< #line 386 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 383 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36677c36658
+< #line 388
+---
+> #line 385
+36681c36662
+< #line 395 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 392 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36687c36668
+< #line 397
+---
+> #line 394
+36691c36672
+< #line 405 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 402 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36725c36706
+< #line 407
+---
+> #line 404
+36727c36708
+< #line 407
+---
+> #line 404
+36729c36710
+< #line 408
+---
+> #line 405
+36731c36712
+< #line 409
+---
+> #line 406
+36733c36714
+< #line 410
+---
+> #line 407
+36735c36716
+< #line 415
+---
+> #line 412
+36737c36718
+< #line 417
+---
+> #line 414
+36739c36720
+< #line 417
+---
+> #line 414
+36741c36722
+< #line 418
+---
+> #line 415
+36743c36724
+< #line 418
+---
+> #line 415
+36746c36727
+< #line 421
+---
+> #line 418
+36748c36729
+< #line 422
+---
+> #line 419
+36753c36734
+< #line 430
+---
+> #line 427
+36755c36736
+< #line 431
+---
+> #line 428
+36757c36738
+< #line 431
+---
+> #line 428
+36762c36743
+< #line 434
+---
+> #line 431
+36764c36745
+< #line 435
+---
+> #line 432
+36766c36747
+< #line 435
+---
+> #line 432
+36769c36750
+< #line 438
+---
+> #line 435
+36771c36752
+< #line 439
+---
+> #line 436
+36773c36754
+< #line 440
+---
+> #line 437
+36778c36759
+< #line 443
+---
+> #line 440
+36780c36761
+< #line 443
+---
+> #line 440
+36782c36763
+< #line 444
+---
+> #line 441
+36784c36765
+< #line 445
+---
+> #line 442
+36786c36767
+< #line 446
+---
+> #line 443
+36788c36769
+< #line 447
+---
+> #line 444
+36790c36771
+< #line 448
+---
+> #line 445
+36795c36776
+< #line 451
+---
+> #line 448
+36797c36778
+< #line 452
+---
+> #line 449
+36799c36780
+< #line 452
+---
+> #line 449
+36801c36782
+< #line 454
+---
+> #line 451
+36803c36784
+< #line 454
+---
+> #line 451
+36805c36786
+< #line 456
+---
+> #line 453
+36807c36788
+< #line 456
+---
+> #line 453
+36809c36790
+< #line 457
+---
+> #line 454
+36811c36792
+< #line 457
+---
+> #line 454
+36813c36794
+< #line 459
+---
+> #line 456
+36815c36796
+< #line 461
+---
+> #line 458
+36817c36798
+< #line 461
+---
+> #line 458
+36819c36800
+< #line 461
+---
+> #line 458
+36821c36802
+< #line 463
+---
+> #line 460
+36823,36826c36804,36807
+< #line 463
+<   goto ldv_50636;
+<   ldv_50635: 
+< #line 464
+---
+> #line 460
+>   goto ldv_50633;
+>   ldv_50632: 
+> #line 461
+36828c36809
+< #line 465
+---
+> #line 462
+36830c36811
+< #line 465
+---
+> #line 462
+36832c36813
+< #line 466
+---
+> #line 463
+36834c36815
+< #line 466
+---
+> #line 463
+36836c36817
+< #line 467
+---
+> #line 464
+36838c36819
+< #line 467
+---
+> #line 464
+36840c36821
+< #line 468
+---
+> #line 465
+36842c36823
+< #line 463
+---
+> #line 460
+36844,36845c36825,36826
+<   ldv_50636: ;
+< #line 463
+---
+>   ldv_50633: ;
+> #line 460
+36847,36848c36828,36829
+< #line 464
+<     goto ldv_50635;
+---
+> #line 461
+>     goto ldv_50632;
+36853,36856c36834,36837
+< #line 470
+<   goto ldv_50639;
+<   ldv_50638: 
+< #line 471
+---
+> #line 467
+>   goto ldv_50636;
+>   ldv_50635: 
+> #line 468
+36858c36839
+< #line 472
+---
+> #line 469
+36860,36861d36840
+< #line 473
+<   xor_sum = ~ xor_sum;
+36862a36842,36843
+>   xor_sum = ~ xor_sum;
+> #line 467
+36864,36865c36845,36846
+<   ldv_50639: ;
+< #line 470
+---
+>   ldv_50636: ;
+> #line 467
+36867,36868c36848,36849
+< #line 471
+<     goto ldv_50638;
+---
+> #line 468
+>     goto ldv_50635;
+36872c36853
+< #line 475
+---
+> #line 472
+36874c36855
+< #line 476
+---
+> #line 473
+36876c36857
+< #line 477
+---
+> #line 474
+36881c36862
+< #line 479
+---
+> #line 476
+36883c36864
+< #line 479
+---
+> #line 476
+36885c36866
+< #line 481
+---
+> #line 478
+36887c36868
+< #line 484
+---
+> #line 481
+36889c36870
+< #line 484
+---
+> #line 481
+36891c36872
+< #line 485
+---
+> #line 482
+36896c36877
+< #line 487
+---
+> #line 484
+36898c36879
+< #line 487
+---
+> #line 484
+36900c36881
+< #line 489
+---
+> #line 486
+36905c36886
+< #line 491
+---
+> #line 488
+36907c36888
+< #line 491
+---
+> #line 488
+36910c36891
+<             491);
+---
+>             488);
+36914c36895
+< #line 492
+---
+> #line 489
+36916c36897
+< #line 494
+---
+> #line 491
+36918c36899
+< #line 496
+---
+> #line 493
+36920c36901
+< #line 497
+---
+> #line 494
+36922c36903
+< #line 499
+---
+> #line 496
+36926c36907
+< #line 511 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 508 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+36940c36921
+< #line 518
+---
+> #line 515
+36942c36923
+< #line 520
+---
+> #line 517
+36944c36925
+< #line 524
+---
+> #line 521
+36946c36927
+< #line 524
+---
+> #line 521
+36948c36929
+< #line 525
+---
+> #line 522
+36953c36934
+< #line 527
+---
+> #line 524
+36955c36936
+< #line 527
+---
+> #line 524
+36957c36938
+< #line 529
+---
+> #line 526
+36959,36962c36940,36943
+< #line 529
+<   goto ldv_50653;
+<   ldv_50652: 
+< #line 530
+---
+> #line 526
+>   goto ldv_50650;
+>   ldv_50649: 
+> #line 527
+36964c36945
+< #line 530
+---
+> #line 527
+36966c36947
+< #line 529
+---
+> #line 526
+36968,36969c36949,36950
+<   ldv_50653: ;
+< #line 529
+---
+>   ldv_50650: ;
+> #line 526
+36971,36972c36952,36953
+< #line 530
+<     goto ldv_50652;
+---
+> #line 527
+>     goto ldv_50649;
+36976c36957
+< #line 531
+---
+> #line 528
+36978c36959
+< #line 531
+---
+> #line 528
+36980c36961
+< #line 533
+---
+> #line 530
+36984c36965
+< #line 543 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 540 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37011c36992
+< #line 549
+---
+> #line 546
+37013c36994
+< #line 550
+---
+> #line 547
+37015c36996
+< #line 551
+---
+> #line 548
+37017c36998
+< #line 552
+---
+> #line 549
+37019c37000
+< #line 553
+---
+> #line 550
+37021c37002
+< #line 554
+---
+> #line 551
+37023c37004
+< #line 555
+---
+> #line 552
+37025c37006
+< #line 558
+---
+> #line 555
+37027c37008
+< #line 563
+---
+> #line 560
+37029c37010
+< #line 563
+---
+> #line 560
+37031c37012
+< #line 564
+---
+> #line 561
+37033c37014
+< #line 565
+---
+> #line 562
+37038c37019
+< #line 568
+---
+> #line 565
+37040,37043c37021,37024
+< #line 568
+<   goto ldv_50673;
+<   ldv_50672: 
+< #line 569
+---
+> #line 565
+>   goto ldv_50670;
+>   ldv_50669: 
+> #line 566
+37045c37026
+< #line 570
+---
+> #line 567
+37047,37048c37028,37029
+< #line 571
+<     goto ldv_50671;
+---
+> #line 568
+>     goto ldv_50668;
+37052c37033
+< #line 572
+---
+> #line 569
+37054c37035
+< #line 573
+---
+> #line 570
+37056c37037
+< #line 574
+---
+> #line 571
+37061c37042
+< #line 576
+---
+> #line 573
+37063c37044
+< #line 576
+---
+> #line 573
+37065c37046
+< #line 578
+---
+> #line 575
+37067c37048
+< #line 578
+---
+> #line 575
+37069c37050
+< #line 579
+---
+> #line 576
+37071c37052
+< #line 580
+---
+> #line 577
+37073c37054
+< #line 581
+---
+> #line 578
+37075c37056
+< #line 582
+---
+> #line 579
+37077,37078c37058,37059
+< #line 583
+<     goto ldv_50671;
+---
+> #line 580
+>     goto ldv_50668;
+37082c37063
+< #line 585
+---
+> #line 582
+37084c37065
+< #line 586
+---
+> #line 583
+37086c37067
+< #line 586
+---
+> #line 583
+37089c37070
+<               586);
+---
+>               583);
+37093c37074
+< #line 587
+---
+> #line 584
+37095c37076
+< #line 588
+---
+> #line 585
+37100c37081
+< #line 590
+---
+> #line 587
+37102c37083
+< #line 591
+---
+> #line 588
+37104c37085
+< #line 591
+---
+> #line 588
+37107c37088
+<               591);
+---
+>               588);
+37111c37092
+< #line 592
+---
+> #line 589
+37113c37094
+< #line 593
+---
+> #line 590
+37118,37119c37099,37100
+<   ldv_50671: 
+< #line 568
+---
+>   ldv_50668: 
+> #line 565
+37121,37122c37102,37103
+<   ldv_50673: ;
+< #line 568
+---
+>   ldv_50670: ;
+> #line 565
+37124,37125c37105,37106
+< #line 569
+<     goto ldv_50672;
+---
+> #line 566
+>     goto ldv_50669;
+37130c37111
+< #line 597
+---
+> #line 594
+37132c37113
+< #line 598
+---
+> #line 595
+37134c37115
+< #line 599
+---
+> #line 596
+37136c37117
+< #line 600
+---
+> #line 597
+37141c37122
+< #line 605
+---
+> #line 602
+37143,37144c37124,37125
+<   ldv_50688: 
+< #line 611
+---
+>   ldv_50685: 
+> #line 608
+37146c37127
+< #line 612
+---
+> #line 609
+37148c37129
+< #line 612
+---
+> #line 609
+37150c37131
+< #line 612
+---
+> #line 609
+37153c37134
+<             612);
+---
+>             609);
+37157c37138
+< #line 612
+---
+> #line 609
+37159c37140
+< #line 612
+---
+> #line 609
+37164c37145
+< #line 613
+---
+> #line 610
+37166c37147
+< #line 614
+---
+> #line 611
+37168c37149
+< #line 615
+---
+> #line 612
+37173c37154
+< #line 618
+---
+> #line 615
+37175c37156
+< #line 618
+---
+> #line 615
+37177c37158
+< #line 620
+---
+> #line 617
+37179c37160
+< #line 626
+---
+> #line 623
+37181,37184c37162,37165
+< #line 626
+<   goto ldv_50685;
+<   ldv_50684: 
+< #line 627
+---
+> #line 623
+>   goto ldv_50682;
+>   ldv_50681: 
+> #line 624
+37186c37167
+< #line 627
+---
+> #line 624
+37188c37169
+< #line 628
+---
+> #line 625
+37190c37171
+< #line 628
+---
+> #line 625
+37192c37173
+< #line 630
+---
+> #line 627
+37194,37195c37175,37176
+< #line 631
+<     goto ldv_50683;
+---
+> #line 628
+>     goto ldv_50680;
+37199c37180
+< #line 633
+---
+> #line 630
+37201c37182
+< #line 634
+---
+> #line 631
+37203,37204c37184,37185
+<   ldv_50683: 
+< #line 626
+---
+>   ldv_50680: 
+> #line 623
+37206,37207c37187,37188
+<   ldv_50685: ;
+< #line 626
+---
+>   ldv_50682: ;
+> #line 623
+37209,37210c37190,37191
+< #line 627
+<     goto ldv_50684;
+---
+> #line 624
+>     goto ldv_50681;
+37214c37195
+< #line 636
+---
+> #line 633
+37216c37197
+< #line 638
+---
+> #line 635
+37219c37200
+< #line 641
+---
+> #line 638
+37221,37222c37202,37203
+< #line 642
+<     goto ldv_50687;
+---
+> #line 639
+>     goto ldv_50684;
+37226c37207
+< #line 643
+---
+> #line 640
+37228c37209
+< #line 644
+---
+> #line 641
+37230c37211
+< #line 645
+---
+> #line 642
+37235,37238c37216,37219
+< #line 646
+<   goto ldv_50688;
+<   ldv_50687: 
+< #line 648
+---
+> #line 643
+>   goto ldv_50685;
+>   ldv_50684: 
+> #line 645
+37240c37221
+< #line 649
+---
+> #line 646
+37242c37223
+< #line 650
+---
+> #line 647
+37244c37225
+< #line 650
+---
+> #line 647
+37246c37227
+< #line 652
+---
+> #line 649
+37251c37232
+< #line 655
+---
+> #line 652
+37253c37234
+< #line 657
+---
+> #line 654
+37256c37237
+< #line 660
+---
+> #line 657
+37260c37241
+< #line 667 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 664 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37279c37260
+< #line 670
+---
+> #line 667
+37281c37262
+< #line 674
+---
+> #line 671
+37283c37264
+< #line 674
+---
+> #line 671
+37285,37286c37266,37267
+< #line 674
+<     goto ldv_50697;
+---
+> #line 671
+>     goto ldv_50694;
+37290c37271
+< #line 674
+---
+> #line 671
+37292c37273
+< #line 674
+---
+> #line 671
+37294c37275
+< #line 674
+---
+> #line 671
+37296c37277
+< #line 674
+---
+> #line 671
+37298c37279
+< #line 674
+---
+> #line 671
+37300c37281
+< #line 674
+---
+> #line 671
+37302,37303c37283,37284
+<   ldv_50700: 
+< #line 674
+---
+>   ldv_50697: 
+> #line 671
+37305c37286
+< #line 674
+---
+> #line 671
+37307c37288
+< #line 674
+---
+> #line 671
+37309,37310c37290,37291
+< #line 674
+<     goto ldv_50699;
+---
+> #line 671
+>     goto ldv_50696;
+37314c37295
+< #line 674
+---
+> #line 671
+37316,37319c37297,37300
+< #line 674
+<   goto ldv_50700;
+<   ldv_50699: 
+< #line 674
+---
+> #line 671
+>   goto ldv_50697;
+>   ldv_50696: 
+> #line 671
+37321,37322c37302,37303
+<   ldv_50697: 
+< #line 676
+---
+>   ldv_50694: 
+> #line 673
+37324,37327c37305,37308
+< #line 676
+<   goto ldv_50705;
+<   ldv_50704: 
+< #line 677
+---
+> #line 673
+>   goto ldv_50702;
+>   ldv_50701: 
+> #line 674
+37329c37310
+< #line 677
+---
+> #line 674
+37331c37312
+< #line 678
+---
+> #line 675
+37333,37334c37314,37315
+< #line 679
+<     goto ldv_50701;
+---
+> #line 676
+>     goto ldv_50698;
+37338c37319
+< #line 680
+---
+> #line 677
+37340c37321
+< #line 680
+---
+> #line 677
+37342c37323
+< #line 681
+---
+> #line 678
+37344c37325
+< #line 681
+---
+> #line 678
+37346c37327
+< #line 681
+---
+> #line 678
+37348c37329
+< #line 681
+---
+> #line 678
+37350,37352c37331,37333
+< #line 681
+<   descriptor.lineno = 681U;
+< #line 681
+---
+> #line 678
+>   descriptor.lineno = 678U;
+> #line 678
+37354c37335
+< #line 681
+---
+> #line 678
+37356c37337
+< #line 681
+---
+> #line 678
+37358c37339
+< #line 681
+---
+> #line 678
+37364c37345
+< #line 682
+---
+> #line 679
+37366,37367c37347,37348
+<   ldv_50701: 
+< #line 676
+---
+>   ldv_50698: 
+> #line 673
+37369,37370c37350,37351
+<   ldv_50705: ;
+< #line 676
+---
+>   ldv_50702: ;
+> #line 673
+37372,37373c37353,37354
+< #line 677
+<     goto ldv_50704;
+---
+> #line 674
+>     goto ldv_50701;
+37377c37358
+< #line 685
+---
+> #line 682
+37379c37360
+< #line 686
+---
+> #line 683
+37381c37362
+< #line 688
+---
+> #line 685
+37383c37364
+< #line 688
+---
+> #line 685
+37386c37367
+< #line 689
+---
+> #line 686
+37390c37371
+< #line 692 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 689 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37397c37378
+< #line 696
+---
+> #line 693
+37399c37380
+< #line 697
+---
+> #line 694
+37401c37382
+< #line 698
+---
+> #line 695
+37403c37384
+< #line 698
+---
+> #line 695
+37405c37386
+< #line 699
+---
+> #line 696
+37410c37391
+< #line 700
+---
+> #line 697
+37412c37393
+< #line 702
+---
+> #line 699
+37416c37397
+< #line 714 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 711 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37428c37409
+< #line 719
+---
+> #line 716
+37430c37411
+< #line 719
+---
+> #line 716
+37432c37413
+< #line 719
+---
+> #line 716
+37435c37416
+<             719);
+---
+>             716);
+37439c37420
+< #line 721
+---
+> #line 718
+37441,37444c37422,37425
+< #line 721
+<   goto ldv_50723;
+<   ldv_50722: 
+< #line 722
+---
+> #line 718
+>   goto ldv_50720;
+>   ldv_50719: 
+> #line 719
+37446c37427
+< #line 723
+---
+> #line 720
+37448,37449c37429,37430
+< #line 724
+<     goto ldv_50717;
+---
+> #line 721
+>     goto ldv_50714;
+37453c37434
+< #line 725
+---
+> #line 722
+37455c37436
+< #line 725
+---
+> #line 722
+37457,37458c37438,37439
+< #line 725
+<     goto ldv_50718;
+---
+> #line 722
+>     goto ldv_50715;
+37462c37443
+< #line 725
+---
+> #line 722
+37464c37445
+< #line 725
+---
+> #line 722
+37466c37447
+< #line 725
+---
+> #line 722
+37468c37449
+< #line 725
+---
+> #line 722
+37470c37451
+< #line 725
+---
+> #line 722
+37472c37453
+< #line 725
+---
+> #line 722
+37474,37475c37455,37456
+<   ldv_50721: 
+< #line 725
+---
+>   ldv_50718: 
+> #line 722
+37477c37458
+< #line 725
+---
+> #line 722
+37479c37460
+< #line 725
+---
+> #line 722
+37481,37482c37462,37463
+< #line 725
+<     goto ldv_50720;
+---
+> #line 722
+>     goto ldv_50717;
+37486c37467
+< #line 725
+---
+> #line 722
+37488,37493c37469,37470
+< #line 725
+<   goto ldv_50721;
+<   ldv_50720: 
+< #line 725
+<   finish_wait(& mdev->al_wait, & __wait);
+<   ldv_50718: ;
+---
+> #line 722
+>   goto ldv_50718;
+37495c37472,37476
+< #line 721
+---
+> #line 722
+>   finish_wait(& mdev->al_wait, & __wait);
+>   ldv_50715: ;
+>   ldv_50714: 
+> #line 718
+37497,37498c37478,37479
+<   ldv_50723: ;
+< #line 721
+---
+>   ldv_50720: ;
+> #line 718
+37500,37501c37481,37482
+< #line 722
+<     goto ldv_50722;
+---
+> #line 719
+>     goto ldv_50719;
+37505c37486
+< #line 728
+---
+> #line 725
+37507c37488
+< #line 729
+---
+> #line 726
+37511c37492
+< #line 731 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 728 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37522c37503
+< #line 733
+---
+> #line 730
+37524c37505
+< #line 733
+---
+> #line 730
+37526c37507
+< #line 735
+---
+> #line 732
+37528c37509
+< #line 735
+---
+> #line 732
+37530c37511
+< #line 736
+---
+> #line 733
+37532c37513
+< #line 736
+---
+> #line 733
+37534c37515
+< #line 737
+---
+> #line 734
+37539c37520
+< #line 738
+---
+> #line 735
+37541c37522
+< #line 739
+---
+> #line 736
+37546c37527
+< #line 742
+---
+> #line 739
+37548c37529
+< #line 742
+---
+> #line 739
+37550c37531
+< #line 743
+---
+> #line 740
+37552c37533
+< #line 745
+---
+> #line 742
+37554c37535
+< #line 747
+---
+> #line 744
+37556c37537
+< #line 747
+---
+> #line 744
+37558c37539
+< #line 748
+---
+> #line 745
+37564c37545
+< #line 751
+---
+> #line 748
+37567,37568c37548,37549
+< #line 754
+<     goto ldv_50739;
+---
+> #line 751
+>     goto ldv_50736;
+37570c37551
+<     ldv_50739: ;
+---
+>     ldv_50736: ;
+37574c37555
+< #line 757
+---
+> #line 754
+37576c37557
+< #line 759
+---
+> #line 756
+37580c37561
+< #line 769 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 766 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37596c37577
+< #line 777
+---
+> #line 774
+37598c37579
+< #line 777
+---
+> #line 774
+37600c37581
+< #line 777
+---
+> #line 774
+37603c37584
+<             777);
+---
+>             774);
+37607c37588
+< #line 781
+---
+> #line 778
+37609c37590
+< #line 783
+---
+> #line 780
+37611c37592
+< #line 784
+---
+> #line 781
+37613c37594
+< #line 785
+---
+> #line 782
+37615c37596
+< #line 785
+---
+> #line 782
+37617c37598
+< #line 786
+---
+> #line 783
+37619c37600
+< #line 787
+---
+> #line 784
+37621c37602
+< #line 788
+---
+> #line 785
+37624c37605
+< #line 790
+---
+> #line 787
+37627c37608
+< #line 791
+---
+> #line 788
+37629c37610
+< #line 792
+---
+> #line 789
+37631c37612
+< #line 792
+---
+> #line 789
+37635c37616
+< #line 805
+---
+> #line 802
+37641c37622
+< #line 814
+---
+> #line 811
+37643c37624
+< #line 814
+---
+> #line 811
+37645c37626
+< #line 815
+---
+> #line 812
+37647c37628
+< #line 816
+---
+> #line 813
+37650c37631
+< #line 820
+---
+> #line 817
+37655c37636
+< #line 822
+---
+> #line 819
+37657c37638
+< #line 823
+---
+> #line 820
+37663c37644
+< #line 827
+---
+> #line 824
+37665c37646
+< #line 828
+---
+> #line 825
+37667c37648
+< #line 829
+---
+> #line 826
+37670c37651
+< #line 831
+---
+> #line 828
+37672c37653
+< #line 834
+---
+> #line 831
+37674c37655
+< #line 835
+---
+> #line 832
+37676c37657
+< #line 837
+---
+> #line 834
+37678c37659
+< #line 837
+---
+> #line 834
+37680c37661
+< #line 838
+---
+> #line 835
+37682c37663
+< #line 839
+---
+> #line 836
+37684c37665
+< #line 840
+---
+> #line 837
+37686c37667
+< #line 841
+---
+> #line 838
+37689c37670
+< #line 843
+---
+> #line 840
+37696c37677
+< #line 847
+---
+> #line 844
+37700c37681
+< #line 851
+---
+> #line 848
+37704c37685
+< #line 854 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 851 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37712c37693
+< #line 856
+---
+> #line 853
+37714c37695
+< #line 857
+---
+> #line 854
+37716c37697
+< #line 858
+---
+> #line 855
+37718c37699
+< #line 859
+---
+> #line 856
+37720c37701
+< #line 860
+---
+> #line 857
+37722c37703
+< #line 863
+---
+> #line 860
+37724c37705
+< #line 864
+---
+> #line 861
+37726c37707
+< #line 865
+---
+> #line 862
+37734c37715
+< #line 867
+---
+> #line 864
+37738c37719
+< #line 877 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 874 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37760c37741
+< #line 882
+---
+> #line 879
+37762c37743
+< #line 884
+---
+> #line 881
+37764c37745
+< #line 887
+---
+> #line 884
+37766c37747
+< #line 888
+---
+> #line 885
+37769c37750
+< #line 890
+---
+> #line 887
+37774c37755
+< #line 892
+---
+> #line 889
+37776c37757
+< #line 893
+---
+> #line 890
+37778c37759
+< #line 895
+---
+> #line 892
+37780c37761
+< #line 895
+---
+> #line 892
+37782c37763
+< #line 895
+---
+> #line 892
+37785c37766
+<             895);
+---
+>             892);
+37789c37770
+< #line 895
+---
+> #line 892
+37791c37772
+< #line 895
+---
+> #line 892
+37796c37777
+< #line 896
+---
+> #line 893
+37798c37779
+< #line 896
+---
+> #line 893
+37800c37781
+< #line 896
+---
+> #line 893
+37803c37784
+<             896);
+---
+>             893);
+37807c37788
+< #line 896
+---
+> #line 893
+37809c37790
+< #line 896
+---
+> #line 893
+37814c37795
+< #line 898
+---
+> #line 895
+37816c37797
+< #line 903
+---
+> #line 900
+37818c37799
+< #line 903
+---
+> #line 900
+37820c37801
+< #line 904
+---
+> #line 901
+37825c37806
+< #line 905
+---
+> #line 902
+37827c37808
+< #line 905
+---
+> #line 902
+37829c37810
+< #line 906
+---
+> #line 903
+37832c37813
+< #line 908
+---
+> #line 905
+37835c37816
+< #line 909
+---
+> #line 906
+37837c37818
+< #line 911
+---
+> #line 908
+37839c37820
+< #line 912
+---
+> #line 909
+37844c37825
+< #line 918
+---
+> #line 915
+37846c37827
+< #line 918
+---
+> #line 915
+37848c37829
+< #line 919
+---
+> #line 916
+37850c37831
+< #line 919
+---
+> #line 916
+37852c37833
+< #line 919
+---
+> #line 916
+37854c37835
+< #line 920
+---
+> #line 917
+37856c37837
+< #line 920
+---
+> #line 917
+37858c37839
+< #line 921
+---
+> #line 918
+37860c37841
+< #line 921
+---
+> #line 918
+37862c37843
+< #line 922
+---
+> #line 919
+37864c37845
+< #line 923
+---
+> #line 920
+37866c37847
+< #line 927
+---
+> #line 924
+37868c37849
+< #line 928
+---
+> #line 925
+37876c37857
+< #line 930
+---
+> #line 927
+37878c37859
+< #line 931
+---
+> #line 928
+37883c37864
+< #line 932
+---
+> #line 929
+37887c37868
+< #line 942 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 939 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+37909c37890
+< #line 947
+---
+> #line 944
+37911c37892
+< #line 951
+---
+> #line 948
+37913c37894
+< #line 952
+---
+> #line 949
+37918c37899
+< #line 954
+---
+> #line 951
+37920c37901
+< #line 955
+---
+> #line 952
+37923c37904
+< #line 957
+---
+> #line 954
+37928c37909
+< #line 960
+---
+> #line 957
+37930c37911
+< #line 960
+---
+> #line 957
+37932c37913
+< #line 961
+---
+> #line 958
+37937c37918
+< #line 963
+---
+> #line 960
+37939c37920
+< #line 964
+---
+> #line 961
+37941c37922
+< #line 966
+---
+> #line 963
+37943c37924
+< #line 966
+---
+> #line 963
+37945c37926
+< #line 966
+---
+> #line 963
+37948c37929
+<             966);
+---
+>             963);
+37952c37933
+< #line 966
+---
+> #line 963
+37954c37935
+< #line 967
+---
+> #line 964
+37959c37940
+< #line 968
+---
+> #line 965
+37961c37942
+< #line 968
+---
+> #line 965
+37963c37944
+< #line 968
+---
+> #line 965
+37966c37947
+<             968);
+---
+>             965);
+37970c37951
+< #line 968
+---
+> #line 965
+37972c37953
+< #line 969
+---
+> #line 966
+37977c37958
+< #line 971
+---
+> #line 968
+37979c37960
+< #line 975
+---
+> #line 972
+37981c37962
+< #line 976
+---
+> #line 973
+37983c37964
+< #line 980
+---
+> #line 977
+37985c37966
+< #line 980
+---
+> #line 977
+37987c37968
+< #line 981
+---
+> #line 978
+37989c37970
+< #line 981
+---
+> #line 978
+37991c37972
+< #line 983
+---
+> #line 980
+37993c37974
+< #line 984
+---
+> #line 981
+37995c37976
+< #line 985
+---
+> #line 982
+37997c37978
+< #line 986
+---
+> #line 983
+37999c37980
+< #line 986
+---
+> #line 983
+38001c37982
+< #line 986
+---
+> #line 983
+38006c37987
+< #line 987
+---
+> #line 984
+38009c37990
+< #line 990
+---
+> #line 987
+38011c37992
+< #line 992
+---
+> #line 989
+38015c37996
+< #line 996 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 993 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38026c38007
+< #line 1000
+---
+> #line 997
+38028c38009
+< #line 1003
+---
+> #line 1000
+38030c38011
+< #line 1004
+---
+> #line 1001
+38032c38013
+< #line 1005
+---
+> #line 1002
+38034c38015
+< #line 1006
+---
+> #line 1003
+38039c38020
+< #line 1008
+---
+> #line 1005
+38041c38022
+< #line 1009
+---
+> #line 1006
+38043c38024
+< #line 1009
+---
+> #line 1006
+38045c38026
+< #line 1009
+---
+> #line 1006
+38048c38029
+< #line 1009
+---
+> #line 1006
+38051c38032
+< #line 1010
+---
+> #line 1007
+38053c38034
+< #line 1011
+---
+> #line 1008
+38055c38036
+< #line 1012
+---
+> #line 1009
+38057c38038
+< #line 1013
+---
+> #line 1010
+38059c38040
+< #line 1014
+---
+> #line 1011
+38061c38042
+< #line 1015
+---
+> #line 1012
+38066c38047
+< #line 1017
+---
+> #line 1014
+38068c38049
+< #line 1018
+---
+> #line 1015
+38073c38054
+< #line 1019
+---
+> #line 1016
+38078c38059
+< #line 1021
+---
+> #line 1018
+38080c38061
+< #line 1022
+---
+> #line 1019
+38082c38063
+< #line 1023
+---
+> #line 1020
+38084c38065
+< #line 1024
+---
+> #line 1021
+38089c38070
+< #line 1026
+---
+> #line 1023
+38091c38072
+< #line 1027
+---
+> #line 1024
+38093c38074
+< #line 1028
+---
+> #line 1025
+38098c38079
+< #line 1030
+---
+> #line 1027
+38100c38081
+< #line 1030
+---
+> #line 1027
+38102c38083
+< #line 1030
+---
+> #line 1027
+38104,38107c38085,38088
+<                            "i" (1030), "i" (12UL));
+<       ldv_50826: ;
+< #line 1030
+<       goto ldv_50826;
+---
+>                            "i" (1027), "i" (12UL));
+>       ldv_50823: ;
+> #line 1027
+>       goto ldv_50823;
+38114c38095
+< #line 1033
+---
+> #line 1030
+38118c38099
+< #line 1036 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1033 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38126c38107
+< #line 1039
+---
+> #line 1036
+38128c38109
+< #line 1041
+---
+> #line 1038
+38130c38111
+< #line 1042
+---
+> #line 1039
+38132c38113
+< #line 1042
+---
+> #line 1039
+38134c38115
+< #line 1043
+---
+> #line 1040
+38137c38118
+< #line 1045
+---
+> #line 1042
+38139c38120
+< #line 1046
+---
+> #line 1043
+38141c38122
+< #line 1047
+---
+> #line 1044
+38143c38124
+< #line 1048
+---
+> #line 1045
+38152c38133
+< #line 1051
+---
+> #line 1048
+38154c38135
+< #line 1058
+---
+> #line 1055
+38158c38139
+< #line 1068 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1065 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38186c38167
+< #line 1070
+---
+> #line 1067
+38188c38169
+< #line 1073
+---
+> #line 1070
+38191c38172
+< #line 1077
+---
+> #line 1074
+38193c38174
+< #line 1077
+---
+> #line 1074
+38195c38176
+< #line 1077
+---
+> #line 1074
+38197c38178
+< #line 1077
+---
+> #line 1074
+38199c38180
+< #line 1077
+---
+> #line 1074
+38201c38182
+< #line 1077
+---
+> #line 1074
+38203c38184
+< #line 1077
+---
+> #line 1074
+38205c38186
+< #line 1077
+---
+> #line 1074
+38207c38188
+< #line 1077
+---
+> #line 1074
+38209,38210c38190,38191
+<     ldv_50847: 
+< #line 1077
+---
+>     ldv_50844: 
+> #line 1074
+38212c38193
+< #line 1077
+---
+> #line 1074
+38214c38195
+< #line 1077
+---
+> #line 1074
+38216,38217c38197,38198
+< #line 1077
+<       goto ldv_50845;
+---
+> #line 1074
+>       goto ldv_50842;
+38221c38202
+< #line 1077
+---
+> #line 1074
+38223c38204
+< #line 1077
+---
+> #line 1074
+38225c38206
+< #line 1077
+---
+> #line 1074
+38227c38208
+< #line 1077
+---
+> #line 1074
+38229,38230c38210,38211
+< #line 1077
+<       goto ldv_50846;
+---
+> #line 1074
+>       goto ldv_50843;
+38234c38215
+< #line 1077
+---
+> #line 1074
+38236,38242c38217,38223
+< #line 1077
+<     goto ldv_50845;
+<     ldv_50846: ;
+< #line 1077
+<     goto ldv_50847;
+<     ldv_50845: 
+< #line 1077
+---
+> #line 1074
+>     goto ldv_50842;
+>     ldv_50843: ;
+> #line 1074
+>     goto ldv_50844;
+>     ldv_50842: 
+> #line 1074
+38247c38228
+< #line 1077
+---
+> #line 1074
+38249c38230
+< #line 1079
+---
+> #line 1076
+38251c38232
+< #line 1080
+---
+> #line 1077
+38256c38237
+< #line 1082
+---
+> #line 1079
+38258c38239
+< #line 1082
+---
+> #line 1079
+38260c38241
+< #line 1083
+---
+> #line 1080
+38265c38246
+< #line 1085
+---
+> #line 1082
+38267,38270c38248,38251
+< #line 1085
+<   goto ldv_50856;
+<   ldv_50855: 
+< #line 1086
+---
+> #line 1082
+>   goto ldv_50853;
+>   ldv_50852: 
+> #line 1083
+38272c38253
+< #line 1086
+---
+> #line 1083
+38274c38255
+< #line 1086
+---
+> #line 1083
+38276c38257
+< #line 1086
+---
+> #line 1083
+38278c38259
+< #line 1086
+---
+> #line 1083
+38280c38261
+< #line 1086
+---
+> #line 1083
+38282c38263
+< #line 1086
+---
+> #line 1083
+38284c38265
+< #line 1086
+---
+> #line 1083
+38286c38267
+< #line 1086
+---
+> #line 1083
+38288c38269
+< #line 1086
+---
+> #line 1083
+38290c38271
+< #line 1086
+---
+> #line 1083
+38292,38293c38273,38274
+<       ldv_50853: 
+< #line 1086
+---
+>       ldv_50850: 
+> #line 1083
+38295c38276
+< #line 1086
+---
+> #line 1083
+38297c38278
+< #line 1086
+---
+> #line 1083
+38299,38300c38280,38281
+< #line 1086
+<         goto ldv_50851;
+---
+> #line 1083
+>         goto ldv_50848;
+38302c38283
+< #line 1086
+---
+> #line 1083
+38304c38285
+< #line 1086
+---
+> #line 1083
+38306,38307c38287,38288
+< #line 1086
+<           goto ldv_50851;
+---
+> #line 1083
+>           goto ldv_50848;
+38312c38293
+< #line 1086
+---
+> #line 1083
+38314c38295
+< #line 1086
+---
+> #line 1083
+38316c38297
+< #line 1086
+---
+> #line 1083
+38318c38299
+< #line 1086
+---
+> #line 1083
+38320,38321c38301,38302
+< #line 1086
+<         goto ldv_50852;
+---
+> #line 1083
+>         goto ldv_50849;
+38325c38306
+< #line 1086
+---
+> #line 1083
+38327,38333c38308,38314
+< #line 1086
+<       goto ldv_50851;
+<       ldv_50852: ;
+< #line 1086
+<       goto ldv_50853;
+<       ldv_50851: 
+< #line 1086
+---
+> #line 1083
+>       goto ldv_50848;
+>       ldv_50849: ;
+> #line 1083
+>       goto ldv_50850;
+>       ldv_50848: 
+> #line 1083
+38341c38322
+< #line 1086
+---
+> #line 1083
+38343c38324
+< #line 1090
+---
+> #line 1087
+38345c38326
+< #line 1090
+---
+> #line 1087
+38348c38329
+< #line 1090
+---
+> #line 1087
+38350c38331
+< #line 1090
+---
+> #line 1087
+38353c38334
+< #line 1091
+---
+> #line 1088
+38355c38336
+< #line 1092
+---
+> #line 1089
+38357c38338
+< #line 1092
+---
+> #line 1089
+38359c38340
+< #line 1093
+---
+> #line 1090
+38361c38342
+< #line 1094
+---
+> #line 1091
+38363c38344
+< #line 1095
+---
+> #line 1092
+38368c38349
+< #line 1097
+---
+> #line 1094
+38370c38351
+< #line 1098
+---
+> #line 1095
+38372c38353
+< #line 1099
+---
+> #line 1096
+38377c38358
+< #line 1100
+---
+> #line 1097
+38379c38360
+< #line 1100
+---
+> #line 1097
+38381c38362
+< #line 1101
+---
+> #line 1098
+38386c38367
+< #line 1102
+---
+> #line 1099
+38388c38369
+< #line 1102
+---
+> #line 1099
+38390c38371
+< #line 1102
+---
+> #line 1099
+38392c38373
+< #line 1103
+---
+> #line 1100
+38400c38381
+< #line 1105
+---
+> #line 1102
+38406c38387
+< #line 1085
+---
+> #line 1082
+38408,38409c38389,38390
+<   ldv_50856: ;
+< #line 1085
+---
+>   ldv_50853: ;
+> #line 1082
+38411,38412c38392,38393
+< #line 1086
+<     goto ldv_50855;
+---
+> #line 1083
+>     goto ldv_50852;
+38416c38397
+< #line 1108
+---
+> #line 1105
+38418c38399
+< #line 1109
+---
+> #line 1106
+38422c38403
+< #line 1121 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1118 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38445c38426
+< #line 1123
+---
+> #line 1120
+38447c38428
+< #line 1124
+---
+> #line 1121
+38449c38430
+< #line 1129
+---
+> #line 1126
+38451c38432
+< #line 1130
+---
+> #line 1127
+38453c38434
+< #line 1144
+---
+> #line 1141
+38455c38436
+< #line 1145
+---
+> #line 1142
+38457c38438
+< #line 1145
+---
+> #line 1142
+38459c38440
+< #line 1145
+---
+> #line 1142
+38462c38443
+< #line 1145
+---
+> #line 1142
+38465c38446
+< #line 1146
+---
+> #line 1143
+38467c38448
+< #line 1147
+---
+> #line 1144
+38469c38450
+< #line 1147
+---
+> #line 1144
+38471c38452
+< #line 1147
+---
+> #line 1144
+38474c38455
+<                 1147);
+---
+>                 1144);
+38478c38459
+< #line 1148
+---
+> #line 1145
+38480c38461
+< #line 1148
+---
+> #line 1145
+38482c38463
+< #line 1148
+---
+> #line 1145
+38485c38466
+<                 1148);
+---
+>                 1145);
+38489c38470
+< #line 1149
+---
+> #line 1146
+38491c38472
+< #line 1150
+---
+> #line 1147
+38493c38474
+< #line 1151
+---
+> #line 1148
+38495c38476
+< #line 1151
+---
+> #line 1148
+38497c38478
+< #line 1152
+---
+> #line 1149
+38502c38483
+< #line 1153
+---
+> #line 1150
+38505c38486
+< #line 1155
+---
+> #line 1152
+38511c38492
+< #line 1159
+---
+> #line 1156
+38513c38494
+< #line 1160
+---
+> #line 1157
+38515c38496
+< #line 1160
+---
+> #line 1157
+38517c38498
+< #line 1160
+---
+> #line 1157
+38520c38501
+< #line 1160
+---
+> #line 1157
+38523c38504
+< #line 1161
+---
+> #line 1158
+38525c38506
+< #line 1162
+---
+> #line 1159
+38527c38508
+< #line 1162
+---
+> #line 1159
+38529c38510
+< #line 1163
+---
+> #line 1160
+38534c38515
+< #line 1164
+---
+> #line 1161
+38536c38517
+< #line 1164
+---
+> #line 1161
+38538c38519
+< #line 1165
+---
+> #line 1162
+38541c38522
+< #line 1171
+---
+> #line 1168
+38543c38524
+< #line 1172
+---
+> #line 1169
+38545c38526
+< #line 1172
+---
+> #line 1169
+38548c38529
+<                 1172);
+---
+>                 1169);
+38553c38534
+< #line 1174
+---
+> #line 1171
+38556c38537
+< #line 1177
+---
+> #line 1174
+38558c38539
+< #line 1178
+---
+> #line 1175
+38563c38544
+< #line 1180
+---
+> #line 1177
+38565c38546
+< #line 1181
+---
+> #line 1178
+38567c38548
+< #line 1181
+---
+> #line 1178
+38569c38550
+< #line 1181
+---
+> #line 1178
+38572c38553
+< #line 1181
+---
+> #line 1178
+38575c38556
+< #line 1182
+---
+> #line 1179
+38577c38558
+< #line 1183
+---
+> #line 1180
+38579c38560
+< #line 1184
+---
+> #line 1181
+38581c38562
+< #line 1185
+---
+> #line 1182
+38586c38567
+< #line 1187
+---
+> #line 1184
+38588c38569
+< #line 1187
+---
+> #line 1184
+38590c38571
+< #line 1187
+---
+> #line 1184
+38592,38595c38573,38576
+<                              "i" (1187), "i" (12UL));
+<         ldv_50877: ;
+< #line 1187
+<         goto ldv_50877;
+---
+>                              "i" (1184), "i" (12UL));
+>         ldv_50874: ;
+> #line 1184
+>         goto ldv_50874;
+38599c38580
+< #line 1188
+---
+> #line 1185
+38604c38585
+< #line 1190
+---
+> #line 1187
+38606c38587
+< #line 1191
+---
+> #line 1188
+38608c38589
+< #line 1192
+---
+> #line 1189
+38610c38591
+< #line 1193
+---
+> #line 1190
+38612c38593
+< #line 1194
+---
+> #line 1191
+38614c38595
+< #line 1195
+---
+> #line 1192
+38616c38597
+< #line 1195
+---
+> #line 1192
+38618c38599
+< #line 1195
+---
+> #line 1192
+38621c38602
+<                 1195);
+---
+>                 1192);
+38628c38609
+< #line 1197
+---
+> #line 1194
+38630c38611
+< #line 1198
+---
+> #line 1195
+38632c38613
+< #line 1198
+---
+> #line 1195
+38635c38616
+<               1198);
+---
+>               1195);
+38639c38620
+< #line 1199
+---
+> #line 1196
+38641c38622
+< #line 1200
+---
+> #line 1197
+38645c38626
+< #line 1203
+---
+> #line 1200
+38647,38650c38628,38631
+< #line 1203
+<   goto ldv_50879;
+<   ldv_50878: 
+< #line 1204
+---
+> #line 1200
+>   goto ldv_50876;
+>   ldv_50875: 
+> #line 1201
+38653c38634
+< #line 1204
+---
+> #line 1201
+38655c38636
+< #line 1205
+---
+> #line 1202
+38660c38641
+< #line 1206
+---
+> #line 1203
+38662c38643
+< #line 1206
+---
+> #line 1203
+38664c38645
+< #line 1207
+---
+> #line 1204
+38669c38650
+< #line 1203
+---
+> #line 1200
+38671,38672c38652,38653
+<   ldv_50879: ;
+< #line 1203
+---
+>   ldv_50876: ;
+> #line 1200
+38674,38675c38655,38656
+< #line 1204
+<     goto ldv_50878;
+---
+> #line 1201
+>     goto ldv_50875;
+38679c38660
+< #line 1209
+---
+> #line 1206
+38682c38663
+< #line 1211
+---
+> #line 1208
+38684c38665
+< #line 1212
+---
+> #line 1209
+38686c38667
+< #line 1213
+---
+> #line 1210
+38689c38670
+< #line 1216
+---
+> #line 1213
+38691c38672
+< #line 1217
+---
+> #line 1214
+38696c38677
+< #line 1218
+---
+> #line 1215
+38698c38679
+< #line 1219
+---
+> #line 1216
+38702c38683
+< #line 1222 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1219 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38715c38696
+< #line 1224
+---
+> #line 1221
+38717c38698
+< #line 1229
+---
+> #line 1226
+38719c38700
+< #line 1229
+---
+> #line 1226
+38721c38702
+< #line 1230
+---
+> #line 1227
+38723c38704
+< #line 1231
+---
+> #line 1228
+38725c38706
+< #line 1231
+---
+> #line 1228
+38727c38708
+< #line 1231
+---
+> #line 1228
+38730c38711
+< #line 1231
+---
+> #line 1228
+38733c38714
+< #line 1232
+---
+> #line 1229
+38735c38716
+< #line 1233
+---
+> #line 1230
+38737c38718
+< #line 1234
+---
+> #line 1231
+38739c38720
+< #line 1234
+---
+> #line 1231
+38741c38722
+< #line 1235
+---
+> #line 1232
+38746c38727
+< #line 1236
+---
+> #line 1233
+38751c38732
+< #line 1239
+---
+> #line 1236
+38753c38734
+< #line 1240
+---
+> #line 1237
+38755c38736
+< #line 1241
+---
+> #line 1238
+38758c38739
+< #line 1244
+---
+> #line 1241
+38763c38744
+< #line 1247
+---
+> #line 1244
+38765c38746
+< #line 1247
+---
+> #line 1244
+38767c38748
+< #line 1248
+---
+> #line 1245
+38769c38750
+< #line 1249
+---
+> #line 1246
+38771c38752
+< #line 1250
+---
+> #line 1247
+38776c38757
+< #line 1253
+---
+> #line 1250
+38778c38759
+< #line 1254
+---
+> #line 1251
+38782c38763
+< #line 1260 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1257 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38788c38769
+< #line 1262
+---
+> #line 1259
+38790c38771
+< #line 1264
+---
+> #line 1261
+38792c38773
+< #line 1264
+---
+> #line 1261
+38794c38775
+< #line 1265
+---
+> #line 1262
+38796c38777
+< #line 1266
+---
+> #line 1263
+38801c38782
+< #line 1268
+---
+> #line 1265
+38803c38784
+< #line 1269
+---
+> #line 1266
+38805c38786
+< #line 1270
+---
+> #line 1267
+38807c38788
+< #line 1271
+---
+> #line 1268
+38809c38790
+< #line 1272
+---
+> #line 1269
+38813c38794
+< #line 1281 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1278 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38827c38808
+< #line 1287
+---
+> #line 1284
+38829c38810
+< #line 1289
+---
+> #line 1286
+38831c38812
+< #line 1289
+---
+> #line 1286
+38833c38814
+< #line 1291
+---
+> #line 1288
+38835,38838c38816,38819
+< #line 1291
+<     goto ldv_50908;
+<     ldv_50907: 
+< #line 1292
+---
+> #line 1288
+>     goto ldv_50905;
+>     ldv_50904: 
+> #line 1289
+38840c38821
+< #line 1293
+---
+> #line 1290
+38842c38823
+< #line 1293
+---
+> #line 1290
+38844c38825
+< #line 1294
+---
+> #line 1291
+38846,38847c38827,38828
+< #line 1295
+<       goto ldv_50906;
+---
+> #line 1292
+>       goto ldv_50903;
+38851c38832
+< #line 1296
+---
+> #line 1293
+38853c38834
+< #line 1297
+---
+> #line 1294
+38856c38837
+< #line 1300
+---
+> #line 1297
+38858c38839
+< #line 1300
+---
+> #line 1297
+38860c38841
+< #line 1300
+---
+> #line 1297
+38863c38844
+<                 1300);
+---
+>                 1297);
+38867c38848
+< #line 1301
+---
+> #line 1298
+38869c38850
+< #line 1301
+---
+> #line 1298
+38871c38852
+< #line 1301
+---
+> #line 1298
+38874c38855
+<                 1301);
+---
+>                 1298);
+38878c38859
+< #line 1302
+---
+> #line 1299
+38880c38861
+< #line 1303
+---
+> #line 1300
+38882c38863
+< #line 1304
+---
+> #line 1301
+38887c38868
+< #line 1306
+---
+> #line 1303
+38889c38870
+< #line 1307
+---
+> #line 1304
+38892c38873
+< #line 1309
+---
+> #line 1306
+38894c38875
+< #line 1310
+---
+> #line 1307
+38896c38877
+< #line 1311
+---
+> #line 1308
+38901c38882
+< #line 1313
+---
+> #line 1310
+38903c38884
+< #line 1313
+---
+> #line 1310
+38905c38886
+< #line 1313
+---
+> #line 1310
+38908c38889
+<               1313);
+---
+>               1310);
+38912c38893
+< #line 1314
+---
+> #line 1311
+38914c38895
+< #line 1314
+---
+> #line 1311
+38916c38897
+< #line 1314
+---
+> #line 1311
+38919c38900
+<               1314);
+---
+>               1311);
+38923c38904
+< #line 1315
+---
+> #line 1312
+38925,38926c38906,38907
+<     ldv_50906: 
+< #line 1291
+---
+>     ldv_50903: 
+> #line 1288
+38928,38929c38909,38910
+<     ldv_50908: ;
+< #line 1291
+---
+>     ldv_50905: ;
+> #line 1288
+38931,38932c38912,38913
+< #line 1292
+<       goto ldv_50907;
+---
+> #line 1289
+>       goto ldv_50904;
+38937c38918
+< #line 1317
+---
+> #line 1314
+38939c38920
+< #line 1317
+---
+> #line 1314
+38942c38923
+<               1317);
+---
+>               1314);
+38946c38927
+< #line 1318
+---
+> #line 1315
+38951c38932
+< #line 1320
+---
+> #line 1317
+38953c38934
+< #line 1321
+---
+> #line 1318
+38955c38936
+< #line 1323
+---
+> #line 1320
+38959c38940
+< #line 1332 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1329 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+38977c38958
+< #line 1338
+---
+> #line 1335
+38979c38960
+< #line 1340
+---
+> #line 1337
+38981c38962
+< #line 1341
+---
+> #line 1338
+38984c38965
+< #line 1343
+---
+> #line 1340
+38989c38970
+< #line 1345
+---
+> #line 1342
+38991c38972
+< #line 1346
+---
+> #line 1343
+38993c38974
+< #line 1348
+---
+> #line 1345
+38995c38976
+< #line 1348
+---
+> #line 1345
+38997c38978
+< #line 1348
+---
+> #line 1345
+39000c38981
+<             1348);
+---
+>             1345);
+39004c38985
+< #line 1348
+---
+> #line 1345
+39006c38987
+< #line 1348
+---
+> #line 1345
+39011c38992
+< #line 1349
+---
+> #line 1346
+39013c38994
+< #line 1349
+---
+> #line 1346
+39015c38996
+< #line 1349
+---
+> #line 1346
+39018c38999
+<             1349);
+---
+>             1346);
+39022c39003
+< #line 1349
+---
+> #line 1346
+39024c39005
+< #line 1349
+---
+> #line 1346
+39029c39010
+< #line 1351
+---
+> #line 1348
+39031c39012
+< #line 1356
+---
+> #line 1353
+39033c39014
+< #line 1356
+---
+> #line 1353
+39035c39016
+< #line 1357
+---
+> #line 1354
+39040c39021
+< #line 1358
+---
+> #line 1355
+39042c39023
+< #line 1358
+---
+> #line 1355
+39044c39025
+< #line 1359
+---
+> #line 1356
+39047c39028
+< #line 1361
+---
+> #line 1358
+39050c39031
+< #line 1362
+---
+> #line 1359
+39052c39033
+< #line 1364
+---
+> #line 1361
+39054c39035
+< #line 1365
+---
+> #line 1362
+39059c39040
+< #line 1371
+---
+> #line 1368
+39061c39042
+< #line 1372
+---
+> #line 1369
+39063c39044
+< #line 1372
+---
+> #line 1369
+39065c39046
+< #line 1373
+---
+> #line 1370
+39067c39048
+< #line 1374
+---
+> #line 1371
+39069c39050
+< #line 1376
+---
+> #line 1373
+39071c39052
+< #line 1376
+---
+> #line 1373
+39073c39054
+< #line 1377
+---
+> #line 1374
+39075c39056
+< #line 1378
+---
+> #line 1375
+39080c39061
+< #line 1383
+---
+> #line 1380
+39085c39066
+< #line 1385
+---
+> #line 1382
+39087c39068
+< #line 1386
+---
+> #line 1383
+39089c39070
+< #line 1387
+---
+> #line 1384
+39094c39075
+< #line 1388
+---
+> #line 1385
+39098c39079
+< #line 1390 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1387 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39104c39085
+< #line 1395
+---
+> #line 1392
+39106c39087
+< #line 1397
+---
+> #line 1394
+39108c39089
+< #line 1398
+---
+> #line 1395
+39112c39093
+< #line 1400 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1397 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39118c39099
+< #line 1405
+---
+> #line 1402
+39120c39101
+< #line 1407
+---
+> #line 1404
+39122c39103
+< #line 1408
+---
+> #line 1405
+39126c39107
+< #line 1410 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1407 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39132c39113
+< #line 1415
+---
+> #line 1412
+39134c39115
+< #line 1417
+---
+> #line 1414
+39136c39117
+< #line 1418
+---
+> #line 1415
+39140c39121
+< #line 1420 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1417 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39148c39129
+< #line 1425
+---
+> #line 1422
+39150c39131
+< #line 1425
+---
+> #line 1422
+39152c39133
+< #line 1427
+---
+> #line 1424
+39154c39135
+< #line 1427
+---
+> #line 1424
+39156c39137
+< #line 1429
+---
+> #line 1426
+39160c39141
+< #line 1432 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1429 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39166c39147
+< #line 1437
+---
+> #line 1434
+39168c39149
+< #line 1439
+---
+> #line 1436
+39170c39151
+< #line 1440
+---
+> #line 1437
+39174c39155
+< #line 1442 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1439 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39180c39161
+< #line 1447
+---
+> #line 1444
+39182c39163
+< #line 1449
+---
+> #line 1446
+39184c39165
+< #line 1450
+---
+> #line 1447
+39188c39169
+< #line 1452 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1449 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39194c39175
+< #line 1457
+---
+> #line 1454
+39196c39177
+< #line 1459
+---
+> #line 1456
+39198c39179
+< #line 1460
+---
+> #line 1457
+39202c39183
+< #line 1462 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1459 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39208c39189
+< #line 1467
+---
+> #line 1464
+39210c39191
+< #line 1469
+---
+> #line 1466
+39212c39193
+< #line 1470
+---
+> #line 1467
+39216c39197
+< #line 1472 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1469 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39222c39203
+< #line 1477
+---
+> #line 1474
+39224c39205
+< #line 1479
+---
+> #line 1476
+39226c39207
+< #line 1480
+---
+> #line 1477
+39230c39211
+< #line 1482 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1479 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39236c39217
+< #line 1487
+---
+> #line 1484
+39238c39219
+< #line 1489
+---
+> #line 1486
+39240c39221
+< #line 1490
+---
+> #line 1487
+39244c39225
+< #line 1492 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1489 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39250c39231
+< #line 1497
+---
+> #line 1494
+39252c39233
+< #line 1499
+---
+> #line 1496
+39254c39235
+< #line 1500
+---
+> #line 1497
+39258c39239
+< #line 1502 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1499 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39264c39245
+< #line 1507
+---
+> #line 1504
+39266c39247
+< #line 1509
+---
+> #line 1506
+39268c39249
+< #line 1510
+---
+> #line 1507
+39272c39253
+< #line 1512 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1509 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39278c39259
+< #line 1517
+---
+> #line 1514
+39280c39261
+< #line 1519
+---
+> #line 1516
+39282c39263
+< #line 1520
+---
+> #line 1517
+39286c39267
+< #line 1522 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+---
+> #line 1519 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/20/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_actlog.c.prepared"
+39292c39273
+< #line 1527
+---
+> #line 1524
+39294c39275
+< #line 1529
+---
+> #line 1526
+39296c39277
+< #line 1530
+---
+> #line 1527

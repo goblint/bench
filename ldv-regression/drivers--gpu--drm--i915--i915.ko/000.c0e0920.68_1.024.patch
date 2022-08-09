@@ -1,0 +1,713 @@
+5658c5658
+< #line 611
+---
+> #line 613
+14050c14050
+<     *((unsigned int volatile   *)(virt + outring)) = 16 << 2;
+---
+>     *((unsigned int volatile   *)(virt + outring)) = 32 << 2;
+14330c14330
+<   return (*((u32 volatile   *)dev_priv->hw_status_page + 16));
+---
+>   return (*((u32 volatile   *)dev_priv->hw_status_page + 32));
+17446a17447,17461
+>   u32 head ;
+>   unsigned int tmp ;
+>   unsigned int tmp___0 ;
+>   unsigned int tmp___1 ;
+>   unsigned int tmp___2 ;
+>   unsigned int tmp___3 ;
+>   unsigned int tmp___4 ;
+>   unsigned int tmp___5 ;
+>   unsigned int tmp___6 ;
+>   unsigned int tmp___7 ;
+>   unsigned int tmp___8 ;
+>   unsigned int tmp___9 ;
+>   unsigned int tmp___10 ;
+>   unsigned int tmp___11 ;
+>   unsigned int tmp___12 ;
+17451,17452d17465
+< #line 2354
+<   ret = i915_gem_init_hws(dev);
+17454c17467
+<   if (ret != 0) {
+---
+>   ret = i915_gem_init_hws(dev);
+17455a17469,17470
+>   if (ret != 0) {
+> #line 2357
+17460,17461d17474
+< #line 2358
+<   obj = drm_gem_object_alloc(dev, 128 * 1024);
+17463c17476
+<   if ((unsigned long )obj == (unsigned long )((void *)0)) {
+---
+>   obj = drm_gem_object_alloc(dev, 128 * 1024);
+17465c17478
+<     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )obj == (unsigned long )((void *)0)) {
+17466a17480,17481
+>     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+> #line 2362
+17471c17486
+< #line 2363
+---
+> #line 2364
+17473,17474d17487
+< #line 2365
+<   ret = i915_gem_object_pin(obj, 4096);
+17476c17489
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, 4096);
+17478c17491
+<     drm_gem_object_unreference(obj);
+---
+>   if (ret != 0) {
+17479a17493,17494
+>     drm_gem_object_unreference(obj);
+> #line 2369
+17484,17485d17498
+< #line 2372
+<   dev_priv->ring.Size = obj->size;
+17486a17500,17501
+>   dev_priv->ring.Size = obj->size;
+> #line 2374
+17488,17489d17502
+< #line 2375
+<   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+17491c17504
+<   dev_priv->ring.map.size = obj->size;
+---
+>   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+17493c17506
+<   dev_priv->ring.map.type = 0;
+---
+>   dev_priv->ring.map.size = obj->size;
+17495c17508
+<   dev_priv->ring.map.flags = 0;
+---
+>   dev_priv->ring.map.type = 0;
+17496a17510,17511
+>   dev_priv->ring.map.flags = 0;
+> #line 2380
+17498,17499d17512
+< #line 2381
+<   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+17501c17514
+<   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+---
+>   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+17503c17516
+<     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+17505c17518
+<     memset(& dev_priv->ring, 0, sizeof(dev_priv->ring));
+---
+>     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+17507c17520
+<     drm_gem_object_unreference(obj);
+---
+>     memset(& dev_priv->ring, 0, sizeof(dev_priv->ring));
+17508a17522,17523
+>     drm_gem_object_unreference(obj);
+> #line 2387
+17513,17514d17527
+< #line 2388
+<   dev_priv->ring.ring_obj = obj;
+17515a17529,17530
+>   dev_priv->ring.ring_obj = obj;
+> #line 2390
+17517,17518d17531
+< #line 2392
+<   writel(0, dev_priv->regs + 8252);
+17520c17533
+<   writel(0, dev_priv->regs + 8244);
+---
+>   writel(0, dev_priv->regs + 8252);
+17524c17537
+<   writel(0, dev_priv->regs + 8248);
+---
+>   writel(0, dev_priv->regs + 8244);
+17527a17541,17573
+>   tmp = readl(dev_priv->regs + 8244);
+> #line 2399
+>   head = tmp & 2097148U;
+> #line 2402
+>   if (head != (u32 )0) {
+> #line 2403
+>     tmp___0 = readl(dev_priv->regs + 8248);
+> #line 2403
+>     tmp___1 = readl(dev_priv->regs + 8240);
+> #line 2403
+>     tmp___2 = readl(dev_priv->regs + 8244);
+> #line 2403
+>     tmp___3 = readl(dev_priv->regs + 8252);
+> #line 2403
+>     printk("<3>[drm:%s] *ERROR* Ring head not reset to zero ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___3, tmp___2, tmp___1, tmp___0);
+> #line 2409
+>     writel(0, dev_priv->regs + 8244);
+> #line 2411
+>     tmp___4 = readl(dev_priv->regs + 8248);
+> #line 2411
+>     tmp___5 = readl(dev_priv->regs + 8240);
+> #line 2411
+>     tmp___6 = readl(dev_priv->regs + 8244);
+> #line 2411
+>     tmp___7 = readl(dev_priv->regs + 8252);
+> #line 2411
+>     printk("<3>[drm:%s] *ERROR* Ring head forced to zero ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___7, tmp___6, tmp___5, tmp___4);
+>   } else {
+> 
+>   }
+> #line 2419
+17529c17575,17597
+< #line 2405
+---
+> #line 2424
+>   tmp___8 = readl(dev_priv->regs + 8244);
+> #line 2424
+>   head = tmp___8 & 2097148U;
+> #line 2427
+>   if (head != (u32 )0) {
+> #line 2428
+>     tmp___9 = readl(dev_priv->regs + 8248);
+> #line 2428
+>     tmp___10 = readl(dev_priv->regs + 8240);
+> #line 2428
+>     tmp___11 = readl(dev_priv->regs + 8244);
+> #line 2428
+>     tmp___12 = readl(dev_priv->regs + 8252);
+> #line 2428
+>     printk("<3>[drm:%s] *ERROR* Ring initialization failed ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___12, tmp___11, tmp___10, tmp___9);
+> #line 2434
+>     return (-5);
+>   } else {
+> 
+>   }
+> #line 2438
+17531c17599
+< #line 2407
+---
+> #line 2440
+17535c17603
+< #line 2410 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2443 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17541c17609
+< #line 2413
+---
+> #line 2446
+17543c17611
+< #line 2415
+---
+> #line 2448
+17545c17613
+< #line 2416
+---
+> #line 2449
+17550c17618
+< #line 2418
+---
+> #line 2451
+17552c17620
+< #line 2420
+---
+> #line 2453
+17554c17622
+< #line 2421
+---
+> #line 2454
+17556c17624
+< #line 2422
+---
+> #line 2455
+17558c17626
+< #line 2423
+---
+> #line 2456
+17560c17628
+< #line 2425
+---
+> #line 2458
+17562c17630
+< #line 2426
+---
+> #line 2459
+17564c17632
+< #line 2427
+---
+> #line 2460
+17566c17634
+< #line 2428
+---
+> #line 2461
+17568c17636
+< #line 2429
+---
+> #line 2462
+17570c17638
+< #line 2432
+---
+> #line 2465
+17575c17643
+< #line 2434
+---
+> #line 2467
+17579c17647
+< #line 2436 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2469 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17598c17666
+< #line 2440
+---
+> #line 2473
+17600c17668
+< #line 2443
+---
+> #line 2476
+17602c17670
+< #line 2444
+---
+> #line 2477
+17604c17672
+< #line 2445
+---
+> #line 2478
+17609c17677
+< #line 2448
+---
+> #line 2481
+17611c17679
+< #line 2449
+---
+> #line 2482
+17613c17681
+< #line 2450
+---
+> #line 2483
+17618c17686
+< #line 2452
+---
+> #line 2485
+17620c17688
+< #line 2453
+---
+> #line 2486
+17622c17690
+< #line 2453
+---
+> #line 2486
+17624c17692
+< #line 2453
+---
+> #line 2486
+17626c17694
+< #line 2453
+---
+> #line 2486
+17629c17697
+< #line 2453
+---
+> #line 2486
+17632c17700
+< #line 2453
+---
+> #line 2486
+17634c17702
+< #line 2453
+---
+> #line 2486
+17636c17704
+< #line 2453
+---
+> #line 2486
+17638c17706
+< #line 2453
+---
+> #line 2486
+17645,17646c17713,17714
+<                              "i" (2453), "i" (sizeof(struct bug_entry )));
+< #line 2453
+---
+>                              "i" (2486), "i" (sizeof(struct bug_entry )));
+> #line 2486
+17650c17718
+< #line 2453
+---
+> #line 2486
+17656c17724
+< #line 2453
+---
+> #line 2486
+17659c17727
+< #line 2454
+---
+> #line 2487
+17661c17729
+< #line 2454
+---
+> #line 2487
+17663c17731
+< #line 2454
+---
+> #line 2487
+17665c17733
+< #line 2454
+---
+> #line 2487
+17668c17736
+< #line 2454
+---
+> #line 2487
+17671c17739
+< #line 2454
+---
+> #line 2487
+17673c17741
+< #line 2454
+---
+> #line 2487
+17675c17743
+< #line 2454
+---
+> #line 2487
+17677c17745
+< #line 2454
+---
+> #line 2487
+17684,17685c17752,17753
+<                              "i" (2454), "i" (sizeof(struct bug_entry )));
+< #line 2454
+---
+>                              "i" (2487), "i" (sizeof(struct bug_entry )));
+> #line 2487
+17689c17757
+< #line 2454
+---
+> #line 2487
+17695c17763
+< #line 2454
+---
+> #line 2487
+17698c17766
+< #line 2455
+---
+> #line 2488
+17700c17768
+< #line 2455
+---
+> #line 2488
+17702c17770
+< #line 2455
+---
+> #line 2488
+17704c17772
+< #line 2455
+---
+> #line 2488
+17707c17775
+< #line 2455
+---
+> #line 2488
+17710c17778
+< #line 2455
+---
+> #line 2488
+17712c17780
+< #line 2455
+---
+> #line 2488
+17714c17782
+< #line 2455
+---
+> #line 2488
+17716c17784
+< #line 2455
+---
+> #line 2488
+17723,17724c17791,17792
+<                              "i" (2455), "i" (sizeof(struct bug_entry )));
+< #line 2455
+---
+>                              "i" (2488), "i" (sizeof(struct bug_entry )));
+> #line 2488
+17728c17796
+< #line 2455
+---
+> #line 2488
+17734c17802
+< #line 2455
+---
+> #line 2488
+17737c17805
+< #line 2456
+---
+> #line 2489
+17739c17807
+< #line 2456
+---
+> #line 2489
+17741c17809
+< #line 2456
+---
+> #line 2489
+17743c17811
+< #line 2456
+---
+> #line 2489
+17746c17814
+< #line 2456
+---
+> #line 2489
+17749c17817
+< #line 2456
+---
+> #line 2489
+17751c17819
+< #line 2456
+---
+> #line 2489
+17753c17821
+< #line 2456
+---
+> #line 2489
+17755c17823
+< #line 2456
+---
+> #line 2489
+17762,17763c17830,17831
+<                              "i" (2456), "i" (sizeof(struct bug_entry )));
+< #line 2456
+---
+>                              "i" (2489), "i" (sizeof(struct bug_entry )));
+> #line 2489
+17767c17835
+< #line 2456
+---
+> #line 2489
+17773c17841
+< #line 2456
+---
+> #line 2489
+17776c17844
+< #line 2457
+---
+> #line 2490
+17778c17846
+< #line 2458
+---
+> #line 2491
+17780c17848
+< #line 2460
+---
+> #line 2493
+17782c17850
+< #line 2462
+---
+> #line 2495
+17786c17854
+< #line 2465 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2498 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17792c17860
+< #line 2471
+---
+> #line 2504
+17794c17862
+< #line 2472
+---
+> #line 2505
+17796c17864
+< #line 2473
+---
+> #line 2506
+17798c17866
+< #line 2474
+---
+> #line 2507
+17803c17871
+< #line 2475
+---
+> #line 2508
+17805c17873
+< #line 2477
+---
+> #line 2510
+17807c17875
+< #line 2479
+---
+> #line 2512
+17811c17879
+< #line 2482 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2515 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17818c17886
+< #line 2486
+---
+> #line 2519
+17820c17888
+< #line 2488
+---
+> #line 2521
+17822c17890
+< #line 2490
+---
+> #line 2523
+17824c17892
+< #line 2491
+---
+> #line 2524
+17826c17894
+< #line 2492
+---
+> #line 2525
+17828c17896
+< #line 2493
+---
+> #line 2526
+17834c17902
+< #line 2495
+---
+> #line 2528
+17839c17907
+< #line 2498
+---
+> #line 2531
+17841c17909
+< #line 2499
+---
+> #line 2532
+17845c17913
+< #line 2510 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2543 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17847c17915
+< #line 2512 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2545 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17849c17917
+< #line 2501 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+---
+> #line 2534 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_gem.c"
+17857c17925
+< #line 2504
+---
+> #line 2537
+17859c17927
+< #line 2506
+---
+> #line 2539
+17861c17929
+< #line 2507
+---
+> #line 2540
+17863c17931
+< #line 2508
+---
+> #line 2541
+17865c17933
+< #line 2509
+---
+> #line 2542
+17867c17935
+< #line 2510
+---
+> #line 2543
+17869c17937
+< #line 2510
+---
+> #line 2543
+17871c17939
+< #line 2510
+---
+> #line 2543
+17873c17941
+< #line 2510
+---
+> #line 2543
+17875c17943
+< #line 2510
+---
+> #line 2543
+17878c17946
+< #line 2510
+---
+> #line 2543
+17880c17948
+< #line 2510
+---
+> #line 2543
+17882c17950
+< #line 2510
+---
+> #line 2543
+17884c17952
+< #line 2510
+---
+> #line 2543
+17887c17955
+< #line 2510
+---
+> #line 2543
+17890c17958
+< #line 2510
+---
+> #line 2543
+17892c17960
+< #line 2510
+---
+> #line 2543
+17895c17963
+< #line 2512
+---
+> #line 2545
+17897c17965
+< #line 2512
+---
+> #line 2545
+17899c17967
+< #line 2512
+---
+> #line 2545
+17901c17969
+< #line 2512
+---
+> #line 2545
+17904c17972
+< #line 2512
+---
+> #line 2545
+17906c17974
+< #line 2512
+---
+> #line 2545
+17908c17976
+< #line 2512
+---
+> #line 2545
+17910c17978
+< #line 2512
+---
+> #line 2545
+17913c17981
+< #line 2512
+---
+> #line 2545
+17916c17984
+< #line 2514
+---
+> #line 2547
+17918c17986
+< #line 2516
+---
+> #line 2549
+17920c17988
+< #line 2517
+---
+> #line 2550

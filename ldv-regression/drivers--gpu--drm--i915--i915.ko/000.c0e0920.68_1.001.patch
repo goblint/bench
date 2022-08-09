@@ -1,0 +1,5070 @@
+114c114,127
+< #line 97 "include/asm/ptrace.h"
+---
+> #line 50 "include/asm/ds.h"
+> typedef void (*ds_ovfl_callback_t)(struct task_struct * );
+> #line 209 "include/asm/ds.h"
+> struct ds_context {
+>    unsigned char *ds ;
+>    struct task_struct *owner[2] ;
+>    ds_ovfl_callback_t callback[2] ;
+>    void *buffer[2] ;
+>    unsigned int pages[2] ;
+>    unsigned long count ;
+>    struct ds_context **this ;
+>    struct task_struct *task ;
+> };
+> #line 99 "include/asm/ptrace.h"
+175c188
+< #line 99 "include/linux/kernel.h"
+---
+> #line 107 "include/linux/kernel.h"
+177c190
+< #line 182
+---
+> #line 190
+179c192
+< #line 73 "include/asm/page_64.h"
+---
+> #line 80 "include/asm/page_64.h"
+181c194
+< #line 74 "include/asm/page_64.h"
+---
+> #line 81 "include/asm/page_64.h"
+183c196,198
+< #line 77
+---
+> #line 82 "include/asm/page_64.h"
+> typedef unsigned long phys_addr_t;
+> #line 84
+185,186c200,201
+< #line 77 "include/asm/page.h"
+< struct __anonstruct_pgd_t_8 {
+---
+> #line 56 "include/asm/page.h"
+> struct __anonstruct_pgd_t_9 {
+189,192c204,207
+< #line 77 "include/asm/page.h"
+< typedef struct __anonstruct_pgd_t_8 pgd_t;
+< #line 78 "include/asm/page.h"
+< struct __anonstruct_pgprot_t_9 {
+---
+> #line 56 "include/asm/page.h"
+> typedef struct __anonstruct_pgd_t_9 pgd_t;
+> #line 57 "include/asm/page.h"
+> struct __anonstruct_pgprot_t_10 {
+195,196c210,211
+< #line 78 "include/asm/page.h"
+< typedef struct __anonstruct_pgprot_t_9 pgprot_t;
+---
+> #line 57 "include/asm/page.h"
+> typedef struct __anonstruct_pgprot_t_10 pgprot_t;
+198c213
+< struct __anonstruct____missing_field_name_13 {
+---
+> struct __anonstruct____missing_field_name_14 {
+203c218
+< struct __anonstruct____missing_field_name_14 {
+---
+> struct __anonstruct____missing_field_name_15 {
+219,220c234
+< union __anonunion____missing_field_name_12 {
+<    struct __anonstruct____missing_field_name_13 __annonCompField1 ;
+---
+> union __anonunion____missing_field_name_13 {
+221a236
+>    struct __anonstruct____missing_field_name_15 __annonCompField3 ;
+225c240
+<    union __anonunion____missing_field_name_12 __annonCompField3 ;
+---
+>    union __anonunion____missing_field_name_13 __annonCompField4 ;
+227,228c242,243
+< #line 92 "include/linux/cpumask.h"
+< struct __anonstruct_cpumask_t_17 {
+---
+> #line 141 "include/linux/cpumask.h"
+> struct __anonstruct_cpumask_t_18 {
+231,232c246,247
+< #line 92 "include/linux/cpumask.h"
+< typedef struct __anonstruct_cpumask_t_17 cpumask_t;
+---
+> #line 141 "include/linux/cpumask.h"
+> typedef struct __anonstruct_cpumask_t_18 cpumask_t;
+234a250,251
+> #line 326
+> struct raw_spinlock;
+254c271
+< #line 287 "include/asm/processor.h"
+---
+> #line 285 "include/asm/processor.h"
+266,267c283,284
+< #line 303 "include/asm/processor.h"
+< struct __anonstruct____missing_field_name_21 {
+---
+> #line 301 "include/asm/processor.h"
+> struct __anonstruct____missing_field_name_22 {
+271,272c288,289
+< #line 303 "include/asm/processor.h"
+< struct __anonstruct____missing_field_name_22 {
+---
+> #line 301 "include/asm/processor.h"
+> struct __anonstruct____missing_field_name_23 {
+278,280c295,296
+< #line 303 "include/asm/processor.h"
+< union __anonunion____missing_field_name_20 {
+<    struct __anonstruct____missing_field_name_21 __annonCompField4 ;
+---
+> #line 301 "include/asm/processor.h"
+> union __anonunion____missing_field_name_21 {
+281a298
+>    struct __anonstruct____missing_field_name_23 __annonCompField6 ;
+283c300,305
+< #line 303 "include/asm/processor.h"
+---
+> #line 301 "include/asm/processor.h"
+> union __anonunion____missing_field_name_24 {
+>    u32 padding1[12] ;
+>    u32 sw_reserved[12] ;
+> };
+> #line 301 "include/asm/processor.h"
+289c311
+<    union __anonunion____missing_field_name_20 __annonCompField6 ;
+---
+>    union __anonunion____missing_field_name_21 __annonCompField7 ;
+294c316,317
+<    u32 padding[24] ;
+---
+>    u32 padding[12] ;
+>    union __anonunion____missing_field_name_24 __annonCompField8 ;
+296c319
+< #line 333 "include/asm/processor.h"
+---
+> #line 336 "include/asm/processor.h"
+315c338,349
+< #line 353 "include/asm/processor.h"
+---
+> #line 356 "include/asm/processor.h"
+> struct xsave_hdr_struct {
+>    u64 xstate_bv ;
+>    u64 reserved1[2] ;
+>    u64 reserved2[5] ;
+> } __attribute__((__packed__)) ;
+> #line 362 "include/asm/processor.h"
+> struct xsave_struct {
+>    struct i387_fxsave_struct i387 ;
+>    struct xsave_hdr_struct xsave_hdr ;
+> } __attribute__((__packed__, __aligned__(64))) ;
+> #line 368 "include/asm/processor.h"
+319a354
+>    struct xsave_struct xsave ;
+321c356
+< #line 366
+---
+> #line 382
+323c358
+< #line 371 "include/asm/processor.h"
+---
+> #line 387 "include/asm/processor.h"
+350c385,386
+<    unsigned long ds_area_msr ;
+---
+>    struct ds_context *ds_ctx ;
+>    unsigned int bts_ovfl_signal ;
+352,353c388,389
+< #line 604 "include/asm/processor.h"
+< struct __anonstruct_mm_segment_t_23 {
+---
+> #line 589 "include/asm/processor.h"
+> struct __anonstruct_mm_segment_t_25 {
+356,357c392,393
+< #line 604 "include/asm/processor.h"
+< typedef struct __anonstruct_mm_segment_t_23 mm_segment_t;
+---
+> #line 589 "include/asm/processor.h"
+> typedef struct __anonstruct_mm_segment_t_25 mm_segment_t;
+363c399
+< #line 690
+---
+> #line 540
+365c401
+< #line 690 "include/linux/list.h"
+---
+> #line 540 "include/linux/list.h"
+369c405
+< #line 694 "include/linux/list.h"
+---
+> #line 544 "include/linux/list.h"
+379c415
+< struct __anonstruct____missing_field_name_25 {
+---
+> struct __anonstruct____missing_field_name_27 {
+386c422
+< struct __anonstruct_futex_26 {
+---
+> struct __anonstruct_futex_28 {
+394c430
+< struct __anonstruct_nanosleep_27 {
+---
+> struct __anonstruct_nanosleep_29 {
+401,404c437,440
+< union __anonunion____missing_field_name_24 {
+<    struct __anonstruct____missing_field_name_25 __annonCompField7 ;
+<    struct __anonstruct_futex_26 futex ;
+<    struct __anonstruct_nanosleep_27 nanosleep ;
+---
+> union __anonunion____missing_field_name_26 {
+>    struct __anonstruct____missing_field_name_27 __annonCompField9 ;
+>    struct __anonstruct_futex_28 futex ;
+>    struct __anonstruct_nanosleep_29 nanosleep ;
+409c445
+<    union __anonunion____missing_field_name_24 __annonCompField8 ;
+---
+>    union __anonunion____missing_field_name_26 __annonCompField10 ;
+411c447
+< #line 26 "include/asm/thread_info_64.h"
+---
+> #line 24 "include/asm/thread_info.h"
+415c451
+<    __u32 flags ;
+---
+>    unsigned long flags ;
+424c460
+< struct __anonstruct_raw_spinlock_t_28 {
+---
+> struct raw_spinlock {
+428c464
+< typedef struct __anonstruct_raw_spinlock_t_28 raw_spinlock_t;
+---
+> typedef struct raw_spinlock raw_spinlock_t;
+430c466
+< struct __anonstruct_raw_rwlock_t_29 {
+---
+> struct __anonstruct_raw_rwlock_t_30 {
+434c470
+< typedef struct __anonstruct_raw_rwlock_t_29 raw_rwlock_t;
+---
+> typedef struct __anonstruct_raw_rwlock_t_30 raw_rwlock_t;
+437c473
+< #line 5 "include/linux/stacktrace.h"
+---
+> #line 7 "include/linux/stacktrace.h"
+470a507
+>    unsigned int dep_gen_id ;
+481c518
+< #line 161 "include/linux/lockdep.h"
+---
+> #line 162 "include/linux/lockdep.h"
+488c525
+< #line 189 "include/linux/lockdep.h"
+---
+> #line 201 "include/linux/lockdep.h"
+491d527
+<    struct lock_class *class ;
+493a530
+>    struct lockdep_map *nest_lock ;
+496,500c533,538
+<    int irq_context ;
+<    int trylock ;
+<    int read ;
+<    int check ;
+<    int hardirqs_off ;
+---
+>    unsigned int class_idx : 13 ;
+>    unsigned int irq_context : 2 ;
+>    unsigned int trylock : 1 ;
+>    unsigned int read : 2 ;
+>    unsigned int check : 2 ;
+>    unsigned int hardirqs_off : 1 ;
+503c541
+< struct __anonstruct_spinlock_t_30 {
+---
+> struct __anonstruct_spinlock_t_31 {
+511c549
+< typedef struct __anonstruct_spinlock_t_30 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_31 spinlock_t;
+513c551
+< struct __anonstruct_rwlock_t_31 {
+---
+> struct __anonstruct_rwlock_t_32 {
+521,523c559,561
+< typedef struct __anonstruct_rwlock_t_31 rwlock_t;
+< #line 25 "include/asm/atomic_64.h"
+< struct __anonstruct_atomic_t_32 {
+---
+> typedef struct __anonstruct_rwlock_t_32 rwlock_t;
+> #line 19 "include/asm/atomic_64.h"
+> struct __anonstruct_atomic_t_33 {
+526,529c564,567
+< #line 25 "include/asm/atomic_64.h"
+< typedef struct __anonstruct_atomic_t_32 atomic_t;
+< #line 202 "include/asm/atomic_64.h"
+< struct __anonstruct_atomic64_t_33 {
+---
+> #line 19 "include/asm/atomic_64.h"
+> typedef struct __anonstruct_atomic_t_33 atomic_t;
+> #line 196 "include/asm/atomic_64.h"
+> struct __anonstruct_atomic64_t_34 {
+532,533c570,571
+< #line 202 "include/asm/atomic_64.h"
+< typedef struct __anonstruct_atomic64_t_33 atomic64_t;
+---
+> #line 196 "include/asm/atomic_64.h"
+> typedef struct __anonstruct_atomic64_t_34 atomic64_t;
+557,559c595,645
+< #line 38 "include/linux/kmod.h"
+< struct key;
+< #line 39
+---
+> #line 28 "include/linux/wait.h"
+> struct __wait_queue;
+> #line 28 "include/linux/wait.h"
+> typedef struct __wait_queue wait_queue_t;
+> #line 32 "include/linux/wait.h"
+> struct __wait_queue {
+>    unsigned int flags ;
+>    void *private ;
+>    int (*func)(wait_queue_t *wait , unsigned int mode , int sync , void *key ) ;
+>    struct list_head task_list ;
+> };
+> #line 50 "include/linux/wait.h"
+> struct __wait_queue_head {
+>    spinlock_t lock ;
+>    struct list_head task_list ;
+> };
+> #line 54 "include/linux/wait.h"
+> typedef struct __wait_queue_head wait_queue_head_t;
+> #line 92 "include/linux/nodemask.h"
+> struct __anonstruct_nodemask_t_36 {
+>    unsigned long bits[(((unsigned long )(1 << 6) + 8UL * sizeof(long )) - 1UL) / (8UL * sizeof(long ))] ;
+> };
+> #line 92 "include/linux/nodemask.h"
+> typedef struct __anonstruct_nodemask_t_36 nodemask_t;
+> #line 48 "include/linux/mutex.h"
+> struct mutex {
+>    atomic_t count ;
+>    spinlock_t wait_lock ;
+>    struct list_head wait_list ;
+>    struct thread_info *owner ;
+>    char const   *name ;
+>    void *magic ;
+>    struct lockdep_map dep_map ;
+> };
+> #line 67 "include/linux/mutex.h"
+> struct mutex_waiter {
+>    struct list_head list ;
+>    struct task_struct *task ;
+>    struct mutex *lock ;
+>    void *magic ;
+> };
+> #line 17 "include/linux/rwsem.h"
+> struct rw_semaphore;
+> #line 31 "include/linux/rwsem-spinlock.h"
+> struct rw_semaphore {
+>    __s32 activity ;
+>    spinlock_t wait_lock ;
+>    struct list_head wait_list ;
+>    struct lockdep_map dep_map ;
+> };
+> #line 665 "include/linux/mmzone.h"
+560a647,708
+> #line 37 "include/linux/pm.h"
+> struct device;
+> #line 39 "include/linux/pm.h"
+> struct pm_message {
+>    int event ;
+> };
+> #line 39 "include/linux/pm.h"
+> typedef struct pm_message pm_message_t;
+> #line 145 "include/linux/pm.h"
+> struct pm_ops {
+>    int (*prepare)(struct device *dev ) ;
+>    void (*complete)(struct device *dev ) ;
+>    int (*suspend)(struct device *dev ) ;
+>    int (*resume)(struct device *dev ) ;
+>    int (*freeze)(struct device *dev ) ;
+>    int (*thaw)(struct device *dev ) ;
+>    int (*poweroff)(struct device *dev ) ;
+>    int (*restore)(struct device *dev ) ;
+> };
+> #line 203 "include/linux/pm.h"
+> struct pm_ext_ops {
+>    struct pm_ops base ;
+>    int (*suspend_noirq)(struct device *dev ) ;
+>    int (*resume_noirq)(struct device *dev ) ;
+>    int (*freeze_noirq)(struct device *dev ) ;
+>    int (*thaw_noirq)(struct device *dev ) ;
+>    int (*poweroff_noirq)(struct device *dev ) ;
+>    int (*restore_noirq)(struct device *dev ) ;
+> };
+> #line 334
+> enum dpm_state {
+>     DPM_INVALID = 0,
+>     DPM_ON = 1,
+>     DPM_PREPARING = 2,
+>     DPM_RESUMING = 3,
+>     DPM_SUSPENDING = 4,
+>     DPM_OFF = 5,
+>     DPM_OFF_IRQ = 6
+> } ;
+> #line 344 "include/linux/pm.h"
+> struct dev_pm_info {
+>    pm_message_t power_state ;
+>    unsigned int can_wakeup : 1 ;
+>    unsigned int should_wakeup : 1 ;
+>    enum dpm_state status ;
+>    struct list_head entry ;
+> };
+> #line 11 "include/asm/mmu.h"
+> struct __anonstruct_mm_context_t_84 {
+>    void *ldt ;
+>    int size ;
+>    struct mutex lock ;
+>    void *vdso ;
+> };
+> #line 11 "include/asm/mmu.h"
+> typedef struct __anonstruct_mm_context_t_84 mm_context_t;
+> #line 237 "include/asm/topology.h"
+> struct pci_bus;
+> #line 8 "include/linux/gfp.h"
+> struct vm_area_struct;
+> #line 40 "include/linux/kmod.h"
+> struct key;
+594,595d741
+< #line 62
+< struct vm_area_struct;
+616,634c762
+< #line 28 "include/linux/wait.h"
+< struct __wait_queue;
+< #line 28 "include/linux/wait.h"
+< typedef struct __wait_queue wait_queue_t;
+< #line 32 "include/linux/wait.h"
+< struct __wait_queue {
+<    unsigned int flags ;
+<    void *private ;
+<    int (*func)(wait_queue_t *wait , unsigned int mode , int sync , void *key ) ;
+<    struct list_head task_list ;
+< };
+< #line 50 "include/linux/wait.h"
+< struct __wait_queue_head {
+<    spinlock_t lock ;
+<    struct list_head task_list ;
+< };
+< #line 54 "include/linux/wait.h"
+< typedef struct __wait_queue_head wait_queue_head_t;
+< #line 60 "include/linux/kobject.h"
+---
+> #line 59 "include/linux/kobject.h"
+636c764
+< #line 60
+---
+> #line 59
+638c766
+< #line 60
+---
+> #line 59
+640c768
+< #line 60 "include/linux/kobject.h"
+---
+> #line 59 "include/linux/kobject.h"
+643d770
+<    struct kref kref ;
+648a776
+>    struct kref kref ;
+654c782
+< #line 105 "include/linux/kobject.h"
+---
+> #line 104 "include/linux/kobject.h"
+660c788
+< #line 111 "include/linux/kobject.h"
+---
+> #line 110 "include/linux/kobject.h"
+667c795
+< #line 118 "include/linux/kobject.h"
+---
+> #line 117 "include/linux/kobject.h"
+673c801
+< #line 152 "include/linux/kobject.h"
+---
+> #line 151 "include/linux/kobject.h"
+696,697c824
+<    void (*call)(struct marker  const  *mdata , void *call_private , char const   *fmt 
+<                 , ...) ;
+---
+>    void (*call)(struct marker  const  *mdata , void *call_private  , ...) ;
+701,750d827
+< #line 92 "include/linux/nodemask.h"
+< struct __anonstruct_nodemask_t_40 {
+<    unsigned long bits[(((unsigned long )(1 << 6) + 8UL * sizeof(long )) - 1UL) / (8UL * sizeof(long ))] ;
+< };
+< #line 92 "include/linux/nodemask.h"
+< typedef struct __anonstruct_nodemask_t_40 nodemask_t;
+< #line 48 "include/linux/mutex.h"
+< struct mutex {
+<    atomic_t count ;
+<    spinlock_t wait_lock ;
+<    struct list_head wait_list ;
+<    struct thread_info *owner ;
+<    char const   *name ;
+<    void *magic ;
+<    struct lockdep_map dep_map ;
+< };
+< #line 67 "include/linux/mutex.h"
+< struct mutex_waiter {
+<    struct list_head list ;
+<    struct task_struct *task ;
+<    struct mutex *lock ;
+<    void *magic ;
+< };
+< #line 17 "include/linux/rwsem.h"
+< struct rw_semaphore;
+< #line 31 "include/linux/rwsem-spinlock.h"
+< struct rw_semaphore {
+<    __s32 activity ;
+<    spinlock_t wait_lock ;
+<    struct list_head wait_list ;
+<    struct lockdep_map dep_map ;
+< };
+< #line 109 "include/linux/pm.h"
+< struct device;
+< #line 111 "include/linux/pm.h"
+< struct pm_message {
+<    int event ;
+< };
+< #line 111 "include/linux/pm.h"
+< typedef struct pm_message pm_message_t;
+< #line 181 "include/linux/pm.h"
+< struct dev_pm_info {
+<    pm_message_t power_state ;
+<    unsigned int can_wakeup : 1 ;
+<    unsigned int should_wakeup : 1 ;
+<    bool sleeping : 1 ;
+<    struct list_head entry ;
+< };
+< #line 202 "include/asm/topology.h"
+< struct pci_bus;
+824a902
+>    unsigned long min_partial ;
+830c908
+< #line 62 "include/linux/slub_def.h"
+---
+> #line 63 "include/linux/slub_def.h"
+834c912
+< #line 69 "include/linux/slub_def.h"
+---
+> #line 70 "include/linux/slub_def.h"
+846c924
+<    void (*ctor)(struct kmem_cache * , void * ) ;
+---
+>    void (*ctor)(void * ) ;
+857c935
+< struct __anonstruct_local_t_94 {
+---
+> struct __anonstruct_local_t_95 {
+861c939
+< typedef struct __anonstruct_local_t_94 local_t;
+---
+> typedef struct __anonstruct_local_t_95 local_t;
+917d994
+<    unsigned int num_syms ;
+919c996
+<    struct kernel_symbol  const  *gpl_syms ;
+---
+>    unsigned int num_syms ;
+920a998
+>    struct kernel_symbol  const  *gpl_syms ;
+923d1000
+<    unsigned int num_unused_syms ;
+925c1002
+<    struct kernel_symbol  const  *unused_gpl_syms ;
+---
+>    unsigned int num_unused_syms ;
+926a1004
+>    struct kernel_symbol  const  *unused_gpl_syms ;
+929d1006
+<    unsigned int num_gpl_future_syms ;
+930a1008
+>    unsigned int num_gpl_future_syms ;
+936,939c1014,1017
+<    unsigned long init_size ;
+<    unsigned long core_size ;
+<    unsigned long init_text_size ;
+<    unsigned long core_text_size ;
+---
+>    unsigned int init_size ;
+>    unsigned int core_size ;
+>    unsigned int init_text_size ;
+>    unsigned int core_text_size ;
+942a1021
+>    unsigned int num_bugs ;
+945,949d1023
+<    unsigned int num_bugs ;
+<    struct module_ref ref[8] ;
+<    struct list_head modules_which_use_me ;
+<    struct task_struct *waiter ;
+<    void (*exit)(void) ;
+951c1025
+<    unsigned long num_symtab ;
+---
+>    unsigned int num_symtab ;
+958a1033,1036
+>    struct list_head modules_which_use_me ;
+>    struct task_struct *waiter ;
+>    void (*exit)(void) ;
+>    struct module_ref ref[8] ;
+960c1038
+< #line 559
+---
+> #line 563
+964c1042,1047
+< #line 49 "include/linux/rcupdate.h"
+---
+> #line 25 "include/linux/completion.h"
+> struct completion {
+>    unsigned int done ;
+>    wait_queue_head_t wait ;
+> };
+> #line 50 "include/linux/rcupdate.h"
+969c1052
+< #line 10 "include/linux/dcache.h"
+---
+> #line 11 "include/linux/dcache.h"
+971,972d1053
+< #line 11
+< struct path;
+973a1055,1056
+> struct path;
+> #line 13
+975c1058
+< #line 32 "include/linux/dcache.h"
+---
+> #line 33 "include/linux/dcache.h"
+981c1064
+< #line 77
+---
+> #line 78
+983c1066
+< #line 81
+---
+> #line 82
+985,986c1068,1069
+< #line 81 "include/linux/dcache.h"
+< union __anonunion_d_u_95 {
+---
+> #line 82 "include/linux/dcache.h"
+> union __anonunion_d_u_96 {
+990c1073
+< #line 81
+---
+> #line 82
+992c1075
+< #line 81
+---
+> #line 82
+994c1077
+< #line 81 "include/linux/dcache.h"
+---
+> #line 82 "include/linux/dcache.h"
+1004c1087
+<    union __anonunion_d_u_95 d_u ;
+---
+>    union __anonunion_d_u_96 d_u ;
+1015c1098
+< #line 128 "include/linux/dcache.h"
+---
+> #line 129 "include/linux/dcache.h"
+1030,1053d1112
+< #line 10 "include/linux/namei.h"
+< struct open_intent {
+<    int flags ;
+<    int create_mode ;
+<    struct file *file ;
+< };
+< #line 16
+< enum __anonenum_96 {
+<     MAX_NESTED_LINKS = 8
+< } ;
+< #line 18 "include/linux/namei.h"
+< union __anonunion_intent_97 {
+<    struct open_intent open ;
+< };
+< #line 18 "include/linux/namei.h"
+< struct nameidata {
+<    struct path path ;
+<    struct qstr last ;
+<    unsigned int flags ;
+<    int last_type ;
+<    unsigned int depth ;
+<    char *saved_names[MAX_NESTED_LINKS + 1] ;
+<    union __anonunion_intent_97 intent ;
+< };
+1101a1161
+>    unsigned int level ;
+1104d1163
+<    unsigned int level ;
+1124c1183,1192
+< #line 296 "include/linux/fs.h"
+---
+> #line 14 "include/linux/fiemap.h"
+> struct fiemap_extent {
+>    __u64 fe_logical ;
+>    __u64 fe_physical ;
+>    __u64 fe_length ;
+>    __u64 fe_reserved64[2] ;
+>    __u32 fe_flags ;
+>    __u32 fe_reserved[3] ;
+> };
+> #line 303 "include/linux/fs.h"
+1126c1194
+< #line 298
+---
+> #line 305
+1128c1196
+< #line 300
+---
+> #line 307
+1130c1198
+< #line 301
+---
+> #line 308
+1132c1200
+< #line 302
+---
+> #line 309
+1134c1202
+< #line 303
+---
+> #line 310
+1136c1204
+< #line 347 "include/linux/fs.h"
+---
+> #line 355 "include/linux/fs.h"
+1148,1152c1216
+< #line 44 "include/linux/quota.h"
+< typedef __kernel_uid32_t qid_t;
+< #line 45 "include/linux/quota.h"
+< typedef __u64 qsize_t;
+< #line 103 "include/linux/quota.h"
+---
+> #line 100 "include/linux/quota.h"
+1164c1228
+< #line 124 "include/linux/quota.h"
+---
+> #line 121 "include/linux/quota.h"
+1228c1292,1296
+< #line 187 "include/linux/quota.h"
+---
+> #line 176 "include/linux/quota.h"
+> typedef __kernel_uid32_t qid_t;
+> #line 177 "include/linux/quota.h"
+> typedef __u64 qsize_t;
+> #line 191 "include/linux/quota.h"
+1239c1307
+< #line 201
+---
+> #line 205
+1241,1242c1309,1310
+< #line 203 "include/linux/quota.h"
+< union __anonunion_u_102 {
+---
+> #line 207 "include/linux/quota.h"
+> union __anonunion_u_100 {
+1246c1314
+< #line 203 "include/linux/quota.h"
+---
+> #line 207 "include/linux/quota.h"
+1256c1324
+<    union __anonunion_u_102 u ;
+---
+>    union __anonunion_u_100 u ;
+1258c1326
+< #line 253 "include/linux/quota.h"
+---
+> #line 255 "include/linux/quota.h"
+1274c1342
+< #line 275 "include/linux/quota.h"
+---
+> #line 277 "include/linux/quota.h"
+1284c1352
+< #line 286 "include/linux/quota.h"
+---
+> #line 288 "include/linux/quota.h"
+1299c1367
+< #line 302 "include/linux/quota.h"
+---
+> #line 304 "include/linux/quota.h"
+1313c1381
+< #line 316 "include/linux/quota.h"
+---
+> #line 318 "include/linux/quota.h"
+1320c1388
+< #line 330 "include/linux/quota.h"
+---
+> #line 332 "include/linux/quota.h"
+1330c1398
+< #line 408 "include/linux/fs.h"
+---
+> #line 416 "include/linux/fs.h"
+1332c1400
+< #line 409
+---
+> #line 417
+1334c1402,1416
+< #line 444 "include/linux/fs.h"
+---
+> #line 460 "include/linux/fs.h"
+> union __anonunion_arg_102 {
+>    char *buf ;
+>    void *data ;
+> };
+> #line 460 "include/linux/fs.h"
+> struct __anonstruct_read_descriptor_t_101 {
+>    size_t written ;
+>    size_t count ;
+>    union __anonunion_arg_102 arg ;
+>    int error ;
+> };
+> #line 460 "include/linux/fs.h"
+> typedef struct __anonstruct_read_descriptor_t_101 read_descriptor_t;
+> #line 473 "include/linux/fs.h"
+1357a1440
+>    int (*is_partially_uptodate)(struct page * , read_descriptor_t * , unsigned long  ) ;
+1359c1442
+< #line 498
+---
+> #line 529
+1361c1444
+< #line 499 "include/linux/fs.h"
+---
+> #line 530 "include/linux/fs.h"
+1365c1448
+<    rwlock_t tree_lock ;
+---
+>    spinlock_t tree_lock ;
+1380c1463
+< #line 523
+---
+> #line 554
+1382c1465
+< #line 523
+---
+> #line 554
+1384c1467
+< #line 523 "include/linux/fs.h"
+---
+> #line 554 "include/linux/fs.h"
+1405c1488
+< #line 593
+---
+> #line 624
+1407c1490
+< #line 593
+---
+> #line 624
+1409c1492
+< #line 593
+---
+> #line 624
+1411c1494
+< #line 593 "include/linux/fs.h"
+---
+> #line 624 "include/linux/fs.h"
+1417c1500
+< #line 593
+---
+> #line 624
+1419c1502
+< #line 593 "include/linux/fs.h"
+---
+> #line 624 "include/linux/fs.h"
+1451c1534
+<    union __anonunion____missing_field_name_103 __annonCompField10 ;
+---
+>    union __anonunion____missing_field_name_103 __annonCompField12 ;
+1465c1548
+< #line 748 "include/linux/fs.h"
+---
+> #line 779 "include/linux/fs.h"
+1474c1557
+< #line 759 "include/linux/fs.h"
+---
+> #line 790 "include/linux/fs.h"
+1483c1566
+< #line 782 "include/linux/fs.h"
+---
+> #line 813 "include/linux/fs.h"
+1488c1571
+< #line 782 "include/linux/fs.h"
+---
+> #line 813 "include/linux/fs.h"
+1493c1576
+<    atomic_t f_count ;
+---
+>    atomic_long_t f_count ;
+1509c1592
+< #line 895
+---
+> #line 932
+1511c1594
+< #line 895 "include/linux/fs.h"
+---
+> #line 932 "include/linux/fs.h"
+1513c1596
+< #line 897 "include/linux/fs.h"
+---
+> #line 934 "include/linux/fs.h"
+1518c1601
+< #line 902 "include/linux/fs.h"
+---
+> #line 939 "include/linux/fs.h"
+1543c1626
+< #line 916 "include/linux/fs.h"
+---
+> #line 961 "include/linux/fs.h"
+1545c1628
+< #line 916 "include/linux/fs.h"
+---
+> #line 961 "include/linux/fs.h"
+1550c1633
+< #line 916 "include/linux/fs.h"
+---
+> #line 961 "include/linux/fs.h"
+1556c1639
+< #line 916 "include/linux/fs.h"
+---
+> #line 961 "include/linux/fs.h"
+1561a1645,1646
+>    unsigned char fl_flags ;
+>    unsigned char fl_type ;
+1566,1567d1650
+<    unsigned char fl_flags ;
+<    unsigned char fl_type ;
+1576c1659
+< #line 995 "include/linux/fs.h"
+---
+> #line 1073 "include/linux/fs.h"
+1583c1666
+< #line 1029
+---
+> #line 1108
+1585c1668
+< #line 1029
+---
+> #line 1108
+1587c1670
+< #line 1029
+---
+> #line 1108
+1589c1672
+< #line 1029
+---
+> #line 1108
+1591c1674
+< #line 1029 "include/linux/fs.h"
+---
+> #line 1108 "include/linux/fs.h"
+1620a1704,1705
+>    struct list_head s_dentry_lru ;
+>    int s_nr_dentry_unused ;
+1634c1719,1726
+< #line 1220 "include/linux/fs.h"
+---
+> #line 1230 "include/linux/fs.h"
+> struct fiemap_extent_info {
+>    unsigned int fi_flags ;
+>    unsigned int fi_extents_mapped ;
+>    unsigned int fi_extents_max ;
+>    struct fiemap_extent *fi_extents_start ;
+> };
+> #line 1295 "include/linux/fs.h"
+1671c1763
+< #line 1250 "include/linux/fs.h"
+---
+> #line 1325 "include/linux/fs.h"
+1686c1778
+<    int (*permission)(struct inode * , int  , struct nameidata * ) ;
+---
+>    int (*permission)(struct inode * , int  ) ;
+1694a1787
+>    int (*fiemap)(struct inode * , struct fiemap_extent_info * , u64 start , u64 len ) ;
+1696c1789
+< #line 1277
+---
+> #line 1354
+1698c1791
+< #line 1291 "include/linux/fs.h"
+---
+> #line 1368 "include/linux/fs.h"
+1721c1814
+< #line 1473 "include/linux/fs.h"
+---
+> #line 1550 "include/linux/fs.h"
+1737c1830
+< #line 1831
+---
+> #line 1927
+1767a1861
+>    struct list_head pde_openers ;
+1793,1797d1886
+< #line 13 "include/linux/completion.h"
+< struct completion {
+<    unsigned int done ;
+<    wait_queue_head_t wait ;
+< };
+1809c1898
+<    struct klist *n_klist ;
+---
+>    void *n_klist ;
+1814a1904,1905
+> struct dma_mapping_ops;
+> #line 4 "include/asm/device.h"
+1816a1908
+>    struct dma_mapping_ops *dma_ops ;
+1819c1911
+< #line 36 "include/linux/device.h"
+---
+> #line 32 "include/linux/device.h"
+1821c1913
+< #line 37
+---
+> #line 33
+1823c1915,1917
+< #line 38
+---
+> #line 34
+> struct class_private;
+> #line 35
+1825c1919
+< #line 39
+---
+> #line 36
+1827c1921
+< #line 41 "include/linux/device.h"
+---
+> #line 38 "include/linux/device.h"
+1833c1927
+< #line 54
+---
+> #line 51
+1835c1929
+< #line 54
+---
+> #line 51
+1837c1931
+< #line 54 "include/linux/device.h"
+---
+> #line 51 "include/linux/device.h"
+1851a1946
+>    struct pm_ext_ops *pm ;
+1854c1949
+< #line 120 "include/linux/device.h"
+---
+> #line 119 "include/linux/device.h"
+1865a1961
+>    struct pm_ops *pm ;
+1868c1964
+< #line 149 "include/linux/device.h"
+---
+> #line 150 "include/linux/device.h"
+1874c1970
+< #line 181
+---
+> #line 182
+1876c1972
+< #line 181 "include/linux/device.h"
+---
+> #line 182 "include/linux/device.h"
+1880,1884d1975
+<    struct kset subsys ;
+<    struct list_head devices ;
+<    struct list_head interfaces ;
+<    struct kset class_dirs ;
+<    struct semaphore sem ;
+1886a1978
+>    struct kobject *dev_kobj ;
+1891a1984,1985
+>    struct pm_ops *pm ;
+>    struct class_private *p ;
+1893c1987,1989
+< #line 209 "include/linux/device.h"
+---
+> #line 202
+> struct device_type;
+> #line 235 "include/linux/device.h"
+1899c1995
+< #line 246 "include/linux/device.h"
+---
+> #line 282 "include/linux/device.h"
+1906a2003
+>    struct pm_ops *pm ;
+1908c2005
+< #line 256 "include/linux/device.h"
+---
+> #line 295 "include/linux/device.h"
+1915c2012
+< #line 316 "include/linux/device.h"
+---
+> #line 355 "include/linux/device.h"
+1920c2017
+< #line 325
+---
+> #line 364
+1922c2019
+< #line 325 "include/linux/device.h"
+---
+> #line 364 "include/linux/device.h"
+1930a2028
+>    char const   *init_name ;
+1948c2046
+<    struct list_head node ;
+---
+>    struct klist_node knode_class ;
+1954c2052,2062
+< #line 72 "include/linux/pci.h"
+---
+> #line 59 "include/linux/pci.h"
+> struct hotplug_slot;
+> #line 59 "include/linux/pci.h"
+> struct pci_slot {
+>    struct pci_bus *bus ;
+>    struct list_head list ;
+>    struct hotplug_slot *hotplug ;
+>    unsigned char number ;
+>    struct kobject kobj ;
+> };
+> #line 81 "include/linux/pci.h"
+1956c2064
+< #line 86 "include/linux/pci.h"
+---
+> #line 95 "include/linux/pci.h"
+1958c2066
+< #line 88
+---
+> #line 97
+1964c2072
+< #line 112 "include/linux/pci.h"
+---
+> #line 121 "include/linux/pci.h"
+1966c2074
+< #line 120 "include/linux/pci.h"
+---
+> #line 131 "include/linux/pci.h"
+1968c2076
+< #line 132
+---
+> #line 143
+1970c2078
+< #line 133
+---
+> #line 144
+1972c2080
+< #line 138
+---
+> #line 149
+1974c2082
+< #line 138 "include/linux/pci.h"
+---
+> #line 149 "include/linux/pci.h"
+1980a2089
+>    struct pci_slot *slot ;
+1995a2105,2109
+>    int pm_cap ;
+>    unsigned int pme_support : 5 ;
+>    unsigned int d1_support : 1 ;
+>    unsigned int d2_support : 1 ;
+>    unsigned int no_d1d2 : 1 ;
+2007d2120
+<    unsigned int no_d1d2 : 1 ;
+2025c2138
+< #line 264
+---
+> #line 282
+2027c2140
+< #line 264 "include/linux/pci.h"
+---
+> #line 282 "include/linux/pci.h"
+2033a2147
+>    struct list_head slots ;
+2051c2165
+< #line 309 "include/linux/pci.h"
+---
+> #line 328 "include/linux/pci.h"
+2057c2171
+< #line 328 "include/linux/pci.h"
+---
+> #line 347 "include/linux/pci.h"
+2063c2177
+< #line 341 "include/linux/pci.h"
+---
+> #line 360 "include/linux/pci.h"
+2065c2179
+< #line 361 "include/linux/pci.h"
+---
+> #line 380 "include/linux/pci.h"
+2073c2187
+< #line 382 "include/linux/pci.h"
+---
+> #line 401 "include/linux/pci.h"
+2084a2199
+>    struct pm_ext_ops *pm ;
+2088a2204,2212
+> #line 6 "include/asm/scatterlist.h"
+> struct scatterlist {
+>    unsigned long sg_magic ;
+>    unsigned long page_link ;
+>    unsigned int offset ;
+>    unsigned int length ;
+>    dma_addr_t dma_address ;
+>    unsigned int dma_length ;
+> };
+2099,2109c2223
+< #line 13 "include/asm/mmu.h"
+< struct __anonstruct_mm_context_t_113 {
+<    void *ldt ;
+<    rwlock_t ldtlock ;
+<    int size ;
+<    struct mutex lock ;
+<    void *vdso ;
+< };
+< #line 13 "include/asm/mmu.h"
+< typedef struct __anonstruct_mm_context_t_113 mm_context_t;
+< #line 24 "include/linux/mm_types.h"
+---
+> #line 27 "include/linux/mm_types.h"
+2111,2112c2225,2226
+< #line 36 "include/linux/mm_types.h"
+< struct __anonstruct____missing_field_name_115 {
+---
+> #line 39 "include/linux/mm_types.h"
+> struct __anonstruct____missing_field_name_112 {
+2116,2117c2230,2231
+< #line 36 "include/linux/mm_types.h"
+< union __anonunion____missing_field_name_114 {
+---
+> #line 39 "include/linux/mm_types.h"
+> union __anonunion____missing_field_name_111 {
+2119c2233
+<    struct __anonstruct____missing_field_name_115 __annonCompField11 ;
+---
+>    struct __anonstruct____missing_field_name_112 __annonCompField13 ;
+2121,2122c2235,2236
+< #line 36 "include/linux/mm_types.h"
+< struct __anonstruct____missing_field_name_117 {
+---
+> #line 39 "include/linux/mm_types.h"
+> struct __anonstruct____missing_field_name_114 {
+2126,2128c2240,2242
+< #line 36 "include/linux/mm_types.h"
+< union __anonunion____missing_field_name_116 {
+<    struct __anonstruct____missing_field_name_117 __annonCompField13 ;
+---
+> #line 39 "include/linux/mm_types.h"
+> union __anonunion____missing_field_name_113 {
+>    struct __anonstruct____missing_field_name_114 __annonCompField15 ;
+2133,2134c2247,2248
+< #line 36 "include/linux/mm_types.h"
+< union __anonunion____missing_field_name_118 {
+---
+> #line 39 "include/linux/mm_types.h"
+> union __anonunion____missing_field_name_115 {
+2138c2252
+< #line 36 "include/linux/mm_types.h"
+---
+> #line 39 "include/linux/mm_types.h"
+2142,2144c2256,2258
+<    union __anonunion____missing_field_name_114 __annonCompField12 ;
+<    union __anonunion____missing_field_name_116 __annonCompField14 ;
+<    union __anonunion____missing_field_name_118 __annonCompField15 ;
+---
+>    union __anonunion____missing_field_name_111 __annonCompField14 ;
+>    union __anonunion____missing_field_name_113 __annonCompField16 ;
+>    union __anonunion____missing_field_name_115 __annonCompField17 ;
+2148,2149c2262,2263
+< #line 105 "include/linux/mm_types.h"
+< struct __anonstruct_vm_set_120 {
+---
+> #line 108 "include/linux/mm_types.h"
+> struct __anonstruct_vm_set_117 {
+2154,2156c2268,2270
+< #line 105 "include/linux/mm_types.h"
+< union __anonunion_shared_119 {
+<    struct __anonstruct_vm_set_120 vm_set ;
+---
+> #line 108 "include/linux/mm_types.h"
+> union __anonunion_shared_116 {
+>    struct __anonstruct_vm_set_117 vm_set ;
+2159c2273
+< #line 105
+---
+> #line 108
+2161c2275
+< #line 105
+---
+> #line 108
+2163c2277
+< #line 105
+---
+> #line 108
+2165c2279
+< #line 105 "include/linux/mm_types.h"
+---
+> #line 108 "include/linux/mm_types.h"
+2174c2288
+<    union __anonunion_shared_119 shared ;
+---
+>    union __anonunion_shared_116 shared ;
+2184c2298,2309
+< #line 162
+---
+> #line 165 "include/linux/mm_types.h"
+> struct core_thread {
+>    struct task_struct *task ;
+>    struct core_thread *next ;
+> };
+> #line 170 "include/linux/mm_types.h"
+> struct core_state {
+>    atomic_t nr_threads ;
+>    struct core_thread dumper ;
+>    struct completion startup ;
+> };
+> #line 176
+2186c2311,2313
+< #line 162 "include/linux/mm_types.h"
+---
+> #line 176
+> struct mmu_notifier_mm;
+> #line 176 "include/linux/mm_types.h"
+2202d2328
+<    int core_waiters ;
+2229c2355
+<    unsigned long saved_auxv[2 * ((2 + (14 + 2)) + 1)] ;
+---
+>    unsigned long saved_auxv[2 * ((2 + 18) + 1)] ;
+2236,2237c2362
+<    struct completion *core_startup_done ;
+<    struct completion core_done ;
+---
+>    struct core_state *core_state ;
+2242a2368
+>    struct mmu_notifier_mm *mmu_notifier_mm ;
+2244c2370
+< #line 19 "include/linux/mm.h"
+---
+> #line 20 "include/linux/mm.h"
+2246c2372
+< #line 147 "include/linux/mm.h"
+---
+> #line 153 "include/linux/mm.h"
+2253c2379
+< #line 164 "include/linux/mm.h"
+---
+> #line 170 "include/linux/mm.h"
+2258d2383
+<    unsigned long (*nopfn)(struct vm_area_struct *area , unsigned long address ) ;
+2259a2385,2386
+>    int (*access)(struct vm_area_struct *vma , unsigned long addr , void *buf , int len ,
+>                  int write ) ;
+2264a2392,2417
+> #line 19 "include/asm/dma-mapping.h"
+> struct dma_mapping_ops {
+>    int (*mapping_error)(struct device *dev , dma_addr_t dma_addr ) ;
+>    void *(*alloc_coherent)(struct device *dev , size_t size , dma_addr_t *dma_handle ,
+>                            gfp_t gfp ) ;
+>    void (*free_coherent)(struct device *dev , size_t size , void *vaddr , dma_addr_t dma_handle ) ;
+>    dma_addr_t (*map_single)(struct device *hwdev , phys_addr_t ptr , size_t size ,
+>                             int direction ) ;
+>    void (*unmap_single)(struct device *dev , dma_addr_t addr , size_t size , int direction ) ;
+>    void (*sync_single_for_cpu)(struct device *hwdev , dma_addr_t dma_handle , size_t size ,
+>                                int direction ) ;
+>    void (*sync_single_for_device)(struct device *hwdev , dma_addr_t dma_handle , size_t size ,
+>                                   int direction ) ;
+>    void (*sync_single_range_for_cpu)(struct device *hwdev , dma_addr_t dma_handle ,
+>                                      unsigned long offset , size_t size , int direction ) ;
+>    void (*sync_single_range_for_device)(struct device *hwdev , dma_addr_t dma_handle ,
+>                                         unsigned long offset , size_t size , int direction ) ;
+>    void (*sync_sg_for_cpu)(struct device *hwdev , struct scatterlist *sg , int nelems ,
+>                            int direction ) ;
+>    void (*sync_sg_for_device)(struct device *hwdev , struct scatterlist *sg , int nelems ,
+>                               int direction ) ;
+>    int (*map_sg)(struct device *hwdev , struct scatterlist *sg , int nents , int direction ) ;
+>    void (*unmap_sg)(struct device *hwdev , struct scatterlist *sg , int nents , int direction ) ;
+>    int (*dma_supported)(struct device *hwdev , u64 mask ) ;
+>    int is_phys ;
+> };
+2267,2275c2420,2421
+< #line 23 "include/linux/sem.h"
+< struct sem_undo;
+< #line 120 "include/linux/sem.h"
+< struct sem_undo {
+<    struct sem_undo *proc_next ;
+<    struct sem_undo *id_next ;
+<    int semid ;
+<    short *semadj ;
+< };
+---
+> #line 117 "include/linux/sem.h"
+> struct sem_undo_list;
+2280c2426
+<    struct sem_undo *proc_list ;
+---
+>    struct list_head list_proc ;
+2289c2435
+< struct __anonstruct_sigset_t_122 {
+---
+> struct __anonstruct_sigset_t_119 {
+2293c2439
+< typedef struct __anonstruct_sigset_t_122 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_119 sigset_t;
+2302c2448
+< #line 162 "include/asm/signal.h"
+---
+> #line 165 "include/asm/signal.h"
+2309c2455
+< #line 169 "include/asm/signal.h"
+---
+> #line 172 "include/asm/signal.h"
+2321c2467
+< struct __anonstruct__kill_124 {
+---
+> struct __anonstruct__kill_121 {
+2326c2472
+< struct __anonstruct__timer_125 {
+---
+> struct __anonstruct__timer_122 {
+2334c2480
+< struct __anonstruct__rt_126 {
+---
+> struct __anonstruct__rt_123 {
+2340c2486
+< struct __anonstruct__sigchld_127 {
+---
+> struct __anonstruct__sigchld_124 {
+2348c2494
+< struct __anonstruct__sigfault_128 {
+---
+> struct __anonstruct__sigfault_125 {
+2352c2498
+< struct __anonstruct__sigpoll_129 {
+---
+> struct __anonstruct__sigpoll_126 {
+2357c2503
+< union __anonunion__sifields_123 {
+---
+> union __anonunion__sifields_120 {
+2359,2364c2505,2510
+<    struct __anonstruct__kill_124 _kill ;
+<    struct __anonstruct__timer_125 _timer ;
+<    struct __anonstruct__rt_126 _rt ;
+<    struct __anonstruct__sigchld_127 _sigchld ;
+<    struct __anonstruct__sigfault_128 _sigfault ;
+<    struct __anonstruct__sigpoll_129 _sigpoll ;
+---
+>    struct __anonstruct__kill_121 _kill ;
+>    struct __anonstruct__timer_122 _timer ;
+>    struct __anonstruct__rt_123 _rt ;
+>    struct __anonstruct__sigchld_124 _sigchld ;
+>    struct __anonstruct__sigfault_125 _sigfault ;
+>    struct __anonstruct__sigpoll_126 _sigpoll ;
+2371c2517
+<    union __anonunion__sifields_123 _sifields ;
+---
+>    union __anonunion__sifields_120 _sifields ;
+2387d2532
+<    struct path altroot ;
+2392d2536
+<    int shift ;
+2393a2538
+>    int shift ;
+2397c2542
+< struct __anonstruct_seccomp_t_132 {
+---
+> struct __anonstruct_seccomp_t_129 {
+2401c2546
+< typedef struct __anonstruct_seccomp_t_132 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_129 seccomp_t;
+2424c2569
+< #line 53
+---
+> #line 60
+2429c2574,2575
+<     HRTIMER_CB_IRQSAFE_NO_SOFTIRQ = 3
+---
+>     HRTIMER_CB_IRQSAFE_PERCPU = 3,
+>     HRTIMER_CB_IRQSAFE_UNLOCKED = 4
+2431c2577
+< #line 112 "include/linux/hrtimer.h"
+---
+> #line 122 "include/linux/hrtimer.h"
+2444c2590
+< #line 153 "include/linux/hrtimer.h"
+---
+> #line 163 "include/linux/hrtimer.h"
+2457c2603
+< #line 189 "include/linux/hrtimer.h"
+---
+> #line 199 "include/linux/hrtimer.h"
+2466c2612
+< #line 12 "include/linux/task_io_accounting.h"
+---
+> #line 11 "include/linux/task_io_accounting.h"
+2467a2614,2617
+>    u64 rchar ;
+>    u64 wchar ;
+>    u64 syscr ;
+>    u64 syscw ;
+2479c2629
+< #line 95 "include/linux/sched.h"
+---
+> #line 96 "include/linux/sched.h"
+2481c2631
+< #line 96
+---
+> #line 97
+2487c2637
+< #line 333
+---
+> #line 335
+2501,2502c2651,2652
+< #line 87 "include/linux/aio.h"
+< union __anonunion_ki_obj_134 {
+---
+> #line 86 "include/linux/aio.h"
+> union __anonunion_ki_obj_131 {
+2506c2656
+< #line 87 "include/linux/aio.h"
+---
+> #line 86 "include/linux/aio.h"
+2517c2667
+<    union __anonunion_ki_obj_134 ki_obj ;
+---
+>    union __anonunion_ki_obj_131 ki_obj ;
+2533c2683
+< #line 167 "include/linux/aio.h"
+---
+> #line 166 "include/linux/aio.h"
+2544c2694
+< #line 180 "include/linux/aio.h"
+---
+> #line 179 "include/linux/aio.h"
+2560c2710
+< #line 411 "include/linux/sched.h"
+---
+> #line 413 "include/linux/sched.h"
+2567c2717
+< #line 418 "include/linux/sched.h"
+---
+> #line 420 "include/linux/sched.h"
+2577,2578c2727,2728
+< #line 433 "include/linux/sched.h"
+< union __anonunion____missing_field_name_135 {
+---
+> #line 435 "include/linux/sched.h"
+> union __anonunion____missing_field_name_132 {
+2582,2583c2732,2733
+< #line 433 "include/linux/sched.h"
+< union __anonunion____missing_field_name_136 {
+---
+> #line 435 "include/linux/sched.h"
+> union __anonunion____missing_field_name_133 {
+2587c2737
+< #line 433
+---
+> #line 435
+2589c2739
+< #line 433
+---
+> #line 435
+2591c2741
+< #line 433
+---
+> #line 435
+2593c2743
+< #line 433 "include/linux/sched.h"
+---
+> #line 435 "include/linux/sched.h"
+2601d2750
+<    struct task_struct *group_exit_task ;
+2602a2752
+>    struct task_struct *group_exit_task ;
+2613c2763
+<    union __anonunion____missing_field_name_135 __annonCompField16 ;
+---
+>    union __anonunion____missing_field_name_132 __annonCompField18 ;
+2615c2765
+<    union __anonunion____missing_field_name_136 __annonCompField17 ;
+---
+>    union __anonunion____missing_field_name_133 __annonCompField19 ;
+2635a2786
+>    struct task_io_accounting ioac ;
+2646c2797
+< #line 578 "include/linux/sched.h"
+---
+> #line 581 "include/linux/sched.h"
+2664c2815
+< #line 619
+---
+> #line 622
+2666c2817
+< #line 622 "include/linux/sched.h"
+---
+> #line 625 "include/linux/sched.h"
+2675c2826
+< #line 643 "include/linux/sched.h"
+---
+> #line 646 "include/linux/sched.h"
+2684a2836,2839
+>    struct timespec freepages_start ;
+>    struct timespec freepages_end ;
+>    u64 freepages_delay ;
+>    u32 freepages_count ;
+2686c2841
+< #line 684
+---
+> #line 691
+2693c2848
+< #line 728 "include/linux/sched.h"
+---
+> #line 735 "include/linux/sched.h"
+2700c2855
+< #line 745
+---
+> #line 752
+2710c2865
+< #line 763 "include/linux/sched.h"
+---
+> #line 770 "include/linux/sched.h"
+2730a2886
+>    u64 last_update ;
+2750a2907
+>    char *name ;
+2752c2909
+< #line 843
+---
+> #line 847
+2754c2911
+< #line 846 "include/linux/sched.h"
+---
+> #line 850 "include/linux/sched.h"
+2762c2919
+< #line 883
+---
+> #line 887
+2764c2921
+< #line 888
+---
+> #line 892
+2766c2923
+< #line 891 "include/linux/sched.h"
+---
+> #line 895 "include/linux/sched.h"
+2773c2930
+<    void (*check_preempt_curr)(struct rq *rq , struct task_struct *p ) ;
+---
+>    void (*check_preempt_curr)(struct rq *rq , struct task_struct *p , int sync ) ;
+2788,2789c2945,2946
+<    void (*join_domain)(struct rq *rq ) ;
+<    void (*leave_domain)(struct rq *rq ) ;
+---
+>    void (*rq_online)(struct rq *rq ) ;
+>    void (*rq_offline)(struct rq *rq ) ;
+2796c2953
+< #line 939 "include/linux/sched.h"
+---
+> #line 943 "include/linux/sched.h"
+2801c2958
+< #line 953 "include/linux/sched.h"
+---
+> #line 957 "include/linux/sched.h"
+2844c3001
+< #line 1010
+---
+> #line 1014
+2846c3003
+< #line 1010 "include/linux/sched.h"
+---
+> #line 1014 "include/linux/sched.h"
+2849d3005
+<    unsigned int time_slice ;
+2850a3007
+>    unsigned int time_slice ;
+2857c3014
+< #line 1026
+---
+> #line 1030
+2859c3016
+< #line 1026
+---
+> #line 1030
+2861c3018
+< #line 1026
+---
+> #line 1030
+2863c3020
+< #line 1026 "include/linux/sched.h"
+---
+> #line 1030 "include/linux/sched.h"
+2873a3031
+>    unsigned int rt_priority ;
+2885,2886d3042
+<    struct list_head ptrace_children ;
+<    struct list_head ptrace_list ;
+2902a3059,3060
+>    struct list_head ptraced ;
+>    struct list_head ptrace_entry ;
+2908d3065
+<    unsigned int rt_priority ;
+2939d3095
+<    unsigned int securebits ;
+2940a3097,3098
+>    unsigned int securebits ;
+>    unsigned char jit_keyring ;
+2943d3100
+<    unsigned char jit_keyring ;
+2992d3148
+<    struct held_lock held_locks[48UL] ;
+2993a3150
+>    struct held_lock held_locks[48UL] ;
+3002,3005d3158
+<    u64 rchar ;
+<    u64 wchar ;
+<    u64 syscr ;
+<    u64 syscw ;
+3009,3011c3162
+<    cputime_t acct_stimexpd ;
+<    struct mempolicy *mempolicy ;
+<    short il_next ;
+---
+>    cputime_t acct_timexpd ;
+3020a3172,3173
+>    struct mempolicy *mempolicy ;
+>    short il_next ;
+3039c3192
+< #line 67 "include/asm/uaccess_64.h"
+---
+> #line 95 "include/asm/uaccess.h"
+3065c3218
+< #line 33 "include/linux/agp_backend.h"
+---
+> #line 35 "include/linux/agp_backend.h"
+3070c3223
+< #line 38 "include/linux/agp_backend.h"
+---
+> #line 40 "include/linux/agp_backend.h"
+3075c3228
+< #line 43 "include/linux/agp_backend.h"
+---
+> #line 45 "include/linux/agp_backend.h"
+3089c3242
+< #line 65
+---
+> #line 67
+3094a3248,3249
+> #line 19 "include/linux/irqreturn.h"
+> typedef int irqreturn_t;
+3173c3328
+< #line 50 "include/linux/idr.h"
+---
+> #line 51 "include/linux/idr.h"
+3177a3333
+>    struct rcu_head rcu_head ;
+3179c3335
+< #line 56 "include/linux/idr.h"
+---
+> #line 58 "include/linux/idr.h"
+3191,3192d3346
+< #line 19 "include/linux/irqreturn.h"
+< typedef int irqreturn_t;
+3210c3364
+< enum __anonenum_list_147 {
+---
+> enum __anonenum_list_144 {
+3234c3388
+<    enum __anonenum_list_147 list ;
+---
+>    enum __anonenum_list_144 list ;
+3322c3476
+< enum __anonenum_flags_148 {
+---
+> enum __anonenum_flags_145 {
+3337c3491
+<    enum __anonenum_flags_148 flags ;
+---
+>    enum __anonenum_flags_145 flags ;
+3713a3868,3869
+>    short nodenumber ;
+>    short in_bootmem ;
+3730,3734c3886
+< #line 16 "include/linux/namei.h"
+< enum __anonenum_96___0 {
+<     MAX_NESTED_LINKS___0 = 8
+< } ;
+< #line 202 "include/asm/uaccess_64.h"
+---
+> #line 368 "include/asm/uaccess.h"
+3758c3910
+< enum __anonenum_func_149 {
+---
+> enum __anonenum_func_146 {
+3765c3917
+<    enum __anonenum_func_149 func ;
+---
+>    enum __anonenum_func_146 func ;
+3831,3834d3982
+< #line 16 "include/linux/namei.h"
+< enum __anonenum_96___1 {
+<     MAX_NESTED_LINKS___1 = 8
+< } ;
+3876,3879d4023
+< #line 16 "include/linux/namei.h"
+< enum __anonenum_96___2 {
+<     MAX_NESTED_LINKS___2 = 8
+< } ;
+3912,3915d4055
+< #line 16 "include/linux/namei.h"
+< enum __anonenum_123 {
+<     MAX_NESTED_LINKS___3 = 8
+< } ;
+4050,4053d4189
+< #line 16 "include/linux/namei.h"
+< enum __anonenum_123___0 {
+<     MAX_NESTED_LINKS___4 = 8
+< } ;
+4085c4221
+< #line 144 "include/linux/usb.h"
+---
+> #line 148 "include/linux/usb.h"
+4095a4232,4233
+>    unsigned int needs_altsetting0 : 1 ;
+>    unsigned int needs_binding : 1 ;
+4100c4238
+< #line 203 "include/linux/usb.h"
+---
+> #line 209 "include/linux/usb.h"
+4106c4244
+< #line 255 "include/linux/usb.h"
+---
+> #line 261 "include/linux/usb.h"
+4116c4254
+< #line 286 "include/linux/usb.h"
+---
+> #line 292 "include/linux/usb.h"
+4120c4258
+< #line 293
+---
+> #line 299
+4122c4260
+< #line 293 "include/linux/usb.h"
+---
+> #line 299 "include/linux/usb.h"
+4126c4264
+<    char *bus_name ;
+---
+>    char const   *bus_name ;
+4143c4281
+< #line 343
+---
+> #line 349
+4145c4283
+< #line 408 "include/linux/usb.h"
+---
+> #line 414 "include/linux/usb.h"
+4200c4338
+< #line 1118 "include/linux/usb.h"
+---
+> #line 1125 "include/linux/usb.h"
+4207c4345
+< #line 1125
+---
+> #line 1132
+4209c4347
+< #line 1127 "include/linux/usb.h"
+---
+> #line 1134 "include/linux/usb.h"
+4215c4353
+< #line 1309 "include/linux/usb.h"
+---
+> #line 1316 "include/linux/usb.h"
+4244c4382
+< #line 188 "include/linux/kernel.h"
+---
+> #line 196 "include/linux/kernel.h"
+4256c4394
+< #line 536 "include/linux/pci.h"
+---
+> #line 559 "include/linux/pci.h"
+4259c4397
+< #line 542
+---
+> #line 565
+4262,4265c4400,4401
+< #line 549 "include/linux/pci.h"
+< __inline static int ( __attribute__((__always_inline__)) pci_read_config_byte)(struct pci_dev *dev ,
+<                                                                                int where ,
+<                                                                                u8 *val ) 
+---
+> #line 572 "include/linux/pci.h"
+> __inline static int pci_read_config_byte(struct pci_dev *dev , int where , u8 *val ) 
+4270c4406
+< #line 551
+---
+> #line 574
+4272c4408
+< #line 551
+---
+> #line 574
+4276,4279c4412,4413
+< #line 562 "include/linux/pci.h"
+< __inline static int ( __attribute__((__always_inline__)) pci_write_config_byte)(struct pci_dev *dev ,
+<                                                                                 int where ,
+<                                                                                 u8 val ) 
+---
+> #line 585 "include/linux/pci.h"
+> __inline static int pci_write_config_byte(struct pci_dev *dev , int where , u8 val ) 
+4284c4418
+< #line 564
+---
+> #line 587
+4286c4420
+< #line 564
+---
+> #line 587
+4290c4424
+< #line 576
+---
+> #line 599
+4292c4426
+< #line 588
+---
+> #line 611
+4294c4428
+< #line 589
+---
+> #line 612
+4296c4430
+< #line 616
+---
+> #line 639
+4298c4432
+< #line 617
+---
+> #line 640
+4300c4434
+< #line 618
+---
+> #line 641
+4301a4436,4463
+> #line 20 "include/asm/io.h"
+> __inline static unsigned int readl(void const volatile   *addr ) 
+> { 
+>   unsigned int ret ;
+> 
+>   {
+> #line 20
+>   __asm__  volatile   ("mov"
+>                        "l"
+>                        " %1,%0": "=r" (ret): "m" (*((unsigned int volatile   *)addr)): "memory");
+> #line 20
+>   return (ret);
+> }
+> }
+> #line 28 "include/asm/io.h"
+> __inline static void writel(unsigned int val , void volatile   *addr ) 
+> { 
+> 
+> 
+>   {
+> #line 28
+>   __asm__  volatile   ("mov"
+>                        "l"
+>                        " %0,%1": : "r" (val), "m" (*((unsigned int volatile   *)addr)): "memory");
+> #line 28
+>   return;
+> }
+> }
+4303c4465
+< __inline static unsigned char ( __attribute__((__always_inline__)) inb)(unsigned short port ) 
+---
+> __inline static unsigned char inb(unsigned short port ) 
+4321,4322c4483
+< __inline static void ( __attribute__((__always_inline__)) outb)(unsigned char value ,
+<                                                                 unsigned short port ) 
+---
+> __inline static void outb(unsigned char value , unsigned short port ) 
+4339,4360d4499
+< #line 224 "include/asm/io_64.h"
+< __inline static __u32 ( __attribute__((__always_inline__)) __readl)(void const volatile   *addr ) 
+< { 
+< 
+< 
+<   {
+< #line 226
+<   return (*((__u32 volatile   *)addr));
+< }
+< }
+< #line 249 "include/asm/io_64.h"
+< __inline static void ( __attribute__((__always_inline__)) __writel)(__u32 b , void volatile   *addr ) 
+< { 
+< 
+< 
+<   {
+< #line 251
+<   *((__u32 volatile   *)addr) = b;
+< #line 252
+<   return;
+< }
+< }
+4443,4444c4582,4583
+<   __u32 tmp ;
+<   __u32 tmp___0 ;
+---
+>   unsigned int tmp ;
+>   unsigned int tmp___0 ;
+4452c4591
+<     tmp = __readl((dev_priv->mmio_map)->handle + 24596);
+---
+>     tmp = readl((dev_priv->mmio_map)->handle + 24596);
+4457c4596
+<     tmp___0 = __readl((dev_priv->mmio_map)->handle + 24600);
+---
+>     tmp___0 = readl((dev_priv->mmio_map)->handle + 24600);
+4506c4645
+<     *(array + i) = __readl((dev_priv->mmio_map)->handle + (reg + (unsigned long )(i << 2)));
+---
+>     *(array + i) = readl((dev_priv->mmio_map)->handle + (reg + (unsigned long )(i << 2)));
+4557c4696
+<     __writel(*(array + i), (dev_priv->mmio_map)->handle + (reg + (unsigned long )(i << 2)));
+---
+>     writel(*(array + i), (dev_priv->mmio_map)->handle + (reg + (unsigned long )(i << 2)));
+4932c5071
+<   dev_priv->saveDSPARB = __readl((dev_priv->mmio_map)->handle + 458800);
+---
+>   dev_priv->saveDSPARB = readl((dev_priv->mmio_map)->handle + 458800);
+4934c5073
+<   dev_priv->savePIPEACONF = __readl((dev_priv->mmio_map)->handle + 458760);
+---
+>   dev_priv->savePIPEACONF = readl((dev_priv->mmio_map)->handle + 458760);
+4936c5075
+<   dev_priv->savePIPEASRC = __readl((dev_priv->mmio_map)->handle + 393244);
+---
+>   dev_priv->savePIPEASRC = readl((dev_priv->mmio_map)->handle + 393244);
+4938c5077
+<   dev_priv->saveFPA0 = __readl((dev_priv->mmio_map)->handle + 24640);
+---
+>   dev_priv->saveFPA0 = readl((dev_priv->mmio_map)->handle + 24640);
+4940c5079
+<   dev_priv->saveFPA1 = __readl((dev_priv->mmio_map)->handle + 24644);
+---
+>   dev_priv->saveFPA1 = readl((dev_priv->mmio_map)->handle + 24644);
+4942c5081
+<   dev_priv->saveDPLL_A = __readl((dev_priv->mmio_map)->handle + 24596);
+---
+>   dev_priv->saveDPLL_A = readl((dev_priv->mmio_map)->handle + 24596);
+4946c5085
+<     dev_priv->saveDPLL_A_MD = __readl((dev_priv->mmio_map)->handle + 24604);
+---
+>     dev_priv->saveDPLL_A_MD = readl((dev_priv->mmio_map)->handle + 24604);
+4951c5090
+<   dev_priv->saveHTOTAL_A = __readl((dev_priv->mmio_map)->handle + 393216);
+---
+>   dev_priv->saveHTOTAL_A = readl((dev_priv->mmio_map)->handle + 393216);
+4953c5092
+<   dev_priv->saveHBLANK_A = __readl((dev_priv->mmio_map)->handle + 393220);
+---
+>   dev_priv->saveHBLANK_A = readl((dev_priv->mmio_map)->handle + 393220);
+4955c5094
+<   dev_priv->saveHSYNC_A = __readl((dev_priv->mmio_map)->handle + 393224);
+---
+>   dev_priv->saveHSYNC_A = readl((dev_priv->mmio_map)->handle + 393224);
+4957c5096
+<   dev_priv->saveVTOTAL_A = __readl((dev_priv->mmio_map)->handle + 393228);
+---
+>   dev_priv->saveVTOTAL_A = readl((dev_priv->mmio_map)->handle + 393228);
+4959c5098
+<   dev_priv->saveVBLANK_A = __readl((dev_priv->mmio_map)->handle + 393232);
+---
+>   dev_priv->saveVBLANK_A = readl((dev_priv->mmio_map)->handle + 393232);
+4961c5100
+<   dev_priv->saveVSYNC_A = __readl((dev_priv->mmio_map)->handle + 393236);
+---
+>   dev_priv->saveVSYNC_A = readl((dev_priv->mmio_map)->handle + 393236);
+4963c5102
+<   dev_priv->saveBCLRPAT_A = __readl((dev_priv->mmio_map)->handle + 393248);
+---
+>   dev_priv->saveBCLRPAT_A = readl((dev_priv->mmio_map)->handle + 393248);
+4965c5104
+<   dev_priv->saveDSPACNTR = __readl((dev_priv->mmio_map)->handle + 459136);
+---
+>   dev_priv->saveDSPACNTR = readl((dev_priv->mmio_map)->handle + 459136);
+4967c5106
+<   dev_priv->saveDSPASTRIDE = __readl((dev_priv->mmio_map)->handle + 459144);
+---
+>   dev_priv->saveDSPASTRIDE = readl((dev_priv->mmio_map)->handle + 459144);
+4969c5108
+<   dev_priv->saveDSPASIZE = __readl((dev_priv->mmio_map)->handle + 459152);
+---
+>   dev_priv->saveDSPASIZE = readl((dev_priv->mmio_map)->handle + 459152);
+4971c5110
+<   dev_priv->saveDSPAPOS = __readl((dev_priv->mmio_map)->handle + 459148);
+---
+>   dev_priv->saveDSPAPOS = readl((dev_priv->mmio_map)->handle + 459148);
+4973c5112
+<   dev_priv->saveDSPABASE = __readl((dev_priv->mmio_map)->handle + 459140);
+---
+>   dev_priv->saveDSPABASE = readl((dev_priv->mmio_map)->handle + 459140);
+4977c5116
+<     dev_priv->saveDSPASURF = __readl((dev_priv->mmio_map)->handle + 459164);
+---
+>     dev_priv->saveDSPASURF = readl((dev_priv->mmio_map)->handle + 459164);
+4979c5118
+<     dev_priv->saveDSPATILEOFF = __readl((dev_priv->mmio_map)->handle + 459172);
+---
+>     dev_priv->saveDSPATILEOFF = readl((dev_priv->mmio_map)->handle + 459172);
+4986c5125
+<   dev_priv->savePIPEASTAT = __readl((dev_priv->mmio_map)->handle + 458788);
+---
+>   dev_priv->savePIPEASTAT = readl((dev_priv->mmio_map)->handle + 458788);
+4988c5127
+<   dev_priv->savePIPEBCONF = __readl((dev_priv->mmio_map)->handle + 462856);
+---
+>   dev_priv->savePIPEBCONF = readl((dev_priv->mmio_map)->handle + 462856);
+4990c5129
+<   dev_priv->savePIPEBSRC = __readl((dev_priv->mmio_map)->handle + 397340);
+---
+>   dev_priv->savePIPEBSRC = readl((dev_priv->mmio_map)->handle + 397340);
+4992c5131
+<   dev_priv->saveFPB0 = __readl((dev_priv->mmio_map)->handle + 24648);
+---
+>   dev_priv->saveFPB0 = readl((dev_priv->mmio_map)->handle + 24648);
+4994c5133
+<   dev_priv->saveFPB1 = __readl((dev_priv->mmio_map)->handle + 24652);
+---
+>   dev_priv->saveFPB1 = readl((dev_priv->mmio_map)->handle + 24652);
+4996c5135
+<   dev_priv->saveDPLL_B = __readl((dev_priv->mmio_map)->handle + 24600);
+---
+>   dev_priv->saveDPLL_B = readl((dev_priv->mmio_map)->handle + 24600);
+5000c5139
+<     dev_priv->saveDPLL_B_MD = __readl((dev_priv->mmio_map)->handle + 24608);
+---
+>     dev_priv->saveDPLL_B_MD = readl((dev_priv->mmio_map)->handle + 24608);
+5005c5144
+<   dev_priv->saveHTOTAL_B = __readl((dev_priv->mmio_map)->handle + 397312);
+---
+>   dev_priv->saveHTOTAL_B = readl((dev_priv->mmio_map)->handle + 397312);
+5007c5146
+<   dev_priv->saveHBLANK_B = __readl((dev_priv->mmio_map)->handle + 397316);
+---
+>   dev_priv->saveHBLANK_B = readl((dev_priv->mmio_map)->handle + 397316);
+5009c5148
+<   dev_priv->saveHSYNC_B = __readl((dev_priv->mmio_map)->handle + 397320);
+---
+>   dev_priv->saveHSYNC_B = readl((dev_priv->mmio_map)->handle + 397320);
+5011c5150
+<   dev_priv->saveVTOTAL_B = __readl((dev_priv->mmio_map)->handle + 397324);
+---
+>   dev_priv->saveVTOTAL_B = readl((dev_priv->mmio_map)->handle + 397324);
+5013c5152
+<   dev_priv->saveVBLANK_B = __readl((dev_priv->mmio_map)->handle + 397328);
+---
+>   dev_priv->saveVBLANK_B = readl((dev_priv->mmio_map)->handle + 397328);
+5015c5154
+<   dev_priv->saveVSYNC_B = __readl((dev_priv->mmio_map)->handle + 397332);
+---
+>   dev_priv->saveVSYNC_B = readl((dev_priv->mmio_map)->handle + 397332);
+5017c5156
+<   dev_priv->saveBCLRPAT_A = __readl((dev_priv->mmio_map)->handle + 393248);
+---
+>   dev_priv->saveBCLRPAT_A = readl((dev_priv->mmio_map)->handle + 393248);
+5019c5158
+<   dev_priv->saveDSPBCNTR = __readl((dev_priv->mmio_map)->handle + 463232);
+---
+>   dev_priv->saveDSPBCNTR = readl((dev_priv->mmio_map)->handle + 463232);
+5021c5160
+<   dev_priv->saveDSPBSTRIDE = __readl((dev_priv->mmio_map)->handle + 463240);
+---
+>   dev_priv->saveDSPBSTRIDE = readl((dev_priv->mmio_map)->handle + 463240);
+5023c5162
+<   dev_priv->saveDSPBSIZE = __readl((dev_priv->mmio_map)->handle + 463248);
+---
+>   dev_priv->saveDSPBSIZE = readl((dev_priv->mmio_map)->handle + 463248);
+5025c5164
+<   dev_priv->saveDSPBPOS = __readl((dev_priv->mmio_map)->handle + 463244);
+---
+>   dev_priv->saveDSPBPOS = readl((dev_priv->mmio_map)->handle + 463244);
+5027c5166
+<   dev_priv->saveDSPBBASE = __readl((dev_priv->mmio_map)->handle + 463236);
+---
+>   dev_priv->saveDSPBBASE = readl((dev_priv->mmio_map)->handle + 463236);
+5031c5170
+<     dev_priv->saveDSPBSURF = __readl((dev_priv->mmio_map)->handle + 463260);
+---
+>     dev_priv->saveDSPBSURF = readl((dev_priv->mmio_map)->handle + 463260);
+5033c5172
+<     dev_priv->saveDSPBTILEOFF = __readl((dev_priv->mmio_map)->handle + 463268);
+---
+>     dev_priv->saveDSPBTILEOFF = readl((dev_priv->mmio_map)->handle + 463268);
+5040c5179
+<   dev_priv->savePIPEBSTAT = __readl((dev_priv->mmio_map)->handle + 462884);
+---
+>   dev_priv->savePIPEBSTAT = readl((dev_priv->mmio_map)->handle + 462884);
+5042c5181
+<   dev_priv->saveADPA = __readl((dev_priv->mmio_map)->handle + 397568);
+---
+>   dev_priv->saveADPA = readl((dev_priv->mmio_map)->handle + 397568);
+5044c5183
+<   dev_priv->savePP_CONTROL = __readl((dev_priv->mmio_map)->handle + 397828);
+---
+>   dev_priv->savePP_CONTROL = readl((dev_priv->mmio_map)->handle + 397828);
+5046c5185
+<   dev_priv->savePFIT_PGM_RATIOS = __readl((dev_priv->mmio_map)->handle + 397876);
+---
+>   dev_priv->savePFIT_PGM_RATIOS = readl((dev_priv->mmio_map)->handle + 397876);
+5048c5187
+<   dev_priv->saveBLC_PWM_CTL = __readl((dev_priv->mmio_map)->handle + 397908);
+---
+>   dev_priv->saveBLC_PWM_CTL = readl((dev_priv->mmio_map)->handle + 397908);
+5052c5191
+<     dev_priv->saveBLC_PWM_CTL2 = __readl((dev_priv->mmio_map)->handle + 397904);
+---
+>     dev_priv->saveBLC_PWM_CTL2 = readl((dev_priv->mmio_map)->handle + 397904);
+5059c5198
+<     dev_priv->saveLVDS = __readl((dev_priv->mmio_map)->handle + 397696);
+---
+>     dev_priv->saveLVDS = readl((dev_priv->mmio_map)->handle + 397696);
+5066c5205
+<     dev_priv->savePFIT_CONTROL = __readl((dev_priv->mmio_map)->handle + 397872);
+---
+>     dev_priv->savePFIT_CONTROL = readl((dev_priv->mmio_map)->handle + 397872);
+5071c5210
+<   dev_priv->saveLVDSPP_ON = __readl((dev_priv->mmio_map)->handle + 397832);
+---
+>   dev_priv->saveLVDSPP_ON = readl((dev_priv->mmio_map)->handle + 397832);
+5073c5212
+<   dev_priv->saveLVDSPP_OFF = __readl((dev_priv->mmio_map)->handle + 397836);
+---
+>   dev_priv->saveLVDSPP_OFF = readl((dev_priv->mmio_map)->handle + 397836);
+5075c5214
+<   dev_priv->savePP_CYCLE = __readl((dev_priv->mmio_map)->handle + 397840);
+---
+>   dev_priv->savePP_CYCLE = readl((dev_priv->mmio_map)->handle + 397840);
+5077c5216
+<   dev_priv->saveFBC_CFB_BASE = __readl((dev_priv->mmio_map)->handle + 12800);
+---
+>   dev_priv->saveFBC_CFB_BASE = readl((dev_priv->mmio_map)->handle + 12800);
+5079c5218
+<   dev_priv->saveFBC_LL_BASE = __readl((dev_priv->mmio_map)->handle + 12804);
+---
+>   dev_priv->saveFBC_LL_BASE = readl((dev_priv->mmio_map)->handle + 12804);
+5081c5220
+<   dev_priv->saveFBC_CONTROL2 = __readl((dev_priv->mmio_map)->handle + 12820);
+---
+>   dev_priv->saveFBC_CONTROL2 = readl((dev_priv->mmio_map)->handle + 12820);
+5083c5222
+<   dev_priv->saveFBC_CONTROL = __readl((dev_priv->mmio_map)->handle + 12808);
+---
+>   dev_priv->saveFBC_CONTROL = readl((dev_priv->mmio_map)->handle + 12808);
+5085c5224
+<   dev_priv->saveIIR = __readl((dev_priv->mmio_map)->handle + 8356);
+---
+>   dev_priv->saveIIR = readl((dev_priv->mmio_map)->handle + 8356);
+5087c5226
+<   dev_priv->saveIER = __readl((dev_priv->mmio_map)->handle + 8352);
+---
+>   dev_priv->saveIER = readl((dev_priv->mmio_map)->handle + 8352);
+5089c5228
+<   dev_priv->saveIMR = __readl((dev_priv->mmio_map)->handle + 8360);
+---
+>   dev_priv->saveIMR = readl((dev_priv->mmio_map)->handle + 8360);
+5091c5230
+<   dev_priv->saveVCLK_DIVISOR_VGA0 = __readl((dev_priv->mmio_map)->handle + 24576);
+---
+>   dev_priv->saveVCLK_DIVISOR_VGA0 = readl((dev_priv->mmio_map)->handle + 24576);
+5093c5232
+<   dev_priv->saveVCLK_DIVISOR_VGA1 = __readl((dev_priv->mmio_map)->handle + 24580);
+---
+>   dev_priv->saveVCLK_DIVISOR_VGA1 = readl((dev_priv->mmio_map)->handle + 24580);
+5095c5234
+<   dev_priv->saveVCLK_POST_DIV = __readl((dev_priv->mmio_map)->handle + 24592);
+---
+>   dev_priv->saveVCLK_POST_DIV = readl((dev_priv->mmio_map)->handle + 24592);
+5097c5236
+<   dev_priv->saveVGACNTRL = __readl((dev_priv->mmio_map)->handle + 463872);
+---
+>   dev_priv->saveVGACNTRL = readl((dev_priv->mmio_map)->handle + 463872);
+5099c5238
+<   dev_priv->saveD_STATE = __readl((dev_priv->mmio_map)->handle + 24836);
+---
+>   dev_priv->saveD_STATE = readl((dev_priv->mmio_map)->handle + 24836);
+5101c5240
+<   dev_priv->saveDSPCLK_GATE_D = __readl((dev_priv->mmio_map)->handle + 25088);
+---
+>   dev_priv->saveDSPCLK_GATE_D = readl((dev_priv->mmio_map)->handle + 25088);
+5103c5242
+<   dev_priv->saveCACHE_MODE_0 = __readl((dev_priv->mmio_map)->handle + 8480);
+---
+>   dev_priv->saveCACHE_MODE_0 = readl((dev_priv->mmio_map)->handle + 8480);
+5105c5244
+<   dev_priv->saveMI_ARB_STATE = __readl((dev_priv->mmio_map)->handle + 8420);
+---
+>   dev_priv->saveMI_ARB_STATE = readl((dev_priv->mmio_map)->handle + 8420);
+5118c5257
+<     dev_priv->saveSWF0[i] = __readl((dev_priv->mmio_map)->handle + (463888 + (i << 2)));
+---
+>     dev_priv->saveSWF0[i] = readl((dev_priv->mmio_map)->handle + (463888 + (i << 2)));
+5120c5259
+<     dev_priv->saveSWF1[i] = __readl((dev_priv->mmio_map)->handle + (459792 + (i << 2)));
+---
+>     dev_priv->saveSWF1[i] = readl((dev_priv->mmio_map)->handle + (459792 + (i << 2)));
+5136c5275
+<     dev_priv->saveSWF2[i] = __readl((dev_priv->mmio_map)->handle + (467988 + (i << 2)));
+---
+>     dev_priv->saveSWF2[i] = readl((dev_priv->mmio_map)->handle + (467988 + (i << 2)));
+5161,5162c5300,5301
+<   __u32 tmp___0 ;
+<   __u32 tmp___1 ;
+---
+>   unsigned int tmp___0 ;
+>   unsigned int tmp___1 ;
+5185c5324
+<   __writel(dev_priv->saveDSPARB, (dev_priv->mmio_map)->handle + 458800);
+---
+>   writel(dev_priv->saveDSPARB, (dev_priv->mmio_map)->handle + 458800);
+5189c5328
+<     __writel(dev_priv->saveDPLL_A & (unsigned int )(~ (1 << 31)), (dev_priv->mmio_map)->handle + 24596);
+---
+>     writel(dev_priv->saveDPLL_A & (unsigned int )(~ (1 << 31)), (dev_priv->mmio_map)->handle + 24596);
+5202c5341
+<   __writel(dev_priv->saveFPA0, (dev_priv->mmio_map)->handle + 24640);
+---
+>   writel(dev_priv->saveFPA0, (dev_priv->mmio_map)->handle + 24640);
+5204c5343
+<   __writel(dev_priv->saveFPA1, (dev_priv->mmio_map)->handle + 24644);
+---
+>   writel(dev_priv->saveFPA1, (dev_priv->mmio_map)->handle + 24644);
+5206c5345
+<   __writel(dev_priv->saveDPLL_A, (dev_priv->mmio_map)->handle + 24596);
+---
+>   writel(dev_priv->saveDPLL_A, (dev_priv->mmio_map)->handle + 24596);
+5218c5357
+<     __writel(dev_priv->saveDPLL_A_MD, (dev_priv->mmio_map)->handle + 24604);
+---
+>     writel(dev_priv->saveDPLL_A_MD, (dev_priv->mmio_map)->handle + 24604);
+5231c5370
+<   __writel(dev_priv->saveHTOTAL_A, (dev_priv->mmio_map)->handle + 393216);
+---
+>   writel(dev_priv->saveHTOTAL_A, (dev_priv->mmio_map)->handle + 393216);
+5233c5372
+<   __writel(dev_priv->saveHBLANK_A, (dev_priv->mmio_map)->handle + 393220);
+---
+>   writel(dev_priv->saveHBLANK_A, (dev_priv->mmio_map)->handle + 393220);
+5235c5374
+<   __writel(dev_priv->saveHSYNC_A, (dev_priv->mmio_map)->handle + 393224);
+---
+>   writel(dev_priv->saveHSYNC_A, (dev_priv->mmio_map)->handle + 393224);
+5237c5376
+<   __writel(dev_priv->saveVTOTAL_A, (dev_priv->mmio_map)->handle + 393228);
+---
+>   writel(dev_priv->saveVTOTAL_A, (dev_priv->mmio_map)->handle + 393228);
+5239c5378
+<   __writel(dev_priv->saveVBLANK_A, (dev_priv->mmio_map)->handle + 393232);
+---
+>   writel(dev_priv->saveVBLANK_A, (dev_priv->mmio_map)->handle + 393232);
+5241c5380
+<   __writel(dev_priv->saveVSYNC_A, (dev_priv->mmio_map)->handle + 393236);
+---
+>   writel(dev_priv->saveVSYNC_A, (dev_priv->mmio_map)->handle + 393236);
+5243c5382
+<   __writel(dev_priv->saveBCLRPAT_A, (dev_priv->mmio_map)->handle + 393248);
+---
+>   writel(dev_priv->saveBCLRPAT_A, (dev_priv->mmio_map)->handle + 393248);
+5245c5384
+<   __writel(dev_priv->saveDSPASIZE, (dev_priv->mmio_map)->handle + 459152);
+---
+>   writel(dev_priv->saveDSPASIZE, (dev_priv->mmio_map)->handle + 459152);
+5247c5386
+<   __writel(dev_priv->saveDSPAPOS, (dev_priv->mmio_map)->handle + 459148);
+---
+>   writel(dev_priv->saveDSPAPOS, (dev_priv->mmio_map)->handle + 459148);
+5249c5388
+<   __writel(dev_priv->savePIPEASRC, (dev_priv->mmio_map)->handle + 393244);
+---
+>   writel(dev_priv->savePIPEASRC, (dev_priv->mmio_map)->handle + 393244);
+5251c5390
+<   __writel(dev_priv->saveDSPABASE, (dev_priv->mmio_map)->handle + 459140);
+---
+>   writel(dev_priv->saveDSPABASE, (dev_priv->mmio_map)->handle + 459140);
+5253c5392
+<   __writel(dev_priv->saveDSPASTRIDE, (dev_priv->mmio_map)->handle + 459144);
+---
+>   writel(dev_priv->saveDSPASTRIDE, (dev_priv->mmio_map)->handle + 459144);
+5257c5396
+<     __writel(dev_priv->saveDSPASURF, (dev_priv->mmio_map)->handle + 459164);
+---
+>     writel(dev_priv->saveDSPASURF, (dev_priv->mmio_map)->handle + 459164);
+5259c5398
+<     __writel(dev_priv->saveDSPATILEOFF, (dev_priv->mmio_map)->handle + 459172);
+---
+>     writel(dev_priv->saveDSPATILEOFF, (dev_priv->mmio_map)->handle + 459172);
+5264c5403
+<   __writel(dev_priv->savePIPEACONF, (dev_priv->mmio_map)->handle + 458760);
+---
+>   writel(dev_priv->savePIPEACONF, (dev_priv->mmio_map)->handle + 458760);
+5268c5407
+<   __writel(dev_priv->saveDSPACNTR, (dev_priv->mmio_map)->handle + 459136);
+---
+>   writel(dev_priv->saveDSPACNTR, (dev_priv->mmio_map)->handle + 459136);
+5270c5409
+<   tmp___0 = __readl((dev_priv->mmio_map)->handle + 459140);
+---
+>   tmp___0 = readl((dev_priv->mmio_map)->handle + 459140);
+5272c5411
+<   __writel(tmp___0, (dev_priv->mmio_map)->handle + 459140);
+---
+>   writel(tmp___0, (dev_priv->mmio_map)->handle + 459140);
+5276c5415
+<     __writel(dev_priv->saveDPLL_B & (unsigned int )(~ (1 << 31)), (dev_priv->mmio_map)->handle + 24600);
+---
+>     writel(dev_priv->saveDPLL_B & (unsigned int )(~ (1 << 31)), (dev_priv->mmio_map)->handle + 24600);
+5289c5428
+<   __writel(dev_priv->saveFPB0, (dev_priv->mmio_map)->handle + 24648);
+---
+>   writel(dev_priv->saveFPB0, (dev_priv->mmio_map)->handle + 24648);
+5291c5430
+<   __writel(dev_priv->saveFPB1, (dev_priv->mmio_map)->handle + 24652);
+---
+>   writel(dev_priv->saveFPB1, (dev_priv->mmio_map)->handle + 24652);
+5293c5432
+<   __writel(dev_priv->saveDPLL_B, (dev_priv->mmio_map)->handle + 24600);
+---
+>   writel(dev_priv->saveDPLL_B, (dev_priv->mmio_map)->handle + 24600);
+5305c5444
+<     __writel(dev_priv->saveDPLL_B_MD, (dev_priv->mmio_map)->handle + 24608);
+---
+>     writel(dev_priv->saveDPLL_B_MD, (dev_priv->mmio_map)->handle + 24608);
+5318c5457
+<   __writel(dev_priv->saveHTOTAL_B, (dev_priv->mmio_map)->handle + 397312);
+---
+>   writel(dev_priv->saveHTOTAL_B, (dev_priv->mmio_map)->handle + 397312);
+5320c5459
+<   __writel(dev_priv->saveHBLANK_B, (dev_priv->mmio_map)->handle + 397316);
+---
+>   writel(dev_priv->saveHBLANK_B, (dev_priv->mmio_map)->handle + 397316);
+5322c5461
+<   __writel(dev_priv->saveHSYNC_B, (dev_priv->mmio_map)->handle + 397320);
+---
+>   writel(dev_priv->saveHSYNC_B, (dev_priv->mmio_map)->handle + 397320);
+5324c5463
+<   __writel(dev_priv->saveVTOTAL_B, (dev_priv->mmio_map)->handle + 397324);
+---
+>   writel(dev_priv->saveVTOTAL_B, (dev_priv->mmio_map)->handle + 397324);
+5326c5465
+<   __writel(dev_priv->saveVBLANK_B, (dev_priv->mmio_map)->handle + 397328);
+---
+>   writel(dev_priv->saveVBLANK_B, (dev_priv->mmio_map)->handle + 397328);
+5328c5467
+<   __writel(dev_priv->saveVSYNC_B, (dev_priv->mmio_map)->handle + 397332);
+---
+>   writel(dev_priv->saveVSYNC_B, (dev_priv->mmio_map)->handle + 397332);
+5330c5469
+<   __writel(dev_priv->saveBCLRPAT_B, (dev_priv->mmio_map)->handle + 397344);
+---
+>   writel(dev_priv->saveBCLRPAT_B, (dev_priv->mmio_map)->handle + 397344);
+5332c5471
+<   __writel(dev_priv->saveDSPBSIZE, (dev_priv->mmio_map)->handle + 463248);
+---
+>   writel(dev_priv->saveDSPBSIZE, (dev_priv->mmio_map)->handle + 463248);
+5334c5473
+<   __writel(dev_priv->saveDSPBPOS, (dev_priv->mmio_map)->handle + 463244);
+---
+>   writel(dev_priv->saveDSPBPOS, (dev_priv->mmio_map)->handle + 463244);
+5336c5475
+<   __writel(dev_priv->savePIPEBSRC, (dev_priv->mmio_map)->handle + 397340);
+---
+>   writel(dev_priv->savePIPEBSRC, (dev_priv->mmio_map)->handle + 397340);
+5338c5477
+<   __writel(dev_priv->saveDSPBBASE, (dev_priv->mmio_map)->handle + 463236);
+---
+>   writel(dev_priv->saveDSPBBASE, (dev_priv->mmio_map)->handle + 463236);
+5340c5479
+<   __writel(dev_priv->saveDSPBSTRIDE, (dev_priv->mmio_map)->handle + 463240);
+---
+>   writel(dev_priv->saveDSPBSTRIDE, (dev_priv->mmio_map)->handle + 463240);
+5344c5483
+<     __writel(dev_priv->saveDSPBSURF, (dev_priv->mmio_map)->handle + 463260);
+---
+>     writel(dev_priv->saveDSPBSURF, (dev_priv->mmio_map)->handle + 463260);
+5346c5485
+<     __writel(dev_priv->saveDSPBTILEOFF, (dev_priv->mmio_map)->handle + 463268);
+---
+>     writel(dev_priv->saveDSPBTILEOFF, (dev_priv->mmio_map)->handle + 463268);
+5351c5490
+<   __writel(dev_priv->savePIPEBCONF, (dev_priv->mmio_map)->handle + 462856);
+---
+>   writel(dev_priv->savePIPEBCONF, (dev_priv->mmio_map)->handle + 462856);
+5355c5494
+<   __writel(dev_priv->saveDSPBCNTR, (dev_priv->mmio_map)->handle + 463232);
+---
+>   writel(dev_priv->saveDSPBCNTR, (dev_priv->mmio_map)->handle + 463232);
+5357c5496
+<   tmp___1 = __readl((dev_priv->mmio_map)->handle + 463236);
+---
+>   tmp___1 = readl((dev_priv->mmio_map)->handle + 463236);
+5359c5498
+<   __writel(tmp___1, (dev_priv->mmio_map)->handle + 463236);
+---
+>   writel(tmp___1, (dev_priv->mmio_map)->handle + 463236);
+5361c5500
+<   __writel(dev_priv->saveADPA, (dev_priv->mmio_map)->handle + 397568);
+---
+>   writel(dev_priv->saveADPA, (dev_priv->mmio_map)->handle + 397568);
+5365c5504
+<     __writel(dev_priv->saveBLC_PWM_CTL2, (dev_priv->mmio_map)->handle + 397904);
+---
+>     writel(dev_priv->saveBLC_PWM_CTL2, (dev_priv->mmio_map)->handle + 397904);
+5372c5511
+<     __writel(dev_priv->saveLVDS, (dev_priv->mmio_map)->handle + 397696);
+---
+>     writel(dev_priv->saveLVDS, (dev_priv->mmio_map)->handle + 397696);
+5379c5518
+<     __writel(dev_priv->savePFIT_CONTROL, (dev_priv->mmio_map)->handle + 397872);
+---
+>     writel(dev_priv->savePFIT_CONTROL, (dev_priv->mmio_map)->handle + 397872);
+5384c5523
+<   __writel(dev_priv->savePFIT_PGM_RATIOS, (dev_priv->mmio_map)->handle + 397876);
+---
+>   writel(dev_priv->savePFIT_PGM_RATIOS, (dev_priv->mmio_map)->handle + 397876);
+5386c5525
+<   __writel(dev_priv->saveBLC_PWM_CTL, (dev_priv->mmio_map)->handle + 397908);
+---
+>   writel(dev_priv->saveBLC_PWM_CTL, (dev_priv->mmio_map)->handle + 397908);
+5388c5527
+<   __writel(dev_priv->saveLVDSPP_ON, (dev_priv->mmio_map)->handle + 397832);
+---
+>   writel(dev_priv->saveLVDSPP_ON, (dev_priv->mmio_map)->handle + 397832);
+5390c5529
+<   __writel(dev_priv->saveLVDSPP_OFF, (dev_priv->mmio_map)->handle + 397836);
+---
+>   writel(dev_priv->saveLVDSPP_OFF, (dev_priv->mmio_map)->handle + 397836);
+5392c5531
+<   __writel(dev_priv->savePP_CYCLE, (dev_priv->mmio_map)->handle + 397840);
+---
+>   writel(dev_priv->savePP_CYCLE, (dev_priv->mmio_map)->handle + 397840);
+5394c5533
+<   __writel(dev_priv->savePP_CONTROL, (dev_priv->mmio_map)->handle + 397828);
+---
+>   writel(dev_priv->savePP_CONTROL, (dev_priv->mmio_map)->handle + 397828);
+5396c5535
+<   __writel(dev_priv->saveFBC_CFB_BASE, (dev_priv->mmio_map)->handle + 12800);
+---
+>   writel(dev_priv->saveFBC_CFB_BASE, (dev_priv->mmio_map)->handle + 12800);
+5398c5537
+<   __writel(dev_priv->saveFBC_LL_BASE, (dev_priv->mmio_map)->handle + 12804);
+---
+>   writel(dev_priv->saveFBC_LL_BASE, (dev_priv->mmio_map)->handle + 12804);
+5400c5539
+<   __writel(dev_priv->saveFBC_CONTROL2, (dev_priv->mmio_map)->handle + 12820);
+---
+>   writel(dev_priv->saveFBC_CONTROL2, (dev_priv->mmio_map)->handle + 12820);
+5402c5541
+<   __writel(dev_priv->saveFBC_CONTROL, (dev_priv->mmio_map)->handle + 12808);
+---
+>   writel(dev_priv->saveFBC_CONTROL, (dev_priv->mmio_map)->handle + 12808);
+5404c5543
+<   __writel(dev_priv->saveVGACNTRL, (dev_priv->mmio_map)->handle + 463872);
+---
+>   writel(dev_priv->saveVGACNTRL, (dev_priv->mmio_map)->handle + 463872);
+5406c5545
+<   __writel(dev_priv->saveVCLK_DIVISOR_VGA0, (dev_priv->mmio_map)->handle + 24576);
+---
+>   writel(dev_priv->saveVCLK_DIVISOR_VGA0, (dev_priv->mmio_map)->handle + 24576);
+5408c5547
+<   __writel(dev_priv->saveVCLK_DIVISOR_VGA1, (dev_priv->mmio_map)->handle + 24580);
+---
+>   writel(dev_priv->saveVCLK_DIVISOR_VGA1, (dev_priv->mmio_map)->handle + 24580);
+5410c5549
+<   __writel(dev_priv->saveVCLK_POST_DIV, (dev_priv->mmio_map)->handle + 24592);
+---
+>   writel(dev_priv->saveVCLK_POST_DIV, (dev_priv->mmio_map)->handle + 24592);
+5420c5559
+<   __writel(dev_priv->saveD_STATE, (dev_priv->mmio_map)->handle + 24836);
+---
+>   writel(dev_priv->saveD_STATE, (dev_priv->mmio_map)->handle + 24836);
+5422c5561
+<   __writel(dev_priv->saveDSPCLK_GATE_D, (dev_priv->mmio_map)->handle + 25088);
+---
+>   writel(dev_priv->saveDSPCLK_GATE_D, (dev_priv->mmio_map)->handle + 25088);
+5424c5563
+<   __writel(dev_priv->saveCACHE_MODE_0 | 4294901760U, (dev_priv->mmio_map)->handle + 8480);
+---
+>   writel(dev_priv->saveCACHE_MODE_0 | 4294901760U, (dev_priv->mmio_map)->handle + 8480);
+5426c5565
+<   __writel(dev_priv->saveMI_ARB_STATE | 4294901760U, (dev_priv->mmio_map)->handle + 8420);
+---
+>   writel(dev_priv->saveMI_ARB_STATE | 4294901760U, (dev_priv->mmio_map)->handle + 8420);
+5439c5578
+<     __writel(dev_priv->saveSWF0[i], (dev_priv->mmio_map)->handle + (463888 + (i << 2)));
+---
+>     writel(dev_priv->saveSWF0[i], (dev_priv->mmio_map)->handle + (463888 + (i << 2)));
+5441c5580
+<     __writel(dev_priv->saveSWF1[i + 7], (dev_priv->mmio_map)->handle + (459792 + (i << 2)));
+---
+>     writel(dev_priv->saveSWF1[i + 7], (dev_priv->mmio_map)->handle + (459792 + (i << 2)));
+5457c5596
+<     __writel(dev_priv->saveSWF2[i], (dev_priv->mmio_map)->handle + (467988 + (i << 2)));
+---
+>     writel(dev_priv->saveSWF2[i], (dev_priv->mmio_map)->handle + (467988 + (i << 2)));
+5482,5492c5621,5625
+<                                                                          0, 0, {0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0,
+<                                                                                 0},
+---
+>                                                                          0, 0, 0,
+>                                                                          {0, 0, 0,
+>                                                                           0, 0, 0,
+>                                                                           0, 0, 0,
+>                                                                           0, 0, 0},
+5673c5806
+< #line 50 "include/asm/pda.h"
+---
+> #line 51 "include/asm/pda.h"
+5675c5808
+< #line 56
+---
+> #line 57
+5677,5678c5810,5811
+< #line 63 "include/asm/thread_info_64.h"
+< __inline static struct thread_info *( __attribute__((__always_inline__)) current_thread_info)(void) 
+---
+> #line 205 "include/asm/thread_info.h"
+> __inline static struct thread_info *current_thread_info(void) 
+5684c5817
+< #line 66
+---
+> #line 208
+5687c5820
+< #line 66
+---
+> #line 208
+5691c5824
+< #line 66
+---
+> #line 208
+5694c5827
+< #line 66
+---
+> #line 208
+5698c5831
+< #line 66
+---
+> #line 208
+5701c5834
+< #line 66
+---
+> #line 208
+5705c5838
+< #line 66
+---
+> #line 208
+5708c5841
+< #line 66
+---
+> #line 208
+5711c5844
+< #line 66
+---
+> #line 208
+5713c5846
+< #line 67
+---
+> #line 209
+5717c5850
+< #line 100 "include/linux/slab.h"
+---
+> #line 101 "include/linux/slab.h"
+5719c5852
+< #line 204 "include/linux/slub_def.h"
+---
+> #line 205 "include/linux/slub_def.h"
+5721c5854
+< #line 211 "include/linux/slub_def.h"
+---
+> #line 212 "include/linux/slub_def.h"
+5728c5861
+< #line 226
+---
+> #line 227
+5730c5863
+< #line 226
+---
+> #line 227
+5734c5867
+< #line 276 "include/asm/uaccess_64.h"
+---
+> #line 18 "include/asm/uaccess_64.h"
+5738c5871
+< #line 279
+---
+> #line 21
+5742c5875
+< #line 286 "include/asm/uaccess_64.h"
+---
+> #line 28 "include/asm/uaccess_64.h"
+5754c5887
+< #line 289
+---
+> #line 31
+5756c5889
+< #line 291
+---
+> #line 33
+5758c5891
+< #line 291
+---
+> #line 33
+5760c5893
+< #line 292
+---
+> #line 34
+5763c5896
+< #line 293
+---
+> #line 35
+5770c5903
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5782c5915,5917
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5784c5919,5921
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5791c5928
+< #line 295
+---
+> #line 37
+5794c5931
+< #line 296
+---
+> #line 38
+5801c5938
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5813c5950,5952
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5815c5954,5956
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5822c5963
+< #line 298
+---
+> #line 40
+5825c5966
+< #line 299
+---
+> #line 41
+5832c5973
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5844c5985,5987
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5846c5989,5991
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5853c5998
+< #line 301
+---
+> #line 43
+5856c6001
+< #line 302
+---
+> #line 44
+5863c6008
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5875c6020,6022
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5877c6024,6026
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5884c6033
+< #line 304
+---
+> #line 46
+5887c6036
+< #line 306
+---
+> #line 48
+5894c6043
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5906c6055,6057
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5908c6059,6061
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5915c6068
+< #line 308
+---
+> #line 50
+5917c6070
+< #line 308
+---
+> #line 50
+5919c6072
+< #line 309
+---
+> #line 51
+5924c6077
+< #line 310
+---
+> #line 52
+5931c6084
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5943c6096,6098
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5945c6100,6102
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5952c6109
+< #line 313
+---
+> #line 55
+5955c6112
+< #line 315
+---
+> #line 57
+5962c6119
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+5974c6131,6133
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+5976c6135,6137
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+5983c6144
+< #line 317
+---
+> #line 59
+5985c6146
+< #line 317
+---
+> #line 59
+5987c6148
+< #line 318
+---
+> #line 60
+5992c6153
+< #line 319
+---
+> #line 61
+5999c6160
+<                        ".section .fixup, \"ax\"\n"
+---
+>                        ".section .fixup,\"ax\"\n"
+6011c6172,6174
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+6013c6176,6178
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+6020c6185
+< #line 322
+---
+> #line 64
+6023c6188
+< #line 324
+---
+> #line 66
+6025c6190
+< #line 324
+---
+> #line 66
+6052c6217
+< #line 1092
+---
+> #line 1093
+6054,6056c6219,6220
+< #line 1094 "include/drm/drmP.h"
+< __inline static struct drm_map *( __attribute__((__always_inline__)) drm_core_findmap)(struct drm_device *dev ,
+<                                                                                        unsigned int token ) 
+---
+> #line 1095 "include/drm/drmP.h"
+> __inline static struct drm_map *drm_core_findmap(struct drm_device *dev , unsigned int token ) 
+6063c6227
+< #line 1098
+---
+> #line 1099
+6065c6229
+< #line 1098
+---
+> #line 1099
+6067c6231
+< #line 1098
+---
+> #line 1099
+6069c6233
+< #line 1098
+---
+> #line 1099
+6071c6235
+< #line 1098
+---
+> #line 1099
+6075c6239
+< #line 1098
+---
+> #line 1099
+6078,6079d6241
+< #line 1099
+<     if (_entry->user_token == (uint64_t )token) {
+6080a6243,6244
+>     if (_entry->user_token == (uint64_t )token) {
+> #line 1101
+6085c6249
+< #line 1098
+---
+> #line 1099
+6087c6251
+< #line 1098
+---
+> #line 1099
+6090c6254
+< #line 1101
+---
+> #line 1102
+6094,6096c6258,6259
+< #line 1128 "include/drm/drmP.h"
+< __inline static void *( __attribute__((__always_inline__)) drm_alloc)(size_t size ,
+<                                                                       int area ) 
+---
+> #line 1129 "include/drm/drmP.h"
+> __inline static void *drm_alloc(size_t size , int area ) 
+6101c6264
+< #line 1130
+---
+> #line 1131
+6103c6266
+< #line 1130
+---
+> #line 1131
+6107,6109c6270,6271
+< #line 1134 "include/drm/drmP.h"
+< __inline static void ( __attribute__((__always_inline__)) drm_free)(void *pt , size_t size ,
+<                                                                     int area ) 
+---
+> #line 1135 "include/drm/drmP.h"
+> __inline static void drm_free(void *pt , size_t size , int area ) 
+6114,6115d6275
+< #line 1136
+<   kfree(pt);
+6116a6277,6278
+>   kfree(pt);
+> #line 1138
+6152c6314
+<   __u32 tmp ;
+---
+>   unsigned int tmp ;
+6154c6316
+<   __u32 tmp___0 ;
+---
+>   unsigned int tmp___0 ;
+6162c6324
+<   tmp = __readl((dev_priv->mmio_map)->handle + (8240 + 4));
+---
+>   tmp = readl((dev_priv->mmio_map)->handle + (8240 + 4));
+6177c6339
+<     tmp___0 = __readl((dev_priv->mmio_map)->handle + (8240 + 4));
+---
+>     tmp___0 = readl((dev_priv->mmio_map)->handle + (8240 + 4));
+6219,6220c6381,6382
+<   __u32 tmp ;
+<   __u32 tmp___0 ;
+---
+>   unsigned int tmp ;
+>   unsigned int tmp___0 ;
+6228c6390
+<   tmp = __readl((dev_priv->mmio_map)->handle + (8240 + 4));
+---
+>   tmp = readl((dev_priv->mmio_map)->handle + (8240 + 4));
+6232c6394
+<   tmp___0 = __readl((dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>   tmp___0 = readl((dev_priv->mmio_map)->handle + (8240 + 0));
+6290c6452
+<     __writel(536866816, (dev_priv->mmio_map)->handle + 8320);
+---
+>     writel(536866816, (dev_priv->mmio_map)->handle + 8320);
+6301c6463
+<     __writel(536866816, (dev_priv->mmio_map)->handle + 8320);
+---
+>     writel(536866816, (dev_priv->mmio_map)->handle + 8320);
+6422c6584
+<     __writel(dev_priv->dma_status_page, (dev_priv->mmio_map)->handle + 8320);
+---
+>     writel(dev_priv->dma_status_page, (dev_priv->mmio_map)->handle + 8320);
+6514c6676
+<     __writel(dev_priv->status_gfx_addr, (dev_priv->mmio_map)->handle + 8320);
+---
+>     writel(dev_priv->status_gfx_addr, (dev_priv->mmio_map)->handle + 8320);
+6517c6679
+<     __writel(dev_priv->dma_status_page, (dev_priv->mmio_map)->handle + 8320);
+---
+>     writel(dev_priv->dma_status_page, (dev_priv->mmio_map)->handle + 8320);
+6832c6994
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+6955c7117
+<       __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>       writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7065c7227
+<       __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>       writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7181c7343
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7407c7569
+<         __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>         writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7491c7653
+<         __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>         writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7586c7748
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7690c7852
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7747c7909
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7836c7998
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+7901a8064,8065
+>   int tmp___0 ;
+>   long tmp___1 ;
+7955,7956c8119
+<     __asm__  ("# range_ok\n\r"
+<               "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (batch->cliprects),
+---
+>     __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (batch->cliprects),
+7958c8121,8129
+<               "g" (tmp->addr_limit.seg));
+---
+>               "rm" (tmp->addr_limit.seg));
+> #line 598
+>     if (flag == 0UL) {
+> #line 598
+>       tmp___0 = 1;
+>     } else {
+> #line 598
+>       tmp___0 = 0;
+>     }
+7960c8131,8133
+<     if (flag == 0UL ? 0 : -14) {
+---
+>     tmp___1 = __builtin_expect(tmp___0, 1);
+> #line 598
+>     if (tmp___1 ? 0 : -14) {
+7987a8161,8162
+>   int tmp___0 ;
+>   long tmp___1 ;
+8032,8033c8207
+<     __asm__  ("# range_ok\n\r"
+<               "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (cmdbuf->cliprects),
+---
+>     __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (cmdbuf->cliprects),
+8035c8209,8217
+<               "g" (tmp->addr_limit.seg));
+---
+>               "rm" (tmp->addr_limit.seg));
+> #line 625
+>     if (flag == 0UL) {
+> #line 625
+>       tmp___0 = 1;
+>     } else {
+> #line 625
+>       tmp___0 = 0;
+>     }
+8037c8219,8221
+<     if (flag == 0UL ? 0 : -14) {
+---
+>     tmp___1 = __builtin_expect(tmp___0, 1);
+> #line 625
+>     if (tmp___1 ? 0 : -14) {
+8279c8463
+<   __writel(dev_priv->status_gfx_addr, (dev_priv->mmio_map)->handle + 8320);
+---
+>   writel(dev_priv->status_gfx_addr, (dev_priv->mmio_map)->handle + 8320);
+8457,8459c8641,8642
+< #line 275 "include/asm/bitops.h"
+< __inline static int ( __attribute__((__always_inline__)) variable_test_bit)(int nr ,
+<                                                                             void const volatile   *addr ) 
+---
+> #line 301 "include/asm/bitops.h"
+> __inline static int variable_test_bit(int nr , unsigned long const volatile   *addr ) 
+8464c8647
+< #line 279
+---
+> #line 305
+8468c8651
+< #line 284
+---
+> #line 310
+8472c8655
+< #line 9 "include/asm/current_64.h"
+---
+> #line 23 "include/asm/current.h"
+8475d8657
+<   struct task_struct *t ;
+8479c8661
+< #line 11
+---
+> #line 25
+8482c8664
+< #line 11
+---
+> #line 25
+8486c8668
+< #line 11
+---
+> #line 25
+8489c8671
+< #line 11
+---
+> #line 25
+8493c8675
+< #line 11
+---
+> #line 25
+8496c8678
+< #line 11
+---
+> #line 25
+8500c8682
+< #line 11
+---
+> #line 25
+8503c8685
+< #line 11
+---
+> #line 25
+8506,8509c8688,8689
+< #line 11
+<   t = ret__;
+< #line 12
+<   return (t);
+---
+> #line 25
+>   return (ret__);
+8513c8693
+< __inline static void ( __attribute__((__always_inline__)) INIT_LIST_HEAD)(struct list_head *list ) 
+---
+> __inline static void INIT_LIST_HEAD(struct list_head *list ) 
+8528,8530c8708,8709
+< #line 82 "include/linux/list.h"
+< __inline static void ( __attribute__((__always_inline__)) list_add_tail)(struct list_head *new ,
+<                                                                          struct list_head *head ) 
+---
+> #line 78 "include/linux/list.h"
+> __inline static void list_add_tail(struct list_head *new , struct list_head *head ) 
+8535c8714
+< #line 84
+---
+> #line 80
+8537c8716
+< #line 85
+---
+> #line 81
+8541c8720
+< #line 173
+---
+> #line 110
+8544,8545c8723
+< __inline static int ( __attribute__((__always_inline__)) test_ti_thread_flag)(struct thread_info *ti ,
+<                                                                               int flag ) 
+---
+> __inline static int test_ti_thread_flag(struct thread_info *ti , int flag ) 
+8551c8729
+<   tmp___0 = variable_test_bit(flag, (unsigned long *)(& ti->flags));
+---
+>   tmp___0 = variable_test_bit(flag, & ti->flags);
+8556,8557c8734,8735
+< #line 101 "include/asm/atomic_64.h"
+< __inline static void ( __attribute__((__always_inline__)) atomic_inc)(atomic_t *v ) 
+---
+> #line 95 "include/asm/atomic_64.h"
+> __inline static void atomic_inc(atomic_t *v ) 
+8562c8740
+< #line 103
+---
+> #line 97
+8564c8742,8744
+<                        " .balign 8 "
+---
+>                        " "
+>                        ".balign 8"
+>                        " "
+8566c8746,8748
+<                        " .quad "
+---
+>                        " "
+>                        ".quad"
+>                        " "
+8571c8753
+< #line 106
+---
+> #line 100
+8575c8757
+< #line 93 "include/linux/spinlock.h"
+---
+> #line 94 "include/linux/spinlock.h"
+8579c8761
+< #line 33
+---
+> #line 35
+8581c8763
+< #line 45
+---
+> #line 47
+8583c8765
+< #line 54
+---
+> #line 56
+8598,8600c8780,8781
+< #line 181 "include/linux/slab.h"
+< __inline static void *( __attribute__((__always_inline__)) kcalloc)(size_t n , size_t size ,
+<                                                                     gfp_t flags ) 
+---
+> #line 182 "include/linux/slab.h"
+> __inline static void *kcalloc(size_t n , size_t size , gfp_t flags ) 
+8605,8606d8785
+< #line 183
+<   if (n != (size_t )0 && size > ~ 0UL / n) {
+8607a8787,8788
+>   if (size != (size_t )0 && n > ~ 0UL / size) {
+> #line 185
+8612c8793
+< #line 185
+---
+> #line 186
+8614c8795
+< #line 185
+---
+> #line 186
+8618,8619c8799,8800
+< #line 219 "include/asm/io_64.h"
+< __inline static __u16 ( __attribute__((__always_inline__)) __readw)(void const volatile   *addr ) 
+---
+> #line 19 "include/asm/io.h"
+> __inline static unsigned short readw(void const volatile   *addr ) 
+8621c8802
+< 
+---
+>   unsigned short ret ;
+8624,8625c8805,8810
+< #line 221
+<   return (*((__u16 volatile   *)addr));
+---
+> #line 19
+>   __asm__  volatile   ("mov"
+>                        "w"
+>                        " %1,%0": "=r" (ret): "m" (*((unsigned short volatile   *)addr)): "memory");
+> #line 19
+>   return (ret);
+8628,8629c8813,8814
+< #line 264 "include/asm/io_64.h"
+< __inline static void ( __attribute__((__always_inline__)) __writew)(__u16 b , void volatile   *addr ) 
+---
+> #line 27 "include/asm/io.h"
+> __inline static void writew(unsigned short val , void volatile   *addr ) 
+8634,8636c8819,8823
+< #line 266
+<   *((__u16 volatile   *)addr) = b;
+< #line 267
+---
+> #line 27
+>   __asm__  volatile   ("mov"
+>                        "w"
+>                        " %0,%1": : "r" (val), "m" (*((unsigned short volatile   *)addr)): "memory");
+> #line 27
+8640c8827
+< #line 327 "include/linux/sched.h"
+---
+> #line 329 "include/linux/sched.h"
+8642,8644c8829,8830
+< #line 1997 "include/linux/sched.h"
+< __inline static int ( __attribute__((__always_inline__)) test_tsk_thread_flag)(struct task_struct *tsk ,
+<                                                                                int flag ) 
+---
+> #line 2000 "include/linux/sched.h"
+> __inline static int test_tsk_thread_flag(struct task_struct *tsk , int flag ) 
+8649c8835
+< #line 1999
+---
+> #line 2002
+8651c8837
+< #line 1999
+---
+> #line 2002
+8655,8656c8841,8842
+< #line 2017 "include/linux/sched.h"
+< __inline static int ( __attribute__((__always_inline__)) signal_pending)(struct task_struct *p ) 
+---
+> #line 2020 "include/linux/sched.h"
+> __inline static int signal_pending(struct task_struct *p ) 
+8663c8849
+< #line 2019
+---
+> #line 2022
+8665c8851
+< #line 2019
+---
+> #line 2022
+8667c8853
+< #line 2019
+---
+> #line 2022
+8670c8856
+< #line 2019
+---
+> #line 2022
+8673c8859
+< #line 2019
+---
+> #line 2022
+8675c8861
+< #line 2019
+---
+> #line 2022
+8685,8688c8871,8872
+< #line 1140 "include/drm/drmP.h"
+< __inline static void *( __attribute__((__always_inline__)) drm_calloc)(size_t nmemb ,
+<                                                                        size_t size ,
+<                                                                        int area ) 
+---
+> #line 1141 "include/drm/drmP.h"
+> __inline static void *drm_calloc(size_t nmemb , size_t size , int area ) 
+8693c8877
+< #line 1142
+---
+> #line 1143
+8695c8879
+< #line 1142
+---
+> #line 1143
+8810c8994,8999
+<   irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+---
+>   while (1) {
+> #line 80
+>     irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+> #line 80
+>     break;
+>   }
+8913c9102,9107
+<     _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+---
+>     while (1) {
+> #line 130
+>       _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+> #line 130
+>       break;
+>     }
+9004c9198
+<       __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>       writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+9114c9308
+<       __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>       writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+9366c9560
+<           __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>           writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+9388c9582,9587
+<   _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+---
+>   while (1) {
+> #line 220
+>     _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+> #line 220
+>     break;
+>   }
+9435c9634
+<   pipea_stats = __readl((dev_priv->mmio_map)->handle + 458788);
+---
+>   pipea_stats = readl((dev_priv->mmio_map)->handle + 458788);
+9437c9636
+<   pipeb_stats = __readl((dev_priv->mmio_map)->handle + 462884);
+---
+>   pipeb_stats = readl((dev_priv->mmio_map)->handle + 462884);
+9439c9638
+<   temp = __readw((dev_priv->mmio_map)->handle + 8356);
+---
+>   temp = readw((dev_priv->mmio_map)->handle + 8356);
+9463c9662
+<   __writew(temp, (dev_priv->mmio_map)->handle + 8356);
+---
+>   writew(temp, (dev_priv->mmio_map)->handle + 8356);
+9465c9664
+<   __readw((dev_priv->mmio_map)->handle + 8356);
+---
+>   readw((dev_priv->mmio_map)->handle + 8356);
+9517c9716
+<     __writel(((unsigned long )pipea_stats | (1UL << 17)) | (1UL << 1), (dev_priv->mmio_map)->handle + 458788);
+---
+>     writel(((unsigned long )pipea_stats | (1UL << 17)) | (1UL << 1), (dev_priv->mmio_map)->handle + 458788);
+9519c9718
+<     __writel(((unsigned long )pipeb_stats | (1UL << 17)) | (1UL << 1), (dev_priv->mmio_map)->handle + 462884);
+---
+>     writel(((unsigned long )pipeb_stats | (1UL << 17)) | (1UL << 1), (dev_priv->mmio_map)->handle + 462884);
+9674c9873
+<     __writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+---
+>     writel(outring, (dev_priv->mmio_map)->handle + (8240 + 0));
+10054c10253
+<   __writew((1 << 1) | (int )flag, (dev_priv->mmio_map)->handle + 8352);
+---
+>   writew((1 << 1) | (int )flag, (dev_priv->mmio_map)->handle + 8352);
+10103c10302
+<   __u32 tmp ;
+---
+>   unsigned int tmp ;
+10120c10319
+<   tmp = __readl((dev_priv->mmio_map)->handle + 8352);
+---
+>   tmp = readl((dev_priv->mmio_map)->handle + 8352);
+10216c10415,10420
+<   irqflags = _spin_lock_irqsave(& dev->drw_lock);
+---
+>   while (1) {
+> #line 516
+>     irqflags = _spin_lock_irqsave(& dev->drw_lock);
+> #line 516
+>     break;
+>   }
+10224c10428,10433
+<     _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+---
+>     while (1) {
+> #line 519
+>       _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+> #line 519
+>       break;
+>     }
+10241c10450,10455
+<   _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+---
+>   while (1) {
+> #line 524
+>     _spin_unlock_irqrestore(& dev->drw_lock, irqflags);
+> #line 524
+>     break;
+>   }
+10277c10491,10496
+<   irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+---
+>   while (1) {
+> #line 540
+>     irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+> #line 540
+>     break;
+>   }
+10298c10517,10522
+<       _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+---
+>       while (1) {
+> #line 548
+>         _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+> #line 548
+>         break;
+>       }
+10320c10544,10549
+<   _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+---
+>   while (1) {
+> #line 554
+>     _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+> #line 554
+>     break;
+>   }
+10372c10601,10606
+<   irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+---
+>   while (1) {
+> #line 574
+>     irqflags = _spin_lock_irqsave(& dev_priv->swaps_lock);
+> #line 574
+>     break;
+>   }
+10378c10612,10617
+<   _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+---
+>   while (1) {
+> #line 579
+>     _spin_unlock_irqrestore(& dev_priv->swaps_lock, irqflags);
+> #line 579
+>     break;
+>   }
+10392c10631
+<   __writew(65534, (dev_priv->mmio_map)->handle + 8344);
+---
+>   writew(65534, (dev_priv->mmio_map)->handle + 8344);
+10394c10633
+<   __writew(0, (dev_priv->mmio_map)->handle + 8360);
+---
+>   writew(0, (dev_priv->mmio_map)->handle + 8360);
+10396c10635
+<   __writew(0, (dev_priv->mmio_map)->handle + 8352);
+---
+>   writew(0, (dev_priv->mmio_map)->handle + 8352);
+10454c10693
+<   __writew(65535, (dev_priv->mmio_map)->handle + 8344);
+---
+>   writew(65535, (dev_priv->mmio_map)->handle + 8344);
+10456c10695
+<   __writew(65535, (dev_priv->mmio_map)->handle + 8360);
+---
+>   writew(65535, (dev_priv->mmio_map)->handle + 8360);
+10458c10697
+<   __writew(0, (dev_priv->mmio_map)->handle + 8352);
+---
+>   writew(0, (dev_priv->mmio_map)->handle + 8352);
+10460c10699
+<   temp = __readw((dev_priv->mmio_map)->handle + 8356);
+---
+>   temp = readw((dev_priv->mmio_map)->handle + 8356);
+10462c10701
+<   __writew(temp, (dev_priv->mmio_map)->handle + 8356);
+---
+>   writew(temp, (dev_priv->mmio_map)->handle + 8356);
+11137c11376
+< __inline static void *( __attribute__((__always_inline__)) compat_alloc_user_space)(long len ) 
+---
+> __inline static void *compat_alloc_user_space(long len ) 
+11151c11390
+< #line 72 "include/asm-generic/ioctl.h"
+---
+> #line 73 "include/asm-generic/ioctl.h"
+11157c11396
+< #line 129 "include/asm/uaccess_64.h"
+---
+> #line 210 "include/asm/uaccess.h"
+11159c11398
+< #line 281
+---
+> #line 23 "include/asm/uaccess_64.h"
+11175,11180d11413
+<   int __pu_err ;
+<   int __pu_err___0 ;
+<   int __pu_err___1 ;
+<   int __pu_err___2 ;
+<   int __pu_err___3 ;
+<   int __pu_err___4 ;
+11181a11415,11422
+>   long tmp___3 ;
+>   long __pu_err ;
+>   long __pu_err___0 ;
+>   long __pu_err___1 ;
+>   long __pu_err___2 ;
+>   long __pu_err___3 ;
+>   long __pu_err___4 ;
+>   int tmp___4 ;
+11200,11203c11441,11443
+<   __asm__  ("# range_ok\n\r"
+<             "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (batchbuffer),
+<             "g" ((long )sizeof(*batchbuffer)), "g" (tmp___1->addr_limit.seg));
+< #line 65
+---
+>   __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (batchbuffer),
+>             "g" ((long )sizeof(*batchbuffer)), "rm" (tmp___1->addr_limit.seg));
+> #line 58
+11204a11445,11454
+> #line 58
+>     tmp___2 = 1;
+>   } else {
+> #line 58
+>     tmp___2 = 0;
+>   }
+> #line 58
+>   tmp___3 = __builtin_expect(tmp___2, 1);
+> #line 65
+>   if (tmp___3) {
+11219c11469
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+11224c11474,11476
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+11226c11478,11480
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+11244c11498
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+11249c11503,11505
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+11251c11507,11509
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+11269c11527
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+11274c11532,11534
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+11276c11536,11538
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+11294c11556
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+11299c11561,11563
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+11301c11565,11567
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+11337c11603
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+11342c11608,11610
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+11344c11612,11614
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+11362c11632
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+11367c11637,11639
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+11369c11641,11643
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+11387c11661
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+11392c11666,11668
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+11394c11670,11672
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+11412c11690
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+11417c11695,11697
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+11419c11699,11701
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+11455c11737
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+11460c11742,11744
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+11462c11746,11748
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+11480c11766
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+11485c11771,11773
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+11487c11775,11777
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+11505c11795
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+11510c11800,11802
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+11512c11804,11806
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+11530c11824
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+11535c11829,11831
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+11537c11833,11835
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+11573c11871
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+11578c11876,11878
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+11580c11880,11882
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+11598c11900
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+11603c11905,11907
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+11605c11909,11911
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+11623c11929
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+11628c11934,11936
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+11630c11938,11940
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+11648c11958
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+11653c11963,11965
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+11655c11967,11969
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+11691c12005
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+11696c12010,12012
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+11698c12014,12016
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+11716c12034
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+11721c12039,12041
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+11723c12043,12045
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+11741c12063
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+11746c12068,12070
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+11748c12072,12074
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+11766c12092
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+11771c12097,12099
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+11773c12101,12103
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+11809c12139
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+11814c12144,12146
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+11816c12148,12150
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+11834c12168
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+11839c12173,12175
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+11841c12177,12179
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+11859c12197
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+11864c12202,12204
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+11866c12206,12208
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+11884c12226
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+11889c12231,12233
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+11891c12235,12237
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+11925c12271
+<   tmp___2 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )(((1U << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 3) << 0)) | ((sizeof(drm_i915_batchbuffer_t ) == sizeof(drm_i915_batchbuffer_t [1]) && sizeof(drm_i915_batchbuffer_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_batchbuffer_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+---
+>   tmp___4 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )(((1U << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 3) << 0)) | ((sizeof(drm_i915_batchbuffer_t ) == sizeof(drm_i915_batchbuffer_t [1]) && sizeof(drm_i915_batchbuffer_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_batchbuffer_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+11928c12274
+<   return (tmp___2);
+---
+>   return (tmp___4);
+11941,11946d12286
+<   int __pu_err ;
+<   int __pu_err___0 ;
+<   int __pu_err___1 ;
+<   int __pu_err___2 ;
+<   int __pu_err___3 ;
+<   int __pu_err___4 ;
+11947a12288,12295
+>   long tmp___3 ;
+>   long __pu_err ;
+>   long __pu_err___0 ;
+>   long __pu_err___1 ;
+>   long __pu_err___2 ;
+>   long __pu_err___3 ;
+>   long __pu_err___4 ;
+>   int tmp___4 ;
+11966,11969c12314,12316
+<   __asm__  ("# range_ok\n\r"
+<             "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (cmdbuffer),
+<             "g" ((long )sizeof(*cmdbuffer)), "g" (tmp___1->addr_limit.seg));
+< #line 101
+---
+>   __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (cmdbuffer),
+>             "g" ((long )sizeof(*cmdbuffer)), "rm" (tmp___1->addr_limit.seg));
+> #line 94
+11970a12318,12327
+> #line 94
+>     tmp___2 = 1;
+>   } else {
+> #line 94
+>     tmp___2 = 0;
+>   }
+> #line 94
+>   tmp___3 = __builtin_expect(tmp___2, 1);
+> #line 101
+>   if (tmp___3) {
+11985c12342
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+11990c12347,12349
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+11992c12351,12353
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12010c12371
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12015c12376,12378
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12017c12380,12382
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12035c12400
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12040c12405,12407
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12042c12409,12411
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12060c12429
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12065c12434,12436
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12067c12438,12440
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12103c12476
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+12108c12481,12483
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+12110c12485,12487
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+12128c12505
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+12133c12510,12512
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+12135c12514,12516
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+12153c12534
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+12158c12539,12541
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+12160c12543,12545
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+12178c12563
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+12183c12568,12570
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+12185c12572,12574
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+12221c12610
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+12226c12615,12617
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+12228c12619,12621
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+12246c12639
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+12251c12644,12646
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+12253c12648,12650
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+12271c12668
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+12276c12673,12675
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+12278c12677,12679
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+12296c12697
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+12301c12702,12704
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+12303c12706,12708
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+12339c12744
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+12344c12749,12751
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+12346c12753,12755
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+12364c12773
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+12369c12778,12780
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+12371c12782,12784
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+12389c12802
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+12394c12807,12809
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+12396c12811,12813
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+12414c12831
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+12419c12836,12838
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+12421c12840,12842
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+12457c12878
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+12462c12883,12885
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+12464c12887,12889
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+12482c12907
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+12487c12912,12914
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+12489c12916,12918
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+12507c12936
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+12512c12941,12943
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+12514c12945,12947
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+12532c12965
+<                                    ".section .fixup, \"ax\"\n"
+---
+>                                    ".section .fixup,\"ax\"\n"
+12537c12970,12972
+<                                    " .balign 8 "
+---
+>                                    " "
+>                                    ".balign 8"
+>                                    " "
+12539c12974,12976
+<                                    " .quad "
+---
+>                                    " "
+>                                    ".quad"
+>                                    " "
+12575c13012
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+12580c13017,13019
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+12582c13021,13023
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+12600c13041
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+12605c13046,13048
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+12607c13050,13052
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+12625c13070
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+12630c13075,13077
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+12632c13079,13081
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+12650c13099
+<                                      ".section .fixup, \"ax\"\n"
+---
+>                                      ".section .fixup,\"ax\"\n"
+12655c13104,13106
+<                                      " .balign 8 "
+---
+>                                      " "
+>                                      ".balign 8"
+>                                      " "
+12657c13108,13110
+<                                      " .quad "
+---
+>                                      " "
+>                                      ".quad"
+>                                      " "
+12691c13144
+<   tmp___2 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )(((1U << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 11) << 0)) | ((sizeof(drm_i915_cmdbuffer_t ) == sizeof(drm_i915_cmdbuffer_t [1]) && sizeof(drm_i915_cmdbuffer_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_cmdbuffer_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+---
+>   tmp___4 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )(((1U << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 11) << 0)) | ((sizeof(drm_i915_cmdbuffer_t ) == sizeof(drm_i915_cmdbuffer_t [1]) && sizeof(drm_i915_cmdbuffer_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_cmdbuffer_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+12694c13147
+<   return (tmp___2);
+---
+>   return (tmp___4);
+12707d13159
+<   int __pu_err ;
+12708a13161,13163
+>   long tmp___3 ;
+>   long __pu_err ;
+>   int tmp___4 ;
+12727,12730c13182,13184
+<   __asm__  ("# range_ok\n\r"
+<             "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+<             "g" ((long )sizeof(*request)), "g" (tmp___1->addr_limit.seg));
+< #line 124
+---
+>   __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+>             "g" ((long )sizeof(*request)), "rm" (tmp___1->addr_limit.seg));
+> #line 123
+12731a13186,13195
+> #line 123
+>     tmp___2 = 1;
+>   } else {
+> #line 123
+>     tmp___2 = 0;
+>   }
+> #line 123
+>   tmp___3 = __builtin_expect(tmp___2, 1);
+> #line 124
+>   if (tmp___3) {
+12746c13210
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12751c13215,13217
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12753c13219,13221
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12771c13239
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12776c13244,13246
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12778c13248,13250
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12796c13268
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12801c13273,13275
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12803c13277,13279
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12821c13297
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12826c13302,13304
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12828c13306,13308
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12857c13337
+<   tmp___2 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 4) << 0)) | ((sizeof(drm_i915_irq_emit_t ) == sizeof(drm_i915_irq_emit_t [1]) && sizeof(drm_i915_irq_emit_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_irq_emit_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+---
+>   tmp___4 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 4) << 0)) | ((sizeof(drm_i915_irq_emit_t ) == sizeof(drm_i915_irq_emit_t [1]) && sizeof(drm_i915_irq_emit_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_irq_emit_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+12860c13340
+<   return (tmp___2);
+---
+>   return (tmp___4);
+12873,12874d13352
+<   int __pu_err ;
+<   int __pu_err___0 ;
+12875a13354,13357
+>   long tmp___3 ;
+>   long __pu_err ;
+>   long __pu_err___0 ;
+>   int tmp___4 ;
+12894,12897c13376,13378
+<   __asm__  ("# range_ok\n\r"
+<             "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+<             "g" ((long )sizeof(*request)), "g" (tmp___1->addr_limit.seg));
+< #line 148
+---
+>   __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+>             "g" ((long )sizeof(*request)), "rm" (tmp___1->addr_limit.seg));
+> #line 146
+12898a13380,13389
+> #line 146
+>     tmp___2 = 1;
+>   } else {
+> #line 146
+>     tmp___2 = 0;
+>   }
+> #line 146
+>   tmp___3 = __builtin_expect(tmp___2, 1);
+> #line 148
+>   if (tmp___3) {
+12913c13404
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12918c13409,13411
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12920c13413,13415
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12937c13432
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12942c13437,13439
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12944c13441,13443
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12961c13460
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12966c13465,13467
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12968c13469,13471
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+12985c13488
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+12990c13493,13495
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+12992c13497,13499
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+13027c13534
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13032c13539,13541
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13034c13543,13545
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13052c13563
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13057c13568,13570
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13059c13572,13574
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13077c13592
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13082c13597,13599
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13084c13601,13603
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13102c13621
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13107c13626,13628
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13109c13630,13632
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13139c13662
+<   tmp___2 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 6) << 0)) | ((sizeof(drm_i915_getparam_t ) == sizeof(drm_i915_getparam_t [1]) && sizeof(drm_i915_getparam_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_getparam_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+---
+>   tmp___4 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 6) << 0)) | ((sizeof(drm_i915_getparam_t ) == sizeof(drm_i915_getparam_t [1]) && sizeof(drm_i915_getparam_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_getparam_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+13142c13665
+<   return (tmp___2);
+---
+>   return (tmp___4);
+13155,13158d13677
+<   int __pu_err ;
+<   int __pu_err___0 ;
+<   int __pu_err___1 ;
+<   int __pu_err___2 ;
+13159a13679,13684
+>   long tmp___3 ;
+>   long __pu_err ;
+>   long __pu_err___0 ;
+>   long __pu_err___1 ;
+>   long __pu_err___2 ;
+>   int tmp___4 ;
+13178,13181c13703,13705
+<   __asm__  ("# range_ok\n\r"
+<             "addq %3,%1 ; sbbq %0,%0 ; cmpq %1,%4 ; sbbq $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+<             "g" ((long )sizeof(*request)), "g" (tmp___1->addr_limit.seg));
+< #line 177
+---
+>   __asm__  ("add %3,%1 ; sbb %0,%0 ; cmp %1,%4 ; sbb $0,%0": "=&r" (flag), "=r" (roksum): "1" (request),
+>             "g" ((long )sizeof(*request)), "rm" (tmp___1->addr_limit.seg));
+> #line 173
+13182a13707,13716
+> #line 173
+>     tmp___2 = 1;
+>   } else {
+> #line 173
+>     tmp___2 = 0;
+>   }
+> #line 173
+>   tmp___3 = __builtin_expect(tmp___2, 1);
+> #line 177
+>   if (tmp___3) {
+13197c13731
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+13202c13736,13738
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+13204c13740,13742
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+13221c13759
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+13226c13764,13766
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+13228c13768,13770
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+13245c13787
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+13250c13792,13794
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+13252c13796,13798
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+13269c13815
+<                            ".section .fixup, \"ax\"\n"
+---
+>                            ".section .fixup,\"ax\"\n"
+13274c13820,13822
+<                            " .balign 8 "
+---
+>                            " "
+>                            ".balign 8"
+>                            " "
+13276c13824,13826
+<                            " .quad "
+---
+>                            " "
+>                            ".quad"
+>                            " "
+13311c13861
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13316c13866,13868
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13318c13870,13872
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13336c13890
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13341c13895,13897
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13343c13899,13901
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13361c13919
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13366c13924,13926
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13368c13928,13930
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13386c13948
+<                              ".section .fixup, \"ax\"\n"
+---
+>                              ".section .fixup,\"ax\"\n"
+13391c13953,13955
+<                              " .balign 8 "
+---
+>                              " "
+>                              ".balign 8"
+>                              " "
+13393c13957,13959
+<                              " .quad "
+---
+>                              " "
+>                              ".quad"
+>                              " "
+13429c13995
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+13434c14000,14002
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+13436c14004,14006
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+13454c14024
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+13459c14029,14031
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+13461c14033,14035
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+13479c14053
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+13484c14058,14060
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+13486c14062,14064
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+13504c14082
+<                                ".section .fixup, \"ax\"\n"
+---
+>                                ".section .fixup,\"ax\"\n"
+13509c14087,14089
+<                                " .balign 8 "
+---
+>                                " "
+>                                ".balign 8"
+>                                " "
+13511c14091,14093
+<                                " .quad "
+---
+>                                " "
+>                                ".quad"
+>                                " "
+13547c14129
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+13552c14134,14136
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+13554c14138,14140
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+13572c14158
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+13577c14163,14165
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+13579c14167,14169
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+13597c14187
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+13602c14192,14194
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+13604c14196,14198
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+13622c14216
+<                                  ".section .fixup, \"ax\"\n"
+---
+>                                  ".section .fixup,\"ax\"\n"
+13627c14221,14223
+<                                  " .balign 8 "
+---
+>                                  " "
+>                                  ".balign 8"
+>                                  " "
+13629c14225,14227
+<                                  " .quad "
+---
+>                                  " "
+>                                  ".quad"
+>                                  " "
+13661c14259
+<   tmp___2 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 8) << 0)) | ((sizeof(drm_i915_mem_alloc_t ) == sizeof(drm_i915_mem_alloc_t [1]) && sizeof(drm_i915_mem_alloc_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_mem_alloc_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+---
+>   tmp___4 = drm_ioctl((file->f_path.dentry)->d_inode, file, (unsigned long )((((2U | 1U) << (((0 + 8) + 8) + 14)) | (unsigned int )('d' << (0 + 8))) | (unsigned int )((64 + 8) << 0)) | ((sizeof(drm_i915_mem_alloc_t ) == sizeof(drm_i915_mem_alloc_t [1]) && sizeof(drm_i915_mem_alloc_t ) < (unsigned long )(1 << 14) ? sizeof(drm_i915_mem_alloc_t ) : __invalid_size_argument_for_IOC) << ((0 + 8) + 8)),
+13664c14262
+<   return (tmp___2);
+---
+>   return (tmp___4);
+13718c14316
+< #line 1448 "include/linux/usb.h"
+---
+> #line 1455 "include/linux/usb.h"
+13720c14318
+< #line 1449
+---
+> #line 1456
+13723c14321
+< __inline static void ( __attribute__((__always_inline__)) ldv_error)(void) 
+---
+> __inline static void ldv_error(void) 
+13734c14332
+< __inline static void ( __attribute__((__always_inline__)) ldv_stop)(void) 
+---
+> __inline static void ldv_stop(void) 

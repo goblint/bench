@@ -1,0 +1,497 @@
+5832a5833
+>    bool wow_enabled ;
+6064a6066,6069
+> #line 161
+> extern mmc_pm_flag_t sdio_get_host_pm_caps(struct sdio_func * ) ;
+> #line 162
+> extern int sdio_set_host_pm_flags(struct sdio_func * , mmc_pm_flag_t  ) ;
+6811c6816,6823
+< 
+---
+>   struct sdio_func *func ;
+>   struct device  const  *__mptr ;
+>   struct wl1271 *wl ;
+>   void *tmp ;
+>   mmc_pm_flag_t sdio_flags ;
+>   int ret ;
+>   struct _ddebug descriptor ;
+>   long tmp___0 ;
+6815c6827,6896
+<   return (0);
+---
+>   __mptr = (struct device  const  *)dev;
+> #line 325
+>   func = (struct sdio_func *)__mptr + 0xfffffffffffffff8UL;
+> #line 326
+>   tmp = dev_get_drvdata((struct device  const  *)(& func->dev));
+> #line 326
+>   wl = (struct wl1271 *)tmp;
+> #line 328
+>   ret = 0;
+> #line 330
+>   if ((wl12xx_debug_level & 2048U) != 0U) {
+> #line 330
+>     descriptor.modname = "wl12xx_sdio";
+> #line 330
+>     descriptor.function = "wl1271_suspend";
+> #line 330
+>     descriptor.filename = "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared";
+> #line 330
+>     descriptor.format = "wl1271: wl1271 suspend. wow_enabled: %d\n";
+> #line 330
+>     descriptor.lineno = 331U;
+> #line 330
+>     descriptor.flags = 0U;
+> #line 330
+>     descriptor.enabled = (char)0;
+> #line 330
+>     tmp___0 = __builtin_expect((int )((signed char )descriptor.enabled) != 0, 0L);
+> #line 330
+>     if (tmp___0 != 0L) {
+> #line 330
+>       __dynamic_pr_debug(& descriptor, "wl1271: wl1271 suspend. wow_enabled: %d\n",
+>                          (int )wl->wow_enabled);
+>     } else {
+> 
+>     }
+>   } else {
+> 
+>   }
+> #line 334
+>   if ((int )wl->wow_enabled) {
+> #line 335
+>     sdio_flags = sdio_get_host_pm_caps(func);
+> #line 337
+>     if ((sdio_flags & 1U) == 0U) {
+> #line 338
+>       printk("<3>wl1271: ERROR can\'t keep power while host is suspended\n");
+> #line 340
+>       ret = -22;
+> #line 341
+>       goto out;
+>     } else {
+> 
+>     }
+> #line 345
+>     ret = sdio_set_host_pm_flags(func, 1U);
+> #line 346
+>     if (ret != 0) {
+> #line 347
+>       printk("<3>wl1271: ERROR error while trying to keep power\n");
+> #line 348
+>       goto out;
+>     } else {
+> 
+>     }
+>   } else {
+> 
+>   }
+>   out: ;
+> #line 352
+>   return (ret);
+6818c6899
+< #line 328 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 355 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6824c6905
+< #line 330
+---
+> #line 357
+6828c6909
+< #line 333 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 360 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6830c6911
+< #line 333
+---
+> #line 360
+6832c6913
+< #line 338 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 365 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6836c6917
+< #line 348 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 375 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6842c6923
+< #line 352
+---
+> #line 379
+6844c6925
+< #line 353
+---
+> #line 380
+6846c6927
+< #line 354
+---
+> #line 381
+6848c6929
+< #line 355
+---
+> #line 382
+6854c6935
+< #line 359
+---
+> #line 386
+6858c6939
+< #line 362 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 389 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6864c6945
+< #line 364
+---
+> #line 391
+6866c6947
+< #line 366
+---
+> #line 393
+6868c6949
+< #line 367
+---
+> #line 394
+6872c6953
+< #line 396
+---
+> #line 423
+6874c6955
+< #line 399
+---
+> #line 426
+6876c6957
+< #line 402
+---
+> #line 429
+6878c6959
+< #line 405
+---
+> #line 432
+6880c6961
+< #line 408
+---
+> #line 435
+6882c6963
+< #line 411
+---
+> #line 438
+6884c6965
+< #line 414 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 441 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6886c6967
+< #line 417 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 444 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6912c6993
+< #line 626
+---
+> #line 653
+6914c6995
+< #line 597
+---
+> #line 624
+6916c6997
+< #line 606
+---
+> #line 633
+6918c6999
+< #line 619
+---
+> #line 646
+6920c7001
+< #line 620
+---
+> #line 647
+6922c7003
+< #line 620
+---
+> #line 647
+6924c7005
+< #line 621
+---
+> #line 648
+6929,6932c7010,7013
+< #line 631
+<   goto ldv_38347;
+<   ldv_38346: 
+< #line 635
+---
+> #line 658
+>   goto ldv_38357;
+>   ldv_38356: 
+> #line 662
+6934c7015
+< #line 635
+---
+> #line 662
+6937c7018
+< #line 652
+---
+> #line 679
+6939c7020
+< #line 653
+---
+> #line 680
+6942,6943c7023,7024
+< #line 660
+<   goto ldv_38330;
+---
+> #line 687
+>   goto ldv_38340;
+6945c7026
+< #line 676
+---
+> #line 703
+6947c7028
+< #line 677
+---
+> #line 704
+6950,6951c7031,7032
+< #line 684
+<   goto ldv_38330;
+---
+> #line 711
+>   goto ldv_38340;
+6953c7034
+< #line 700
+---
+> #line 727
+6955c7036
+< #line 701
+---
+> #line 728
+6957,6958c7038,7039
+< #line 708
+<   goto ldv_38330;
+---
+> #line 735
+>   goto ldv_38340;
+6960c7041
+< #line 724
+---
+> #line 751
+6962c7043
+< #line 725
+---
+> #line 752
+6964,6965c7045,7046
+< #line 732
+<   goto ldv_38330;
+---
+> #line 759
+>   goto ldv_38340;
+6967c7048
+< #line 748
+---
+> #line 775
+6969c7050
+< #line 749
+---
+> #line 776
+6971,6972c7052,7053
+< #line 756
+<   goto ldv_38330;
+---
+> #line 783
+>   goto ldv_38340;
+6974c7055
+< #line 772
+---
+> #line 799
+6976c7057
+< #line 773
+---
+> #line 800
+6978,6979c7059,7060
+< #line 780
+<   goto ldv_38330;
+---
+> #line 807
+>   goto ldv_38340;
+6981c7062
+< #line 796
+---
+> #line 823
+6983c7064
+< #line 797
+---
+> #line 824
+6985,6986c7066,7067
+< #line 804
+<   goto ldv_38330;
+---
+> #line 831
+>   goto ldv_38340;
+6988c7069
+< #line 820
+---
+> #line 847
+6990c7071
+< #line 821
+---
+> #line 848
+6992,6993c7073,7074
+< #line 828
+<   goto ldv_38330;
+---
+> #line 855
+>   goto ldv_38340;
+6995c7076
+< #line 844
+---
+> #line 871
+6997c7078
+< #line 845
+---
+> #line 872
+6999,7000c7080,7081
+< #line 852
+<   goto ldv_38330;
+---
+> #line 879
+>   goto ldv_38340;
+7002c7083
+< #line 868
+---
+> #line 895
+7004c7085
+< #line 869
+---
+> #line 896
+7006,7007c7087,7088
+< #line 876
+<   goto ldv_38330;
+---
+> #line 903
+>   goto ldv_38340;
+7009c7090
+< #line 892
+---
+> #line 919
+7011c7092
+< #line 893
+---
+> #line 920
+7013,7014c7094,7095
+< #line 900
+<   goto ldv_38330;
+---
+> #line 927
+>   goto ldv_38340;
+7016c7097
+< #line 904
+---
+> #line 931
+7018c7099
+< #line 916
+---
+> #line 943
+7020c7101
+< #line 917
+---
+> #line 944
+7022c7103
+< #line 918
+---
+> #line 945
+7024c7105
+< #line 919
+---
+> #line 946
+7026c7107
+< #line 920
+---
+> #line 947
+7031c7112
+< #line 921
+---
+> #line 948
+7036,7037c7117,7118
+< #line 927
+<   goto ldv_38330;
+---
+> #line 954
+>   goto ldv_38340;
+7039c7120
+< #line 931
+---
+> #line 958
+7041c7122
+< #line 943
+---
+> #line 970
+7043c7124
+< #line 944
+---
+> #line 971
+7045c7126
+< #line 945
+---
+> #line 972
+7050,7051c7131,7132
+< #line 951
+<   goto ldv_38330;
+---
+> #line 978
+>   goto ldv_38340;
+7053c7134
+< #line 955
+---
+> #line 982
+7055c7136
+< #line 967
+---
+> #line 994
+7057c7138
+< #line 968
+---
+> #line 995
+7059c7140
+< #line 969
+---
+> #line 996
+7061,7062c7142,7143
+< #line 975
+<   goto ldv_38330;
+---
+> #line 1002
+>   goto ldv_38340;
+7064,7065c7145,7146
+< #line 976
+<   goto ldv_38330;
+---
+> #line 1003
+>   goto ldv_38340;
+7067,7069c7148,7150
+<   ldv_38330: ;
+<   ldv_38347: 
+< #line 631
+---
+>   ldv_38340: ;
+>   ldv_38357: 
+> #line 658
+7071c7152
+< #line 631
+---
+> #line 658
+7073,7074c7154,7155
+< #line 633
+<     goto ldv_38346;
+---
+> #line 660
+>     goto ldv_38356;
+7080c7161
+< #line 995
+---
+> #line 1022
+7082c7163
+< #line 996
+---
+> #line 1023
+7085c7166
+< #line 999
+---
+> #line 1026
+7087c7168
+< #line 1002
+---
+> #line 1029

@@ -1,0 +1,2290 @@
+98c98
+< #line 55 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/page_types.h"
+---
+> #line 54 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/page_types.h"
+133c133
+< #line 109 "include/linux/kernel.h"
+---
+> #line 119 "include/linux/kernel.h"
+135c135
+< #line 209
+---
+> #line 220
+161c161
+< #line 319 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/paravirt_types.h"
+---
+> #line 315 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/paravirt_types.h"
+201c201
+< #line 327 "include/linux/list.h"
+---
+> #line 341 "include/linux/list.h"
+203c203
+< #line 327 "include/linux/list.h"
+---
+> #line 341 "include/linux/list.h"
+207c207
+< #line 543 "include/linux/list.h"
+---
+> #line 557 "include/linux/list.h"
+301c301
+< #line 38 "include/linux/lockdep.h"
+---
+> #line 42 "include/linux/lockdep.h"
+305c305
+< #line 42 "include/linux/lockdep.h"
+---
+> #line 46 "include/linux/lockdep.h"
+323c323
+< #line 127 "include/linux/lockdep.h"
+---
+> #line 131 "include/linux/lockdep.h"
+331c331
+< #line 427 "include/linux/lockdep.h"
+---
+> #line 543 "include/linux/lockdep.h"
+340c340
+< struct __anonstruct_ldv_5729_32 {
+---
+> struct __anonstruct_ldv_5734_32 {
+345c345
+< union __anonunion_ldv_5730_31 {
+---
+> union __anonunion_ldv_5735_31 {
+347c347
+<    struct __anonstruct_ldv_5729_32 ldv_5729 ;
+---
+>    struct __anonstruct_ldv_5734_32 ldv_5734 ;
+351c351
+<    union __anonunion_ldv_5730_31 ldv_5730 ;
+---
+>    union __anonunion_ldv_5735_31 ldv_5735 ;
+398c398
+< #line 98 "include/linux/nodemask.h"
+---
+> #line 96 "include/linux/nodemask.h"
+400c400
+<    unsigned long bits[8U] ;
+---
+>    unsigned long bits[16U] ;
+402c402
+< #line 98 "include/linux/nodemask.h"
+---
+> #line 96 "include/linux/nodemask.h"
+404c404
+< #line 643 "include/linux/mmzone.h"
+---
+> #line 632 "include/linux/mmzone.h"
+416c416,418
+< #line 156 "include/linux/mutex.h"
+---
+> #line 77 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/rwsem.h"
+> typedef long rwsem_count_t;
+> #line 78 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/rwsem.h"
+418c420
+<    __s32 activity ;
+---
+>    rwsem_count_t count ;
+423c425
+< #line 165 "include/linux/ioport.h"
+---
+> #line 172 "include/linux/ioport.h"
+448c450,455
+< #line 36 "include/linux/pm.h"
+---
+> #line 299 "include/linux/workqueue.h"
+> struct completion {
+>    unsigned int done ;
+>    wait_queue_head_t wait ;
+> };
+> #line 37 "include/linux/pm.h"
+452,453d458
+< #line 45 "include/linux/pm.h"
+< typedef struct pm_message pm_message_t;
+454a460,461
+> typedef struct pm_message pm_message_t;
+> #line 47 "include/linux/pm.h"
+474c481
+< #line 216
+---
+> #line 266
+484c491
+< #line 226
+---
+> #line 276
+491c498
+< #line 233
+---
+> #line 283
+498c505
+< #line 240 "include/linux/pm.h"
+---
+> #line 290 "include/linux/pm.h"
+502a510
+>    unsigned char async_suspend : 1 ;
+504a513
+>    struct completion completion ;
+517a527
+>    unsigned char runtime_auto : 1 ;
+541c551
+< #line 180 "include/linux/elf.h"
+---
+> #line 202 "include/linux/elf.h"
+550c560
+< #line 188 "include/linux/elf.h"
+---
+> #line 210 "include/linux/elf.h"
+552c562
+< #line 406
+---
+> #line 442
+554c564
+< #line 407 "include/linux/elf.h"
+---
+> #line 443 "include/linux/elf.h"
+558a569,570
+>    struct lock_class_key *key ;
+>    struct lock_class_key skey ;
+560c572
+< #line 33 "include/linux/sysfs.h"
+---
+> #line 37 "include/linux/sysfs.h"
+566c578
+< #line 75 "include/linux/sysfs.h"
+---
+> #line 101 "include/linux/sysfs.h"
+571c583
+< #line 81
+---
+> #line 119
+573c585
+< #line 132 "include/linux/sysfs.h"
+---
+> #line 176 "include/linux/sysfs.h"
+599c611
+<    struct sysfs_ops *sysfs_ops ;
+---
+>    struct sysfs_ops  const  *sysfs_ops ;
+611,613c623,625
+<    int (*filter)(struct kset * , struct kobject * ) ;
+<    char const   *(*name)(struct kset * , struct kobject * ) ;
+<    int (*uevent)(struct kset * , struct kobject * , struct kobj_uevent_env * ) ;
+---
+>    int (* const  filter)(struct kset * , struct kobject * ) ;
+>    char const   *(* const  name)(struct kset * , struct kobject * ) ;
+>    int (* const  uevent)(struct kset * , struct kobject * , struct kobj_uevent_env * ) ;
+620c632
+<    struct kset_uevent_ops *uevent_ops ;
+---
+>    struct kset_uevent_ops  const  *uevent_ops ;
+629c641
+< union __anonunion_ldv_10387_110 {
+---
+> union __anonunion_ldv_10604_110 {
+641c653
+<    union __anonunion_ldv_10387_110 ldv_10387 ;
+---
+>    union __anonunion_ldv_10604_110 ldv_10604 ;
+658,662d669
+< struct completion {
+<    unsigned int done ;
+<    wait_queue_head_t wait ;
+< };
+< #line 91 "include/linux/completion.h"
+667c674
+< #line 300 "include/linux/rcupdate.h"
+---
+> #line 504 "include/linux/rcupdate.h"
+669c676
+< #line 301 "include/linux/rcupdate.h"
+---
+> #line 505 "include/linux/rcupdate.h"
+677,722c684
+< #line 117 "include/linux/kmemleak.h"
+< struct kmem_cache_cpu {
+<    void **freelist ;
+<    struct page *page ;
+<    int node ;
+<    unsigned int offset ;
+<    unsigned int objsize ;
+<    unsigned int stat[18U] ;
+< };
+< #line 46 "include/linux/slub_def.h"
+< struct kmem_cache_node {
+<    spinlock_t list_lock ;
+<    unsigned long nr_partial ;
+<    struct list_head partial ;
+<    atomic_long_t nr_slabs ;
+<    atomic_long_t total_objects ;
+<    struct list_head full ;
+< };
+< #line 57 "include/linux/slub_def.h"
+< struct kmem_cache_order_objects {
+<    unsigned long x ;
+< };
+< #line 67 "include/linux/slub_def.h"
+< struct kmem_cache {
+<    unsigned long flags ;
+<    int size ;
+<    int objsize ;
+<    int offset ;
+<    struct kmem_cache_order_objects oo ;
+<    struct kmem_cache_node local_node ;
+<    struct kmem_cache_order_objects max ;
+<    struct kmem_cache_order_objects min ;
+<    gfp_t allocflags ;
+<    int refcount ;
+<    void (*ctor)(void * ) ;
+<    int inuse ;
+<    int align ;
+<    unsigned long min_partial ;
+<    char const   *name ;
+<    struct list_head list ;
+<    struct kobject kobj ;
+<    int remote_node_defrag_ratio ;
+<    struct kmem_cache_node *node[512U] ;
+<    struct kmem_cache_cpu *cpu_slab[4096U] ;
+< };
+< #line 155 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/local.h"
+---
+> #line 230 "include/linux/percpu.h"
+752c714
+< #line 181
+---
+> #line 182
+758c720,725
+< #line 187
+---
+> #line 188 "include/linux/module.h"
+> struct module_ref {
+>    unsigned int incs ;
+>    unsigned int decs ;
+> };
+> #line 374
+760c727
+< #line 187
+---
+> #line 374
+762c729
+< #line 187
+---
+> #line 374
+764c731
+< #line 187 "include/linux/module.h"
+---
+> #line 374 "include/linux/module.h"
+813a781
+>    unsigned int percpu_size ;
+826c794
+<    char *refptr ;
+---
+>    struct module_ref *refptr ;
+830c798
+< #line 544
+---
+> #line 540
+831a800,842
+> #line 117 "include/linux/kmemleak.h"
+> struct kmem_cache_cpu {
+>    void **freelist ;
+>    struct page *page ;
+>    int node ;
+>    unsigned int stat[18U] ;
+> };
+> #line 44 "include/linux/slub_def.h"
+> struct kmem_cache_node {
+>    spinlock_t list_lock ;
+>    unsigned long nr_partial ;
+>    struct list_head partial ;
+>    atomic_long_t nr_slabs ;
+>    atomic_long_t total_objects ;
+>    struct list_head full ;
+> };
+> #line 55 "include/linux/slub_def.h"
+> struct kmem_cache_order_objects {
+>    unsigned long x ;
+> };
+> #line 65 "include/linux/slub_def.h"
+> struct kmem_cache {
+>    struct kmem_cache_cpu *cpu_slab ;
+>    unsigned long flags ;
+>    int size ;
+>    int objsize ;
+>    int offset ;
+>    struct kmem_cache_order_objects oo ;
+>    struct kmem_cache_node local_node ;
+>    struct kmem_cache_order_objects max ;
+>    struct kmem_cache_order_objects min ;
+>    gfp_t allocflags ;
+>    int refcount ;
+>    void (*ctor)(void * ) ;
+>    int inuse ;
+>    int align ;
+>    unsigned long min_partial ;
+>    char const   *name ;
+>    struct list_head list ;
+>    struct kobject kobj ;
+>    int remote_node_defrag_ratio ;
+>    struct kmem_cache_node *node[1024U] ;
+> };
+952,953c963,964
+<    ssize_t (*show)(struct class * , char * ) ;
+<    ssize_t (*store)(struct class * , char const   * , size_t  ) ;
+---
+>    ssize_t (*show)(struct class * , struct class_attribute * , char * ) ;
+>    ssize_t (*store)(struct class * , struct class_attribute * , char const   * , size_t  ) ;
+955c966
+< #line 281 "include/linux/device.h"
+---
+> #line 300 "include/linux/device.h"
+964c975
+< #line 308 "include/linux/device.h"
+---
+> #line 327 "include/linux/device.h"
+971c982
+< #line 369 "include/linux/device.h"
+---
+> #line 388 "include/linux/device.h"
+976c987
+< #line 378
+---
+> #line 397
+978c989
+< #line 378 "include/linux/device.h"
+---
+> #line 397 "include/linux/device.h"
+1005c1016
+< #line 835 "include/linux/pci.h"
+---
+> #line 902 "include/linux/pci.h"
+1014c1025
+< #line 949
+---
+> #line 1034
+1016c1027
+< #line 949 "include/linux/pci.h"
+---
+> #line 1034 "include/linux/pci.h"
+1038,1041c1049,1050
+< #line 30 "include/linux/mm_types.h"
+< typedef unsigned long mm_counter_t;
+< #line 31 "include/linux/mm_types.h"
+< struct __anonstruct_ldv_15017_116 {
+---
+> #line 116 "include/linux/prio_tree.h"
+> struct __anonstruct_ldv_15447_115 {
+1045,1046c1054,1055
+< #line 31 "include/linux/mm_types.h"
+< union __anonunion_ldv_15018_115 {
+---
+> #line 116 "include/linux/prio_tree.h"
+> union __anonunion_ldv_15448_114 {
+1048c1057
+<    struct __anonstruct_ldv_15017_116 ldv_15017 ;
+---
+>    struct __anonstruct_ldv_15447_115 ldv_15447 ;
+1050,1051c1059,1060
+< #line 31 "include/linux/mm_types.h"
+< struct __anonstruct_ldv_15023_118 {
+---
+> #line 116 "include/linux/prio_tree.h"
+> struct __anonstruct_ldv_15453_117 {
+1055,1057c1064,1066
+< #line 31 "include/linux/mm_types.h"
+< union __anonunion_ldv_15026_117 {
+<    struct __anonstruct_ldv_15023_118 ldv_15023 ;
+---
+> #line 116 "include/linux/prio_tree.h"
+> union __anonunion_ldv_15456_116 {
+>    struct __anonstruct_ldv_15453_117 ldv_15453 ;
+1061,1062c1070,1071
+< #line 31 "include/linux/mm_types.h"
+< union __anonunion_ldv_15030_119 {
+---
+> #line 116 "include/linux/prio_tree.h"
+> union __anonunion_ldv_15460_118 {
+1066c1075
+< #line 31 "include/linux/mm_types.h"
+---
+> #line 116 "include/linux/prio_tree.h"
+1070,1072c1079,1081
+<    union __anonunion_ldv_15018_115 ldv_15018 ;
+<    union __anonunion_ldv_15026_117 ldv_15026 ;
+<    union __anonunion_ldv_15030_119 ldv_15030 ;
+---
+>    union __anonunion_ldv_15448_114 ldv_15448 ;
+>    union __anonunion_ldv_15456_116 ldv_15456 ;
+>    union __anonunion_ldv_15460_118 ldv_15460 ;
+1075,1076c1084,1085
+< #line 128 "include/linux/mm_types.h"
+< struct __anonstruct_vm_set_121 {
+---
+> #line 122 "include/linux/mm_types.h"
+> struct __anonstruct_vm_set_120 {
+1081,1083c1090,1092
+< #line 128 "include/linux/mm_types.h"
+< union __anonunion_shared_120 {
+<    struct __anonstruct_vm_set_121 vm_set ;
+---
+> #line 122 "include/linux/mm_types.h"
+> union __anonunion_shared_119 {
+>    struct __anonstruct_vm_set_120 vm_set ;
+1086c1095
+< #line 128
+---
+> #line 122
+1088c1097
+< #line 128
+---
+> #line 122
+1090c1099
+< #line 128
+---
+> #line 122
+1092c1101
+< #line 128 "include/linux/mm_types.h"
+---
+> #line 122 "include/linux/mm_types.h"
+1101,1102c1110,1111
+<    union __anonunion_shared_120 shared ;
+<    struct list_head anon_vma_node ;
+---
+>    union __anonunion_shared_119 shared ;
+>    struct list_head anon_vma_chain ;
+1111c1120
+< #line 191 "include/linux/mm_types.h"
+---
+> #line 186 "include/linux/mm_types.h"
+1116c1125
+< #line 197 "include/linux/mm_types.h"
+---
+> #line 192 "include/linux/mm_types.h"
+1122c1131,1135
+< #line 203
+---
+> #line 205 "include/linux/mm_types.h"
+> struct mm_rss_stat {
+>    unsigned long count[3U] ;
+> };
+> #line 220
+1124c1137
+< #line 203
+---
+> #line 220
+1126c1139
+< #line 203 "include/linux/mm_types.h"
+---
+> #line 220 "include/linux/mm_types.h"
+1145,1146d1157
+<    mm_counter_t _file_rss ;
+<    mm_counter_t _anon_rss ;
+1168a1180
+>    struct mm_rss_stat rss_stat ;
+1184c1196
+< #line 294
+---
+> #line 313
+1186c1198
+< #line 296
+---
+> #line 315
+1188c1200
+< #line 157 "include/linux/mm.h"
+---
+> #line 158 "include/linux/mm.h"
+1195c1207
+< #line 174 "include/linux/mm.h"
+---
+> #line 175 "include/linux/mm.h"
+1207c1219
+< #line 223
+---
+> #line 224
+1258c1270
+< union __anonunion_d_u_122 {
+---
+> union __anonunion_d_u_121 {
+1277c1289
+<    union __anonunion_d_u_122 d_u ;
+---
+>    union __anonunion_d_u_121 d_u ;
+1296c1308
+< #line 382 "include/linux/dcache.h"
+---
+> #line 396 "include/linux/dcache.h"
+1309c1321
+< #line 193
+---
+> #line 200
+1316c1328
+< #line 200
+---
+> #line 207
+1318c1330
+< #line 200 "include/linux/radix-tree.h"
+---
+> #line 207 "include/linux/radix-tree.h"
+1355c1367
+< #line 415 "include/linux/fs.h"
+---
+> #line 418 "include/linux/fs.h"
+1367c1379
+< #line 474 "include/linux/fs.h"
+---
+> #line 477 "include/linux/fs.h"
+1491c1503
+< #line 295 "include/linux/quota.h"
+---
+> #line 292 "include/linux/quota.h"
+1493,1499d1504
+<    int (*initialize)(struct inode * , int  ) ;
+<    int (*drop)(struct inode * ) ;
+<    int (*alloc_space)(struct inode * , qsize_t  , int  ) ;
+<    int (*alloc_inode)(struct inode  const  * , qsize_t  ) ;
+<    int (*free_space)(struct inode * , qsize_t  ) ;
+<    int (*free_inode)(struct inode  const  * , qsize_t  ) ;
+<    int (*transfer)(struct inode * , struct iattr * ) ;
+1507,1509d1511
+<    int (*reserve_space)(struct inode * , qsize_t  , int  ) ;
+<    int (*claim_space)(struct inode * , qsize_t  ) ;
+<    void (*release_rsv)(struct inode * , qsize_t  ) ;
+1512c1514
+< #line 322 "include/linux/quota.h"
+---
+> #line 306 "include/linux/quota.h"
+1516c1518
+<    int (*quota_sync)(struct super_block * , int  ) ;
+---
+>    int (*quota_sync)(struct super_block * , int  , int  ) ;
+1526c1528
+< #line 337 "include/linux/quota.h"
+---
+> #line 321 "include/linux/quota.h"
+1533c1535
+< #line 384 "include/linux/quota.h"
+---
+> #line 367 "include/linux/quota.h"
+1543,1544c1545,1546
+< #line 564 "include/linux/fs.h"
+< union __anonunion_arg_125 {
+---
+> #line 567 "include/linux/fs.h"
+> union __anonunion_arg_124 {
+1548,1549c1550,1551
+< #line 564 "include/linux/fs.h"
+< struct __anonstruct_read_descriptor_t_124 {
+---
+> #line 567 "include/linux/fs.h"
+> struct __anonstruct_read_descriptor_t_123 {
+1552c1554
+<    union __anonunion_arg_125 arg ;
+---
+>    union __anonunion_arg_124 arg ;
+1555,1556d1556
+< #line 564 "include/linux/fs.h"
+< typedef struct __anonstruct_read_descriptor_t_124 read_descriptor_t;
+1557a1558,1559
+> typedef struct __anonstruct_read_descriptor_t_123 read_descriptor_t;
+> #line 570 "include/linux/fs.h"
+1581c1583
+< #line 616
+---
+> #line 619
+1583c1585
+< #line 617 "include/linux/fs.h"
+---
+> #line 620 "include/linux/fs.h"
+1602c1604
+< #line 638
+---
+> #line 641
+1604c1606
+< #line 638
+---
+> #line 641
+1606c1608
+< #line 638 "include/linux/fs.h"
+---
+> #line 641 "include/linux/fs.h"
+1628c1630
+< #line 706
+---
+> #line 709
+1630c1632
+< #line 707
+---
+> #line 710
+1632c1634
+< #line 707
+---
+> #line 710
+1634c1636
+< #line 707
+---
+> #line 710
+1636c1638
+< #line 707
+---
+> #line 710
+1638,1639c1640,1641
+< #line 707 "include/linux/fs.h"
+< union __anonunion_ldv_19228_126 {
+---
+> #line 710 "include/linux/fs.h"
+> union __anonunion_ldv_19774_125 {
+1644c1646
+< #line 707 "include/linux/fs.h"
+---
+> #line 710 "include/linux/fs.h"
+1676c1678
+<    union __anonunion_ldv_19228_126 ldv_19228 ;
+---
+>    union __anonunion_ldv_19774_125 ldv_19774 ;
+1691c1693
+< #line 875 "include/linux/fs.h"
+---
+> #line 878 "include/linux/fs.h"
+1700c1702
+< #line 883 "include/linux/fs.h"
+---
+> #line 886 "include/linux/fs.h"
+1709,1710c1711,1712
+< #line 906 "include/linux/fs.h"
+< union __anonunion_f_u_127 {
+---
+> #line 909 "include/linux/fs.h"
+> union __anonunion_f_u_126 {
+1714c1716
+< #line 906 "include/linux/fs.h"
+---
+> #line 909 "include/linux/fs.h"
+1716c1718
+<    union __anonunion_f_u_127 f_u ;
+---
+>    union __anonunion_f_u_126 f_u ;
+1734c1736
+< #line 1029
+---
+> #line 1032
+1736c1738
+< #line 1029 "include/linux/fs.h"
+---
+> #line 1032 "include/linux/fs.h"
+1738c1740
+< #line 1030 "include/linux/fs.h"
+---
+> #line 1033 "include/linux/fs.h"
+1743c1745
+< #line 1035 "include/linux/fs.h"
+---
+> #line 1038 "include/linux/fs.h"
+1771c1773
+< struct __anonstruct_afs_129 {
+---
+> struct __anonstruct_afs_128 {
+1776c1778
+< union __anonunion_fl_u_128 {
+---
+> union __anonunion_fl_u_127 {
+1779c1781
+<    struct __anonstruct_afs_129 afs ;
+---
+>    struct __anonstruct_afs_128 afs ;
+1799c1801
+<    union __anonunion_fl_u_128 fl_u ;
+---
+>    union __anonunion_fl_u_127 fl_u ;
+1801c1803
+< #line 1134 "include/linux/fs.h"
+---
+> #line 1137 "include/linux/fs.h"
+1808c1810
+< #line 1311
+---
+> #line 1316
+1810c1812
+< #line 1311
+---
+> #line 1316
+1812c1814
+< #line 1311
+---
+> #line 1316
+1814c1816
+< #line 1311
+---
+> #line 1316
+1816c1818
+< #line 1311 "include/linux/fs.h"
+---
+> #line 1316 "include/linux/fs.h"
+1820,1821d1821
+<    unsigned long s_blocksize ;
+<    unsigned char s_blocksize_bits ;
+1822a1823,1824
+>    unsigned char s_blocksize_bits ;
+>    unsigned long s_blocksize ;
+1854d1855
+<    struct mutex s_vfs_rename_mutex ;
+1855a1857
+>    struct mutex s_vfs_rename_mutex ;
+1859c1861
+< #line 1429 "include/linux/fs.h"
+---
+> #line 1434 "include/linux/fs.h"
+1866c1868
+< #line 1468 "include/linux/fs.h"
+---
+> #line 1473 "include/linux/fs.h"
+1902c1904
+< #line 1508 "include/linux/fs.h"
+---
+> #line 1513 "include/linux/fs.h"
+1929c1931
+< #line 1551 "include/linux/fs.h"
+---
+> #line 1556 "include/linux/fs.h"
+1934c1936
+<    int (*write_inode)(struct inode * , int  ) ;
+---
+>    int (*write_inode)(struct inode * , struct writeback_control * ) ;
+1953c1955
+< #line 1729 "include/linux/fs.h"
+---
+> #line 1734 "include/linux/fs.h"
+1975c1977
+< #line 32 "include/linux/poll.h"
+---
+> #line 34 "include/linux/poll.h"
+1980c1982
+< #line 136
+---
+> #line 138
+1993c1995
+< #line 149
+---
+> #line 151
+2005c2007
+< #line 177
+---
+> #line 179
+2011c2013
+< #line 183
+---
+> #line 185
+2033c2035
+< #line 544 "include/linux/videodev2.h"
+---
+> #line 545 "include/linux/videodev2.h"
+2136c2138
+< #line 153 "include/linux/kernel.h"
+---
+> #line 164 "include/linux/kernel.h"
+2138c2140
+< #line 240
+---
+> #line 251
+2150c2152
+<   ldv_4333: 
+---
+>   ldv_4329: 
+2158c2160
+<     goto ldv_4333;
+---
+>     goto ldv_4329;
+2166a2169,2170
+> #line 542 "include/linux/lockdep.h"
+> extern void lockdep_rcu_dereference(char const   * , int const    ) ;
+2171c2175
+< #line 314 "include/linux/gfp.h"
+---
+> #line 316 "include/linux/gfp.h"
+2173c2177,2189
+< #line 195 "include/linux/rcupdate.h"
+---
+> #line 104 "include/linux/rcupdate.h"
+> extern int debug_lockdep_rcu_enabled(void) ;
+> #line 152 "include/linux/rcupdate.h"
+> __inline static int rcu_read_lock_sched_held(void) 
+> { 
+> 
+> 
+>   {
+> #line 154
+>   return (1);
+> }
+> }
+> #line 372 "include/linux/rcupdate.h"
+2179c2195
+< #line 199
+---
+> #line 376
+2183c2199
+< #line 138 "include/linux/slab.h"
+---
+> #line 144 "include/linux/slab.h"
+2191a2208,2209
+>   int tmp ;
+>   int tmp___0 ;
+2193c2211
+<   long tmp ;
+---
+>   long tmp___1 ;
+2197c2215
+<   tmp = __builtin_expect(__tracepoint_kmalloc.state != 0, 0L);
+---
+>   tmp___1 = __builtin_expect(__tracepoint_kmalloc.state != 0, 0L);
+2199c2217
+<   if (tmp != 0L) {
+---
+>   if (tmp___1 != 0L) {
+2202a2221,2236
+>     tmp = debug_lockdep_rcu_enabled();
+> #line 81
+>     if (tmp != 0) {
+> #line 81
+>       tmp___0 = rcu_read_lock_sched_held();
+> #line 81
+>       if (tmp___0 == 0) {
+> #line 81
+>         lockdep_rcu_dereference("include/trace/events/kmem.h", 87);
+>       } else {
+> 
+>       }
+>     } else {
+> 
+>     }
+> #line 81
+2208c2242
+<       ldv_10732: 
+---
+>       ldv_11584: 
+2220c2254
+<         goto ldv_10732;
+---
+>         goto ldv_11584;
+2248,2250c2282,2284
+< #line 142 "include/linux/slub_def.h"
+< extern struct kmem_cache kmalloc_caches[14U] ;
+< #line 148 "include/linux/slub_def.h"
+---
+> #line 146 "include/linux/slub_def.h"
+> extern struct kmem_cache kmalloc_caches[22U] ;
+> #line 152 "include/linux/slub_def.h"
+2256c2290
+< #line 150
+---
+> #line 154
+2258c2292
+< #line 151
+---
+> #line 155
+2263c2297
+< #line 153
+---
+> #line 157
+2265c2299
+< #line 154
+---
+> #line 158
+2270c2304
+< #line 156
+---
+> #line 160
+2272c2306
+< #line 157
+---
+> #line 161
+2277c2311
+< #line 158
+---
+> #line 162
+2279c2313
+< #line 159
+---
+> #line 163
+2284c2318
+< #line 160
+---
+> #line 164
+2286c2320
+< #line 160
+---
+> #line 164
+2291c2325
+< #line 161
+---
+> #line 165
+2293c2327
+< #line 161
+---
+> #line 165
+2298c2332
+< #line 162
+---
+> #line 166
+2300c2334
+< #line 162
+---
+> #line 166
+2305c2339
+< #line 163
+---
+> #line 167
+2307c2341
+< #line 163
+---
+> #line 167
+2312c2346
+< #line 164
+---
+> #line 168
+2314c2348
+< #line 164
+---
+> #line 168
+2319c2353
+< #line 165
+---
+> #line 169
+2321c2355
+< #line 165
+---
+> #line 169
+2326c2360
+< #line 166
+---
+> #line 170
+2328c2362
+< #line 166
+---
+> #line 170
+2333c2367
+< #line 167
+---
+> #line 171
+2335c2369
+< #line 167
+---
+> #line 171
+2340c2374
+< #line 168
+---
+> #line 172
+2342c2376
+< #line 168
+---
+> #line 172
+2347c2381
+< #line 169
+---
+> #line 173
+2349c2383
+< #line 169
+---
+> #line 173
+2354c2388
+< #line 174
+---
+> #line 178
+2356c2390
+< #line 174
+---
+> #line 178
+2361c2395
+< #line 175
+---
+> #line 179
+2363c2397
+< #line 175
+---
+> #line 179
+2368c2402
+< #line 176
+---
+> #line 180
+2370c2404
+< #line 176
+---
+> #line 180
+2375c2409
+< #line 177
+---
+> #line 181
+2377c2411
+< #line 177
+---
+> #line 181
+2382c2416
+< #line 178
+---
+> #line 182
+2384c2418
+< #line 178
+---
+> #line 182
+2389c2423
+< #line 179
+---
+> #line 183
+2391c2425
+< #line 179
+---
+> #line 183
+2396c2430
+< #line 180
+---
+> #line 184
+2398c2432
+< #line 180
+---
+> #line 184
+2403c2437
+< #line 181
+---
+> #line 185
+2405c2439
+< #line 181
+---
+> #line 185
+2410c2444
+< #line 182
+---
+> #line 186
+2412c2446
+< #line 182
+---
+> #line 186
+2417c2451
+< #line 183
+---
+> #line 187
+2421c2455
+< #line 200 "include/linux/slub_def.h"
+---
+> #line 204 "include/linux/slub_def.h"
+2428c2462
+< #line 202
+---
+> #line 206
+2430c2464
+< #line 202
+---
+> #line 206
+2432c2466
+< #line 204
+---
+> #line 208
+2434c2468
+< #line 205
+---
+> #line 209
+2439c2473
+< #line 207
+---
+> #line 211
+2443c2477
+< #line 218
+---
+> #line 215
+2445c2479
+< #line 221
+---
+> #line 218
+2447c2481
+< #line 230 "include/linux/slub_def.h"
+---
+> #line 227 "include/linux/slub_def.h"
+2456c2490
+< #line 232
+---
+> #line 229
+2458c2492
+< #line 232
+---
+> #line 229
+2460c2494
+< #line 233
+---
+> #line 230
+2462c2496
+< #line 233
+---
+> #line 230
+2464c2498
+< #line 235
+---
+> #line 232
+2466c2500
+< #line 236
+---
+> #line 233
+2469c2503
+< #line 238
+---
+> #line 235
+2473c2507
+< #line 241 "include/linux/slub_def.h"
+---
+> #line 238 "include/linux/slub_def.h"
+2483c2517
+< #line 245
+---
+> #line 242
+2485c2519
+< #line 246
+---
+> #line 243
+2487c2521
+< #line 247
+---
+> #line 244
+2489c2523
+< #line 247
+---
+> #line 244
+2494c2528
+< #line 249
+---
+> #line 246
+2496c2530
+< #line 250
+---
+> #line 247
+2498c2532
+< #line 250
+---
+> #line 247
+2500c2534
+< #line 252
+---
+> #line 249
+2502c2536
+< #line 253
+---
+> #line 250
+2507c2541
+< #line 255
+---
+> #line 252
+2509c2543
+< #line 257
+---
+> #line 254
+2512c2546
+< #line 259
+---
+> #line 256
+2520c2554
+< #line 262
+---
+> #line 259
+2522c2556
+< #line 262
+---
+> #line 259
+2526c2560
+< #line 313 "include/linux/slab.h"
+---
+> #line 319 "include/linux/slab.h"
+2532c2566
+< #line 315
+---
+> #line 321
+2534c2568
+< #line 315
+---
+> #line 321
+2538c2572
+< #line 22 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/uaccess_64.h"
+---
+> #line 41 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/uaccess_64.h"
+2540c2574
+< #line 45 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/uaccess_64.h"
+---
+> #line 64 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/uaccess_64.h"
+2546c2580
+< #line 47
+---
+> #line 66
+2548c2582
+< #line 49
+---
+> #line 68
+2550c2584
+< #line 49
+---
+> #line 68
+2574c2608
+< #line 44 "include/media/videobuf-vmalloc.h"
+---
+> #line 48 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2576c2610
+< #line 58 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 62 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2582c2616
+< #line 60
+---
+> #line 64
+2584c2618
+< #line 62
+---
+> #line 66
+2586c2620
+< #line 62
+---
+> #line 66
+2592c2626
+< #line 65
+---
+> #line 69
+2594c2628
+< #line 66
+---
+> #line 70
+2598c2632
+< #line 68 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 72 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2608c2642
+< #line 70
+---
+> #line 74
+2610c2644
+< #line 71
+---
+> #line 75
+2612c2646
+< #line 74
+---
+> #line 78
+2614c2648
+< #line 74
+---
+> #line 78
+2620c2654
+< #line 77
+---
+> #line 81
+2622c2656
+< #line 78
+---
+> #line 82
+2624c2658
+< #line 81
+---
+> #line 85
+2626c2660
+< #line 81
+---
+> #line 85
+2631c2665
+< #line 82
+---
+> #line 86
+2633c2667
+< #line 85
+---
+> #line 89
+2635c2669
+< #line 86
+---
+> #line 90
+2640c2674
+< #line 88
+---
+> #line 92
+2642,2645c2676,2679
+< #line 88
+<     goto ldv_22586;
+<     ldv_22585: ;
+< #line 89
+---
+> #line 92
+>     goto ldv_23971;
+>     ldv_23970: ;
+> #line 93
+2647,2648c2681,2682
+< #line 90
+<       goto ldv_22582;
+---
+> #line 94
+>       goto ldv_23967;
+2652c2686
+< #line 92
+---
+> #line 96
+2654,2655c2688,2689
+< #line 93
+<       goto ldv_22582;
+---
+> #line 97
+>       goto ldv_23967;
+2659c2693
+< #line 95
+---
+> #line 99
+2661c2695
+< #line 96
+---
+> #line 100
+2663c2697
+< #line 103
+---
+> #line 107
+2665c2699
+< #line 103
+---
+> #line 107
+2667c2701
+< #line 103
+---
+> #line 107
+2669c2703
+< #line 103
+---
+> #line 107
+2671,2674c2705,2708
+<                              "i" (103), "i" (12UL));
+<         ldv_22583: ;
+< #line 103
+<         goto ldv_22583;
+---
+>                              "i" (107), "i" (12UL));
+>         ldv_23968: ;
+> #line 107
+>         goto ldv_23968;
+2678c2712
+< #line 108
+---
+> #line 112
+2680c2714
+< #line 108
+---
+> #line 112
+2686c2720
+< #line 111
+---
+> #line 115
+2688c2722
+< #line 112
+---
+> #line 116
+2693c2727
+< #line 115
+---
+> #line 119
+2695c2729
+< #line 116
+---
+> #line 120
+2697,2698c2731,2732
+<     ldv_22582: 
+< #line 88
+---
+>     ldv_23967: 
+> #line 92
+2700,2701c2734,2735
+<     ldv_22586: ;
+< #line 88
+---
+>     ldv_23971: ;
+> #line 92
+2703,2704c2737,2738
+< #line 89
+<       goto ldv_22585;
+---
+> #line 93
+>       goto ldv_23970;
+2708c2742
+< #line 119
+---
+> #line 123
+2710c2744
+< #line 121
+---
+> #line 125
+2715c2749
+< #line 124
+---
+> #line 128
+2719c2753
+< #line 127 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 131 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2721c2755
+< #line 127
+---
+> #line 131
+2723c2757
+< #line 143 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 146 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2732c2766
+< #line 148
+---
+> #line 151
+2734c2768
+< #line 148
+---
+> #line 151
+2736c2770
+< #line 149
+---
+> #line 152
+2738c2772
+< #line 150
+---
+> #line 153
+2743c2777
+< #line 152
+---
+> #line 155
+2745c2779
+< #line 152
+---
+> #line 155
+2747c2781
+< #line 152
+---
+> #line 155
+2749c2783
+< #line 153
+---
+> #line 156
+2751c2785
+< #line 155
+---
+> #line 158
+2753c2787
+< #line 155
+---
+> #line 158
+2759c2793
+< #line 159
+---
+> #line 162
+2763c2797
+< #line 162 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 165 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2773,2774d2806
+< #line 166
+<   mem = (struct videobuf_vmalloc_memory *)vb->priv;
+2775a2808,2809
+>   mem = (struct videobuf_vmalloc_memory *)vb->priv;
+> #line 172
+2778c2812
+< #line 169
+---
+> #line 172
+2780c2814
+< #line 169
+---
+> #line 172
+2782,2785c2816,2819
+<                          "i" (169), "i" (12UL));
+<     ldv_22602: ;
+< #line 169
+<     goto ldv_22602;
+---
+>                          "i" (172), "i" (12UL));
+>     ldv_23987: ;
+> #line 172
+>     goto ldv_23987;
+2789c2823
+< #line 171
+---
+> #line 174
+2791c2825
+< #line 171
+---
+> #line 174
+2793c2827
+< #line 171
+---
+> #line 174
+2795c2829
+< #line 171
+---
+> #line 174
+2797,2800c2831,2834
+<                          "i" (171), "i" (12UL));
+<     ldv_22603: ;
+< #line 171
+<     goto ldv_22603;
+---
+>                          "i" (174), "i" (12UL));
+>     ldv_23988: ;
+> #line 174
+>     goto ldv_23988;
+2804c2838
+< #line 173
+---
+> #line 176
+2807c2841
+< #line 175
+---
+> #line 178
+2809c2843
+< #line 175
+---
+> #line 178
+2814c2848
+< #line 178
+---
+> #line 181
+2816c2850
+< #line 179
+---
+> #line 182
+2818c2852
+< #line 180
+---
+> #line 183
+2823,2824c2857,2858
+< #line 182
+<   goto ldv_22606;
+---
+> #line 185
+>   goto ldv_23991;
+2826c2860
+< #line 184
+---
+> #line 187
+2828c2862
+< #line 186
+---
+> #line 189
+2830c2864
+< #line 186
+---
+> #line 189
+2835c2869
+< #line 189
+---
+> #line 191
+2837c2871
+< #line 190
+---
+> #line 192
+2839c2873
+< #line 191
+---
+> #line 193
+2844,2845d2877
+< #line 199
+<   mem->vmalloc = vmalloc_user((unsigned long )pages);
+2847c2879
+<   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+---
+>   mem->vmalloc = vmalloc_user((unsigned long )pages);
+2849c2881
+<     printk("<3>vmalloc (%d pages) failed\n", pages);
+---
+>   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+2850a2883,2884
+>     printk("<3>vmalloc (%d pages) failed\n", pages);
+> #line 203
+2855c2889
+< #line 204
+---
+> #line 205
+2857c2891
+< #line 204
+---
+> #line 205
+2862,2863c2896,2897
+< #line 226
+<   goto ldv_22606;
+---
+> #line 227
+>   goto ldv_23991;
+2866c2900
+< #line 229
+---
+> #line 230
+2868c2902
+< #line 229
+---
+> #line 230
+2873,2874d2906
+< #line 232
+<   printk("<3>Memory method currently unsupported.\n");
+2875a2908,2909
+>   printk("<3>Memory method currently unsupported.\n");
+> #line 234
+2878,2879c2912,2913
+<   ldv_22606: ;
+< #line 236
+---
+>   ldv_23991: ;
+> #line 237
+2883c2917
+< #line 239 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 240 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2889c2923
+< #line 242
+---
+> #line 243
+2893c2927
+< #line 245 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 246 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2899c2933
+< #line 249
+---
+> #line 250
+2901c2935
+< #line 249
+---
+> #line 250
+2906c2940
+< #line 250
+---
+> #line 251
+2908,2910d2941
+< #line 250
+<   goto ldv_22620;
+<   ldv_22619: ;
+2912c2943,2944
+<   if ((unsigned long )q->bufs[i] != (unsigned long )((struct videobuf_buffer *)0)) {
+---
+>   goto ldv_24005;
+>   ldv_24004: ;
+2914c2946
+<     if ((unsigned long )(q->bufs[i])->map != (unsigned long )((struct videobuf_mapping *)0)) {
+---
+>   if ((unsigned long )q->bufs[i] != (unsigned long )((struct videobuf_buffer *)0)) {
+2915a2948,2949
+>     if ((unsigned long )(q->bufs[i])->map != (unsigned long )((struct videobuf_mapping *)0)) {
+> #line 254
+2923c2957
+< #line 250
+---
+> #line 251
+2925,2927c2959
+<   ldv_22620: ;
+< #line 250
+<   if (i <= 31U) {
+---
+>   ldv_24005: ;
+2929c2961,2963
+<     goto ldv_22619;
+---
+>   if (i <= 31U) {
+> #line 252
+>     goto ldv_24004;
+2934c2968
+< #line 257
+---
+> #line 258
+2938c2972
+< #line 260 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 261 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+2952c2986
+< #line 267
+---
+> #line 268
+2954c2988
+< #line 269
+---
+> #line 270
+2956c2990
+< #line 269
+---
+> #line 270
+2961,2962d2994
+< #line 270
+<   if ((vma->vm_flags & 2UL) == 0UL || (vma->vm_flags & 8UL) == 0UL) {
+2963a2996,2997
+>   if ((vma->vm_flags & 2UL) == 0UL || (vma->vm_flags & 8UL) == 0UL) {
+> #line 272
+2968c3002
+< #line 274
+---
+> #line 275
+2970,2972d3003
+< #line 274
+<   goto ldv_22636;
+<   ldv_22635: ;
+2974c3005,3006
+<   if ((unsigned long )q->bufs[first] == (unsigned long )((struct videobuf_buffer *)0)) {
+---
+>   goto ldv_24021;
+>   ldv_24020: ;
+2976c3008,3010
+<     goto ldv_22633;
+---
+>   if ((unsigned long )q->bufs[first] == (unsigned long )((struct videobuf_buffer *)0)) {
+> #line 277
+>     goto ldv_24018;
+2980,2981d3013
+< #line 278
+<   if ((unsigned int )(q->bufs[first])->memory != 1U) {
+2983c3015,3017
+<     goto ldv_22633;
+---
+>   if ((unsigned int )(q->bufs[first])->memory != 1U) {
+> #line 280
+>     goto ldv_24018;
+2987,2988d3020
+< #line 280
+<   if ((q->bufs[first])->boff == offset) {
+2990c3022,3024
+<     goto ldv_22634;
+---
+>   if ((q->bufs[first])->boff == offset) {
+> #line 282
+>     goto ldv_24019;
+2994,2995c3028,3029
+<   ldv_22633: 
+< #line 274
+---
+>   ldv_24018: 
+> #line 275
+2997,2999c3031
+<   ldv_22636: ;
+< #line 274
+<   if (first <= 31U) {
+---
+>   ldv_24021: ;
+3001c3033,3035
+<     goto ldv_22635;
+---
+>   if (first <= 31U) {
+> #line 276
+>     goto ldv_24020;
+3005,3007c3039
+<   ldv_22634: ;
+< #line 283
+<   if (first == 32U) {
+---
+>   ldv_24019: ;
+3008a3041,3042
+>   if (first == 32U) {
+> #line 285
+3010c3044
+< #line 284
+---
+> #line 285
+3015c3049
+< #line 286
+---
+> #line 287
+3020c3054
+< #line 290
+---
+> #line 291
+3022,3023d3055
+< #line 290
+<   map = (struct videobuf_mapping *)tmp;
+3025c3057
+<   if ((unsigned long )map == (unsigned long )((struct videobuf_mapping *)0)) {
+---
+>   map = (struct videobuf_mapping *)tmp;
+3026a3059,3060
+>   if ((unsigned long )map == (unsigned long )((struct videobuf_mapping *)0)) {
+> #line 293
+3031,3032d3064
+< #line 294
+<   (q->bufs[first])->map = map;
+3034c3066
+<   map->start = vma->vm_start;
+---
+>   (q->bufs[first])->map = map;
+3036c3068
+<   map->end = vma->vm_end;
+---
+>   map->start = vma->vm_start;
+3037a3070,3071
+>   map->end = vma->vm_end;
+> #line 298
+3039c3073
+< #line 299
+---
+> #line 300
+3041,3042d3074
+< #line 301
+<   mem = (struct videobuf_vmalloc_memory *)(q->bufs[first])->priv;
+3043a3076,3077
+>   mem = (struct videobuf_vmalloc_memory *)(q->bufs[first])->priv;
+> #line 303
+3046c3080
+< #line 302
+---
+> #line 303
+3048c3082
+< #line 302
+---
+> #line 303
+3050,3053c3084,3087
+<                          "i" (302), "i" (12UL));
+<     ldv_22637: ;
+< #line 302
+<     goto ldv_22637;
+---
+>                          "i" (303), "i" (12UL));
+>     ldv_24022: ;
+> #line 303
+>     goto ldv_24022;
+3057c3091
+< #line 303
+---
+> #line 304
+3059c3093
+< #line 303
+---
+> #line 304
+3061c3095
+< #line 303
+---
+> #line 304
+3063c3097
+< #line 303
+---
+> #line 304
+3065,3068c3099,3102
+<                          "i" (303), "i" (12UL));
+<     ldv_22638: ;
+< #line 303
+<     goto ldv_22638;
+---
+>                          "i" (304), "i" (12UL));
+>     ldv_24023: ;
+> #line 304
+>     goto ldv_24023;
+3072,3073d3105
+< #line 305
+<   pages = (int )(((unsigned int )vma->vm_end - (unsigned int )vma->vm_start) + 4095U) & -4096;
+3075c3107
+<   mem->vmalloc = vmalloc_user((unsigned long )pages);
+---
+>   pages = (int )(((unsigned int )vma->vm_end - (unsigned int )vma->vm_start) + 4095U) & -4096;
+3077c3109
+<   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+---
+>   mem->vmalloc = vmalloc_user((unsigned long )pages);
+3079c3111
+<     printk("<3>vmalloc (%d pages) failed\n", pages);
+---
+>   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+3080a3113,3114
+>     printk("<3>vmalloc (%d pages) failed\n", pages);
+> #line 310
+3085c3119
+< #line 311
+---
+> #line 312
+3087c3121
+< #line 311
+---
+> #line 312
+3154c3188
+<     ldv_22647: ;
+---
+>     ldv_24032: ;
+3156c3190
+<     goto ldv_22647;
+---
+>     goto ldv_24032;
+3169c3203
+<     ldv_22648: ;
+---
+>     ldv_24033: ;
+3171c3205
+<     goto ldv_22648;
+---
+>     goto ldv_24033;
+3183c3217
+<     ldv_22649: ;
+---
+>     ldv_24034: ;
+3185c3219
+<     goto ldv_22649;
+---
+>     goto ldv_24034;
+3231c3265
+<     ldv_22660: ;
+---
+>     ldv_24045: ;
+3233c3267
+<     goto ldv_22660;
+---
+>     goto ldv_24045;
+3246c3280
+<     ldv_22661: ;
+---
+>     ldv_24046: ;
+3248c3282
+<     goto ldv_22661;
+---
+>     goto ldv_24046;
+3305c3339
+< #line 418 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 417 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3313c3347
+< #line 420
+---
+> #line 419
+3315c3349
+< #line 421
+---
+> #line 420
+3318c3352
+< #line 421
+---
+> #line 420
+3320c3354
+< #line 421
+---
+> #line 420
+3322,3325c3356,3359
+<                          "i" (421), "i" (12UL));
+<     ldv_22690: ;
+< #line 421
+<     goto ldv_22690;
+---
+>                          "i" (420), "i" (12UL));
+>     ldv_24075: ;
+> #line 420
+>     goto ldv_24075;
+3329c3363
+< #line 422
+---
+> #line 421
+3331c3365
+< #line 422
+---
+> #line 421
+3333c3367
+< #line 422
+---
+> #line 421
+3335c3369
+< #line 422
+---
+> #line 421
+3337,3340c3371,3374
+<                          "i" (422), "i" (12UL));
+<     ldv_22691: ;
+< #line 422
+<     goto ldv_22691;
+---
+>                          "i" (421), "i" (12UL));
+>     ldv_24076: ;
+> #line 421
+>     goto ldv_24076;
+3344c3378
+< #line 424
+---
+> #line 423
+3348c3382
+< #line 428 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 427 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3355c3389
+< #line 430
+---
+> #line 429
+3357c3391
+< #line 438
+---
+> #line 437
+3359c3393
+< #line 439
+---
+> #line 438
+3364c3398
+< #line 441
+---
+> #line 440
+3366c3400
+< #line 442
+---
+> #line 441
+3371c3405
+< #line 444
+---
+> #line 443
+3373c3407
+< #line 444
+---
+> #line 443
+3375c3409
+< #line 444
+---
+> #line 443
+3377c3411
+< #line 444
+---
+> #line 443
+3379,3382c3413,3416
+<                          "i" (444), "i" (12UL));
+<     ldv_22702: ;
+< #line 444
+<     goto ldv_22702;
+---
+>                          "i" (443), "i" (12UL));
+>     ldv_24087: ;
+> #line 443
+>     goto ldv_24087;
+3386c3420
+< #line 446
+---
+> #line 445
+3388c3422
+< #line 447
+---
+> #line 446
+3390c3424
+< #line 449
+---
+> #line 448
+3394c3428
+< #line 475
+---
+> #line 469
+3396c3430
+< #line 484
+---
+> #line 478
+3398c3432
+< #line 487
+---
+> #line 481
+3400c3434
+< #line 490
+---
+> #line 484
+3402c3436
+< #line 493 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 487 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3404c3438
+< #line 496 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 490 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3412d3445
+<   struct videobuf_queue *var_group4 ;
+3426c3459
+< #line 682
+---
+> #line 706
+3428c3461
+< #line 672
+---
+> #line 696
+3430c3463
+< #line 681
+---
+> #line 705
+3432,3435c3465,3468
+< #line 687
+<   goto ldv_22753;
+<   ldv_22752: 
+< #line 691
+---
+> #line 711
+>   goto ldv_24137;
+>   ldv_24136: 
+> #line 715
+3437c3470
+< #line 691
+---
+> #line 715
+3440c3473
+< #line 696
+---
+> #line 720
+3442c3475
+< #line 708
+---
+> #line 737
+3444c3477
+< #line 709
+---
+> #line 738
+3446c3479
+< #line 716
+---
+> #line 743
+3451,3452c3484,3485
+< #line 722
+<   goto ldv_22741;
+---
+> #line 749
+>   goto ldv_24125;
+3454c3487
+< #line 726
+---
+> #line 753
+3456c3489
+< #line 738
+---
+> #line 770
+3458c3491
+< #line 739
+---
+> #line 771
+3460c3493
+< #line 746
+---
+> #line 776
+3465,3466c3498,3499
+< #line 752
+<   goto ldv_22741;
+---
+> #line 782
+>   goto ldv_24125;
+3468c3501
+< #line 768
+---
+> #line 803
+3470c3503
+< #line 769
+---
+> #line 804
+3472,3473c3505,3506
+< #line 782
+<   goto ldv_22741;
+---
+> #line 815
+>   goto ldv_24125;
+3475c3508
+< #line 798
+---
+> #line 836
+3477c3510
+< #line 799
+---
+> #line 837
+3479,3480c3512,3513
+< #line 806
+<   goto ldv_22741;
+---
+> #line 844
+>   goto ldv_24125;
+3482c3515
+< #line 826
+---
+> #line 867
+3484,3487c3517,3520
+< #line 827
+<   __videobuf_sync(var_group4, var_group3);
+< #line 834
+<   goto ldv_22741;
+---
+> #line 868
+>   __videobuf_sync(var_group2, var_group3);
+> #line 875
+>   goto ldv_24125;
+3489c3522
+< #line 854
+---
+> #line 898
+3491,3494c3524,3527
+< #line 855
+<   __videobuf_mmap_free(var_group4);
+< #line 862
+<   goto ldv_22741;
+---
+> #line 899
+>   __videobuf_mmap_free(var_group2);
+> #line 906
+>   goto ldv_24125;
+3496c3529
+< #line 882
+---
+> #line 929
+3498,3501c3531,3534
+< #line 883
+<   __videobuf_mmap_mapper(var_group4, var_group1);
+< #line 890
+<   goto ldv_22741;
+---
+> #line 930
+>   __videobuf_mmap_mapper(var_group2, var_group1);
+> #line 937
+>   goto ldv_24125;
+3503c3536
+< #line 910
+---
+> #line 960
+3505,3506c3538,3539
+< #line 911
+<   __videobuf_copy_to_user(var_group4, var___videobuf_copy_to_user_7_p1, var___videobuf_copy_to_user_7_p2,
+---
+> #line 961
+>   __videobuf_copy_to_user(var_group2, var___videobuf_copy_to_user_7_p1, var___videobuf_copy_to_user_7_p2,
+3508,3509c3541,3542
+< #line 918
+<   goto ldv_22741;
+---
+> #line 968
+>   goto ldv_24125;
+3511c3544
+< #line 938
+---
+> #line 991
+3513,3514c3546,3547
+< #line 939
+<   __videobuf_copy_stream(var_group4, var___videobuf_copy_stream_8_p1, var___videobuf_copy_stream_8_p2,
+---
+> #line 992
+>   __videobuf_copy_stream(var_group2, var___videobuf_copy_stream_8_p1, var___videobuf_copy_stream_8_p2,
+3517,3518c3550,3551
+< #line 946
+<   goto ldv_22741;
+---
+> #line 999
+>   goto ldv_24125;
+3520c3553
+< #line 966
+---
+> #line 1022
+3522c3555
+< #line 967
+---
+> #line 1023
+3524,3525c3557,3558
+< #line 974
+<   goto ldv_22741;
+---
+> #line 1030
+>   goto ldv_24125;
+3527,3528c3560,3561
+< #line 975
+<   goto ldv_22741;
+---
+> #line 1031
+>   goto ldv_24125;
+3530,3532c3563,3565
+<   ldv_22741: ;
+<   ldv_22753: 
+< #line 687
+---
+>   ldv_24125: ;
+>   ldv_24137: 
+> #line 711
+3534c3567
+< #line 687
+---
+> #line 711
+3536,3537c3569,3570
+< #line 689
+<     goto ldv_22752;
+---
+> #line 713
+>     goto ldv_24136;
+3543c3576
+< #line 984
+---
+> #line 1040
+3545c3578
+< #line 987
+---
+> #line 1043

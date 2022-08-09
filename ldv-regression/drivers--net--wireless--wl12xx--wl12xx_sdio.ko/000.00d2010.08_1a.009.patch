@@ -1,0 +1,568 @@
+5582,5661d5581
+< #line 1209 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/conf.h"
+< struct wl1271_ini_general_params {
+<    u8 ref_clock ;
+<    u8 settling_time ;
+<    u8 clk_valid_on_wakeup ;
+<    u8 dc2dc_mode ;
+<    u8 dual_mode_select ;
+<    u8 tx_bip_fem_auto_detect ;
+<    u8 tx_bip_fem_manufacturer ;
+<    u8 general_settings ;
+<    u8 sr_state ;
+<    u8 srf1[16U] ;
+<    u8 srf2[16U] ;
+<    u8 srf3[16U] ;
+< };
+< #line 43 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct wl1271_ini_band_params_2 {
+<    u8 rx_trace_insertion_loss ;
+<    u8 tx_trace_loss ;
+<    u8 rx_rssi_process_compens[15U] ;
+< };
+< #line 51 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct wl1271_ini_fem_params_2 {
+<    __le16 tx_bip_ref_pd_voltage ;
+<    u8 tx_bip_ref_power ;
+<    u8 tx_bip_ref_offset ;
+<    u8 tx_per_rate_pwr_limits_normal[6U] ;
+<    u8 tx_per_rate_pwr_limits_degraded[6U] ;
+<    u8 tx_per_rate_pwr_limits_extreme[6U] ;
+<    u8 tx_per_chan_pwr_limits_11b[14U] ;
+<    u8 tx_per_chan_pwr_limits_ofdm[14U] ;
+<    u8 tx_pd_vs_rate_offsets[6U] ;
+<    u8 tx_ibias[6U] ;
+<    u8 rx_fem_insertion_loss ;
+<    u8 degraded_low_to_normal_thr ;
+<    u8 normal_to_degraded_high_thr ;
+< };
+< #line 70 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct wl1271_ini_band_params_5 {
+<    u8 rx_trace_insertion_loss[7U] ;
+<    u8 tx_trace_loss[7U] ;
+<    u8 rx_rssi_process_compens[15U] ;
+< };
+< #line 79 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct wl1271_ini_fem_params_5 {
+<    __le16 tx_bip_ref_pd_voltage[7U] ;
+<    u8 tx_bip_ref_power[7U] ;
+<    u8 tx_bip_ref_offset[7U] ;
+<    u8 tx_per_rate_pwr_limits_normal[6U] ;
+<    u8 tx_per_rate_pwr_limits_degraded[6U] ;
+<    u8 tx_per_rate_pwr_limits_extreme[6U] ;
+<    u8 tx_per_chan_pwr_limits_ofdm[35U] ;
+<    u8 tx_pd_vs_rate_offsets[6U] ;
+<    u8 tx_ibias[6U] ;
+<    u8 rx_fem_insertion_loss[7U] ;
+<    u8 degraded_low_to_normal_thr ;
+<    u8 normal_to_degraded_high_thr ;
+< };
+< #line 94 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct __anonstruct_dyn_radio_params_2_229 {
+<    struct wl1271_ini_fem_params_2 params ;
+<    u8 padding ;
+< };
+< #line 94 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct __anonstruct_dyn_radio_params_5_230 {
+<    struct wl1271_ini_fem_params_5 params ;
+<    u8 padding ;
+< };
+< #line 94 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/net/wireless/wl12xx/ini.h"
+< struct wl1271_nvs_file {
+<    u8 nvs[468U] ;
+<    struct wl1271_ini_general_params general_params ;
+<    u8 padding1 ;
+<    struct wl1271_ini_band_params_2 stat_radio_params_2 ;
+<    u8 padding2 ;
+<    struct __anonstruct_dyn_radio_params_2_229 dyn_radio_params_2[2U] ;
+<    struct wl1271_ini_band_params_5 stat_radio_params_5 ;
+<    u8 padding3 ;
+<    struct __anonstruct_dyn_radio_params_5_230 dyn_radio_params_5[2U] ;
+< };
+5723c5643
+< union __anonunion_ldv_37550_231 {
+---
+> union __anonunion_ldv_37623_233 {
+5730c5650
+<    union __anonunion_ldv_37550_231 ldv_37550 ;
+---
+>    union __anonunion_ldv_37623_233 ldv_37623 ;
+5802c5722
+<    struct wl1271_nvs_file *nvs ;
+---
+>    void *nvs ;
+5874a5795
+>    int tcxo_clock ;
+6735c6656,6658
+< #line 267
+---
+> #line 266
+>   wl->tcxo_clock = wlan_data->board_tcxo_clock;
+> #line 268
+6738,6739d6660
+< #line 270
+<   if (ret < 0) {
+6741c6662
+<     printk("<3>wl1271: ERROR request_irq() failed: %d\n", ret);
+---
+>   if (ret < 0) {
+6742a6664,6665
+>     printk("<3>wl1271: ERROR request_irq() failed: %d\n", ret);
+> #line 273
+6747c6670
+< #line 275
+---
+> #line 276
+6749,6750d6671
+< #line 277
+<   ret = wl1271_init_ieee80211(wl);
+6752c6673
+<   if (ret != 0) {
+---
+>   ret = wl1271_init_ieee80211(wl);
+6753a6675,6676
+>   if (ret != 0) {
+> #line 280
+6758,6759d6680
+< #line 281
+<   ret = wl1271_register_hw(wl);
+6761c6682
+<   if (ret != 0) {
+---
+>   ret = wl1271_register_hw(wl);
+6762a6684,6685
+>   if (ret != 0) {
+> #line 284
+6767c6690
+< #line 285
+---
+> #line 286
+6769c6692
+< #line 288
+---
+> #line 289
+6771c6694
+< #line 290
+---
+> #line 291
+6773c6696
+< #line 292
+---
+> #line 293
+6776c6699
+< #line 295
+---
+> #line 296
+6779c6702
+< #line 298
+---
+> #line 299
+6781c6704
+< #line 300
+---
+> #line 301
+6785c6708
+< #line 303 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 304 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6792c6715
+< #line 305
+---
+> #line 306
+6794c6717
+< #line 305
+---
+> #line 306
+6796c6719
+< #line 308
+---
+> #line 309
+6798,6799d6720
+< #line 310
+<   wl1271_unregister_hw(wl);
+6801c6722
+<   free_irq((unsigned int )wl->irq, (void *)wl);
+---
+>   wl1271_unregister_hw(wl);
+6803c6724
+<   wl1271_free_hw(wl);
+---
+>   free_irq((unsigned int )wl->irq, (void *)wl);
+6804a6726,6727
+>   wl1271_free_hw(wl);
+> #line 314
+6808c6731
+< #line 315 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 316 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6814c6737
+< #line 319
+---
+> #line 320
+6818c6741
+< #line 322 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 323 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6824c6747
+< #line 324
+---
+> #line 325
+6828c6751
+< #line 327 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 328 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6830c6753
+< #line 327
+---
+> #line 328
+6832c6755
+< #line 332 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 333 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6836c6759
+< #line 342 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 343 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6842,6843d6764
+< #line 346
+<   ret = sdio_register_driver(& wl1271_sdio_driver);
+6845c6766
+<   if (ret < 0) {
+---
+>   ret = sdio_register_driver(& wl1271_sdio_driver);
+6847c6768
+<     printk("<3>wl1271: ERROR failed to register sdio driver: %d\n", ret);
+---
+>   if (ret < 0) {
+6848a6770,6771
+>     printk("<3>wl1271: ERROR failed to register sdio driver: %d\n", ret);
+> #line 350
+6854c6777
+< #line 353
+---
+> #line 354
+6858c6781
+< #line 356 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 357 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6864c6787
+< #line 358
+---
+> #line 359
+6866,6867d6788
+< #line 360
+<   printk("<6>wl1271: unloaded\n");
+6868a6790,6791
+>   printk("<6>wl1271: unloaded\n");
+> #line 362
+6872c6795
+< #line 389
+---
+> #line 390
+6874c6797
+< #line 392
+---
+> #line 393
+6876c6799
+< #line 395
+---
+> #line 396
+6878c6801
+< #line 398
+---
+> #line 399
+6880c6803
+< #line 401
+---
+> #line 402
+6882c6805
+< #line 404
+---
+> #line 405
+6884c6807
+< #line 407 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 408 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6886c6809
+< #line 410 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+---
+> #line 411 "/work/ldvuser/novikov/work/current--X--drivers/net/wireless/wl12xx/wl12xx_sdio.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/26/dscv_tempdir/dscv/ri/08_1a/drivers/net/wireless/wl12xx/sdio.c.prepared"
+6911c6834
+< #line 632
+---
+> #line 633
+6913c6836
+< #line 602
+---
+> #line 603
+6915c6838
+< #line 611
+---
+> #line 612
+6917,6918d6839
+< #line 625
+<   ldv_handler_precall();
+6919a6841,6842
+>   ldv_handler_precall();
+> #line 627
+6921,6922d6843
+< #line 626
+<   if (tmp != 0) {
+6923a6845,6846
+>   if (tmp != 0) {
+> #line 628
+6928,6931c6851,6854
+< #line 637
+<   goto ldv_38104;
+<   ldv_38103: 
+< #line 641
+---
+> #line 638
+>   goto ldv_38178;
+>   ldv_38177: 
+> #line 642
+6933c6856
+< #line 641
+---
+> #line 642
+6936,6937d6858
+< #line 659
+<   ldv_handler_precall();
+6938a6860,6861
+>   ldv_handler_precall();
+> #line 661
+6941,6942c6864,6865
+< #line 667
+<   goto ldv_38087;
+---
+> #line 668
+>   goto ldv_38161;
+6944,6945d6866
+< #line 684
+<   ldv_handler_precall();
+6946a6868,6869
+>   ldv_handler_precall();
+> #line 686
+6949,6950c6872,6873
+< #line 692
+<   goto ldv_38087;
+---
+> #line 693
+>   goto ldv_38161;
+6952,6953d6874
+< #line 709
+<   ldv_handler_precall();
+6954a6876,6877
+>   ldv_handler_precall();
+> #line 711
+6956,6957c6879,6880
+< #line 717
+<   goto ldv_38087;
+---
+> #line 718
+>   goto ldv_38161;
+6959,6960d6881
+< #line 734
+<   ldv_handler_precall();
+6961a6883,6884
+>   ldv_handler_precall();
+> #line 736
+6963,6964c6886,6887
+< #line 742
+<   goto ldv_38087;
+---
+> #line 743
+>   goto ldv_38161;
+6966,6967d6888
+< #line 759
+<   ldv_handler_precall();
+6968a6890,6891
+>   ldv_handler_precall();
+> #line 761
+6970,6971c6893,6894
+< #line 767
+<   goto ldv_38087;
+---
+> #line 768
+>   goto ldv_38161;
+6973,6974d6895
+< #line 784
+<   ldv_handler_precall();
+6975a6897,6898
+>   ldv_handler_precall();
+> #line 786
+6977,6978c6900,6901
+< #line 792
+<   goto ldv_38087;
+---
+> #line 793
+>   goto ldv_38161;
+6980,6981d6902
+< #line 809
+<   ldv_handler_precall();
+6982a6904,6905
+>   ldv_handler_precall();
+> #line 811
+6984,6985c6907,6908
+< #line 817
+<   goto ldv_38087;
+---
+> #line 818
+>   goto ldv_38161;
+6987,6988d6909
+< #line 834
+<   ldv_handler_precall();
+6989a6911,6912
+>   ldv_handler_precall();
+> #line 836
+6991,6992c6914,6915
+< #line 842
+<   goto ldv_38087;
+---
+> #line 843
+>   goto ldv_38161;
+6994,6995d6916
+< #line 859
+<   ldv_handler_precall();
+6996a6918,6919
+>   ldv_handler_precall();
+> #line 861
+6998,6999c6921,6922
+< #line 867
+<   goto ldv_38087;
+---
+> #line 868
+>   goto ldv_38161;
+7001,7002d6923
+< #line 884
+<   ldv_handler_precall();
+7003a6925,6926
+>   ldv_handler_precall();
+> #line 886
+7005,7006c6928,6929
+< #line 892
+<   goto ldv_38087;
+---
+> #line 893
+>   goto ldv_38161;
+7008,7009d6930
+< #line 909
+<   ldv_handler_precall();
+7010a6932,6933
+>   ldv_handler_precall();
+> #line 911
+7012,7013c6935,6936
+< #line 917
+<   goto ldv_38087;
+---
+> #line 918
+>   goto ldv_38161;
+7015c6938
+< #line 921
+---
+> #line 922
+7017,7018d6939
+< #line 934
+<     res_wl1271_probe_13 = wl1271_probe(var_group3, var_wl1271_probe_13_p1);
+7020c6941
+<     ldv_check_return_value(res_wl1271_probe_13);
+---
+>     res_wl1271_probe_13 = wl1271_probe(var_group3, var_wl1271_probe_13_p1);
+7022c6943
+<     ldv_check_return_value_probe(res_wl1271_probe_13);
+---
+>     ldv_check_return_value(res_wl1271_probe_13);
+7024c6945
+<     if (res_wl1271_probe_13 != 0) {
+---
+>     ldv_check_return_value_probe(res_wl1271_probe_13);
+7025a6947,6948
+>     if (res_wl1271_probe_13 != 0) {
+> #line 939
+7030c6953
+< #line 939
+---
+> #line 940
+7035,7036c6958,6959
+< #line 945
+<   goto ldv_38087;
+---
+> #line 946
+>   goto ldv_38161;
+7038c6961
+< #line 949
+---
+> #line 950
+7040,7041d6962
+< #line 962
+<     ldv_handler_precall();
+7043c6964
+<     wl1271_remove(var_group3);
+---
+>     ldv_handler_precall();
+7044a6966,6967
+>     wl1271_remove(var_group3);
+> #line 965
+7049,7050c6972,6973
+< #line 970
+<   goto ldv_38087;
+---
+> #line 971
+>   goto ldv_38161;
+7052c6975
+< #line 974
+---
+> #line 975
+7054,7055d6976
+< #line 987
+<   ldv_handler_precall();
+7057c6978
+<   wl1271_hardirq(var_wl1271_hardirq_3_p0, var_wl1271_hardirq_3_p1);
+---
+>   ldv_handler_precall();
+7058a6980,6981
+>   wl1271_hardirq(var_wl1271_hardirq_3_p0, var_wl1271_hardirq_3_p1);
+> #line 990
+7060,7062d6982
+< #line 995
+<   goto ldv_38087;
+<   default: ;
+7064c6984,6987
+<   goto ldv_38087;
+---
+>   goto ldv_38161;
+>   default: ;
+> #line 997
+>   goto ldv_38161;
+7066,7068c6989,6991
+<   ldv_38087: ;
+<   ldv_38104: 
+< #line 637
+---
+>   ldv_38161: ;
+>   ldv_38178: 
+> #line 638
+7070c6993
+< #line 637
+---
+> #line 638
+7072,7073c6995,6996
+< #line 639
+<     goto ldv_38103;
+---
+> #line 640
+>     goto ldv_38177;
+7079,7080d7001
+< #line 1016
+<   ldv_handler_precall();
+7081a7003,7004
+>   ldv_handler_precall();
+> #line 1018
+7084c7007
+< #line 1020
+---
+> #line 1021
+7086c7009
+< #line 1023
+---
+> #line 1024

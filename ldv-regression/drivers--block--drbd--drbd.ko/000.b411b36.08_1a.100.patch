@@ -1,0 +1,556 @@
+28946a28947
+>   int ping_timeout_active ;
+28973c28974,28975
+<   enum drbd_thread_state tmp___23 ;
+---
+>   struct asender_cmd *tmp___23 ;
+>   enum drbd_thread_state tmp___24 ;
+28992c28994,28996
+< #line 4566
+---
+> #line 4565
+>   ping_timeout_active = 0;
+> #line 4567
+28994c28998
+< #line 4566
+---
+> #line 4567
+28996c29000
+< #line 4566
+---
+> #line 4567
+28998c29002
+< #line 4568
+---
+> #line 4569
+29000,29001d29003
+< #line 4568
+<   tmp___1->policy = 2U;
+29002a29005,29006
+>   tmp___1->policy = 2U;
+> #line 4570
+29004c29008
+< #line 4569
+---
+> #line 4570
+29006,29008d29009
+< #line 4571
+<   goto ldv_49480;
+<   ldv_49484: 
+29010c29011,29012
+<   drbd_thread_current_set_cpu(mdev);
+---
+>   goto ldv_49481;
+>   ldv_49485: 
+29011a29014,29015
+>   drbd_thread_current_set_cpu(mdev);
+> #line 4574
+29013,29014d29016
+< #line 4573
+<   if (tmp___4 != 0) {
+29015a29018,29019
+>   if (tmp___4 != 0) {
+> #line 4575
+29017c29021
+< #line 4574
+---
+> #line 4575
+29019c29023
+< #line 4574
+---
+> #line 4575
+29021c29025
+< #line 4574
+---
+> #line 4575
+29024c29028
+<               4574);
+---
+>               4575);
+29028c29032
+< #line 4574
+---
+> #line 4575
+29030c29034
+< #line 4574
+---
+> #line 4575
+29035c29039
+< #line 4575
+---
+> #line 4576
+29036a29041,29042
+> #line 4578
+>     ping_timeout_active = 1;
+29040c29046
+< #line 4581
+---
+> #line 4583
+29042c29048
+< #line 4581
+---
+> #line 4583
+29044,29045d29049
+< #line 4581
+<     if (tmp___5 > 3) {
+29046a29051,29052
+>     if (tmp___5 > 3) {
+> #line 4585
+29054,29055c29060,29061
+<   ldv_49479: 
+< #line 4585
+---
+>   ldv_49480: 
+> #line 4587
+29057c29063
+< #line 4586
+---
+> #line 4588
+29059c29065
+< #line 4586
+---
+> #line 4588
+29061c29067
+< #line 4587
+---
+> #line 4589
+29063c29069
+< #line 4587
+---
+> #line 4589
+29065c29071
+< #line 4588
+---
+> #line 4590
+29070c29076
+< #line 4590
+---
+> #line 4592
+29072c29078
+< #line 4591
+---
+> #line 4593
+29074c29080
+< #line 4592
+---
+> #line 4594
+29076c29082
+< #line 4593
+---
+> #line 4595
+29078c29084
+< #line 4597
+---
+> #line 4599
+29080,29081c29086,29087
+< #line 4598
+<     goto ldv_49478;
+---
+> #line 4600
+>     goto ldv_49479;
+29085,29087d29090
+< #line 4599
+<   goto ldv_49479;
+<   ldv_49478: ;
+29088a29092,29094
+>   goto ldv_49480;
+>   ldv_49479: ;
+> #line 4603
+29090c29096
+< #line 4602
+---
+> #line 4604
+29095c29101
+< #line 4605
+---
+> #line 4607
+29097c29103
+< #line 4605
+---
+> #line 4607
+29099c29105
+< #line 4605
+---
+> #line 4607
+29101,29102c29107,29108
+< #line 4606
+<     goto ldv_49480;
+---
+> #line 4608
+>     goto ldv_49481;
+29106c29112
+< #line 4608
+---
+> #line 4610
+29109,29110d29114
+< #line 4610
+<   clear_bit(1, (unsigned long volatile   *)(& mdev->flags));
+29111a29116,29117
+>   clear_bit(1, (unsigned long volatile   *)(& mdev->flags));
+> #line 4614
+29113c29119
+< #line 4612
+---
+> #line 4614
+29115c29121
+< #line 4624
+---
+> #line 4626
+29117c29123
+< #line 4624
+---
+> #line 4626
+29119c29125
+< #line 4625
+---
+> #line 4627
+29121c29127
+< #line 4626
+---
+> #line 4628
+29124c29130
+< #line 4627
+---
+> #line 4629
+29126c29132
+< #line 4628
+---
+> #line 4630
+29128c29134
+< #line 4629
+---
+> #line 4631
+29131c29137
+< #line 4630
+---
+> #line 4632
+29133,29134d29138
+< #line 4631
+<     if (((mdev->meta.socket)->sk)->sk_rcvtimeo == (long )(((mdev->net_conf)->ping_timeo * 250) / 10)) {
+29136c29140
+<       dev_err((struct device  const  *)(& (mdev->vdisk)->part0.__dev), "PingAck did not arrive in time.\n");
+---
+>     if (ping_timeout_active != 0) {
+29137a29142,29143
+>       dev_err((struct device  const  *)(& (mdev->vdisk)->part0.__dev), "PingAck did not arrive in time.\n");
+> #line 4635
+29142,29143d29147
+< #line 4636
+<     set_bit(2U, (unsigned long volatile   *)(& mdev->flags));
+29145,29146c29149
+<     goto ldv_49480;
+<   } else
+---
+>     set_bit(2U, (unsigned long volatile   *)(& mdev->flags));
+29148c29151,29152
+<   if (rv == -4) {
+---
+>     goto ldv_49481;
+>   } else
+29150c29154,29156
+<     goto ldv_49480;
+---
+>   if (rv == -4) {
+> #line 4640
+>     goto ldv_49481;
+29152c29158
+< #line 4641
+---
+> #line 4642
+29155c29161
+< #line 4642
+---
+> #line 4643
+29158,29159d29163
+< #line 4645
+<   if (received == expect && (unsigned long )cmd == (unsigned long )((struct asender_cmd *)0)) {
+29160a29165,29166
+>   if (received == expect && (unsigned long )cmd == (unsigned long )((struct asender_cmd *)0)) {
+> #line 4647
+29162,29163d29167
+< #line 4646
+<     if (tmp___15 != 0L) {
+29164a29169,29170
+>     if (tmp___15 != 0L) {
+> #line 4648
+29166c29172
+< #line 4647
+---
+> #line 4648
+29168c29174
+< #line 4647
+---
+> #line 4648
+29170c29176
+< #line 4647
+---
+> #line 4648
+29173c29179
+< #line 4651
+---
+> #line 4652
+29178c29184
+< #line 4653
+---
+> #line 4654
+29180,29181d29185
+< #line 4653
+<     cmd = get_asender_cmd((int )tmp___16);
+29182a29187,29188
+>     cmd = get_asender_cmd((int )tmp___16);
+> #line 4655
+29184,29185d29189
+< #line 4654
+<     len = (int )tmp___17;
+29186a29191,29192
+>     len = (int )tmp___17;
+> #line 4656
+29189,29190d29194
+< #line 4655
+<     if (tmp___21 != 0L) {
+29191a29196,29197
+>     if (tmp___21 != 0L) {
+> #line 4657
+29193c29199
+< #line 4656
+---
+> #line 4657
+29195c29201
+< #line 4656
+---
+> #line 4657
+29197c29203
+< #line 4656
+---
+> #line 4657
+29200c29206
+< #line 4660
+---
+> #line 4661
+29205,29206d29210
+< #line 4662
+<     expect = (int )cmd->pkt_size;
+29207a29212,29213
+>     expect = (int )cmd->pkt_size;
+> #line 4664
+29209c29215
+< #line 4663
+---
+> #line 4664
+29211c29217
+< #line 4663
+---
+> #line 4664
+29214c29220
+<               4663);
+---
+>               4664);
+29218,29219d29223
+< #line 4663
+<     if (_b___0 != 0) {
+29220a29225,29226
+>     if (_b___0 != 0) {
+> #line 4665
+29228,29229d29233
+< #line 4666
+<   if (received == expect) {
+29230a29235,29236
+>   if (received == expect) {
+> #line 4668
+29232c29238
+< #line 4667
+---
+> #line 4668
+29235c29241
+<               4667);
+---
+>               4668);
+29239c29245
+< #line 4668
+---
+> #line 4669
+29241,29242d29246
+< #line 4668
+<     if (tmp___22 == 0) {
+29243a29248,29249
+>     if (tmp___22 == 0) {
+> #line 4670
+29248c29254,29263
+< #line 4671
+---
+> #line 4674
+>     tmp___23 = get_asender_cmd(20);
+> #line 4674
+>     if ((unsigned long )tmp___23 == (unsigned long )cmd) {
+> #line 4675
+>       ping_timeout_active = 0;
+>     } else {
+> 
+>     }
+> #line 4677
+29250c29265
+< #line 4672
+---
+> #line 4678
+29252c29267
+< #line 4673
+---
+> #line 4679
+29254c29269
+< #line 4674
+---
+> #line 4680
+29259,29263c29274
+<   ldv_49480: 
+< #line 4571
+<   tmp___23 = get_t_state(thi);
+< #line 4571
+<   if ((unsigned int )tmp___23 == 1U) {
+---
+>   ldv_49481: 
+29265c29276,29280
+<     goto ldv_49484;
+---
+>   tmp___24 = get_t_state(thi);
+> #line 4572
+>   if ((unsigned int )tmp___24 == 1U) {
+> #line 4573
+>     goto ldv_49485;
+29270c29285
+< #line 4678
+---
+> #line 4684
+29273c29288
+< #line 4680
+---
+> #line 4686
+29275c29290
+< #line 4680
+---
+> #line 4686
+29277c29292
+< #line 4680
+---
+> #line 4686
+29279c29294
+< #line 4680
+---
+> #line 4686
+29281c29296
+< #line 4680
+---
+> #line 4686
+29283c29298
+< #line 4681
+---
+> #line 4687
+29288c29303
+< #line 4683
+---
+> #line 4689
+29291c29306
+< #line 4685
+---
+> #line 4691
+29293c29308
+< #line 4685
+---
+> #line 4691
+29295c29310
+< #line 4685
+---
+> #line 4691
+29297c29312
+< #line 4685
+---
+> #line 4691
+29299c29314
+< #line 4685
+---
+> #line 4691
+29301c29316
+< #line 4686
+---
+> #line 4692
+29306c29321
+< #line 4688
+---
+> #line 4694
+29308c29323
+< #line 4690
+---
+> #line 4696
+29310c29325
+< #line 4690
+---
+> #line 4696
+29313c29328
+<             4690);
+---
+>             4696);
+29317c29332
+< #line 4691
+---
+> #line 4697
+29319c29334
+< #line 4693
+---
+> #line 4699
+29323c29338
+< #line 4733 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/08_1a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4739 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/08_1a/drivers/block/drbd/drbd_receiver.c.prepared"
+29330c29345
+< #line 4745
+---
+> #line 4751
+29332c29347
+< #line 4754
+---
+> #line 4760
+29334,29337c29349,29352
+< #line 4756
+<   goto ldv_49513;
+<   ldv_49512: 
+< #line 4759
+---
+> #line 4762
+>   goto ldv_49514;
+>   ldv_49513: 
+> #line 4765
+29339c29354
+< #line 4759
+---
+> #line 4765
+29342,29343c29357,29358
+< #line 4761
+<   goto ldv_49511;
+---
+> #line 4767
+>   goto ldv_49512;
+29345,29347c29360,29362
+<   ldv_49511: ;
+<   ldv_49513: 
+< #line 4756
+---
+>   ldv_49512: ;
+>   ldv_49514: 
+> #line 4762
+29349c29364
+< #line 4756
+---
+> #line 4762
+29351,29352c29366,29367
+< #line 4757
+<     goto ldv_49512;
+---
+> #line 4763
+>     goto ldv_49513;
+29358c29373
+< #line 4770
+---
+> #line 4776
+29360c29375
+< #line 4773
+---
+> #line 4779
