@@ -110,34 +110,28 @@ def generate_folder(dir):
         sequence = benchmarks.get(key)
         generate_sequence(dir, sequence)
 
-def print_entry(file, dir_basename):
+def print_entry(file, dir_basename, print_dir):
     basename = os.path.basename(file)
     suffix = get_suffix(basename)
 
     file = file.replace(".cil", ".c")
     file_path = os.path.join(ldv_bench_dir_name, dir_basename, file)
+
+    if print_dir:
+        suffix = os.path.join(dir_basename, file)
     print(suffix + ":")
     print("  info: " + suffix + ".c")
     print("  path: " + file_path)
     print("  param:\n")
 
-def create_benchmark_file_for_folder(dir):
+def create_benchmark_file_for_folder(dir, print_dir):
     benchmarks = find_sequences(dir)
     if benchmarks == None:
         return
     dir_basename = os.path.basename(dir)
-    output_file = os.path.join(set_output_path, dir_basename + ".yaml")
-
-
-    file_handle = open(output_file, "w")
-    original_stdout = sys.stdout
-    sys.stdout = file_handle
-
     for key in benchmarks:
         sequence = benchmarks.get(key)
-        print_entry(sequence[0], dir_basename)
-
-    sys.stdout = original_stdout
+        print_entry(sequence[0], dir_basename, print_dir)
 
 def generate_all_folders(path):
     folder_results = []
@@ -150,7 +144,28 @@ def generate_all_folders(path):
         folder_result = generate_folder(folder)
         folder_results.append(folder_result)
 
-        create_benchmark_file_for_folder(folder)
+        dir_basename = os.path.basename(dir)
+        output_file = os.path.join(set_output_path, dir_basename + ".yaml")
+
+        file_handle = open(output_file, "w")
+        original_stdout = sys.stdout
+
+        sys.stdout = file_handle
+        create_benchmark_file_for_folder(folder, False)
+        sys.stdout = original_stdout
+
+    dir_basename = os.path.basename(dir)
+    output_file = os.path.join(set_output_path, "combined.yaml")
+
+    file_handle = open(output_file, "w")
+    original_stdout = sys.stdout
+    sys.stdout = file_handle
+
+    for dir in os.listdir(path):
+        folder = os.path.join(path, dir)
+        create_benchmark_file_for_folder(folder, True)
+
+    sys.stdout = original_stdout
     return folder_results
 
 generate_all_folders(path)
