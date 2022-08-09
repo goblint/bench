@@ -269,7 +269,7 @@ def analyze_project(p, save)
     outfile = $testresults + resname + ".#{aname}.txt"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{$goblint} --conf #{$goblint_conf} -v --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --set result json-messages 1>#{outfile} 2>&1"
+    cmd = "#{$goblint} --conf #{$goblint_conf} -v --enable ana.dead-code.functions --set dbg.timeout #{$timeout} #{aparam} #{filename} #{p.params} --enable allglobs --enable printstats --set result json-messages 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
