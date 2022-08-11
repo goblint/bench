@@ -1,0 +1,20 @@
+11665c11665
+< struct file_operations drbd_proc_fops ;
+---
+> struct file_operations  const  drbd_proc_fops ;
+11709c11709
+< struct file_operations drbd_proc_fops  = 
+---
+> struct file_operations  const  drbd_proc_fops  = 
+36997c36997
+< static struct block_device_operations drbd_ops  = 
+---
+> static struct block_device_operations  const  drbd_ops  = 
+43111c43111
+<   disk->fops = (struct block_device_operations  const  *)(& drbd_ops);
+---
+>   disk->fops = & drbd_ops;
+43318c43318
+<   drbd_proc = proc_create("drbd", 33060U, 0, (struct file_operations  const  *)(& drbd_proc_fops));
+---
+>   drbd_proc = proc_create("drbd", 33060U, 0, & drbd_proc_fops);

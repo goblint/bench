@@ -1,0 +1,3464 @@
+116c116
+< #line 74 "include/linux/log2.h"
+---
+> #line 27 "include/linux/ratelimit.h"
+123c123
+< #line 93 "include/linux/kernel.h"
+---
+> #line 101 "include/linux/kernel.h"
+125c125
+< #line 94
+---
+> #line 102
+127c127
+< #line 182
+---
+> #line 190
+129c129
+< #line 486
+---
+> #line 469
+131c131
+< #line 487
+---
+> #line 470
+133c133
+< #line 203 "include/asm/segment.h"
+---
+> #line 212 "include/asm/segment.h"
+184a185,186
+> #line 82 "include/asm/page_64.h"
+> typedef unsigned long phys_addr_t;
+187c189
+< #line 54 "include/asm/page.h"
+---
+> #line 56 "include/asm/page.h"
+191c193
+< #line 54 "include/asm/page.h"
+---
+> #line 56 "include/asm/page.h"
+193c195
+< #line 55 "include/asm/page.h"
+---
+> #line 57 "include/asm/page.h"
+197c199
+< #line 55 "include/asm/page.h"
+---
+> #line 57 "include/asm/page.h"
+199,200c201,202
+< #line 146 "include/asm/page.h"
+< struct __anonstruct_ldv_1883_11 {
+---
+> #line 153 "include/asm/page.h"
+> struct __anonstruct_ldv_1897_11 {
+204,205c206,207
+< #line 146 "include/asm/page.h"
+< struct __anonstruct_ldv_1898_12 {
+---
+> #line 153 "include/asm/page.h"
+> struct __anonstruct_ldv_1912_12 {
+220,223c222,225
+< #line 146 "include/asm/page.h"
+< union __anonunion_ldv_1899_10 {
+<    struct __anonstruct_ldv_1883_11 ldv_1883 ;
+<    struct __anonstruct_ldv_1898_12 ldv_1898 ;
+---
+> #line 153 "include/asm/page.h"
+> union __anonunion_ldv_1913_10 {
+>    struct __anonstruct_ldv_1897_11 ldv_1897 ;
+>    struct __anonstruct_ldv_1912_12 ldv_1912 ;
+225c227
+< #line 146 "include/asm/page.h"
+---
+> #line 153 "include/asm/page.h"
+227c229
+<    union __anonunion_ldv_1899_10 ldv_1899 ;
+---
+>    union __anonunion_ldv_1913_10 ldv_1913 ;
+229c231
+< #line 92 "include/linux/cpumask.h"
+---
+> #line 141 "include/linux/cpumask.h"
+231c233
+<    unsigned long bits[64U] ;
+---
+>    unsigned long bits[1U] ;
+233c235
+< #line 92 "include/linux/cpumask.h"
+---
+> #line 141 "include/linux/cpumask.h"
+235c237
+< #line 459
+---
+> #line 522
+237c239,241
+< #line 200 "include/asm/msr.h"
+---
+> #line 326 "include/asm/paravirt.h"
+> struct raw_spinlock;
+> #line 199 "include/asm/msr.h"
+269c273
+< struct __anonstruct_ldv_4223_15 {
+---
+> struct __anonstruct_ldv_4303_15 {
+274c278
+< struct __anonstruct_ldv_4229_16 {
+---
+> struct __anonstruct_ldv_4309_16 {
+281,283c285,287
+< union __anonunion_ldv_4230_14 {
+<    struct __anonstruct_ldv_4223_15 ldv_4223 ;
+<    struct __anonstruct_ldv_4229_16 ldv_4229 ;
+---
+> union __anonunion_ldv_4310_14 {
+>    struct __anonstruct_ldv_4303_15 ldv_4303 ;
+>    struct __anonstruct_ldv_4309_16 ldv_4309 ;
+291c295
+<    union __anonunion_ldv_4230_14 ldv_4230 ;
+---
+>    union __anonunion_ldv_4310_14 ldv_4310 ;
+365c369
+< #line 262 "include/linux/list.h"
+---
+> #line 327 "include/linux/list.h"
+367c371
+< #line 262 "include/linux/list.h"
+---
+> #line 327 "include/linux/list.h"
+371c375
+< #line 478 "include/linux/list.h"
+---
+> #line 543 "include/linux/list.h"
+376,377c380,381
+< #line 10 "include/asm/spinlock_types.h"
+< struct __anonstruct_raw_spinlock_t_18 {
+---
+> #line 621 "include/linux/list.h"
+> struct raw_spinlock {
+381c385
+< typedef struct __anonstruct_raw_spinlock_t_18 raw_spinlock_t;
+---
+> typedef struct raw_spinlock raw_spinlock_t;
+383c387
+< struct __anonstruct_raw_rwlock_t_19 {
+---
+> struct __anonstruct_raw_rwlock_t_18 {
+387c391
+< typedef struct __anonstruct_raw_rwlock_t_19 raw_rwlock_t;
+---
+> typedef struct __anonstruct_raw_rwlock_t_18 raw_rwlock_t;
+410a415
+>    unsigned int dep_gen_id ;
+421c426
+< #line 155 "include/linux/lockdep.h"
+---
+> #line 156 "include/linux/lockdep.h"
+428c433
+< #line 191 "include/linux/lockdep.h"
+---
+> #line 192 "include/linux/lockdep.h"
+431d435
+<    struct lock_class *class ;
+433a438
+>    struct lockdep_map *nest_lock ;
+436,440c441,446
+<    int irq_context ;
+<    int trylock ;
+<    int read ;
+<    int check ;
+<    int hardirqs_off ;
+---
+>    unsigned short class_idx : 13 ;
+>    unsigned char irq_context : 2 ;
+>    unsigned char trylock : 1 ;
+>    unsigned char read : 2 ;
+>    unsigned char check : 2 ;
+>    unsigned char hardirqs_off : 1 ;
+443c449
+< struct __anonstruct_spinlock_t_20 {
+---
+> struct __anonstruct_spinlock_t_19 {
+451c457
+< typedef struct __anonstruct_spinlock_t_20 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_19 spinlock_t;
+453c459
+< struct __anonstruct_rwlock_t_21 {
+---
+> struct __anonstruct_rwlock_t_20 {
+461c467
+< typedef struct __anonstruct_rwlock_t_21 rwlock_t;
+---
+> typedef struct __anonstruct_rwlock_t_20 rwlock_t;
+463c469
+< struct __anonstruct_atomic_t_22 {
+---
+> struct __anonstruct_atomic_t_21 {
+467c473
+< typedef struct __anonstruct_atomic_t_22 atomic_t;
+---
+> typedef struct __anonstruct_atomic_t_21 atomic_t;
+469c475
+< struct __anonstruct_atomic64_t_23 {
+---
+> struct __anonstruct_atomic64_t_22 {
+473c479
+< typedef struct __anonstruct_atomic64_t_23 atomic64_t;
+---
+> typedef struct __anonstruct_atomic64_t_22 atomic64_t;
+500c506
+< struct __anonstruct_ldv_5019_25 {
+---
+> struct __anonstruct_ldv_5128_24 {
+507c513
+< struct __anonstruct_futex_26 {
+---
+> struct __anonstruct_futex_25 {
+515c521
+< struct __anonstruct_nanosleep_27 {
+---
+> struct __anonstruct_nanosleep_26 {
+522,525c528,531
+< union __anonunion_ldv_5033_24 {
+<    struct __anonstruct_ldv_5019_25 ldv_5019 ;
+<    struct __anonstruct_futex_26 futex ;
+<    struct __anonstruct_nanosleep_27 nanosleep ;
+---
+> union __anonunion_ldv_5142_23 {
+>    struct __anonstruct_ldv_5128_24 ldv_5128 ;
+>    struct __anonstruct_futex_25 futex ;
+>    struct __anonstruct_nanosleep_26 nanosleep ;
+530c536
+<    union __anonunion_ldv_5033_24 ldv_5033 ;
+---
+>    union __anonunion_ldv_5142_23 ldv_5142 ;
+551c557
+< struct __anonstruct_seqlock_t_29 {
+---
+> struct __anonstruct_seqlock_t_28 {
+556c562
+< typedef struct __anonstruct_seqlock_t_29 seqlock_t;
+---
+> typedef struct __anonstruct_seqlock_t_28 seqlock_t;
+578,579c584,585
+< struct __anonstruct_nodemask_t_30 {
+<    unsigned long bits[8U] ;
+---
+> struct __anonstruct_nodemask_t_29 {
+>    unsigned long bits[1U] ;
+582c588
+< typedef struct __anonstruct_nodemask_t_30 nodemask_t;
+---
+> typedef struct __anonstruct_nodemask_t_29 nodemask_t;
+638c644
+< struct __anonstruct_mm_context_t_31 {
+---
+> struct __anonstruct_mm_context_t_30 {
+646c652
+< typedef struct __anonstruct_mm_context_t_31 mm_context_t;
+---
+> typedef struct __anonstruct_mm_context_t_30 mm_context_t;
+649,650d654
+< #line 24 "include/linux/mm_types.h"
+< typedef atomic_long_t mm_counter_t;
+652c656,658
+< struct __anonstruct_ldv_6196_33 {
+---
+> typedef atomic_long_t mm_counter_t;
+> #line 26 "include/linux/mm_types.h"
+> struct __anonstruct_ldv_6333_32 {
+656,657c662,663
+< #line 25 "include/linux/mm_types.h"
+< union __anonunion_ldv_6197_32 {
+---
+> #line 26 "include/linux/mm_types.h"
+> union __anonunion_ldv_6334_31 {
+659c665
+<    struct __anonstruct_ldv_6196_33 ldv_6196 ;
+---
+>    struct __anonstruct_ldv_6333_32 ldv_6333 ;
+661,662c667,668
+< #line 25 "include/linux/mm_types.h"
+< struct __anonstruct_ldv_6202_35 {
+---
+> #line 26 "include/linux/mm_types.h"
+> struct __anonstruct_ldv_6339_34 {
+666,668c672,674
+< #line 25 "include/linux/mm_types.h"
+< union __anonunion_ldv_6206_34 {
+<    struct __anonstruct_ldv_6202_35 ldv_6202 ;
+---
+> #line 26 "include/linux/mm_types.h"
+> union __anonunion_ldv_6343_33 {
+>    struct __anonstruct_ldv_6339_34 ldv_6339 ;
+673,674c679,680
+< #line 25 "include/linux/mm_types.h"
+< union __anonunion_ldv_6210_36 {
+---
+> #line 26 "include/linux/mm_types.h"
+> union __anonunion_ldv_6347_35 {
+678c684
+< #line 25 "include/linux/mm_types.h"
+---
+> #line 26 "include/linux/mm_types.h"
+682,684c688,690
+<    union __anonunion_ldv_6197_32 ldv_6197 ;
+<    union __anonunion_ldv_6206_34 ldv_6206 ;
+<    union __anonunion_ldv_6210_36 ldv_6210 ;
+---
+>    union __anonunion_ldv_6334_31 ldv_6334 ;
+>    union __anonunion_ldv_6343_33 ldv_6343 ;
+>    union __anonunion_ldv_6347_35 ldv_6347 ;
+688,689c694,695
+< #line 97 "include/linux/mm_types.h"
+< struct __anonstruct_vm_set_38 {
+---
+> #line 98 "include/linux/mm_types.h"
+> struct __anonstruct_vm_set_37 {
+694,696c700,702
+< #line 97 "include/linux/mm_types.h"
+< union __anonunion_shared_37 {
+<    struct __anonstruct_vm_set_38 vm_set ;
+---
+> #line 98 "include/linux/mm_types.h"
+> union __anonunion_shared_36 {
+>    struct __anonstruct_vm_set_37 vm_set ;
+699c705
+< #line 97
+---
+> #line 98
+701c707
+< #line 97
+---
+> #line 98
+703c709
+< #line 97
+---
+> #line 98
+705c711
+< #line 97
+---
+> #line 98
+707c713
+< #line 97 "include/linux/mm_types.h"
+---
+> #line 98 "include/linux/mm_types.h"
+716c722
+<    union __anonunion_shared_37 shared ;
+---
+>    union __anonunion_shared_36 shared ;
+726c732,743
+< #line 160
+---
+> #line 161 "include/linux/mm_types.h"
+> struct core_thread {
+>    struct task_struct *task ;
+>    struct core_thread *next ;
+> };
+> #line 167 "include/linux/mm_types.h"
+> struct core_state {
+>    atomic_t nr_threads ;
+>    struct core_thread dumper ;
+>    struct completion startup ;
+> };
+> #line 173
+728c745,747
+< #line 160 "include/linux/mm_types.h"
+---
+> #line 173
+> struct mmu_notifier_mm;
+> #line 173 "include/linux/mm_types.h"
+744d762
+<    int core_waiters ;
+771c789
+<    unsigned long saved_auxv[38U] ;
+---
+>    unsigned long saved_auxv[42U] ;
+778,779c796
+<    struct completion *core_startup_done ;
+<    struct completion core_done ;
+---
+>    struct core_state *core_state ;
+784a802
+>    struct mmu_notifier_mm *mmu_notifier_mm ;
+788c806
+< #line 104 "include/linux/pm.h"
+---
+> #line 32 "include/linux/pm.h"
+790c808
+< #line 105 "include/linux/pm.h"
+---
+> #line 33 "include/linux/pm.h"
+794c812
+< #line 113 "include/linux/pm.h"
+---
+> #line 41 "include/linux/pm.h"
+796c814
+< #line 114 "include/linux/pm.h"
+---
+> #line 42 "include/linux/pm.h"
+807c825
+< #line 227 "include/linux/pm.h"
+---
+> #line 155 "include/linux/pm.h"
+817c835
+< #line 284
+---
+> #line 212
+827c845
+< #line 294 "include/linux/pm.h"
+---
+> #line 222 "include/linux/pm.h"
+839,971d856
+< #line 102
+< struct sem_undo;
+< #line 116 "include/linux/sem.h"
+< struct sem_undo {
+<    struct sem_undo *proc_next ;
+<    struct sem_undo *id_next ;
+<    int semid ;
+<    short *semadj ;
+< };
+< #line 126 "include/linux/sem.h"
+< struct sem_undo_list {
+<    atomic_t refcnt ;
+<    spinlock_t lock ;
+<    struct sem_undo *proc_list ;
+< };
+< #line 135 "include/linux/sem.h"
+< struct sysv_sem {
+<    struct sem_undo_list *undo_list ;
+< };
+< #line 144
+< struct siginfo;
+< #line 32 "include/asm/signal.h"
+< struct __anonstruct_sigset_t_90 {
+<    unsigned long sig[1U] ;
+< };
+< #line 32 "include/asm/signal.h"
+< typedef struct __anonstruct_sigset_t_90 sigset_t;
+< #line 17 "include/asm-generic/signal.h"
+< typedef void __signalfn_t(int  );
+< #line 18 "include/asm-generic/signal.h"
+< typedef __signalfn_t *__sighandler_t;
+< #line 20 "include/asm-generic/signal.h"
+< typedef void __restorefn_t(void);
+< #line 21 "include/asm-generic/signal.h"
+< typedef __restorefn_t *__sigrestore_t;
+< #line 22 "include/asm-generic/signal.h"
+< struct sigaction {
+<    __sighandler_t sa_handler ;
+<    unsigned long sa_flags ;
+<    __sigrestore_t sa_restorer ;
+<    sigset_t sa_mask ;
+< };
+< #line 168 "include/asm/signal.h"
+< struct k_sigaction {
+<    struct sigaction sa ;
+< };
+< #line 180 "include/asm/signal.h"
+< union sigval {
+<    int sival_int ;
+<    void *sival_ptr ;
+< };
+< #line 10 "include/asm-generic/siginfo.h"
+< typedef union sigval sigval_t;
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__kill_92 {
+<    pid_t _pid ;
+<    uid_t _uid ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__timer_93 {
+<    timer_t _tid ;
+<    int _overrun ;
+<    char _pad[0U] ;
+<    sigval_t _sigval ;
+<    int _sys_private ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__rt_94 {
+<    pid_t _pid ;
+<    uid_t _uid ;
+<    sigval_t _sigval ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__sigchld_95 {
+<    pid_t _pid ;
+<    uid_t _uid ;
+<    int _status ;
+<    clock_t _utime ;
+<    clock_t _stime ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__sigfault_96 {
+<    void *_addr ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct __anonstruct__sigpoll_97 {
+<    long _band ;
+<    int _fd ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< union __anonunion__sifields_91 {
+<    int _pad[28U] ;
+<    struct __anonstruct__kill_92 _kill ;
+<    struct __anonstruct__timer_93 _timer ;
+<    struct __anonstruct__rt_94 _rt ;
+<    struct __anonstruct__sigchld_95 _sigchld ;
+<    struct __anonstruct__sigfault_96 _sigfault ;
+<    struct __anonstruct__sigpoll_97 _sigpoll ;
+< };
+< #line 11 "include/asm-generic/siginfo.h"
+< struct siginfo {
+<    int si_signo ;
+<    int si_errno ;
+<    int si_code ;
+<    union __anonunion__sifields_91 _sifields ;
+< };
+< #line 93 "include/asm-generic/siginfo.h"
+< typedef struct siginfo siginfo_t;
+< #line 291
+< struct user_struct;
+< #line 20 "include/linux/signal.h"
+< struct sigpending {
+<    struct list_head list ;
+<    sigset_t signal ;
+< };
+< #line 374
+< struct dentry;
+< #line 375
+< struct vfsmount;
+< #line 376 "include/linux/signal.h"
+< struct path {
+<    struct vfsmount *mnt ;
+<    struct dentry *dentry ;
+< };
+< #line 14 "include/linux/path.h"
+< struct fs_struct {
+<    atomic_t count ;
+<    rwlock_t lock ;
+<    int umask ;
+<    struct path root ;
+<    struct path pwd ;
+<    struct path altroot ;
+< };
+974c859
+< #line 102 "include/linux/slab.h"
+---
+> #line 103 "include/linux/slab.h"
+1011c896
+< #line 235
+---
+> #line 240
+1013c898
+< #line 236 "include/linux/workqueue.h"
+---
+> #line 241 "include/linux/workqueue.h"
+1041c926
+< #line 49 "include/linux/kobject.h"
+---
+> #line 48 "include/linux/kobject.h"
+1043c928
+< #line 49
+---
+> #line 48
+1045c930
+< #line 49
+---
+> #line 48
+1047c932
+< #line 49 "include/linux/kobject.h"
+---
+> #line 48 "include/linux/kobject.h"
+1050d934
+<    struct kref kref ;
+1055a940
+>    struct kref kref ;
+1061c946
+< #line 104 "include/linux/kobject.h"
+---
+> #line 103 "include/linux/kobject.h"
+1067c952
+< #line 110 "include/linux/kobject.h"
+---
+> #line 109 "include/linux/kobject.h"
+1074c959
+< #line 117 "include/linux/kobject.h"
+---
+> #line 116 "include/linux/kobject.h"
+1080c965
+< #line 134 "include/linux/kobject.h"
+---
+> #line 133 "include/linux/kobject.h"
+1087c972
+< #line 228 "include/linux/kobject.h"
+---
+> #line 229 "include/linux/kobject.h"
+1099a985
+>    unsigned long min_partial ;
+1105c991
+< #line 55 "include/linux/slub_def.h"
+---
+> #line 56 "include/linux/slub_def.h"
+1109c995
+< #line 65 "include/linux/slub_def.h"
+---
+> #line 66 "include/linux/slub_def.h"
+1121c1007
+<    void (*ctor)(struct kmem_cache * , void * ) ;
+---
+>    void (*ctor)(void * ) ;
+1128,1129c1014,1015
+<    struct kmem_cache_node *node[512U] ;
+<    struct kmem_cache_cpu *cpu_slab[4096U] ;
+---
+>    struct kmem_cache_node *node[64U] ;
+>    struct kmem_cache_cpu *cpu_slab[8U] ;
+1131c1017
+< #line 291 "include/linux/slab.h"
+---
+> #line 292 "include/linux/slab.h"
+1133c1019
+< #line 84 "include/linux/percpu.h"
+---
+> #line 79 "include/linux/percpu.h"
+1138c1024,1149
+< #line 255 "include/linux/rcupdate.h"
+---
+> #line 113 "include/linux/sem.h"
+> struct sem_undo_list;
+> #line 126 "include/linux/sem.h"
+> struct sem_undo_list {
+>    atomic_t refcnt ;
+>    spinlock_t lock ;
+>    struct list_head list_proc ;
+> };
+> #line 135 "include/linux/sem.h"
+> struct sysv_sem {
+>    struct sem_undo_list *undo_list ;
+> };
+> #line 144
+> struct siginfo;
+> #line 32 "include/asm/signal.h"
+> struct __anonstruct_sigset_t_89 {
+>    unsigned long sig[1U] ;
+> };
+> #line 32 "include/asm/signal.h"
+> typedef struct __anonstruct_sigset_t_89 sigset_t;
+> #line 17 "include/asm-generic/signal.h"
+> typedef void __signalfn_t(int  );
+> #line 18 "include/asm-generic/signal.h"
+> typedef __signalfn_t *__sighandler_t;
+> #line 20 "include/asm-generic/signal.h"
+> typedef void __restorefn_t(void);
+> #line 21 "include/asm-generic/signal.h"
+> typedef __restorefn_t *__sigrestore_t;
+> #line 22 "include/asm-generic/signal.h"
+> struct sigaction {
+>    __sighandler_t sa_handler ;
+>    unsigned long sa_flags ;
+>    __sigrestore_t sa_restorer ;
+>    sigset_t sa_mask ;
+> };
+> #line 168 "include/asm/signal.h"
+> struct k_sigaction {
+>    struct sigaction sa ;
+> };
+> #line 180 "include/asm/signal.h"
+> union sigval {
+>    int sival_int ;
+>    void *sival_ptr ;
+> };
+> #line 10 "include/asm-generic/siginfo.h"
+> typedef union sigval sigval_t;
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__kill_91 {
+>    pid_t _pid ;
+>    uid_t _uid ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__timer_92 {
+>    timer_t _tid ;
+>    int _overrun ;
+>    char _pad[0U] ;
+>    sigval_t _sigval ;
+>    int _sys_private ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__rt_93 {
+>    pid_t _pid ;
+>    uid_t _uid ;
+>    sigval_t _sigval ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__sigchld_94 {
+>    pid_t _pid ;
+>    uid_t _uid ;
+>    int _status ;
+>    clock_t _utime ;
+>    clock_t _stime ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__sigfault_95 {
+>    void *_addr ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct __anonstruct__sigpoll_96 {
+>    long _band ;
+>    int _fd ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> union __anonunion__sifields_90 {
+>    int _pad[28U] ;
+>    struct __anonstruct__kill_91 _kill ;
+>    struct __anonstruct__timer_92 _timer ;
+>    struct __anonstruct__rt_93 _rt ;
+>    struct __anonstruct__sigchld_94 _sigchld ;
+>    struct __anonstruct__sigfault_95 _sigfault ;
+>    struct __anonstruct__sigpoll_96 _sigpoll ;
+> };
+> #line 11 "include/asm-generic/siginfo.h"
+> struct siginfo {
+>    int si_signo ;
+>    int si_errno ;
+>    int si_code ;
+>    union __anonunion__sifields_90 _sifields ;
+> };
+> #line 93 "include/asm-generic/siginfo.h"
+> typedef struct siginfo siginfo_t;
+> #line 291
+> struct user_struct;
+> #line 20 "include/linux/signal.h"
+> struct sigpending {
+>    struct list_head list ;
+>    sigset_t signal ;
+> };
+> #line 374
+> struct dentry;
+> #line 375
+> struct vfsmount;
+> #line 376 "include/linux/signal.h"
+> struct path {
+>    struct vfsmount *mnt ;
+>    struct dentry *dentry ;
+> };
+> #line 14 "include/linux/path.h"
+> struct fs_struct {
+>    atomic_t count ;
+>    rwlock_t lock ;
+>    int umask ;
+>    struct path root ;
+>    struct path pwd ;
+> };
+> #line 26 "include/linux/fs_struct.h"
+1145c1156
+< #line 262
+---
+> #line 33
+1147c1158
+< #line 262 "include/linux/rcupdate.h"
+---
+> #line 33 "include/linux/fs_struct.h"
+1155a1167
+>    unsigned int level ;
+1158d1169
+<    unsigned int level ;
+1174c1185
+< struct __anonstruct_seccomp_t_100 {
+---
+> struct __anonstruct_seccomp_t_99 {
+1178c1189
+< typedef struct __anonstruct_seccomp_t_100 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_99 seccomp_t;
+1244a1256,1259
+>    u64 rchar ;
+>    u64 wchar ;
+>    u64 syscr ;
+>    u64 syscw ;
+1249c1264
+< #line 34 "include/linux/task_io_accounting.h"
+---
+> #line 45 "include/linux/task_io_accounting.h"
+1262c1277
+< #line 137 "include/linux/sched.h"
+---
+> #line 138 "include/linux/sched.h"
+1264,1265d1278
+< #line 138
+< struct cfs_rq;
+1266a1280,1281
+> struct cfs_rq;
+> #line 140
+1268c1283
+< #line 333
+---
+> #line 334
+1283c1298
+< union __anonunion_ki_obj_101 {
+---
+> union __anonunion_ki_obj_100 {
+1298c1313
+<    union __anonunion_ki_obj_101 ki_obj ;
+---
+>    union __anonunion_ki_obj_100 ki_obj ;
+1314c1329
+< #line 163 "include/linux/aio.h"
+---
+> #line 162 "include/linux/aio.h"
+1325c1340
+< #line 179 "include/linux/aio.h"
+---
+> #line 178 "include/linux/aio.h"
+1341c1356
+< #line 392 "include/linux/sched.h"
+---
+> #line 393 "include/linux/sched.h"
+1348c1363
+< #line 418 "include/linux/sched.h"
+---
+> #line 419 "include/linux/sched.h"
+1358,1359c1373,1374
+< #line 426 "include/linux/sched.h"
+< union __anonunion_ldv_9899_102 {
+---
+> #line 427 "include/linux/sched.h"
+> union __anonunion_ldv_10043_101 {
+1363,1364c1378,1379
+< #line 426 "include/linux/sched.h"
+< union __anonunion_ldv_9904_103 {
+---
+> #line 427 "include/linux/sched.h"
+> union __anonunion_ldv_10048_102 {
+1368c1383
+< #line 426
+---
+> #line 427
+1370c1385
+< #line 426
+---
+> #line 427
+1372c1387
+< #line 426
+---
+> #line 427
+1374c1389
+< #line 426
+---
+> #line 427
+1376c1391
+< #line 426 "include/linux/sched.h"
+---
+> #line 427 "include/linux/sched.h"
+1396c1411
+<    union __anonunion_ldv_9899_102 ldv_9899 ;
+---
+>    union __anonunion_ldv_10043_101 ldv_10043 ;
+1398c1413
+<    union __anonunion_ldv_9904_103 ldv_9904 ;
+---
+>    union __anonunion_ldv_10048_102 ldv_10048 ;
+1418a1434
+>    struct task_io_accounting ioac ;
+1429c1445
+< #line 575 "include/linux/sched.h"
+---
+> #line 577 "include/linux/sched.h"
+1447c1463
+< #line 617
+---
+> #line 619
+1449c1465
+< #line 618
+---
+> #line 620
+1451c1467
+< #line 619 "include/linux/sched.h"
+---
+> #line 621 "include/linux/sched.h"
+1460c1476
+< #line 640
+---
+> #line 642
+1462c1478
+< #line 641 "include/linux/sched.h"
+---
+> #line 643 "include/linux/sched.h"
+1471a1488,1491
+>    struct timespec freepages_start ;
+>    struct timespec freepages_end ;
+>    u64 freepages_delay ;
+>    u32 freepages_count ;
+1473c1493
+< #line 678
+---
+> #line 684
+1480c1500
+< #line 685 "include/linux/sched.h"
+---
+> #line 691 "include/linux/sched.h"
+1487c1507
+< #line 745
+---
+> #line 751
+1497c1517
+< #line 759 "include/linux/sched.h"
+---
+> #line 765 "include/linux/sched.h"
+1540c1560
+< #line 826
+---
+> #line 832
+1542c1562
+< #line 827 "include/linux/sched.h"
+---
+> #line 833 "include/linux/sched.h"
+1550c1570
+< #line 869
+---
+> #line 884
+1552c1572
+< #line 870
+---
+> #line 885
+1554c1574
+< #line 872
+---
+> #line 887
+1556c1576
+< #line 873 "include/linux/sched.h"
+---
+> #line 888 "include/linux/sched.h"
+1585c1605
+< #line 923 "include/linux/sched.h"
+---
+> #line 938 "include/linux/sched.h"
+1590c1610
+< #line 928 "include/linux/sched.h"
+---
+> #line 943 "include/linux/sched.h"
+1633c1653
+< #line 994
+---
+> #line 1009
+1635c1655
+< #line 994 "include/linux/sched.h"
+---
+> #line 1009 "include/linux/sched.h"
+1646c1666
+< #line 1010
+---
+> #line 1025
+1648c1668
+< #line 1010
+---
+> #line 1025
+1650c1670
+< #line 1010
+---
+> #line 1025
+1652c1672
+< #line 1010
+---
+> #line 1025
+1654c1674
+< #line 1010 "include/linux/sched.h"
+---
+> #line 1025 "include/linux/sched.h"
+1792,1795d1811
+<    u64 rchar ;
+<    u64 wchar ;
+<    u64 syscr ;
+<    u64 syscw ;
+1799c1815
+<    cputime_t acct_stimexpd ;
+---
+>    cputime_t acct_timexpd ;
+1822c1838
+< #line 302 "include/linux/interrupt.h"
+---
+> #line 273 "include/linux/interrupt.h"
+1838c1854
+< struct __anonstruct_sync_serial_settings_104 {
+---
+> struct __anonstruct_sync_serial_settings_103 {
+1844c1860
+< typedef struct __anonstruct_sync_serial_settings_104 sync_serial_settings;
+---
+> typedef struct __anonstruct_sync_serial_settings_103 sync_serial_settings;
+1846c1862
+< struct __anonstruct_te1_settings_105 {
+---
+> struct __anonstruct_te1_settings_104 {
+1853c1869
+< typedef struct __anonstruct_te1_settings_105 te1_settings;
+---
+> typedef struct __anonstruct_te1_settings_104 te1_settings;
+1855c1871
+< struct __anonstruct_raw_hdlc_proto_106 {
+---
+> struct __anonstruct_raw_hdlc_proto_105 {
+1860c1876
+< typedef struct __anonstruct_raw_hdlc_proto_106 raw_hdlc_proto;
+---
+> typedef struct __anonstruct_raw_hdlc_proto_105 raw_hdlc_proto;
+1862c1878
+< struct __anonstruct_fr_proto_107 {
+---
+> struct __anonstruct_fr_proto_106 {
+1872c1888
+< typedef struct __anonstruct_fr_proto_107 fr_proto;
+---
+> typedef struct __anonstruct_fr_proto_106 fr_proto;
+1874c1890
+< struct __anonstruct_fr_proto_pvc_108 {
+---
+> struct __anonstruct_fr_proto_pvc_107 {
+1878c1894
+< typedef struct __anonstruct_fr_proto_pvc_108 fr_proto_pvc;
+---
+> typedef struct __anonstruct_fr_proto_pvc_107 fr_proto_pvc;
+1880c1896
+< struct __anonstruct_fr_proto_pvc_info_109 {
+---
+> struct __anonstruct_fr_proto_pvc_info_108 {
+1885c1901
+< typedef struct __anonstruct_fr_proto_pvc_info_109 fr_proto_pvc_info;
+---
+> typedef struct __anonstruct_fr_proto_pvc_info_108 fr_proto_pvc_info;
+1887c1903
+< struct __anonstruct_cisco_proto_110 {
+---
+> struct __anonstruct_cisco_proto_109 {
+1892c1908
+< typedef struct __anonstruct_cisco_proto_110 cisco_proto;
+---
+> typedef struct __anonstruct_cisco_proto_109 cisco_proto;
+1903c1919
+< union __anonunion_ifs_ifsu_111 {
+---
+> union __anonunion_ifs_ifsu_110 {
+1916c1932
+<    union __anonunion_ifs_ifsu_111 ifs_ifsu ;
+---
+>    union __anonunion_ifs_ifsu_110 ifs_ifsu ;
+1919c1935
+< union __anonunion_ifr_ifrn_112 {
+---
+> union __anonunion_ifr_ifrn_111 {
+1923c1939
+< union __anonunion_ifr_ifru_113 {
+---
+> union __anonunion_ifr_ifru_112 {
+1940,1941c1956,1957
+<    union __anonunion_ifr_ifrn_112 ifr_ifrn ;
+<    union __anonunion_ifr_ifru_113 ifr_ifru ;
+---
+>    union __anonunion_ifr_ifrn_111 ifr_ifrn ;
+>    union __anonunion_ifr_ifru_112 ifr_ifru ;
+1943c1959
+< #line 112 "include/linux/if_ether.h"
+---
+> #line 124 "include/asm-generic/fcntl.h"
+1945c1961
+< #line 113
+---
+> #line 125
+1947c1963
+< #line 90 "include/linux/random.h"
+---
+> #line 143
+1949c1965
+< #line 90
+---
+> #line 143
+2006c2022
+< struct __anonstruct_local_t_120 {
+---
+> struct __anonstruct_local_t_119 {
+2010c2026
+< typedef struct __anonstruct_local_t_120 local_t;
+---
+> typedef struct __anonstruct_local_t_119 local_t;
+2066d2081
+<    unsigned int num_syms ;
+2068c2083
+<    struct kernel_symbol  const  *gpl_syms ;
+---
+>    unsigned int num_syms ;
+2069a2085
+>    struct kernel_symbol  const  *gpl_syms ;
+2072d2087
+<    unsigned int num_unused_syms ;
+2074c2089
+<    struct kernel_symbol  const  *unused_gpl_syms ;
+---
+>    unsigned int num_unused_syms ;
+2075a2091
+>    struct kernel_symbol  const  *unused_gpl_syms ;
+2078d2093
+<    unsigned int num_gpl_future_syms ;
+2079a2095
+>    unsigned int num_gpl_future_syms ;
+2085,2088c2101,2104
+<    unsigned long init_size ;
+<    unsigned long core_size ;
+<    unsigned long init_text_size ;
+<    unsigned long core_text_size ;
+---
+>    unsigned int init_size ;
+>    unsigned int core_size ;
+>    unsigned int init_text_size ;
+>    unsigned int core_text_size ;
+2091a2108
+>    unsigned int num_bugs ;
+2094,2098d2110
+<    unsigned int num_bugs ;
+<    struct module_ref ref[4096U] ;
+<    struct list_head modules_which_use_me ;
+<    struct task_struct *waiter ;
+<    void (*exit)(void) ;
+2100c2112
+<    unsigned long num_symtab ;
+---
+>    unsigned int num_symtab ;
+2107a2120,2123
+>    struct list_head modules_which_use_me ;
+>    struct task_struct *waiter ;
+>    void (*exit)(void) ;
+>    struct module_ref ref[8U] ;
+2109c2125
+< #line 452
+---
+> #line 456
+2111c2127
+< #line 177 "include/linux/textsearch.h"
+---
+> #line 176 "include/linux/textsearch.h"
+2130c2146
+< #line 163
+---
+> #line 168
+2132c2148
+< #line 164 "include/linux/ioport.h"
+---
+> #line 169 "include/linux/ioport.h"
+2152c2168,2170
+< #line 50 "include/linux/semaphore.h"
+---
+> #line 48 "include/linux/semaphore.h"
+> struct dma_mapping_ops;
+> #line 48 "include/linux/semaphore.h"
+2154a2173
+>    struct dma_mapping_ops *dma_ops ;
+2157c2176
+< #line 11 "include/asm/device.h"
+---
+> #line 14 "include/asm/device.h"
+2159c2178
+< #line 12
+---
+> #line 15
+2161c2180,2182
+< #line 13
+---
+> #line 16
+> struct class_private;
+> #line 17
+2163c2184
+< #line 14
+---
+> #line 18
+2165c2186
+< #line 15 "include/asm/device.h"
+---
+> #line 19 "include/asm/device.h"
+2171c2192
+< #line 53 "include/linux/device.h"
+---
+> #line 50 "include/linux/device.h"
+2173c2194
+< #line 53
+---
+> #line 50
+2175c2196
+< #line 53 "include/linux/device.h"
+---
+> #line 50 "include/linux/device.h"
+2193c2214
+< #line 121 "include/linux/device.h"
+---
+> #line 118 "include/linux/device.h"
+2208c2229
+< #line 150 "include/linux/device.h"
+---
+> #line 147 "include/linux/device.h"
+2214c2235
+< #line 179
+---
+> #line 176
+2216c2237
+< #line 179 "include/linux/device.h"
+---
+> #line 176 "include/linux/device.h"
+2220,2224d2240
+<    struct kset subsys ;
+<    struct list_head devices ;
+<    struct list_head interfaces ;
+<    struct kset class_dirs ;
+<    struct semaphore sem ;
+2226a2243
+>    struct kobject *dev_kobj ;
+2232a2250
+>    struct class_private *p ;
+2234c2252
+< #line 213 "include/linux/device.h"
+---
+> #line 220 "include/linux/device.h"
+2240c2258
+< #line 242 "include/linux/device.h"
+---
+> #line 252 "include/linux/device.h"
+2250c2268
+< #line 263 "include/linux/device.h"
+---
+> #line 281 "include/linux/device.h"
+2257c2275
+< #line 324 "include/linux/device.h"
+---
+> #line 342 "include/linux/device.h"
+2262c2280
+< #line 333
+---
+> #line 351
+2264c2282
+< #line 333 "include/linux/device.h"
+---
+> #line 351 "include/linux/device.h"
+2272a2291
+>    char const   *init_name ;
+2309c2328
+< #line 134 "include/linux/mm.h"
+---
+> #line 138 "include/linux/mm.h"
+2316c2335
+< #line 155 "include/linux/mm.h"
+---
+> #line 159 "include/linux/mm.h"
+2321d2339
+<    unsigned long (*nopfn)(struct vm_area_struct * , unsigned long  ) ;
+2322a2341
+>    int (*access)(struct vm_area_struct * , unsigned long  , void * , int  , int  ) ;
+2327a2347,2367
+> #line 18 "include/asm/dma-mapping.h"
+> struct dma_mapping_ops {
+>    int (*mapping_error)(struct device * , dma_addr_t  ) ;
+>    void *(*alloc_coherent)(struct device * , size_t  , dma_addr_t * , gfp_t  ) ;
+>    void (*free_coherent)(struct device * , size_t  , void * , dma_addr_t  ) ;
+>    dma_addr_t (*map_single)(struct device * , phys_addr_t  , size_t  , int  ) ;
+>    dma_addr_t (*map_simple)(struct device * , phys_addr_t  , size_t  , int  ) ;
+>    void (*unmap_single)(struct device * , dma_addr_t  , size_t  , int  ) ;
+>    void (*sync_single_for_cpu)(struct device * , dma_addr_t  , size_t  , int  ) ;
+>    void (*sync_single_for_device)(struct device * , dma_addr_t  , size_t  , int  ) ;
+>    void (*sync_single_range_for_cpu)(struct device * , dma_addr_t  , unsigned long  ,
+>                                      size_t  , int  ) ;
+>    void (*sync_single_range_for_device)(struct device * , dma_addr_t  , unsigned long  ,
+>                                         size_t  , int  ) ;
+>    void (*sync_sg_for_cpu)(struct device * , struct scatterlist * , int  , int  ) ;
+>    void (*sync_sg_for_device)(struct device * , struct scatterlist * , int  , int  ) ;
+>    int (*map_sg)(struct device * , struct scatterlist * , int  , int  ) ;
+>    void (*unmap_sg)(struct device * , struct scatterlist * , int  , int  ) ;
+>    int (*dma_supported)(struct device * , u64  ) ;
+>    int is_phys ;
+> };
+2330c2370
+< #line 448
+---
+> #line 503
+2332c2372
+< #line 449 "include/linux/dmaengine.h"
+---
+> #line 504 "include/linux/dmaengine.h"
+2351c2391
+< union __anonunion_ldv_17079_122 {
+---
+> union __anonunion_ldv_17403_121 {
+2358c2398
+< struct __anonstruct_ldv_17092_124 {
+---
+> struct __anonstruct_ldv_17416_123 {
+2363c2403
+< union __anonunion_ldv_17093_123 {
+---
+> union __anonunion_ldv_17417_122 {
+2365c2405
+<    struct __anonstruct_ldv_17092_124 ldv_17092 ;
+---
+>    struct __anonstruct_ldv_17416_123 ldv_17416 ;
+2374c2414
+<    union __anonunion_ldv_17079_122 ldv_17079 ;
+---
+>    union __anonunion_ldv_17403_121 ldv_17403 ;
+2381c2421
+<    union __anonunion_ldv_17093_123 ldv_17093 ;
+---
+>    union __anonunion_ldv_17417_122 ldv_17417 ;
+2402a2443
+>    unsigned char do_not_encrypt : 1 ;
+2405a2447
+>    __u16 vlan_tci ;
+2416c2458
+< #line 69 "include/net/net_namespace.h"
+---
+> #line 73 "include/net/net_namespace.h"
+2428c2470
+< #line 25 "include/linux/seq_file.h"
+---
+> #line 27 "include/linux/seq_file.h"
+2435c2477
+< #line 218 "include/net/net_namespace.h"
+---
+> #line 225 "include/net/net_namespace.h"
+2437c2479
+< #line 219
+---
+> #line 226
+2439c2481
+< #line 220
+---
+> #line 227
+2441c2483
+< #line 221
+---
+> #line 228
+2443,2447c2485
+< #line 222 "include/net/net_namespace.h"
+< struct net_device_subqueue {
+<    unsigned long state ;
+< };
+< #line 128 "include/linux/netdevice.h"
+---
+> #line 229 "include/net/net_namespace.h"
+2473c2511
+< #line 176
+---
+> #line 166 "include/linux/netdevice.h"
+2475c2513
+< #line 177
+---
+> #line 167
+2477c2515
+< #line 197 "include/linux/netdevice.h"
+---
+> #line 187 "include/linux/netdevice.h"
+2486c2524
+< #line 207 "include/linux/netdevice.h"
+---
+> #line 197 "include/linux/netdevice.h"
+2496c2534
+< #line 245 "include/linux/netdevice.h"
+---
+> #line 235 "include/linux/netdevice.h"
+2505,2506c2543,2555
+< #line 450
+< enum ldv_15811 {
+---
+> #line 442
+> struct Qdisc;
+> #line 442 "include/linux/netdevice.h"
+> struct netdev_queue {
+>    struct net_device *dev ;
+>    struct Qdisc *qdisc ;
+>    unsigned long state ;
+>    spinlock_t _xmit_lock ;
+>    int xmit_lock_owner ;
+>    struct Qdisc *qdisc_sleeping ;
+> };
+> #line 452
+> enum ldv_16297 {
+2513c2562
+< #line 458
+---
+> #line 460
+2515c2564
+< #line 458
+---
+> #line 460
+2517,2519c2566
+< #line 458
+< struct Qdisc;
+< #line 458
+---
+> #line 460
+2521c2568
+< #line 458
+---
+> #line 460
+2523c2570,2572
+< #line 458
+---
+> #line 460
+> struct garp_port;
+> #line 460
+2525c2574
+< #line 458 "include/linux/netdevice.h"
+---
+> #line 460 "include/linux/netdevice.h"
+2540d2588
+<    struct net_device *next_sched ;
+2563a2612
+>    spinlock_t addr_list_lock ;
+2569,2570c2618,2619
+<    int promiscuity ;
+<    int allmulti ;
+---
+>    unsigned int promiscuity ;
+>    unsigned int allmulti ;
+2581,2586c2630,2633
+<    spinlock_t ingress_lock ;
+<    struct Qdisc *qdisc_ingress ;
+<    spinlock_t queue_lock ;
+<    struct Qdisc *qdisc ;
+<    struct Qdisc *qdisc_sleeping ;
+<    struct list_head qdisc_list ;
+---
+>    struct netdev_queue rx_queue ;
+>    struct netdev_queue *_tx ;
+>    unsigned int num_tx_queues ;
+>    unsigned int real_num_tx_queues ;
+2588,2590c2635
+<    struct sk_buff *gso_skb ;
+<    spinlock_t _xmit_lock ;
+<    int xmit_lock_owner ;
+---
+>    spinlock_t tx_global_lock ;
+2600c2645
+<    enum ldv_15811 reg_state ;
+---
+>    enum ldv_16297 reg_state ;
+2619a2665
+>    u16 (*select_queue)(struct net_device * , struct sk_buff * ) ;
+2622a2669
+>    struct garp_port *garp_port ;
+2628,2629d2674
+<    unsigned int egress_subqueue_count ;
+<    struct net_device_subqueue egress_subqueue[1U] ;
+2683c2728
+< #line 170 "include/linux/i2c.h"
+---
+> #line 182 "include/linux/i2c.h"
+2696c2741
+< #line 224 "include/linux/i2c.h"
+---
+> #line 236 "include/linux/i2c.h"
+2704c2749
+< #line 298 "include/linux/i2c.h"
+---
+> #line 310 "include/linux/i2c.h"
+2711c2756
+< #line 328 "include/linux/i2c.h"
+---
+> #line 340 "include/linux/i2c.h"
+2731c2776
+< #line 369 "include/linux/i2c.h"
+---
+> #line 381 "include/linux/i2c.h"
+2738c2783
+< #line 461 "include/linux/i2c.h"
+---
+> #line 473 "include/linux/i2c.h"
+2745c2790
+< #line 512 "include/linux/i2c.h"
+---
+> #line 524 "include/linux/i2c.h"
+2751c2796
+< #line 354 "include/linux/rculist.h"
+---
+> #line 382 "include/linux/rculist.h"
+2753c2798
+< #line 355 "include/linux/rculist.h"
+---
+> #line 383 "include/linux/rculist.h"
+2762c2807
+< union __anonunion_d_u_127 {
+---
+> union __anonunion_d_u_126 {
+2780c2825
+<    union __anonunion_d_u_127 d_u ;
+---
+>    union __anonunion_d_u_126 d_u ;
+2801,2820d2845
+< #line 366 "include/linux/dcache.h"
+< struct open_intent {
+<    int flags ;
+<    int create_mode ;
+<    struct file *file ;
+< };
+< #line 19 "include/linux/namei.h"
+< union __anonunion_intent_128 {
+<    struct open_intent open ;
+< };
+< #line 19 "include/linux/namei.h"
+< struct nameidata {
+<    struct path path ;
+<    struct qstr last ;
+<    unsigned int flags ;
+<    int last_type ;
+<    unsigned int depth ;
+<    char *saved_names[9U] ;
+<    union __anonunion_intent_128 intent ;
+< };
+2829c2854
+< #line 181
+---
+> #line 191
+2831c2856
+< #line 183
+---
+> #line 193
+2833c2858
+< #line 315 "include/linux/fs.h"
+---
+> #line 317 "include/linux/fs.h"
+2845,2849c2870
+< #line 44 "include/linux/quota.h"
+< typedef __kernel_uid32_t qid_t;
+< #line 45 "include/linux/quota.h"
+< typedef __u64 qsize_t;
+< #line 46 "include/linux/quota.h"
+---
+> #line 367 "include/linux/fs.h"
+2861c2882
+< #line 114 "include/linux/quota.h"
+---
+> #line 111 "include/linux/quota.h"
+2868c2889
+< #line 147 "include/linux/quota.h"
+---
+> #line 144 "include/linux/quota.h"
+2925a2947,2950
+> typedef __kernel_uid32_t qid_t;
+> #line 177 "include/linux/quota.h"
+> typedef __u64 qsize_t;
+> #line 180 "include/linux/quota.h"
+2936c2961
+< #line 197
+---
+> #line 201
+2938,2939c2963,2964
+< #line 198 "include/linux/quota.h"
+< union __anonunion_u_129 {
+---
+> #line 202 "include/linux/quota.h"
+> union __anonunion_u_127 {
+2943c2968
+< #line 198 "include/linux/quota.h"
+---
+> #line 202 "include/linux/quota.h"
+2953c2978
+<    union __anonunion_u_129 u ;
+---
+>    union __anonunion_u_127 u ;
+2955c2980
+< #line 245 "include/linux/quota.h"
+---
+> #line 247 "include/linux/quota.h"
+2971c2996
+< #line 268 "include/linux/quota.h"
+---
+> #line 270 "include/linux/quota.h"
+2981c3006
+< #line 284 "include/linux/quota.h"
+---
+> #line 286 "include/linux/quota.h"
+2996c3021
+< #line 300 "include/linux/quota.h"
+---
+> #line 302 "include/linux/quota.h"
+3010c3035
+< #line 315 "include/linux/quota.h"
+---
+> #line 317 "include/linux/quota.h"
+3017c3042
+< #line 322 "include/linux/quota.h"
+---
+> #line 324 "include/linux/quota.h"
+3027c3052,3066
+< #line 442 "include/linux/fs.h"
+---
+> #line 463 "include/linux/fs.h"
+> union __anonunion_arg_129 {
+>    char *buf ;
+>    void *data ;
+> };
+> #line 463 "include/linux/fs.h"
+> struct __anonstruct_read_descriptor_t_128 {
+>    size_t written ;
+>    size_t count ;
+>    union __anonunion_arg_129 arg ;
+>    int error ;
+> };
+> #line 463 "include/linux/fs.h"
+> typedef struct __anonstruct_read_descriptor_t_128 read_descriptor_t;
+> #line 466 "include/linux/fs.h"
+3049a3089
+>    int (*is_partially_uptodate)(struct page * , read_descriptor_t * , unsigned long  ) ;
+3051c3091
+< #line 495 "include/linux/fs.h"
+---
+> #line 521 "include/linux/fs.h"
+3055c3095
+<    rwlock_t tree_lock ;
+---
+>    spinlock_t tree_lock ;
+3070c3110
+< #line 517
+---
+> #line 543
+3072c3112
+< #line 517
+---
+> #line 543
+3074c3114
+< #line 517 "include/linux/fs.h"
+---
+> #line 543 "include/linux/fs.h"
+3095c3135
+< #line 581
+---
+> #line 607
+3097c3137
+< #line 581
+---
+> #line 607
+3099c3139
+< #line 581
+---
+> #line 607
+3101,3102c3141,3142
+< #line 581 "include/linux/fs.h"
+< union __anonunion_ldv_20335_130 {
+---
+> #line 607 "include/linux/fs.h"
+> union __anonunion_ldv_21030_130 {
+3107c3147
+< #line 581
+---
+> #line 607
+3109c3149
+< #line 581 "include/linux/fs.h"
+---
+> #line 607 "include/linux/fs.h"
+3141c3181
+<    union __anonunion_ldv_20335_130 ldv_20335 ;
+---
+>    union __anonunion_ldv_21030_130 ldv_21030 ;
+3155c3195
+< #line 747 "include/linux/fs.h"
+---
+> #line 773 "include/linux/fs.h"
+3164c3204
+< #line 755 "include/linux/fs.h"
+---
+> #line 781 "include/linux/fs.h"
+3173c3213
+< #line 778 "include/linux/fs.h"
+---
+> #line 804 "include/linux/fs.h"
+3178c3218
+< #line 778 "include/linux/fs.h"
+---
+> #line 804 "include/linux/fs.h"
+3183c3223
+<    atomic_t f_count ;
+---
+>    atomic_long_t f_count ;
+3199c3239
+< #line 895 "include/linux/fs.h"
+---
+> #line 927 "include/linux/fs.h"
+3201c3241
+< #line 896 "include/linux/fs.h"
+---
+> #line 928 "include/linux/fs.h"
+3206c3246
+< #line 901 "include/linux/fs.h"
+---
+> #line 933 "include/linux/fs.h"
+3247a3288,3289
+>    unsigned char fl_flags ;
+>    unsigned char fl_type ;
+3252,3253d3293
+<    unsigned char fl_flags ;
+<    unsigned char fl_type ;
+3262c3302
+< #line 994 "include/linux/fs.h"
+---
+> #line 1026 "include/linux/fs.h"
+3269c3309
+< #line 1027
+---
+> #line 1059
+3271c3311
+< #line 1027
+---
+> #line 1059
+3273c3313
+< #line 1027
+---
+> #line 1059
+3275c3315
+< #line 1027
+---
+> #line 1059
+3277c3317
+< #line 1027 "include/linux/fs.h"
+---
+> #line 1059 "include/linux/fs.h"
+3306a3347,3348
+>    struct list_head s_dentry_lru ;
+>    int s_nr_dentry_unused ;
+3320c3362
+< #line 1208 "include/linux/fs.h"
+---
+> #line 1223 "include/linux/fs.h"
+3357c3399
+< #line 1249 "include/linux/fs.h"
+---
+> #line 1264 "include/linux/fs.h"
+3372c3414
+<    int (*permission)(struct inode * , int  , struct nameidata * ) ;
+---
+>    int (*permission)(struct inode * , int  ) ;
+3382c3424
+< #line 1289 "include/linux/fs.h"
+---
+> #line 1304 "include/linux/fs.h"
+3405c3447
+< #line 1472 "include/linux/fs.h"
+---
+> #line 1487 "include/linux/fs.h"
+3422c3464
+< enum ldv_17703 {
+---
+> enum ldv_18229 {
+3429c3471
+< typedef enum ldv_17703 dmx_output_t;
+---
+> typedef enum ldv_18229 dmx_output_t;
+3431c3473
+< enum ldv_17705 {
+---
+> enum ldv_18231 {
+3436c3478
+< typedef enum ldv_17705 dmx_input_t;
+---
+> typedef enum ldv_18231 dmx_input_t;
+3438c3480
+< enum ldv_17707 {
+---
+> enum ldv_18233 {
+3462c3504
+< typedef enum ldv_17707 dmx_pes_type_t;
+---
+> typedef enum ldv_18233 dmx_pes_type_t;
+3492c3534
+< enum ldv_17721 {
+---
+> enum ldv_18247 {
+3503c3545
+< typedef enum ldv_17721 dmx_source_t;
+---
+> typedef enum ldv_18247 dmx_source_t;
+3669c3711
+< union __anonunion_feed_143 {
+---
+> union __anonunion_feed_141 {
+3674c3716
+< union __anonunion_cb_144 {
+---
+> union __anonunion_cb_142 {
+3684,3685c3726,3727
+<    union __anonunion_feed_143 feed ;
+<    union __anonunion_cb_144 cb ;
+---
+>    union __anonunion_feed_141 feed ;
+>    union __anonunion_cb_142 cb ;
+3754c3796
+< union __anonunion_filter_145 {
+---
+> union __anonunion_filter_143 {
+3758c3800
+< union __anonunion_feed_146 {
+---
+> union __anonunion_feed_144 {
+3763c3805
+< union __anonunion_params_147 {
+---
+> union __anonunion_params_145 {
+3771,3773c3813,3815
+<    union __anonunion_filter_145 filter ;
+<    union __anonunion_feed_146 feed ;
+<    union __anonunion_params_147 params ;
+---
+>    union __anonunion_filter_143 filter ;
+>    union __anonunion_feed_144 feed ;
+>    union __anonunion_params_145 params ;
+4005c4047
+< union __anonunion_u_148 {
+---
+> union __anonunion_u_146 {
+4015c4057
+<    union __anonunion_u_148 u ;
+---
+>    union __anonunion_u_146 u ;
+4192c4234
+< #line 238 "include/linux/videodev2.h"
+---
+> #line 243 "include/linux/videodev2.h"
+4210c4252
+< #line 533 "include/linux/videodev2.h"
+---
+> #line 532 "include/linux/videodev2.h"
+4215c4257
+< #line 554 "include/linux/videodev2.h"
+---
+> #line 552 "include/linux/videodev2.h"
+4225c4267
+< #line 612 "include/linux/videodev2.h"
+---
+> #line 607 "include/linux/videodev2.h"
+4227c4269
+< #line 1241 "include/linux/videodev2.h"
+---
+> #line 1223 "include/linux/videodev2.h"
+4238c4280
+< #line 227 "include/media/v4l2-common.h"
+---
+> #line 297 "include/media/v4l2-ioctl.h"
+4240c4282
+< #line 227 "include/media/v4l2-common.h"
+---
+> #line 297 "include/media/v4l2-ioctl.h"
+4260c4302
+< #line 129 "include/linux/pci.h"
+---
+> #line 131 "include/linux/pci.h"
+4262c4304
+< #line 140
+---
+> #line 142
+4264c4306
+< #line 141
+---
+> #line 143
+4266c4308
+< #line 142
+---
+> #line 144
+4268c4310
+< #line 142 "include/linux/pci.h"
+---
+> #line 144 "include/linux/pci.h"
+4324c4366
+< #line 261
+---
+> #line 263
+4326c4368
+< #line 261 "include/linux/pci.h"
+---
+> #line 263 "include/linux/pci.h"
+4351c4393
+< #line 309 "include/linux/pci.h"
+---
+> #line 311 "include/linux/pci.h"
+4356c4398
+< #line 344 "include/linux/pci.h"
+---
+> #line 346 "include/linux/pci.h"
+4362c4404
+< #line 358 "include/linux/pci.h"
+---
+> #line 360 "include/linux/pci.h"
+4364c4406
+< #line 367 "include/linux/pci.h"
+---
+> #line 369 "include/linux/pci.h"
+4372c4414
+< #line 395 "include/linux/pci.h"
+---
+> #line 397 "include/linux/pci.h"
+4544c4586
+< #line 27 "include/media/saa7146_vv.h"
+---
+> #line 28 "include/media/saa7146_vv.h"
+4553c4595
+< #line 39 "include/media/saa7146_vv.h"
+---
+> #line 40 "include/media/saa7146_vv.h"
+4564c4606
+< #line 54 "include/media/saa7146_vv.h"
+---
+> #line 55 "include/media/saa7146_vv.h"
+4571c4613
+< #line 69 "include/media/saa7146_vv.h"
+---
+> #line 70 "include/media/saa7146_vv.h"
+4578c4620
+< #line 76
+---
+> #line 77
+4580c4622
+< #line 76 "include/media/saa7146_vv.h"
+---
+> #line 77 "include/media/saa7146_vv.h"
+4587c4629
+< #line 83 "include/media/saa7146_vv.h"
+---
+> #line 84 "include/media/saa7146_vv.h"
+4599c4641
+< #line 104 "include/media/saa7146_vv.h"
+---
+> #line 105 "include/media/saa7146_vv.h"
+4623c4665
+< #line 151 "include/media/saa7146_vv.h"
+---
+> #line 152 "include/media/saa7146_vv.h"
+4628c4670
+< #line 161 "include/media/saa7146_vv.h"
+---
+> #line 162 "include/media/saa7146_vv.h"
+4679c4721
+< #line 188 "include/linux/kernel.h"
+---
+> #line 196 "include/linux/kernel.h"
+4687c4729
+< #line 100 "include/linux/slab.h"
+---
+> #line 101 "include/linux/slab.h"
+4689c4731
+< #line 204 "include/linux/slub_def.h"
+---
+> #line 205 "include/linux/slub_def.h"
+4691c4733
+< #line 211 "include/linux/slub_def.h"
+---
+> #line 212 "include/linux/slub_def.h"
+4697c4739
+< #line 226
+---
+> #line 227
+4699c4741
+< #line 226
+---
+> #line 227
+4703c4745
+< #line 31 "include/linux/kmod.h"
+---
+> #line 32 "include/linux/kmod.h"
+4709c4751
+< #line 377
+---
+> #line 381
+5033,5034c5075,5076
+<   goto ldv_27080;
+<   ldv_27079: 
+---
+>   goto ldv_27780;
+>   ldv_27779: 
+5043c5085
+<   ldv_27080: ;
+---
+>   ldv_27780: ;
+5047c5089
+<     goto ldv_27079;
+---
+>     goto ldv_27779;
+5065a5108,5109
+>   unsigned long __ms___1 ;
+>   unsigned long tmp___1 ;
+5084,5085c5128,5129
+<   goto ldv_27093;
+<   ldv_27092: 
+---
+>   goto ldv_27793;
+>   ldv_27792: 
+5088c5132
+<   ldv_27093: 
+---
+>   ldv_27793: 
+5096c5140
+<     goto ldv_27092;
+---
+>     goto ldv_27792;
+5103,5104c5147,5148
+<   goto ldv_27096;
+<   ldv_27095: 
+---
+>   goto ldv_27796;
+>   ldv_27795: 
+5109c5153
+<   ldv_27096: ;
+---
+>   ldv_27796: ;
+5113c5157
+<     goto ldv_27095;
+---
+>     goto ldv_27795;
+5120,5121c5164,5165
+<   goto ldv_27100;
+<   ldv_27099: 
+---
+>   goto ldv_27800;
+>   ldv_27799: 
+5124c5168
+<   ldv_27100: 
+---
+>   ldv_27800: 
+5132c5176
+<     goto ldv_27099;
+---
+>     goto ldv_27799;
+5147c5191,5208
+<       __const_udelay(53687500UL);
+---
+>       __ms___1 = 12UL;
+> #line 127
+>       goto ldv_27804;
+>       ldv_27803: 
+> #line 127
+>       __const_udelay(4295000UL);
+>       ldv_27804: 
+> #line 127
+>       tmp___1 = __ms___1;
+> #line 127
+>       __ms___1 = __ms___1 - 1UL;
+> #line 127
+>       if (tmp___1 != 0UL) {
+> #line 128
+>         goto ldv_27803;
+>       } else {
+> 
+>       }
+5148a5210,5211
+>       __const_udelay(2147500UL);
+> #line 129
+5151c5214
+< #line 130
+---
+> #line 131
+5156c5219
+< #line 133
+---
+> #line 134
+5160c5223
+< #line 138 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 139 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5166c5229
+< #line 140
+---
+> #line 141
+5168c5231
+< #line 142
+---
+> #line 143
+5171,5172d5233
+< #line 144
+<   gpio_Set22K(budget, 1);
+5174c5235,5237
+<   goto ldv_27108;
+---
+>   gpio_Set22K(budget, 1);
+> #line 146
+>   goto ldv_27812;
+5176,5177d5238
+< #line 148
+<   gpio_Set22K(budget, 0);
+5179c5240,5242
+<   goto ldv_27108;
+---
+>   gpio_Set22K(budget, 0);
+> #line 150
+>   goto ldv_27812;
+5181c5244
+< #line 152
+---
+> #line 153
+5184,5185c5247,5248
+<   ldv_27108: ;
+< #line 155
+---
+>   ldv_27812: ;
+> #line 156
+5189c5252
+< #line 158 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 159 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5195c5258
+< #line 160
+---
+> #line 161
+5197c5260
+< #line 162
+---
+> #line 163
+5199c5262
+< #line 164
+---
+> #line 165
+5203c5266
+< #line 167 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 168 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5209c5272
+< #line 169
+---
+> #line 170
+5211c5274
+< #line 171
+---
+> #line 172
+5213c5276
+< #line 173
+---
+> #line 174
+5217c5280
+< #line 176 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 177 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5223c5286
+< #line 180
+---
+> #line 181
+5225c5288
+< #line 180
+---
+> #line 181
+5227c5290
+< #line 180
+---
+> #line 181
+5232c5295
+< #line 182
+---
+> #line 183
+5234,5237c5297,5300
+< #line 182
+<   goto ldv_27129;
+<   ldv_27128: 
+< #line 184
+---
+> #line 183
+>   goto ldv_27833;
+>   ldv_27832: 
+> #line 185
+5240c5303
+< #line 185
+---
+> #line 186
+5242c5305
+< #line 182
+---
+> #line 183
+5244,5246c5307
+<   ldv_27129: ;
+< #line 182
+<   if (i < length) {
+---
+>   ldv_27833: ;
+5248c5309,5311
+<     goto ldv_27128;
+---
+>   if (i < length) {
+> #line 184
+>     goto ldv_27832;
+5253,5254d5315
+< #line 187
+<   if (length != 0) {
+5255a5317,5318
+>   if (length != 0) {
+> #line 189
+5259c5322
+< #line 190
+---
+> #line 191
+5262,5263d5324
+< #line 191
+<   msleep(5U);
+5265,5266d5325
+<   ttpci_budget_debiwrite(budget, 917504U, 16636, 2, (unsigned int )*buf, 0, 0);
+< #line 193
+5267a5327,5328
+> #line 193
+>   ttpci_budget_debiwrite(budget, 917504U, 16636, 2, (unsigned int )*buf, 0, 0);
+5268a5330,5331
+>   msleep(5U);
+> #line 195
+5272c5335
+< #line 197 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 198 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5278c5341
+< #line 199
+---
+> #line 200
+5280c5343
+< #line 199
+---
+> #line 200
+5282c5345
+< #line 201
+---
+> #line 202
+5284c5347
+< #line 201
+---
+> #line 202
+5286c5349
+< #line 201
+---
+> #line 202
+5291,5292d5353
+< #line 202
+<   budget_av7110_send_fw_cmd(budget, (u16 *)(& buf), 2);
+5293a5355,5356
+>   budget_av7110_send_fw_cmd(budget, (u16 *)(& buf), 2);
+> #line 204
+5297c5360
+< #line 205 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 206 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5304c5367
+< #line 208
+---
+> #line 209
+5306c5369
+< #line 208
+---
+> #line 209
+5308c5371
+< #line 208
+---
+> #line 209
+5310c5373
+< #line 208
+---
+> #line 209
+5312c5375
+< #line 208
+---
+> #line 209
+5314c5377
+< #line 208
+---
+> #line 209
+5316c5379
+< #line 208
+---
+> #line 209
+5318c5381
+< #line 208
+---
+> #line 209
+5320c5383
+< #line 208
+---
+> #line 209
+5322c5385
+< #line 208
+---
+> #line 209
+5324c5387
+< #line 208
+---
+> #line 209
+5326c5389
+< #line 208
+---
+> #line 209
+5328c5391
+< #line 208
+---
+> #line 209
+5330c5393
+< #line 208
+---
+> #line 209
+5332c5395
+< #line 208
+---
+> #line 209
+5334c5397
+< #line 208
+---
+> #line 209
+5336c5399
+< #line 208
+---
+> #line 209
+5338c5401
+< #line 208
+---
+> #line 209
+5340c5403
+< #line 211
+---
+> #line 212
+5342c5405
+< #line 211
+---
+> #line 212
+5344c5407
+< #line 211
+---
+> #line 212
+5349,5350d5411
+< #line 213
+<   if (len > 10) {
+5351a5413,5414
+>   if (len > 10) {
+> #line 215
+5356,5357d5418
+< #line 216
+<   buf[1] = (unsigned int )((u16 )len) + 2U;
+5358a5420,5421
+>   buf[1] = (unsigned int )((u16 )len) + 2U;
+> #line 218
+5360,5361d5422
+< #line 219
+<   if (burst != -1) {
+5362a5424,5425
+>   if (burst != -1) {
+> #line 221
+5365c5428
+< #line 222
+---
+> #line 223
+5368c5431
+< #line 224
+---
+> #line 225
+5370,5372d5432
+< #line 224
+<   goto ldv_27147;
+<   ldv_27146: 
+5373a5434,5436
+>   goto ldv_27851;
+>   ldv_27850: 
+> #line 226
+5375c5438
+< #line 224
+---
+> #line 225
+5377,5379c5440
+<   ldv_27147: ;
+< #line 224
+<   if (i < len) {
+---
+>   ldv_27851: ;
+5381c5442,5444
+<     goto ldv_27146;
+---
+>   if (i < len) {
+> #line 226
+>     goto ldv_27850;
+5385,5386d5447
+< #line 227
+<   budget_av7110_send_fw_cmd(budget, (u16 *)(& buf), 18);
+5387a5449,5450
+>   budget_av7110_send_fw_cmd(budget, (u16 *)(& buf), 18);
+> #line 229
+5391c5454
+< #line 231 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 232 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5397c5460
+< #line 233
+---
+> #line 234
+5399c5462
+< #line 235
+---
+> #line 236
+5402,5403d5464
+< #line 237
+<   av7110_set22k(budget, 1);
+5405c5466,5468
+<   goto ldv_27155;
+---
+>   av7110_set22k(budget, 1);
+> #line 239
+>   goto ldv_27859;
+5407,5408d5469
+< #line 241
+<   av7110_set22k(budget, 0);
+5410c5471,5473
+<   goto ldv_27155;
+---
+>   av7110_set22k(budget, 0);
+> #line 243
+>   goto ldv_27859;
+5412c5475
+< #line 245
+---
+> #line 246
+5415,5416c5478,5479
+<   ldv_27155: ;
+< #line 248
+---
+>   ldv_27859: ;
+> #line 249
+5420c5483
+< #line 251 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 252 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5426c5489
+< #line 253
+---
+> #line 254
+5428c5491
+< #line 255
+---
+> #line 256
+5430c5493
+< #line 257
+---
+> #line 258
+5434c5497
+< #line 260 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 261 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5440c5503
+< #line 262
+---
+> #line 263
+5442c5505
+< #line 264
+---
+> #line 265
+5444c5507
+< #line 266
+---
+> #line 267
+5448c5511
+< #line 269 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 270 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5459,5460d5521
+< #line 271
+<   budget = (struct budget *)(fe->dvb)->priv;
+5461a5523,5524
+>   budget = (struct budget *)(fe->dvb)->priv;
+> #line 273
+5463c5526
+< #line 274
+---
+> #line 275
+5465c5528
+< #line 274
+---
+> #line 275
+5467c5530
+< #line 274
+---
+> #line 275
+5469,5470d5531
+< #line 274
+<   msg.buf = (__u8 *)(& buf);
+5471a5533,5534
+>   msg.buf = (__u8 *)(& buf);
+> #line 276
+5473c5536
+< #line 277
+---
+> #line 278
+5475c5538
+< #line 277
+---
+> #line 278
+5478c5541
+< #line 278
+---
+> #line 279
+5480c5543
+< #line 278
+---
+> #line 279
+5483c5546
+< #line 279
+---
+> #line 280
+5485c5548
+< #line 279
+---
+> #line 280
+5488c5551
+< #line 280
+---
+> #line 281
+5490c5553
+< #line 280
+---
+> #line 281
+5493c5556
+< #line 281
+---
+> #line 282
+5495c5558
+< #line 281
+---
+> #line 282
+5498c5561
+< #line 282
+---
+> #line 283
+5501,5502d5563
+< #line 284
+<   buf[0] = (unsigned int )((u8 )(div >> 8)) & 127U;
+5504c5565
+<   buf[1] = (u8 )div;
+---
+>   buf[0] = (unsigned int )((u8 )(div >> 8)) & 127U;
+5506c5567
+<   buf[2] = (unsigned int )((u8 )((div & 98304U) >> 10)) | 149U;
+---
+>   buf[1] = (u8 )div;
+5507a5569,5570
+>   buf[2] = (unsigned int )((u8 )((div & 98304U) >> 10)) | 149U;
+> #line 288
+5509c5572
+< #line 292
+---
+> #line 293
+5512c5575
+< #line 293
+---
+> #line 294
+5517c5580
+< #line 294
+---
+> #line 295
+5519,5520d5581
+< #line 294
+<   if (tmp != 1) {
+5521a5583,5584
+>   if (tmp != 1) {
+> #line 296
+5526c5589
+< #line 296
+---
+> #line 297
+5530c5593
+< #line 299 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 300 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5532c5595
+< #line 305 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 306 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5542c5605
+< #line 307
+---
+> #line 308
+5544c5607
+< #line 310
+---
+> #line 311
+5546c5609
+< #line 310
+---
+> #line 311
+5548c5611
+< #line 310
+---
+> #line 311
+5550c5613
+< #line 310
+---
+> #line 311
+5552,5553d5614
+< #line 312
+<   div = params->frequency / 125U;
+5555c5616
+<   data[0] = (unsigned int )((u8 )(div >> 8)) & 127U;
+---
+>   div = params->frequency / 125U;
+5557c5618
+<   data[1] = (u8 )div;
+---
+>   data[0] = (unsigned int )((u8 )(div >> 8)) & 127U;
+5559c5620
+<   data[2] = 142U;
+---
+>   data[1] = (u8 )div;
+5560a5622,5623
+>   data[2] = 142U;
+> #line 317
+5562c5625
+< #line 318
+---
+> #line 319
+5565c5628
+< #line 319
+---
+> #line 320
+5570c5633
+< #line 320
+---
+> #line 321
+5572,5573d5634
+< #line 320
+<   if (tmp != 1) {
+5574a5636,5637
+>   if (tmp != 1) {
+> #line 322
+5579c5642
+< #line 322
+---
+> #line 323
+5583c5646
+< #line 325 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 326 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5585c5648
+< #line 329 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 330 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5612c5675
+< #line 331
+---
+> #line 332
+5616c5679
+< #line 336
+---
+> #line 337
+5618c5681
+< #line 336
+---
+> #line 337
+5620c5683
+< #line 336
+---
+> #line 337
+5624c5687
+< #line 336
+---
+> #line 337
+5626c5689
+< #line 336
+---
+> #line 337
+5629c5692
+< #line 336
+---
+> #line 337
+5631c5694
+< #line 336
+---
+> #line 337
+5633c5696
+< #line 336
+---
+> #line 337
+5636c5699
+< #line 336
+---
+> #line 337
+5638c5701
+< #line 336
+---
+> #line 337
+5641c5704
+< #line 336
+---
+> #line 337
+5643c5706
+< #line 336
+---
+> #line 337
+5645c5708
+< #line 336
+---
+> #line 337
+5647c5710
+< #line 336
+---
+> #line 337
+5653c5716
+< #line 336
+---
+> #line 337
+5656,5657d5718
+< #line 336
+<   budget->dvb_frontend = (struct dvb_frontend *)__r;
+5659c5720
+<   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+---
+>   budget->dvb_frontend = (struct dvb_frontend *)__r;
+5661c5722
+<     (budget->dvb_frontend)->ops.tuner_ops.set_params = & alps_bsrv2_tuner_set_params;
+---
+>   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+5663c5724
+<     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_patch_diseqc_send_master_cmd;
+---
+>     (budget->dvb_frontend)->ops.tuner_ops.set_params = & alps_bsrv2_tuner_set_params;
+5665c5726
+<     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_patch_diseqc_send_burst;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_patch_diseqc_send_master_cmd;
+5667c5728
+<     (budget->dvb_frontend)->ops.set_tone = & budget_patch_set_tone;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_patch_diseqc_send_burst;
+5669c5730,5732
+<     goto ldv_27195;
+---
+>     (budget->dvb_frontend)->ops.set_tone = & budget_patch_set_tone;
+> #line 343
+>     goto ldv_27899;
+5673c5736
+< #line 346
+---
+> #line 347
+5675c5738
+< #line 346
+---
+> #line 347
+5677c5740
+< #line 346
+---
+> #line 347
+5681c5744
+< #line 346
+---
+> #line 347
+5683c5746
+< #line 346
+---
+> #line 347
+5686c5749
+< #line 346
+---
+> #line 347
+5688c5751
+< #line 346
+---
+> #line 347
+5690c5753
+< #line 346
+---
+> #line 347
+5693c5756
+< #line 346
+---
+> #line 347
+5695c5758
+< #line 346
+---
+> #line 347
+5698c5761
+< #line 346
+---
+> #line 347
+5701c5764
+< #line 346
+---
+> #line 347
+5703c5766
+< #line 346
+---
+> #line 347
+5705c5768
+< #line 346
+---
+> #line 347
+5711c5774
+< #line 346
+---
+> #line 347
+5714,5715d5776
+< #line 346
+<   budget->dvb_frontend = (struct dvb_frontend *)__r___0;
+5717c5778
+<   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+---
+>   budget->dvb_frontend = (struct dvb_frontend *)__r___0;
+5719c5780
+<     (budget->dvb_frontend)->ops.tuner_ops.set_params = & alps_bsru6_tuner_set_params;
+---
+>   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+5720a5782,5783
+>     (budget->dvb_frontend)->ops.tuner_ops.set_params = & alps_bsru6_tuner_set_params;
+> #line 350
+5722,5723d5784
+< #line 351
+<     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_diseqc_send_master_cmd;
+5725c5786
+<     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_diseqc_send_burst;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_diseqc_send_master_cmd;
+5727c5788
+<     (budget->dvb_frontend)->ops.set_tone = & budget_set_tone;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_diseqc_send_burst;
+5729c5790,5792
+<     goto ldv_27195;
+---
+>     (budget->dvb_frontend)->ops.set_tone = & budget_set_tone;
+> #line 355
+>     goto ldv_27899;
+5733c5796
+< #line 358
+---
+> #line 359
+5735c5798
+< #line 358
+---
+> #line 359
+5737c5800
+< #line 358
+---
+> #line 359
+5741c5804
+< #line 358
+---
+> #line 359
+5743c5806
+< #line 358
+---
+> #line 359
+5746c5809
+< #line 358
+---
+> #line 359
+5748c5811
+< #line 358
+---
+> #line 359
+5750c5813
+< #line 358
+---
+> #line 359
+5753c5816
+< #line 358
+---
+> #line 359
+5755c5818
+< #line 358
+---
+> #line 359
+5758c5821
+< #line 358
+---
+> #line 359
+5761c5824
+< #line 358
+---
+> #line 359
+5763c5826
+< #line 358
+---
+> #line 359
+5765c5828
+< #line 358
+---
+> #line 359
+5771c5834
+< #line 358
+---
+> #line 359
+5774,5775d5836
+< #line 358
+<   budget->dvb_frontend = (struct dvb_frontend *)__r___1;
+5777c5838
+<   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+---
+>   budget->dvb_frontend = (struct dvb_frontend *)__r___1;
+5779c5840
+<     (budget->dvb_frontend)->ops.tuner_ops.set_params = & grundig_29504_451_tuner_set_params;
+---
+>   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+5781c5842
+<     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_diseqc_send_master_cmd;
+---
+>     (budget->dvb_frontend)->ops.tuner_ops.set_params = & grundig_29504_451_tuner_set_params;
+5783c5844
+<     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_diseqc_send_burst;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_master_cmd = & budget_diseqc_send_master_cmd;
+5785c5846
+<     (budget->dvb_frontend)->ops.set_tone = & budget_set_tone;
+---
+>     (budget->dvb_frontend)->ops.diseqc_send_burst = & budget_diseqc_send_burst;
+5787c5848,5850
+<     goto ldv_27195;
+---
+>     (budget->dvb_frontend)->ops.set_tone = & budget_set_tone;
+> #line 365
+>     goto ldv_27899;
+5791,5792c5854,5855
+< #line 366
+<   goto ldv_27195;
+---
+> #line 367
+>   goto ldv_27899;
+5794,5796c5857
+<   ldv_27195: ;
+< #line 369
+<   if ((unsigned long )budget->dvb_frontend == (unsigned long )((struct dvb_frontend *)0)) {
+---
+>   ldv_27899: ;
+5797a5859,5860
+>   if ((unsigned long )budget->dvb_frontend == (unsigned long )((struct dvb_frontend *)0)) {
+> #line 371
+5802c5865
+< #line 376
+---
+> #line 377
+5804,5805d5866
+< #line 376
+<     if (tmp___17 != 0) {
+5807c5868
+<       printk("budget-av: Frontend registration failed!\n");
+---
+>     if (tmp___17 != 0) {
+5809c5870
+<       dvb_frontend_detach(budget->dvb_frontend);
+---
+>       printk("budget-av: Frontend registration failed!\n");
+5810a5872,5873
+>       dvb_frontend_detach(budget->dvb_frontend);
+> #line 380
+5816c5879
+< #line 381
+---
+> #line 382
+5820c5883
+< #line 385 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 386 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+5850,5851d5912
+< #line 389
+<   count = 0;
+5852a5914,5915
+>   count = 0;
+> #line 391
+5854c5917
+< #line 430
+---
+> #line 431
+5856c5919
+< #line 432
+---
+> #line 433
+5858c5921
+< #line 440
+---
+> #line 441
+5860,5865d5922
+< #line 445
+<   tmp = count;
+< #line 445
+<   count = count + 1;
+< #line 445
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp) = 536871424U;
+5867c5924
+<   tmp___0 = count;
+---
+>   tmp = count;
+5871c5928
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___0) = 3221225528U;
+---
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp) = 536871424U;
+5873c5930
+<   tmp___1 = count;
+---
+>   tmp___0 = count;
+5877c5934
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___1) = 4278190080U;
+---
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___0) = 3221225528U;
+5879c5936
+<   tmp___2 = count;
+---
+>   tmp___1 = count;
+5882a5940,5945
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___1) = 4278190080U;
+> #line 449
+>   tmp___2 = count;
+> #line 449
+>   count = count + 1;
+> #line 449
+5884c5947
+< #line 457
+---
+> #line 458
+5886c5949
+< #line 457
+---
+> #line 458
+5888c5951
+< #line 457
+---
+> #line 458
+5890c5953
+< #line 468
+---
+> #line 469
+5892c5955
+< #line 470
+---
+> #line 471
+5894c5957
+< #line 472
+---
+> #line 473
+5896c5959
+< #line 475
+---
+> #line 476
+5898,5901c5961,5964
+< #line 475
+<   goto ldv_27212;
+<   ldv_27211: 
+< #line 475
+---
+> #line 476
+>   goto ldv_27916;
+>   ldv_27915: 
+> #line 476
+5903,5904c5966,5967
+<   ldv_27212: 
+< #line 475
+---
+>   ldv_27916: 
+> #line 476
+5906c5969
+< #line 475
+---
+> #line 476
+5908,5909d5970
+< #line 475
+<   if (tmp___4 != 0UL) {
+5911c5972,5974
+<     goto ldv_27211;
+---
+>   if (tmp___4 != 0UL) {
+> #line 477
+>     goto ldv_27915;
+5915,5916d5977
+< #line 476
+<   saa7146_setgpio(dev, 3, 80U);
+5917a5979,5980
+>   saa7146_setgpio(dev, 3, 80U);
+> #line 478
+5919,5922c5982,5985
+< #line 477
+<   goto ldv_27216;
+<   ldv_27215: 
+< #line 477
+---
+> #line 478
+>   goto ldv_27920;
+>   ldv_27919: 
+> #line 478
+5924,5925c5987,5988
+<   ldv_27216: 
+< #line 477
+---
+>   ldv_27920: 
+> #line 478
+5927c5990
+< #line 477
+---
+> #line 478
+5929,5930d5991
+< #line 477
+<   if (tmp___5 != 0UL) {
+5932c5993,5995
+<     goto ldv_27215;
+---
+>   if (tmp___5 != 0UL) {
+> #line 479
+>     goto ldv_27919;
+5936c5999
+< #line 480
+---
+> #line 481
+5938,5939d6000
+< #line 480
+<   if ((tmp___6 & 268435456U) == 0U) {
+5940a6002,6003
+>   if ((tmp___6 & 268435456U) == 0U) {
+> #line 482
+5945c6008
+< #line 487
+---
+> #line 488
+5947,5948d6009
+< #line 489
+<   if (detected == 0) {
+5949a6011,6012
+>   if (detected == 0) {
+> #line 491
+5952c6015
+< #line 494
+---
+> #line 495
+5955c6018
+< #line 565
+---
+> #line 566
+5957c6020
+< #line 569
+---
+> #line 570
+5959c6022
+< #line 569
+---
+> #line 570
+5961c6024
+< #line 569
+---
+> #line 570
+5963,5968d6025
+< #line 571
+<   tmp___8 = count;
+< #line 571
+<   count = count + 1;
+< #line 571
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___8) = 3221225528U;
+5970c6027
+<   tmp___9 = count;
+---
+>   tmp___8 = count;
+5974c6031
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___9) = 4278190080U;
+---
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___8) = 3221225528U;
+5976c6033
+<   tmp___10 = count;
+---
+>   tmp___9 = count;
+5979a6037,6042
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___9) = 4278190080U;
+> #line 574
+>   tmp___10 = count;
+> #line 574
+>   count = count + 1;
+> #line 574
+5981c6044
+< #line 579
+---
+> #line 580
+5983c6046
+< #line 579
+---
+> #line 580
+5985c6048
+< #line 579
+---
+> #line 580
+5987,5992d6049
+< #line 581
+<   tmp___12 = count;
+< #line 581
+<   count = count + 1;
+< #line 581
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___12) = 3221225528U;
+5994c6051
+<   tmp___13 = count;
+---
+>   tmp___12 = count;
+5998c6055
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___13) = 4278190080U;
+---
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___12) = 3221225528U;
+6000c6057
+<   tmp___14 = count;
+---
+>   tmp___13 = count;
+6003a6061,6066
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___13) = 4278190080U;
+> #line 584
+>   tmp___14 = count;
+> #line 584
+>   count = count + 1;
+> #line 584
+6005c6068
+< #line 589
+---
+> #line 590
+6007c6070
+< #line 589
+---
+> #line 590
+6009,6010d6071
+< #line 589
+<   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___15) = 2147483648U;
+6011a6073,6074
+>   *(dev->d_rps1.cpu_addr + (unsigned long )tmp___15) = 2147483648U;
+> #line 591
+6013c6076
+< #line 590
+---
+> #line 591
+6015c6078
+< #line 590
+---
+> #line 591
+6017c6080
+< #line 593
+---
+> #line 594
+6019c6082
+< #line 595
+---
+> #line 596
+6021,6023c6084,6086
+< #line 597
+<   tmp___17 = kmalloc(3416UL, 208U);
+< #line 597
+---
+> #line 598
+>   tmp___17 = kmalloc(3424UL, 208U);
+> #line 598
+6025,6026d6087
+< #line 597
+<   if ((unsigned long )budget == (unsigned long )((struct budget *)0)) {
+6027a6089,6090
+>   if ((unsigned long )budget == (unsigned long )((struct budget *)0)) {
+> #line 599
+6032c6095
+< #line 600
+---
+> #line 601
+6034c6097
+< #line 600
+---
+> #line 601
+6036c6099
+< #line 600
+---
+> #line 601
+6041c6104
+< #line 602
+---
+> #line 603
+6043,6044d6105
+< #line 602
+<   if (err != 0) {
+6046c6107
+<     kfree((void const   *)budget);
+---
+>   if (err != 0) {
+6047a6109,6110
+>     kfree((void const   *)budget);
+> #line 605
+6052c6115
+< #line 615
+---
+> #line 616
+6054c6117
+< #line 619
+---
+> #line 620
+6056c6119
+< #line 622
+---
+> #line 623
+6058,6059d6120
+< #line 624
+<   budget->dvb_adapter.priv = (void *)budget;
+6060a6122,6123
+>   budget->dvb_adapter.priv = (void *)budget;
+> #line 626
+6062c6125
+< #line 627
+---
+> #line 628
+6064c6127
+< #line 629
+---
+> #line 630
+6068c6131
+< #line 632 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 633 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6075c6138
+< #line 634
+---
+> #line 635
+6077,6078d6139
+< #line 637
+<   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+6080c6141
+<     dvb_unregister_frontend(budget->dvb_frontend);
+---
+>   if ((unsigned long )budget->dvb_frontend != (unsigned long )((struct dvb_frontend *)0)) {
+6081a6143,6144
+>     dvb_unregister_frontend(budget->dvb_frontend);
+> #line 640
+6086c6149
+< #line 641
+---
+> #line 642
+6088c6151
+< #line 643
+---
+> #line 644
+6090c6153
+< #line 645
+---
+> #line 646
+6094c6157
+< #line 648 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 649 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6100c6163
+< #line 650
+---
+> #line 651
+6102c6165
+< #line 650
+---
+> #line 651
+6106c6169
+< #line 653 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 654 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6112,6113d6174
+< #line 655
+<   saa7146_unregister_extension(& budget_extension);
+6114a6176,6177
+>   saa7146_unregister_extension(& budget_extension);
+> #line 657
+6118c6181
+< #line 658 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 659 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6120c6183
+< #line 658
+---
+> #line 659
+6131c6194
+< #line 695
+---
+> #line 696
+6133c6196
+< #line 704
+---
+> #line 705
+6135c6198
+< #line 707
+---
+> #line 708
+6137c6200
+< #line 710
+---
+> #line 711
+6139c6202
+< #line 713 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 714 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6141c6204
+< #line 716 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+---
+> #line 717 "/work/ldvuser/novikov/work/current--X--drivers/media/dvb/ttpci/budget-patch.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/dvb/ttpci/budget-patch.c.prepared"
+6151c6214
+< #line 761
+---
+> #line 762
+6153c6216
+< #line 770
+---
+> #line 771
+6155,6156d6217
+< #line 797
+<   ldv_handler_precall();
+6157a6219,6220
+>   ldv_handler_precall();
+> #line 799
+6159,6160d6221
+< #line 798
+<   if (tmp != 0) {
+6161a6223,6224
+>   if (tmp != 0) {
+> #line 800
+6166,6169c6229,6232
+< #line 803
+<   goto ldv_27268;
+<   ldv_27267: 
+< #line 806
+---
+> #line 804
+>   goto ldv_27972;
+>   ldv_27971: 
+> #line 807
+6171c6234
+< #line 806
+---
+> #line 807
+6174,6175d6236
+< #line 818
+<   ldv_handler_precall();
+6176a6238,6239
+>   ldv_handler_precall();
+> #line 820
+6178,6179c6241,6242
+< #line 826
+<   goto ldv_27264;
+---
+> #line 827
+>   goto ldv_27968;
+6181,6182d6243
+< #line 856
+<   ldv_handler_precall();
+6183a6245,6246
+>   ldv_handler_precall();
+> #line 858
+6185,6187d6247
+< #line 864
+<   goto ldv_27264;
+<   default: ;
+6189c6249,6252
+<   goto ldv_27264;
+---
+>   goto ldv_27968;
+>   default: ;
+> #line 866
+>   goto ldv_27968;
+6191,6193c6254,6256
+<   ldv_27264: ;
+<   ldv_27268: 
+< #line 803
+---
+>   ldv_27968: ;
+>   ldv_27972: 
+> #line 804
+6195,6196d6257
+< #line 803
+<   if (tmp___1 != 0) {
+6198c6259,6261
+<     goto ldv_27267;
+---
+>   if (tmp___1 != 0) {
+> #line 805
+>     goto ldv_27971;
+6203,6204d6265
+< #line 898
+<   ldv_handler_precall();
+6205a6267,6268
+>   ldv_handler_precall();
+> #line 900
+6208c6271
+< #line 902
+---
+> #line 903
+6210c6273
+< #line 905
+---
+> #line 906

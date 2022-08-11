@@ -1,0 +1,1962 @@
+3402a3403,3406
+> #line 208
+> extern struct resource *__devm_request_region(struct device * , struct resource * ,
+>                                               resource_size_t  , resource_size_t  ,
+>                                               char const   * ) ;
+3472,3500c3476,3478
+< #line 161 "include/linux/slab.h"
+< extern void kfree(void const   * ) ;
+< #line 221 "include/linux/slub_def.h"
+< extern void *__kmalloc(size_t  , gfp_t  ) ;
+< #line 268 "include/linux/slub_def.h"
+< __inline static void *kmalloc(size_t size , gfp_t flags ) 
+< { 
+<   void *tmp___2 ;
+< 
+<   {
+< #line 283
+<   tmp___2 = __kmalloc(size, flags);
+< #line 283
+<   return (tmp___2);
+< }
+< }
+< #line 349 "include/linux/slab.h"
+< __inline static void *kzalloc(size_t size , gfp_t flags ) 
+< { 
+<   void *tmp ;
+< 
+<   {
+< #line 351
+<   tmp = kmalloc(size, flags | 32768U);
+< #line 351
+<   return (tmp);
+< }
+< }
+< #line 792 "include/linux/device.h"
+---
+> #line 553 "include/linux/device.h"
+> extern void *devm_kzalloc(struct device * , size_t  , gfp_t  ) ;
+> #line 792
+7040c7018,7019
+<   tmp = __request_region(& ioport_resource, res->start, 2ULL, "it87", 0);
+---
+>   tmp = __devm_request_region(& pdev___0->dev, & ioport_resource, res->start, 2ULL,
+>                               "it87");
+7043c7022
+< #line 2029
+---
+> #line 2030
+7046,7047d7024
+< #line 2032
+<     err = -16;
+7049c7026
+<     goto ERROR0;
+---
+>     return (-16);
+7054c7031
+<   tmp___0 = kzalloc(320UL, 208U);
+---
+>   tmp___0 = devm_kzalloc(& pdev___0->dev, 320UL, 208U);
+7060,7062c7037
+<     err = -12;
+< #line 2039
+<     goto ERROR1;
+---
+>     return (-12);
+7066c7041
+< #line 2042
+---
+> #line 2040
+7068c7043
+< #line 2043
+---
+> #line 2041
+7070c7045
+< #line 2044
+---
+> #line 2042
+7072c7047
+< #line 2045
+---
+> #line 2043
+7074c7049
+< #line 2048
+---
+> #line 2046
+7076c7051
+< #line 2048
+---
+> #line 2046
+7078,7082d7052
+< #line 2050
+<     err = -19;
+< #line 2051
+<     goto ERROR2;
+<   } else {
+7083a7054,7056
+>     return (-19);
+>   } else {
+> #line 2046
+7085c7058
+< #line 2048
+---
+> #line 2046
+7087,7090c7060,7061
+< #line 2050
+<       err = -19;
+< #line 2051
+<       goto ERROR2;
+---
+> #line 2048
+>       return (-19);
+7095c7066
+< #line 2054
+---
+> #line 2050
+7097c7068
+< #line 2056
+---
+> #line 2052
+7099c7070
+< #line 2059
+---
+> #line 2055
+7101c7072
+< #line 2062
+---
+> #line 2058
+7103c7074
+< #line 2062
+---
+> #line 2058
+7105c7076
+< #line 2063
+---
+> #line 2059
+7107c7078
+< #line 2064
+---
+> #line 2060
+7112c7083
+< #line 2065
+---
+> #line 2061
+7114c7085
+< #line 2066
+---
+> #line 2062
+7119c7090
+< #line 2067
+---
+> #line 2063
+7121c7092
+< #line 2068
+---
+> #line 2064
+7127c7098
+< #line 2069
+---
+> #line 2065
+7129c7100
+< #line 2070
+---
+> #line 2066
+7131c7102
+< #line 2071
+---
+> #line 2067
+7136c7107
+< #line 2072
+---
+> #line 2068
+7138c7109
+< #line 2073
+---
+> #line 2069
+7146c7117
+< #line 2077
+---
+> #line 2073
+7148c7119
+< #line 2080
+---
+> #line 2076
+7150c7121
+< #line 2081
+---
+> #line 2077
+7152,7153c7123,7124
+< #line 2082
+<     goto ERROR2;
+---
+> #line 2078
+>     return (err);
+7157c7128
+< #line 2084
+---
+> #line 2080
+7159,7162c7130,7133
+< #line 2084
+<   goto ldv_25732;
+<   ldv_25731: ;
+< #line 2085
+---
+> #line 2080
+>   goto ldv_25729;
+>   ldv_25728: ;
+> #line 2081
+7164,7165c7135,7136
+< #line 2086
+<     goto ldv_25729;
+---
+> #line 2082
+>     goto ldv_25726;
+7169c7140
+< #line 2087
+---
+> #line 2083
+7171c7142
+< #line 2088
+---
+> #line 2084
+7173,7174c7144,7145
+< #line 2089
+<     goto ERROR4;
+---
+> #line 2085
+>     goto error;
+7178c7149
+< #line 2090
+---
+> #line 2086
+7180c7151
+< #line 2091
+---
+> #line 2087
+7182c7153
+< #line 2093
+---
+> #line 2089
+7184,7185c7155,7156
+< #line 2094
+<       goto ERROR4;
+---
+> #line 2090
+>       goto error;
+7192,7193c7163,7164
+<   ldv_25729: 
+< #line 2084
+---
+>   ldv_25726: 
+> #line 2080
+7195,7196c7166,7167
+<   ldv_25732: ;
+< #line 2084
+---
+>   ldv_25729: ;
+> #line 2080
+7198,7199c7169,7170
+< #line 2085
+<     goto ldv_25731;
+---
+> #line 2081
+>     goto ldv_25728;
+7204c7175
+< #line 2098
+---
+> #line 2094
+7206c7177
+< #line 2099
+---
+> #line 2095
+7208c7179
+< #line 2100
+---
+> #line 2096
+7210,7211c7181,7182
+< #line 2101
+<       goto ERROR4;
+---
+> #line 2097
+>       goto error;
+7218c7189
+< #line 2105
+---
+> #line 2101
+7220c7191
+< #line 2106
+---
+> #line 2102
+7222c7193
+< #line 2107
+---
+> #line 2103
+7224,7227c7195,7198
+< #line 2107
+<   goto ldv_25738;
+<   ldv_25737: ;
+< #line 2108
+---
+> #line 2103
+>   goto ldv_25735;
+>   ldv_25734: ;
+> #line 2104
+7229,7230c7200,7201
+< #line 2109
+<     goto ldv_25734;
+---
+> #line 2105
+>     goto ldv_25731;
+7234c7205
+< #line 2110
+---
+> #line 2106
+7236c7207
+< #line 2111
+---
+> #line 2107
+7238,7239c7209,7210
+< #line 2112
+<     goto ERROR4;
+---
+> #line 2108
+>     goto error;
+7243c7214
+< #line 2114
+---
+> #line 2110
+7245c7216
+< #line 2115
+---
+> #line 2111
+7247c7218
+< #line 2117
+---
+> #line 2113
+7249,7250c7220,7221
+< #line 2118
+<       goto ERROR4;
+---
+> #line 2114
+>       goto error;
+7254c7225
+< #line 2119
+---
+> #line 2115
+7256,7257c7227,7228
+< #line 2120
+<       goto ldv_25734;
+---
+> #line 2116
+>       goto ldv_25731;
+7261c7232
+< #line 2127
+---
+> #line 2123
+7264c7235
+< #line 2127
+---
+> #line 2123
+7266c7237
+< #line 2130
+---
+> #line 2126
+7268c7239
+< #line 2130
+---
+> #line 2126
+7270c7241
+< #line 2130
+---
+> #line 2126
+7272c7243
+< #line 2130
+---
+> #line 2126
+7274,7276c7245,7247
+< #line 2130
+<       descriptor.lineno = 2131U;
+< #line 2130
+---
+> #line 2126
+>       descriptor.lineno = 2127U;
+> #line 2126
+7278c7249
+< #line 2130
+---
+> #line 2126
+7280c7251
+< #line 2130
+---
+> #line 2126
+7282c7253
+< #line 2130
+---
+> #line 2126
+7291c7262
+< #line 2132
+---
+> #line 2128
+7296,7297c7267,7268
+<   ldv_25734: 
+< #line 2107
+---
+>   ldv_25731: 
+> #line 2103
+7299,7300c7270,7271
+<   ldv_25738: ;
+< #line 2107
+---
+>   ldv_25735: ;
+> #line 2103
+7302,7303c7273,7274
+< #line 2108
+<     goto ldv_25737;
+---
+> #line 2104
+>     goto ldv_25734;
+7308c7279
+< #line 2136
+---
+> #line 2132
+7310c7281
+< #line 2137
+---
+> #line 2133
+7312,7315c7283,7286
+< #line 2137
+<     goto ldv_25742;
+<     ldv_25741: ;
+< #line 2138
+---
+> #line 2133
+>     goto ldv_25739;
+>     ldv_25738: ;
+> #line 2134
+7317,7318c7288,7289
+< #line 2139
+<       goto ldv_25740;
+---
+> #line 2135
+>       goto ldv_25737;
+7322c7293
+< #line 2140
+---
+> #line 2136
+7324c7295
+< #line 2142
+---
+> #line 2138
+7326,7327c7297,7298
+< #line 2143
+<       goto ERROR4;
+---
+> #line 2139
+>       goto error;
+7331c7302
+< #line 2145
+---
+> #line 2141
+7333c7304
+< #line 2145
+---
+> #line 2141
+7335,7336c7306,7307
+< #line 2146
+<       goto ldv_25740;
+---
+> #line 2142
+>       goto ldv_25737;
+7340c7311
+< #line 2147
+---
+> #line 2143
+7342c7313
+< #line 2149
+---
+> #line 2145
+7344,7345c7315,7316
+< #line 2150
+<       goto ERROR4;
+---
+> #line 2146
+>       goto error;
+7349,7350c7320,7321
+<     ldv_25740: 
+< #line 2137
+---
+>     ldv_25737: 
+> #line 2133
+7352,7353c7323,7324
+<     ldv_25742: ;
+< #line 2137
+---
+>     ldv_25739: ;
+> #line 2133
+7355,7356c7326,7327
+< #line 2138
+<       goto ldv_25741;
+---
+> #line 2134
+>       goto ldv_25738;
+7364c7335
+< #line 2154
+---
+> #line 2150
+7366c7337
+< #line 2155
+---
+> #line 2151
+7368c7339
+< #line 2157
+---
+> #line 2153
+7370c7341
+< #line 2158
+---
+> #line 2154
+7372c7343
+< #line 2159
+---
+> #line 2155
+7374,7375c7345,7346
+< #line 2160
+<       goto ERROR4;
+---
+> #line 2156
+>       goto error;
+7382c7353
+< #line 2164
+---
+> #line 2160
+7384,7387c7355,7358
+< #line 2164
+<   goto ldv_25746;
+<   ldv_25745: ;
+< #line 2165
+---
+> #line 2160
+>   goto ldv_25743;
+>   ldv_25742: ;
+> #line 2161
+7389,7390c7360,7361
+< #line 2166
+<     goto ldv_25744;
+---
+> #line 2162
+>     goto ldv_25741;
+7394c7365
+< #line 2167
+---
+> #line 2163
+7396c7367
+< #line 2169
+---
+> #line 2165
+7398,7399c7369,7370
+< #line 2170
+<     goto ERROR4;
+---
+> #line 2166
+>     goto error;
+7403,7404c7374,7375
+<   ldv_25744: 
+< #line 2164
+---
+>   ldv_25741: 
+> #line 2160
+7406,7407c7377,7378
+<   ldv_25746: ;
+< #line 2164
+---
+>   ldv_25743: ;
+> #line 2160
+7409,7410c7380,7381
+< #line 2165
+<     goto ldv_25745;
+---
+> #line 2161
+>     goto ldv_25742;
+7414c7385
+< #line 2173
+---
+> #line 2169
+7416c7387
+< #line 2174
+---
+> #line 2170
+7418c7389
+< #line 2174
+---
+> #line 2170
+7420c7391
+< #line 2175
+---
+> #line 2171
+7422c7393
+< #line 2175
+---
+> #line 2171
+7424,7425c7395,7396
+< #line 2176
+<     goto ERROR4;
+---
+> #line 2172
+>     goto error;
+7429c7400
+< #line 2179
+---
+> #line 2175
+7431,7432c7402,7403
+<   ERROR4: 
+< #line 2182
+---
+>   error: 
+> #line 2178
+7434,7443c7405
+<   ERROR2: 
+< #line 2184
+<   platform_set_drvdata(pdev___0, 0);
+< #line 2185
+<   kfree((void const   *)data);
+<   ERROR1: 
+< #line 2187
+<   __release_region(& ioport_resource, res->start, 2ULL);
+<   ERROR0: ;
+< #line 2189
+---
+> #line 2179
+7447c7409
+< #line 2192 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2182 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7454c7416
+< #line 2194
+---
+> #line 2184
+7456c7418
+< #line 2194
+---
+> #line 2184
+7458c7420
+< #line 2196
+---
+> #line 2186
+7460c7422
+< #line 2197
+---
+> #line 2187
+7462,7468c7424
+< #line 2199
+<   __release_region(& ioport_resource, (resource_size_t )data->addr, 2ULL);
+< #line 2200
+<   platform_set_drvdata(pdev___0, 0);
+< #line 2201
+<   kfree((void const   *)data);
+< #line 2203
+---
+> #line 2189
+7472c7428
+< #line 2211 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2197 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7478c7434
+< #line 2213
+---
+> #line 2199
+7480c7436
+< #line 2214
+---
+> #line 2200
+7482c7438
+< #line 2214
+---
+> #line 2200
+7486c7442
+< #line 2222 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2208 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7492c7448
+< #line 2224
+---
+> #line 2210
+7494c7450
+< #line 2225
+---
+> #line 2211
+7496c7452
+< #line 2226
+---
+> #line 2212
+7500c7456
+< #line 2229 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2215 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7512c7468
+< #line 2231
+---
+> #line 2217
+7514c7470
+< #line 2231
+---
+> #line 2217
+7516c7472
+< #line 2237
+---
+> #line 2223
+7518c7474
+< #line 2237
+---
+> #line 2223
+7520c7476
+< #line 2238
+---
+> #line 2224
+7522c7478
+< #line 2239
+---
+> #line 2225
+7524c7480
+< #line 2248
+---
+> #line 2234
+7526,7529c7482,7485
+< #line 2248
+<       goto ldv_25769;
+<       ldv_25768: 
+< #line 2249
+---
+> #line 2234
+>       goto ldv_25766;
+>       ldv_25765: 
+> #line 2235
+7531c7487
+< #line 2249
+---
+> #line 2235
+7533c7489
+< #line 2248
+---
+> #line 2234
+7535,7536c7491,7492
+<       ldv_25769: ;
+< #line 2248
+---
+>       ldv_25766: ;
+> #line 2234
+7538,7539c7494,7495
+< #line 2249
+<         goto ldv_25768;
+---
+> #line 2235
+>         goto ldv_25765;
+7544c7500
+< #line 2258
+---
+> #line 2244
+7546c7502
+< #line 2259
+---
+> #line 2245
+7548c7504
+< #line 2261
+---
+> #line 2247
+7550c7506
+< #line 2263
+---
+> #line 2249
+7552,7555c7508,7511
+< #line 2263
+<         goto ldv_25772;
+<         ldv_25771: 
+< #line 2264
+---
+> #line 2249
+>         goto ldv_25769;
+>         ldv_25768: 
+> #line 2250
+7557c7513
+< #line 2263
+---
+> #line 2249
+7559,7560c7515,7516
+<         ldv_25772: ;
+< #line 2263
+---
+>         ldv_25769: ;
+> #line 2249
+7562,7563c7518,7519
+< #line 2264
+<           goto ldv_25771;
+---
+> #line 2250
+>           goto ldv_25768;
+7568c7524
+< #line 2267
+---
+> #line 2253
+7573c7529
+< #line 2270
+---
+> #line 2256
+7578c7534
+< #line 2274
+---
+> #line 2260
+7580c7536
+< #line 2276
+---
+> #line 2262
+7583c7539
+< #line 2277
+---
+> #line 2263
+7585c7541
+< #line 2278
+---
+> #line 2264
+7590c7546
+< #line 2282
+---
+> #line 2268
+7594c7550
+< #line 2286 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2272 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7610c7566
+< #line 2288
+---
+> #line 2274
+7612c7568
+< #line 2289
+---
+> #line 2275
+7614c7570
+< #line 2289
+---
+> #line 2275
+7616c7572
+< #line 2306
+---
+> #line 2292
+7618,7621c7574,7577
+< #line 2306
+<   goto ldv_25783;
+<   ldv_25782: 
+< #line 2307
+---
+> #line 2292
+>   goto ldv_25780;
+>   ldv_25779: 
+> #line 2293
+7623c7579
+< #line 2308
+---
+> #line 2294
+7625c7581
+< #line 2309
+---
+> #line 2295
+7627c7583
+< #line 2306
+---
+> #line 2292
+7629,7630c7585,7586
+<   ldv_25783: ;
+< #line 2306
+---
+>   ldv_25780: ;
+> #line 2292
+7632,7633c7588,7589
+< #line 2307
+<     goto ldv_25782;
+---
+> #line 2293
+>     goto ldv_25779;
+7637c7593
+< #line 2319
+---
+> #line 2305
+7639,7642c7595,7598
+< #line 2319
+<   goto ldv_25786;
+<   ldv_25785: 
+< #line 2320
+---
+> #line 2305
+>   goto ldv_25783;
+>   ldv_25782: 
+> #line 2306
+7644c7600
+< #line 2321
+---
+> #line 2307
+7646c7602
+< #line 2322
+---
+> #line 2308
+7651c7607
+< #line 2319
+---
+> #line 2305
+7653,7654c7609,7610
+<   ldv_25786: ;
+< #line 2319
+---
+>   ldv_25783: ;
+> #line 2305
+7656,7657c7612,7613
+< #line 2320
+<     goto ldv_25785;
+---
+> #line 2306
+>     goto ldv_25782;
+7661c7617
+< #line 2324
+---
+> #line 2310
+7663,7666c7619,7622
+< #line 2324
+<   goto ldv_25789;
+<   ldv_25788: 
+< #line 2325
+---
+> #line 2310
+>   goto ldv_25786;
+>   ldv_25785: 
+> #line 2311
+7668c7624
+< #line 2326
+---
+> #line 2312
+7670c7626
+< #line 2327
+---
+> #line 2313
+7675c7631
+< #line 2324
+---
+> #line 2310
+7677,7678c7633,7634
+<   ldv_25789: ;
+< #line 2324
+---
+>   ldv_25786: ;
+> #line 2310
+7680,7681c7636,7637
+< #line 2325
+<     goto ldv_25788;
+---
+> #line 2311
+>     goto ldv_25785;
+7685c7641
+< #line 2338
+---
+> #line 2324
+7687c7643
+< #line 2339
+---
+> #line 2325
+7689c7645
+< #line 2341
+---
+> #line 2327
+7694c7650
+< #line 2345
+---
+> #line 2331
+7696c7652
+< #line 2346
+---
+> #line 2332
+7698c7654
+< #line 2346
+---
+> #line 2332
+7700c7656
+< #line 2347
+---
+> #line 2333
+7702c7658
+< #line 2349
+---
+> #line 2335
+7704c7660
+< #line 2350
+---
+> #line 2336
+7709c7665
+< #line 2353
+---
+> #line 2339
+7711c7667
+< #line 2356
+---
+> #line 2342
+7713c7669
+< #line 2356
+---
+> #line 2342
+7715c7671
+< #line 2357
+---
+> #line 2343
+7717c7673
+< #line 2358
+---
+> #line 2344
+7719c7675
+< #line 2359
+---
+> #line 2345
+7721c7677
+< #line 2359
+---
+> #line 2345
+7723c7679
+< #line 2359
+---
+> #line 2345
+7725c7681
+< #line 2359
+---
+> #line 2345
+7727,7729c7683,7685
+< #line 2359
+<       descriptor.lineno = 2360U;
+< #line 2359
+---
+> #line 2345
+>       descriptor.lineno = 2346U;
+> #line 2345
+7731c7687
+< #line 2359
+---
+> #line 2345
+7733c7689
+< #line 2359
+---
+> #line 2345
+7735c7691
+< #line 2359
+---
+> #line 2345
+7741c7697
+< #line 2361
+---
+> #line 2347
+7746c7702
+< #line 2365
+---
+> #line 2351
+7748c7704
+< #line 2367
+---
+> #line 2353
+7750c7706
+< #line 2368
+---
+> #line 2354
+7755c7711
+< #line 2369
+---
+> #line 2355
+7757c7713
+< #line 2370
+---
+> #line 2356
+7768c7724
+< #line 2375
+---
+> #line 2361
+7770c7726
+< #line 2378
+---
+> #line 2364
+7772c7728
+< #line 2378
+---
+> #line 2364
+7774c7730
+< #line 2381
+---
+> #line 2367
+7778c7734
+< #line 2383 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2369 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7790c7746
+< #line 2385
+---
+> #line 2371
+7792c7748
+< #line 2385
+---
+> #line 2371
+7794c7750
+< #line 2386
+---
+> #line 2372
+7796c7752
+< #line 2386
+---
+> #line 2372
+7798c7754
+< #line 2387
+---
+> #line 2373
+7800c7756
+< #line 2388
+---
+> #line 2374
+7802c7758
+< #line 2388
+---
+> #line 2374
+7805c7761
+< #line 2391
+---
+> #line 2377
+7807c7763
+< #line 2392
+---
+> #line 2378
+7810c7766
+< #line 2394
+---
+> #line 2380
+7813c7769
+< #line 2397
+---
+> #line 2383
+7815c7771
+< #line 2397
+---
+> #line 2383
+7817c7773
+< #line 2400
+---
+> #line 2386
+7819,7822c7775,7778
+< #line 2400
+<     goto ldv_25799;
+<     ldv_25798: 
+< #line 2401
+---
+> #line 2386
+>     goto ldv_25796;
+>     ldv_25795: 
+> #line 2387
+7824c7780
+< #line 2401
+---
+> #line 2387
+7826c7782
+< #line 2400
+---
+> #line 2386
+7828,7829c7784,7785
+<     ldv_25799: ;
+< #line 2400
+---
+>     ldv_25796: ;
+> #line 2386
+7831,7832c7787,7788
+< #line 2401
+<       goto ldv_25798;
+---
+> #line 2387
+>       goto ldv_25795;
+7836c7792
+< #line 2403
+---
+> #line 2389
+7838,7841c7794,7797
+< #line 2403
+<     goto ldv_25802;
+<     ldv_25801: 
+< #line 2404
+---
+> #line 2389
+>     goto ldv_25799;
+>     ldv_25798: 
+> #line 2390
+7843c7799
+< #line 2404
+---
+> #line 2390
+7845c7801
+< #line 2403
+---
+> #line 2389
+7847,7848c7803,7804
+<     ldv_25802: ;
+< #line 2403
+---
+>     ldv_25799: ;
+> #line 2389
+7850,7851c7806,7807
+< #line 2404
+<       goto ldv_25801;
+---
+> #line 2390
+>       goto ldv_25798;
+7859c7815
+< #line 2409
+---
+> #line 2395
+7863c7819
+< #line 2409 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2395 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+7893c7849
+< #line 2411
+---
+> #line 2397
+7895c7851
+< #line 2411
+---
+> #line 2397
+7897c7853
+< #line 2414
+---
+> #line 2400
+7899c7855
+< #line 2416
+---
+> #line 2402
+7901c7857
+< #line 2418
+---
+> #line 2404
+7903c7859
+< #line 2423
+---
+> #line 2409
+7905c7861
+< #line 2423
+---
+> #line 2409
+7910c7866
+< #line 2426
+---
+> #line 2412
+7912,7915c7868,7871
+< #line 2426
+<     goto ldv_25816;
+<     ldv_25815: 
+< #line 2427
+---
+> #line 2412
+>     goto ldv_25813;
+>     ldv_25812: 
+> #line 2413
+7917c7873
+< #line 2427
+---
+> #line 2413
+7919c7875
+< #line 2429
+---
+> #line 2415
+7921c7877
+< #line 2429
+---
+> #line 2415
+7923c7879
+< #line 2431
+---
+> #line 2417
+7925c7881
+< #line 2431
+---
+> #line 2417
+7927c7883
+< #line 2426
+---
+> #line 2412
+7929,7930c7885,7886
+<     ldv_25816: ;
+< #line 2426
+---
+>     ldv_25813: ;
+> #line 2412
+7932,7933c7888,7889
+< #line 2427
+<       goto ldv_25815;
+---
+> #line 2413
+>       goto ldv_25812;
+7937c7893
+< #line 2435
+---
+> #line 2421
+7939c7895
+< #line 2435
+---
+> #line 2421
+7941c7897
+< #line 2437
+---
+> #line 2423
+7943,7946c7899,7902
+< #line 2437
+<     goto ldv_25820;
+<     ldv_25819: ;
+< #line 2439
+---
+> #line 2423
+>     goto ldv_25817;
+>     ldv_25816: ;
+> #line 2425
+7948,7949c7904,7905
+< #line 2440
+<       goto ldv_25818;
+---
+> #line 2426
+>       goto ldv_25815;
+7953c7909
+< #line 2442
+---
+> #line 2428
+7955c7911
+< #line 2442
+---
+> #line 2428
+7957c7913
+< #line 2444
+---
+> #line 2430
+7959c7915
+< #line 2444
+---
+> #line 2430
+7961c7917
+< #line 2447
+---
+> #line 2433
+7963c7919
+< #line 2447
+---
+> #line 2433
+7965c7921
+< #line 2448
+---
+> #line 2434
+7967c7923
+< #line 2448
+---
+> #line 2434
+7969c7925
+< #line 2450
+---
+> #line 2436
+7971c7927
+< #line 2450
+---
+> #line 2436
+7976,7977c7932,7933
+<     ldv_25818: 
+< #line 2437
+---
+>     ldv_25815: 
+> #line 2423
+7979,7980c7935,7936
+<     ldv_25820: ;
+< #line 2437
+---
+>     ldv_25817: ;
+> #line 2423
+7982,7983c7938,7939
+< #line 2438
+<       goto ldv_25819;
+---
+> #line 2424
+>       goto ldv_25816;
+7987c7943
+< #line 2454
+---
+> #line 2440
+7989,7992c7945,7948
+< #line 2454
+<     goto ldv_25823;
+<     ldv_25822: 
+< #line 2455
+---
+> #line 2440
+>     goto ldv_25820;
+>     ldv_25819: 
+> #line 2441
+7994c7950
+< #line 2455
+---
+> #line 2441
+7996c7952
+< #line 2457
+---
+> #line 2443
+7998c7954
+< #line 2457
+---
+> #line 2443
+8000c7956
+< #line 2459
+---
+> #line 2445
+8002c7958
+< #line 2459
+---
+> #line 2445
+8004c7960
+< #line 2454
+---
+> #line 2440
+8006,8007c7962,7963
+<     ldv_25823: ;
+< #line 2454
+---
+>     ldv_25820: ;
+> #line 2440
+8009,8010c7965,7966
+< #line 2455
+<       goto ldv_25822;
+---
+> #line 2441
+>       goto ldv_25819;
+8015c7971
+< #line 2464
+---
+> #line 2450
+8017c7973
+< #line 2464
+---
+> #line 2450
+8019c7975
+< #line 2464
+---
+> #line 2450
+8021c7977
+< #line 2465
+---
+> #line 2451
+8023c7979
+< #line 2466
+---
+> #line 2452
+8025c7981
+< #line 2467
+---
+> #line 2453
+8027c7983
+< #line 2468
+---
+> #line 2454
+8035c7991
+< #line 2471
+---
+> #line 2457
+8037c7993
+< #line 2471
+---
+> #line 2457
+8039c7995
+< #line 2471
+---
+> #line 2457
+8041c7997
+< #line 2471
+---
+> #line 2457
+8043c7999
+< #line 2475
+---
+> #line 2461
+8045c8001
+< #line 2475
+---
+> #line 2461
+8047c8003
+< #line 2477
+---
+> #line 2463
+8049c8005
+< #line 2477
+---
+> #line 2463
+8051c8007
+< #line 2479
+---
+> #line 2465
+8053c8009
+< #line 2479
+---
+> #line 2465
+8055c8011
+< #line 2480
+---
+> #line 2466
+8057,8060c8013,8016
+< #line 2480
+<     goto ldv_25826;
+<     ldv_25825: 
+< #line 2481
+---
+> #line 2466
+>     goto ldv_25823;
+>     ldv_25822: 
+> #line 2467
+8062c8018
+< #line 2480
+---
+> #line 2466
+8064,8065c8020,8021
+<     ldv_25826: ;
+< #line 2480
+---
+>     ldv_25823: ;
+> #line 2466
+8067,8068c8023,8024
+< #line 2481
+<       goto ldv_25825;
+---
+> #line 2467
+>       goto ldv_25822;
+8072c8028
+< #line 2483
+---
+> #line 2469
+8074c8030
+< #line 2483
+---
+> #line 2469
+8076c8032
+< #line 2489
+---
+> #line 2475
+8078c8034
+< #line 2490
+---
+> #line 2476
+8080c8036
+< #line 2490
+---
+> #line 2476
+8082c8038
+< #line 2495
+---
+> #line 2481
+8087c8043
+< #line 2497
+---
+> #line 2483
+8089c8045
+< #line 2498
+---
+> #line 2484
+8094c8050
+< #line 2501
+---
+> #line 2487
+8096c8052
+< #line 2503
+---
+> #line 2489
+8100c8056
+< #line 2506 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2492 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8107c8063
+< #line 2509
+---
+> #line 2495
+8109c8065
+< #line 2509
+---
+> #line 2495
+8111c8067
+< #line 2509
+---
+> #line 2495
+8113c8069
+< #line 2509
+---
+> #line 2495
+8115c8071
+< #line 2509
+---
+> #line 2495
+8117c8073
+< #line 2509
+---
+> #line 2495
+8119c8075
+< #line 2509
+---
+> #line 2495
+8121c8077
+< #line 2517
+---
+> #line 2503
+8123c8079
+< #line 2518
+---
+> #line 2504
+8125c8081
+< #line 2519
+---
+> #line 2505
+8130c8086
+< #line 2521
+---
+> #line 2507
+8132c8088
+< #line 2522
+---
+> #line 2508
+8134c8090
+< #line 2523
+---
+> #line 2509
+8136c8092
+< #line 2524
+---
+> #line 2510
+8138c8094
+< #line 2525
+---
+> #line 2511
+8143c8099
+< #line 2528
+---
+> #line 2514
+8145c8101
+< #line 2529
+---
+> #line 2515
+8147c8103
+< #line 2530
+---
+> #line 2516
+8149c8105
+< #line 2531
+---
+> #line 2517
+8154c8110
+< #line 2534
+---
+> #line 2520
+8156c8112
+< #line 2536
+---
+> #line 2522
+8158c8114
+< #line 2537
+---
+> #line 2523
+8160c8116
+< #line 2538
+---
+> #line 2524
+8165c8121
+< #line 2541
+---
+> #line 2527
+8167c8123
+< #line 2542
+---
+> #line 2528
+8169c8125
+< #line 2543
+---
+> #line 2529
+8171c8127
+< #line 2544
+---
+> #line 2530
+8176c8132
+< #line 2547
+---
+> #line 2533
+8179c8135
+< #line 2550
+---
+> #line 2536
+8182c8138
+< #line 2552
+---
+> #line 2538
+8186c8142
+< #line 2555 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2541 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8194c8150
+< #line 2558
+---
+> #line 2544
+8196c8152
+< #line 2561
+---
+> #line 2547
+8198c8154
+< #line 2562
+---
+> #line 2548
+8200c8156
+< #line 2563
+---
+> #line 2549
+8202c8158
+< #line 2564
+---
+> #line 2550
+8207c8163
+< #line 2565
+---
+> #line 2551
+8209c8165
+< #line 2566
+---
+> #line 2552
+8211c8167
+< #line 2567
+---
+> #line 2553
+8216c8172
+< #line 2569
+---
+> #line 2555
+8218c8174
+< #line 2570
+---
+> #line 2556
+8220c8176
+< #line 2571
+---
+> #line 2557
+8222c8178
+< #line 2572
+---
+> #line 2558
+8227c8183
+< #line 2575
+---
+> #line 2561
+8231c8187
+< #line 2578 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2564 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8237c8193
+< #line 2580
+---
+> #line 2566
+8239c8195
+< #line 2581
+---
+> #line 2567
+8241c8197
+< #line 2582
+---
+> #line 2568
+8245c8201
+< #line 2614
+---
+> #line 2600
+8247c8203
+< #line 2617
+---
+> #line 2603
+8249c8205
+< #line 2620
+---
+> #line 2606
+8251c8207
+< #line 2623
+---
+> #line 2609
+8253c8209
+< #line 2626
+---
+> #line 2612
+8255c8211
+< #line 2629
+---
+> #line 2615
+8257c8213
+< #line 2632 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2618 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8259c8215
+< #line 2635 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2621 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8270c8226
+< #line 3080
+---
+> #line 3066
+8272c8228
+< #line 2927
+---
+> #line 2913
+8274c8230
+< #line 2936
+---
+> #line 2922
+8276c8232
+< #line 3077
+---
+> #line 3063
+8278c8234
+< #line 3078
+---
+> #line 3064
+8280c8236
+< #line 3078
+---
+> #line 3064
+8282c8238
+< #line 3079
+---
+> #line 3065
+8287,8290c8243,8246
+< #line 3083
+<   goto ldv_25908;
+<   ldv_25907: 
+< #line 3087
+---
+> #line 3069
+>   goto ldv_25905;
+>   ldv_25904: 
+> #line 3073
+8292c8248
+< #line 3087
+---
+> #line 3073
+8295c8251
+< #line 3092
+---
+> #line 3078
+8297c8253
+< #line 3232
+---
+> #line 3218
+8299c8255
+< #line 3233
+---
+> #line 3219
+8301c8257
+< #line 3234
+---
+> #line 3220
+8303c8259
+< #line 3235
+---
+> #line 3221
+8305c8261
+< #line 3236
+---
+> #line 3222
+8310c8266
+< #line 3237
+---
+> #line 3223
+8315,8316c8271,8272
+< #line 3243
+<   goto ldv_25904;
+---
+> #line 3229
+>   goto ldv_25901;
+8318c8274
+< #line 3247
+---
+> #line 3233
+8320c8276
+< #line 3387
+---
+> #line 3373
+8322c8278
+< #line 3388
+---
+> #line 3374
+8324c8280
+< #line 3389
+---
+> #line 3375
+8329,8330c8285,8286
+< #line 3395
+<   goto ldv_25904;
+---
+> #line 3381
+>   goto ldv_25901;
+8332,8333c8288,8289
+< #line 3396
+<   goto ldv_25904;
+---
+> #line 3382
+>   goto ldv_25901;
+8335,8337c8291,8293
+<   ldv_25904: ;
+<   ldv_25908: 
+< #line 3083
+---
+>   ldv_25901: ;
+>   ldv_25905: 
+> #line 3069
+8339c8295
+< #line 3083
+---
+> #line 3069
+8341,8342c8297,8298
+< #line 3085
+<     goto ldv_25907;
+---
+> #line 3071
+>     goto ldv_25904;
+8348c8304
+< #line 3543
+---
+> #line 3529
+8350c8306
+< #line 3544
+---
+> #line 3530
+8353c8309
+< #line 3547
+---
+> #line 3533
+8355c8311
+< #line 3550
+---
+> #line 3536
+8359c8315
+< #line 3586 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 3572 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8365c8321
+< #line 3591
+---
+> #line 3577
+8367c8323
+< #line 3593
+---
+> #line 3579
+8369c8325
+< #line 3594
+---
+> #line 3580
+8373c8329
+< #line 3607 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 3593 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/hwmon/it87.c.prepared"
+8379c8335
+< #line 3612
+---
+> #line 3598
+8381c8337
+< #line 3614
+---
+> #line 3600
+8383c8339
+< #line 3615
+---
+> #line 3601

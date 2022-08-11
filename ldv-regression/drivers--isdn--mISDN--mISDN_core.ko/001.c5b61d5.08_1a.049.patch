@@ -1,0 +1,698 @@
+10382a10383,10404
+> #line 1201 "include/linux/skbuff.h"
+> __inline static bool skb_is_nonlinear(struct sk_buff  const  *skb ) 
+> { 
+> 
+> 
+>   {
+> #line 1203
+>   return ((unsigned int )skb->data_len != 0U);
+> }
+> }
+> #line 1381 "include/linux/skbuff.h"
+> __inline static int skb_tailroom(struct sk_buff  const  *skb ) 
+> { 
+>   bool tmp ;
+> 
+>   {
+> #line 1383
+>   tmp = skb_is_nonlinear(skb);
+> #line 1383
+>   return ((int )tmp ? 0 : (int )((unsigned int )skb->end - (unsigned int )skb->tail));
+> }
+> }
+10504c10526
+< void recv_Dchannel(struct dchannel *dch ) ;
+---
+> int bchannel_get_rxbuf(struct bchannel *bch , int reqlen ) ;
+10506c10528
+< void recv_Echannel(struct dchannel *ech , struct dchannel *dch ) ;
+---
+> void recv_Dchannel(struct dchannel *dch ) ;
+10508c10530
+< void recv_Bchannel(struct bchannel *bch , unsigned int id ) ;
+---
+> void recv_Echannel(struct dchannel *ech , struct dchannel *dch ) ;
+10510c10532
+< void recv_Dchannel_skb(struct dchannel *dch , struct sk_buff *skb ) ;
+---
+> void recv_Bchannel(struct bchannel *bch , unsigned int id ) ;
+10512c10534
+< void recv_Bchannel_skb(struct bchannel *bch , struct sk_buff *skb ) ;
+---
+> void recv_Dchannel_skb(struct dchannel *dch , struct sk_buff *skb ) ;
+10514c10536
+< int get_next_bframe(struct bchannel *bch ) ;
+---
+> void recv_Bchannel_skb(struct bchannel *bch , struct sk_buff *skb ) ;
+10515a10538,10539
+> int get_next_bframe(struct bchannel *bch ) ;
+> #line 187
+10538,10539c10562,10563
+<     goto ldv_38823;
+<     ldv_38822: 
+---
+>     goto ldv_38826;
+>     ldv_38825: 
+10558c10582
+<     ldv_38823: 
+---
+>     ldv_38826: 
+10564c10588
+<       goto ldv_38822;
+---
+>       goto ldv_38825;
+10610,10611c10634,10635
+<     goto ldv_38834;
+<     ldv_38833: 
+---
+>     goto ldv_38837;
+>     ldv_38836: 
+10632c10656
+<     ldv_38834: 
+---
+>     ldv_38837: 
+10638c10662
+<       goto ldv_38833;
+---
+>       goto ldv_38836;
+10919a10944,10945
+>   long tmp ;
+>   long tmp___0 ;
+10922,10923d10947
+< #line 211
+<   hh = (struct mISDNhead *)(& (bch->rx_skb)->cb);
+10925c10949,10952
+<   hh->prim = 8194U;
+---
+>   tmp = __builtin_expect((unsigned long )bch->rx_skb == (unsigned long )((struct sk_buff *)0),
+>                          0L);
+> #line 212
+>   if (tmp != 0L) {
+10927,10936d10953
+<   hh->id = id;
+< #line 214
+<   if (bch->rcount > 63) {
+< #line 215
+<     printk("<4>B-channel %p receive queue overflow, flushing!\n", bch);
+< #line 217
+<     skb_queue_purge(& bch->rqueue);
+< #line 218
+<     bch->rcount = 0;
+< #line 219
+10940a10958,10966
+> #line 214
+>   tmp___0 = __builtin_expect((bch->rx_skb)->len == 0U, 0L);
+> #line 214
+>   if (tmp___0 != 0L) {
+> #line 218
+>     consume_skb(bch->rx_skb);
+> #line 219
+>     bch->rx_skb = 0;
+>   } else {
+10942c10968
+<   bch->rcount = bch->rcount + 1;
+---
+>     hh = (struct mISDNhead *)(& (bch->rx_skb)->cb);
+10944c10970
+<   skb_queue_tail(& bch->rqueue, bch->rx_skb);
+---
+>     hh->prim = 8194U;
+10946,10948c10972
+<   bch->rx_skb = 0;
+< #line 224
+<   test_and_set_bit(30, (unsigned long volatile   *)(& bch->Flags));
+---
+>     hh->id = id;
+10950c10974
+<   schedule_work(& bch->workq);
+---
+>     if (bch->rcount > 63) {
+10951a10976,10993
+>       printk("<4>B%d receive queue overflow - flushing!\n", bch->nr);
+> #line 228
+>       skb_queue_purge(& bch->rqueue);
+>     } else {
+> 
+>     }
+> #line 230
+>     bch->rcount = bch->rcount + 1;
+> #line 231
+>     skb_queue_tail(& bch->rqueue, bch->rx_skb);
+> #line 232
+>     bch->rx_skb = 0;
+> #line 233
+>     test_and_set_bit(30, (unsigned long volatile   *)(& bch->Flags));
+> #line 233
+>     schedule_work(& bch->workq);
+>   }
+> #line 235
+10955c10997
+< #line 229 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 239 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+10961c11003
+< #line 231
+---
+> #line 241
+10963c11005
+< #line 232
+---
+> #line 242
+10965c11007
+< #line 232
+---
+> #line 242
+10967c11009
+< #line 233
+---
+> #line 243
+10971c11013
+< #line 237 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 247 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+10977c11019
+< #line 239
+---
+> #line 249
+10979c11021
+< #line 240
+---
+> #line 250
+10981c11023
+< #line 242
+---
+> #line 252
+10983c11025
+< #line 243
+---
+> #line 253
+10988c11030
+< #line 245
+---
+> #line 255
+10990c11032
+< #line 246
+---
+> #line 256
+10992c11034
+< #line 247
+---
+> #line 257
+10994c11036
+< #line 247
+---
+> #line 257
+10996c11038
+< #line 248
+---
+> #line 258
+11000c11042
+< #line 252 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 262 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11006c11048
+< #line 256
+---
+> #line 266
+11009c11051
+< #line 258
+---
+> #line 268
+11011c11053
+< #line 259
+---
+> #line 269
+11013c11055
+< #line 261
+---
+> #line 271
+11018c11060
+< #line 263
+---
+> #line 273
+11020c11062
+< #line 264
+---
+> #line 274
+11022c11064
+< #line 264
+---
+> #line 274
+11024c11066
+< #line 265
+---
+> #line 275
+11028c11070
+< #line 268 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 278 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11034c11076
+< #line 270
+---
+> #line 280
+11036c11078
+< #line 271
+---
+> #line 281
+11038c11080
+< #line 272
+---
+> #line 282
+11040c11082
+< #line 273
+---
+> #line 283
+11042c11084
+< #line 274
+---
+> #line 284
+11047c11089
+< #line 276
+---
+> #line 286
+11049c11091
+< #line 277
+---
+> #line 287
+11051c11093
+< #line 278
+---
+> #line 288
+11055c11097
+< #line 283 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 293 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11061c11103
+< #line 287
+---
+> #line 297
+11063c11105
+< #line 288
+---
+> #line 298
+11065c11107
+< #line 290
+---
+> #line 300
+11067c11109
+< #line 291
+---
+> #line 301
+11072c11114
+< #line 293
+---
+> #line 303
+11075c11117
+< #line 295
+---
+> #line 305
+11077c11119
+< #line 296
+---
+> #line 306
+11079c11121
+< #line 298
+---
+> #line 308
+11084c11126
+< #line 300
+---
+> #line 310
+11086c11128
+< #line 301
+---
+> #line 311
+11088c11130
+< #line 302
+---
+> #line 312
+11090c11132
+< #line 302
+---
+> #line 312
+11092c11134
+< #line 303
+---
+> #line 313
+11096c11138
+< #line 306 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 316 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11102c11144
+< #line 308
+---
+> #line 318
+11104c11146
+< #line 309
+---
+> #line 319
+11106c11148
+< #line 309
+---
+> #line 319
+11108c11150
+< #line 310
+---
+> #line 320
+11110c11152
+< #line 311
+---
+> #line 321
+11112c11154
+< #line 312
+---
+> #line 322
+11114c11156
+< #line 313
+---
+> #line 323
+11116c11158
+< #line 315
+---
+> #line 325
+11118c11160
+< #line 316
+---
+> #line 326
+11121c11163
+< #line 318
+---
+> #line 328
+11123c11165
+< #line 319
+---
+> #line 329
+11129c11171
+< #line 322
+---
+> #line 332
+11131c11173
+< #line 323
+---
+> #line 333
+11133c11175
+< #line 324
+---
+> #line 334
+11137c11179
+< #line 329 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 339 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11144c11186
+< #line 333
+---
+> #line 343
+11146c11188
+< #line 334
+---
+> #line 344
+11149c11191
+< #line 336
+---
+> #line 346
+11151c11193
+< #line 337
+---
+> #line 347
+11153c11195
+< #line 338
+---
+> #line 348
+11155c11197
+< #line 339
+---
+> #line 349
+11157c11199
+< #line 340
+---
+> #line 350
+11159c11201
+< #line 340
+---
+> #line 350
+11161c11203
+< #line 341
+---
+> #line 351
+11169c11211
+< #line 343
+---
+> #line 353
+11172c11214
+< #line 345
+---
+> #line 355
+11176c11218
+< #line 349 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 359 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11182c11224
+< #line 352
+---
+> #line 362
+11184c11226
+< #line 353
+---
+> #line 363
+11186c11228
+< #line 354
+---
+> #line 364
+11191c11233
+< #line 356
+---
+> #line 366
+11193c11235
+< #line 357
+---
+> #line 367
+11195c11237
+< #line 359
+---
+> #line 369
+11200c11242
+< #line 362
+---
+> #line 372
+11202c11244
+< #line 362
+---
+> #line 372
+11204c11246
+< #line 363
+---
+> #line 373
+11206c11248
+< #line 364
+---
+> #line 374
+11209c11251
+< #line 367
+---
+> #line 377
+11211c11253
+< #line 368
+---
+> #line 378
+11213c11255
+< #line 369
+---
+> #line 379
+11218c11260
+< #line 375 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+---
+> #line 385 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+11224c11266
+< #line 379
+---
+> #line 389
+11226c11268
+< #line 380
+---
+> #line 390
+11228c11270
+< #line 381
+---
+> #line 391
+11233c11275
+< #line 383
+---
+> #line 393
+11235c11277
+< #line 384
+---
+> #line 394
+11237c11279
+< #line 386
+---
+> #line 396
+11242c11284
+< #line 390
+---
+> #line 400
+11244c11286
+< #line 391
+---
+> #line 401
+11247c11289
+< #line 394
+---
+> #line 404
+11252c11294
+< #line 396
+---
+> #line 406
+11254c11296
+< #line 396
+---
+> #line 406
+11256c11298
+< #line 397
+---
+> #line 407
+11258c11300
+< #line 398
+---
+> #line 408
+11260c11302
+< #line 399
+---
+> #line 409
+11263c11305
+< #line 402
+---
+> #line 412
+11265c11307
+< #line 403
+---
+> #line 413
+11267c11309
+< #line 404
+---
+> #line 414
+11269c11311
+< #line 405
+---
+> #line 415
+11273a11316,11383
+> #line 425 "/work/ldvuser/novikov/work/current--X--drivers/isdn/mISDN/mISDN_core.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/30/dscv_tempdir/dscv/ri/08_1a/drivers/isdn/mISDN/hwchannel.c.prepared"
+> int bchannel_get_rxbuf(struct bchannel *bch , int reqlen ) 
+> { 
+>   int len ;
+>   int tmp ;
+>   long tmp___0 ;
+>   int tmp___1 ;
+> 
+>   {
+> #line 429
+>   if ((unsigned long )bch->rx_skb != (unsigned long )((struct sk_buff *)0)) {
+> #line 430
+>     len = skb_tailroom((struct sk_buff  const  *)bch->rx_skb);
+> #line 431
+>     if (len < reqlen) {
+> #line 432
+>       printk("<4>B%d no space for %d (only %d) bytes\n", bch->nr, reqlen, len);
+> #line 434
+>       tmp = constant_test_bit(12U, (unsigned long const volatile   *)(& bch->Flags));
+> #line 434
+>       if (tmp != 0) {
+> #line 436
+>         recv_Bchannel(bch, 0U);
+>       } else {
+> #line 439
+>         return (-90);
+>       }
+>     } else {
+> #line 442
+>       return (len);
+>     }
+>   } else {
+> 
+>   }
+> #line 445
+>   tmp___0 = __builtin_expect(bch->maxlen < reqlen, 0L);
+> #line 445
+>   if (tmp___0 != 0L) {
+> #line 446
+>     return (-90);
+>   } else {
+> 
+>   }
+> #line 447
+>   tmp___1 = constant_test_bit(12U, (unsigned long const volatile   *)(& bch->Flags));
+> #line 447
+>   if (tmp___1 != 0) {
+> #line 448
+>     len = reqlen;
+>   } else {
+> #line 450
+>     len = bch->maxlen;
+>   }
+> #line 451
+>   bch->rx_skb = mI_alloc_skb((unsigned int )len, 32U);
+> #line 452
+>   if ((unsigned long )bch->rx_skb == (unsigned long )((struct sk_buff *)0)) {
+> #line 453
+>     printk("<4>B%d receive no memory for %d bytes\n", bch->nr, len);
+> #line 455
+>     len = -12;
+>   } else {
+> 
+>   }
+> #line 457
+>   return (len);
+> }
+> }
+13447c13557
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13452c13562
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13457c13567
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13462c13572
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13467c13577
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13472c13582
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13477c13587
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13482c13592
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13487c13597
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13502c13612
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13507c13617
+<   goto ldv_39070;
+---
+>   goto ldv_39073;
+13530c13640
+<     goto ldv_39070;
+---
+>     goto ldv_39073;
+13544c13654
+<   ldv_39070: ;
+---
+>   ldv_39073: ;

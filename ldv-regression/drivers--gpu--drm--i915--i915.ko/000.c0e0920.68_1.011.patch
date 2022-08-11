@@ -1,0 +1,4033 @@
+3321c3321
+< #line 552 "include/drm/drm.h"
+---
+> #line 566 "include/drm/drm.h"
+3539,3540d3538
+<    int (*vblank_wait)(struct drm_device *dev , unsigned int *sequence ) ;
+<    int (*vblank_wait2)(struct drm_device *dev , unsigned int *sequence ) ;
+3541a3540,3542
+>    u32 (*get_vblank_counter)(struct drm_device *dev , int crtc ) ;
+>    int (*enable_vblank)(struct drm_device *dev , int crtc ) ;
+>    void (*disable_vblank)(struct drm_device *dev , int crtc ) ;
+3545c3546
+<    void (*irq_postinstall)(struct drm_device *dev ) ;
+---
+>    int (*irq_postinstall)(struct drm_device *dev ) ;
+3566c3567
+< #line 638 "include/drm/drmP.h"
+---
+> #line 681 "include/drm/drmP.h"
+3575c3576
+< #line 651 "include/drm/drmP.h"
+---
+> #line 694 "include/drm/drmP.h"
+3620,3622c3621,3623
+<    wait_queue_head_t vbl_queue ;
+<    atomic_t vbl_received ;
+<    atomic_t vbl_received2 ;
+---
+>    int vblank_disable_allowed ;
+>    wait_queue_head_t *vbl_queue ;
+>    atomic_t *_vblank_count ;
+3624,3626c3625,3632
+<    struct list_head vbl_sigs ;
+<    struct list_head vbl_sigs2 ;
+<    unsigned int vbl_pending ;
+---
+>    struct list_head *vbl_sigs ;
+>    atomic_t vbl_signal_pending ;
+>    atomic_t *vblank_refcount ;
+>    u32 *last_vblank ;
+>    int *vblank_enabled ;
+>    int *vblank_inmodeset ;
+>    struct timer_list vblank_disable_timer ;
+>    u32 max_vblank_count ;
+3638a3645
+>    int num_crtcs ;
+3725c3732
+<    unsigned int pipe ;
+---
+>    unsigned int plane ;
+3732c3739
+< #line 90
+---
+> #line 91
+3734c3741
+< #line 90
+---
+> #line 92
+3736c3743
+< #line 90
+---
+> #line 93
+3738c3745
+< #line 90 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 95 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+3746c3753
+< #line 98 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 103 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+3755c3762
+<    unsigned long counter ;
+---
+>    uint32_t counter ;
+3981c3988
+< #line 98 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 103 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+3993a4001
+>     _DRM_VBLANK_FLIP = 134217728,
+4490c4498
+< #line 840 "include/drm/drmP.h"
+---
+> #line 899 "include/drm/drmP.h"
+4492c4500
+< #line 841
+---
+> #line 900
+4494c4502
+< #line 842
+---
+> #line 901
+4497c4505
+< #line 849
+---
+> #line 908
+4499c4507
+< #line 851
+---
+> #line 910
+4501c4509
+< #line 852
+---
+> #line 911
+4503c4511
+< #line 855
+---
+> #line 914
+4505c4513
+< #line 856
+---
+> #line 915
+4507c4515
+< #line 857
+---
+> #line 916
+4509c4517
+< #line 858
+---
+> #line 917
+4511c4519
+< #line 981
+---
+> #line 1040
+4513c4521
+< #line 230 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 235 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+4515c4523
+< #line 231
+---
+> #line 236
+4517c4525
+< #line 235
+---
+> #line 240
+4519c4527
+< #line 236
+---
+> #line 241
+4521c4529
+< #line 237
+---
+> #line 242
+4523c4531
+< #line 238
+---
+> #line 243
+4525c4533
+< #line 240
+---
+> #line 245
+4527c4535
+< #line 241
+---
+> #line 246
+4529,4533c4537
+< #line 250
+< int i915_driver_vblank_wait(struct drm_device *dev , unsigned int *sequence ) ;
+< #line 251
+< int i915_driver_vblank_wait2(struct drm_device *dev , unsigned int *sequence ) ;
+< #line 252
+---
+> #line 255
+4535c4539
+< #line 253
+---
+> #line 256
+4537,4539c4541,4543
+< #line 254
+< void i915_driver_irq_postinstall(struct drm_device *dev ) ;
+< #line 255
+---
+> #line 257
+> int i915_driver_irq_postinstall(struct drm_device *dev ) ;
+> #line 258
+4541c4545,4551
+< #line 278
+---
+> #line 263
+> int i915_enable_vblank(struct drm_device *dev , int plane ) ;
+> #line 264
+> void i915_disable_vblank(struct drm_device *dev , int plane ) ;
+> #line 265
+> u32 i915_get_vblank_counter(struct drm_device *dev , int plane ) ;
+> #line 284
+4543c4553
+< #line 279
+---
+> #line 285
+4545c4555
+< #line 282
+---
+> #line 292
+4547c4557
+< #line 283
+---
+> #line 293
+4654,4655c4664,4665
+<     & i915_driver_unload, & i915_suspend, & i915_resume, 0, 0, 0, 0, 0, 0, 0, & i915_driver_vblank_wait,
+<     & i915_driver_vblank_wait2, 0, & i915_driver_device_is_agp, & i915_driver_irq_handler,
+---
+>     & i915_driver_unload, & i915_suspend, & i915_resume, 0, 0, 0, 0, 0, 0, 0, 0, & i915_get_vblank_counter,
+>     & i915_enable_vblank, & i915_disable_vblank, & i915_driver_device_is_agp, & i915_driver_irq_handler,
+4658,4676c4668,4684
+<     0, 1, 6, 0, "i915", "Intel Graphics", "20060119", ((((1 | 2) | 64) | 128) | 256) | 2048,
+<     0, i915_ioctls, 0, {& __this_module, 0, 0, 0, 0, 0, 0, & drm_poll, & drm_ioctl,
+<                         0, & i915_compat_ioctl, & drm_mmap, & drm_open, 0, & drm_release,
+<                         0, 0, & drm_fasync, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {{0, 0}, "i915",
+<                                                                          pciidlist,
+<                                                                          0, 0, 0,
+<                                                                          0, 0, 0,
+<                                                                          0, 0, 0,
+<                                                                          {0, 0, 0,
+<                                                                           0, 0, 0,
+<                                                                           0, 0, 0,
+<                                                                           0, 0, 0},
+<                                                                          {{{0U}, 0U,
+<                                                                            0U, 0,
+<                                                                            {0, 0,
+<                                                                             0, 0}},
+<                                                                           {0, 0},
+<                                                                           0U}}};
+< #line 136
+---
+>     0, 1, 6, 0, "i915", "Intel Graphics", "20060119", ((1 | 2) | 64) | 128, 0, i915_ioctls,
+>     0, {& __this_module, 0, 0, 0, 0, 0, 0, & drm_poll, & drm_ioctl, 0, & i915_compat_ioctl,
+>         & drm_mmap, & drm_open, 0, & drm_release, 0, 0, & drm_fasync, 0, 0, 0, 0,
+>         0, 0, 0, 0, 0}, {{0, 0}, "i915", pciidlist, 0, 0, 0, 0, 0, 0, 0, 0, 0, {0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0,
+>                                                                                 0},
+>                          {{{0U}, 0U, 0U, 0, {0, 0, 0, 0}}, {0, 0}, 0U}}};
+> #line 135
+4678c4686
+< #line 136 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 135 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4684c4692
+< #line 138
+---
+> #line 137
+4686c4694
+< #line 139
+---
+> #line 138
+4688c4696
+< #line 139
+---
+> #line 138
+4692c4700
+< #line 142
+---
+> #line 141
+4694c4702
+< #line 142 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 141 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4700c4708
+< #line 144
+---
+> #line 143
+4702c4710
+< #line 145
+---
+> #line 144
+4706c4714
+< #line 147 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 146 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4712c4720
+< #line 147
+---
+> #line 146
+4714c4722
+< #line 147
+---
+> #line 146
+4718c4726
+< #line 148 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 147 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4724c4732
+< #line 148
+---
+> #line 147
+4726c4734
+< #line 148
+---
+> #line 147
+4730,4732c4738,4740
+< #line 150 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+< static char const   __mod_author150[31]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 150
+---
+> #line 149 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+> static char const   __mod_author149[31]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 149
+4741,4742c4749,4750
+< #line 151 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+< static char const   __mod_description151[27]  __attribute__((__used__, __unused__,
+---
+> #line 150 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+> static char const   __mod_description150[27]  __attribute__((__used__, __unused__,
+4744c4752
+< #line 151
+---
+> #line 150
+4752,4754c4760,4762
+< #line 152 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+< static char const   __mod_license152[34]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 152
+---
+> #line 151 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+> static char const   __mod_license151[34]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 151
+4764c4772
+< #line 170
+---
+> #line 169
+4766c4774
+< #line 179
+---
+> #line 178
+4768c4776
+< #line 182
+---
+> #line 181
+4770c4778
+< #line 185
+---
+> #line 184
+4772c4780
+< #line 188 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 187 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4774c4782
+< #line 191 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+---
+> #line 190 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_drv.c"
+4784c4792
+< #line 221
+---
+> #line 220
+4786c4794
+< #line 230
+---
+> #line 229
+4788c4796
+< #line 239
+---
+> #line 238
+4790c4798
+< #line 240
+---
+> #line 239
+4792c4800
+< #line 240
+---
+> #line 239
+4794c4802
+< #line 241
+---
+> #line 240
+4799c4807
+< #line 245
+---
+> #line 244
+4801c4809
+< #line 245
+---
+> #line 244
+4803c4811
+< #line 245
+---
+> #line 244
+4807c4815
+< #line 245
+---
+> #line 244
+4810c4818
+< #line 248
+---
+> #line 247
+4812c4820
+< #line 248
+---
+> #line 247
+4815c4823
+< #line 258
+---
+> #line 257
+4817c4825
+< #line 259
+---
+> #line 258
+4819c4827
+< #line 270
+---
+> #line 269
+4822c4830
+< #line 279
+---
+> #line 278
+4824c4832
+< #line 280
+---
+> #line 279
+4826c4834
+< #line 291
+---
+> #line 290
+4829c4837
+< #line 292
+---
+> #line 291
+4833c4841
+< #line 307
+---
+> #line 306
+4835c4843
+< #line 308
+---
+> #line 307
+4838c4846
+< #line 311
+---
+> #line 310
+4840c4848
+< #line 314
+---
+> #line 313
+5273c5281
+< #line 952 "include/drm/drmP.h"
+---
+> #line 1011 "include/drm/drmP.h"
+5276c5284
+< #line 957
+---
+> #line 1016
+5278c5286
+< #line 972
+---
+> #line 1031
+5280c5288
+< #line 974
+---
+> #line 1033
+5282c5290
+< #line 988
+---
+> #line 1047
+5284c5292
+< #line 1035
+---
+> #line 1103
+5286c5294
+< #line 1042
+---
+> #line 1110
+5288c5296
+< #line 1063
+---
+> #line 1131
+5291c5299
+< #line 1066
+---
+> #line 1134
+5293c5301
+< #line 1091
+---
+> #line 1159
+5295c5303
+< #line 1093
+---
+> #line 1161
+5297c5305
+< #line 1129 "include/drm/drmP.h"
+---
+> #line 1197 "include/drm/drmP.h"
+5303c5311
+< #line 1131
+---
+> #line 1199
+5305c5313
+< #line 1131
+---
+> #line 1199
+5309c5317
+< #line 1135 "include/drm/drmP.h"
+---
+> #line 1203 "include/drm/drmP.h"
+5315c5323
+< #line 1137
+---
+> #line 1205
+5317c5325
+< #line 1138
+---
+> #line 1206
+5321c5329
+< #line 234 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 239 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+5323c5331
+< #line 245
+---
+> #line 250
+5325c5333
+< #line 247
+---
+> #line 252
+5327c5335
+< #line 256
+---
+> #line 259
+5329c5337
+< #line 258
+---
+> #line 261
+5331c5339
+< #line 260
+---
+> #line 266
+5333c5341
+< #line 265
+---
+> #line 271
+5335c5343
+< #line 267
+---
+> #line 273
+5337c5345
+< #line 269
+---
+> #line 275
+5339c5347
+< #line 271
+---
+> #line 277
+5341c5349
+< #line 273
+---
+> #line 279
+5343c5351
+< #line 274
+---
+> #line 280
+5345c5353
+< #line 341
+---
+> #line 351
+6297c6305
+<   unsigned long tmp ;
+---
+>   uint32_t tmp ;
+6303c6311
+<   dev_priv->counter = dev_priv->counter + 1UL;
+---
+>   dev_priv->counter = dev_priv->counter + (uint32_t )1;
+6307c6315
+<   if (dev_priv->counter > 2147483647UL) {
+---
+>   if ((unsigned long )dev_priv->counter > 2147483647UL) {
+6728c6736
+<   unsigned long tmp ;
+---
+>   uint32_t tmp ;
+6969c6977
+<   dev_priv->counter = dev_priv->counter + 1UL;
+---
+>   dev_priv->counter = dev_priv->counter + (uint32_t )1;
+7368c7376
+<   value = dev->irq_enabled;
+---
+>   value = (dev->pdev)->irq ? 1 : 0;
+7539c7547
+< #line 815 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 816 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7549a7558
+>   int tmp___0 ;
+7606c7615,7622
+<     pci_enable_msi(dev->pdev);
+---
+>     tmp___0 = pci_enable_msi(dev->pdev);
+> #line 811
+>     if (tmp___0) {
+> #line 812
+>       printk("<3>[drm:%s] *ERROR* failed to enable MSI\n", "i915_driver_load");
+>     } else {
+> 
+>     }
+7610c7626
+< #line 813
+---
+> #line 814
+7612c7628
+< #line 815
+---
+> #line 816
+7614c7630
+< #line 815
+---
+> #line 816
+7616c7632
+< #line 815
+---
+> #line 816
+7619c7635
+< #line 817
+---
+> #line 818
+7623c7639
+< #line 820 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 821 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7629c7645
+< #line 822
+---
+> #line 823
+7631,7632d7646
+< #line 824
+<   if ((dev->pdev)->msi_enabled) {
+7633a7648,7649
+>   if ((dev->pdev)->msi_enabled) {
+> #line 826
+7638c7654
+< #line 827
+---
+> #line 828
+7640,7641d7655
+< #line 829
+<   if (dev_priv->mmio_map) {
+7642a7657,7658
+>   if (dev_priv->mmio_map) {
+> #line 831
+7647c7663
+< #line 832
+---
+> #line 833
+7649c7665
+< #line 834
+---
+> #line 835
+7651c7667
+< #line 837
+---
+> #line 838
+7655c7671
+< #line 840 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 841 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7661c7677
+< #line 842
+---
+> #line 843
+7663,7664d7678
+< #line 844
+<   if (! dev_priv) {
+7665a7680,7681
+>   if (! dev_priv) {
+> #line 846
+7670,7671d7685
+< #line 847
+<   if (dev_priv->agp_heap) {
+7672a7687,7688
+>   if (dev_priv->agp_heap) {
+> #line 849
+7677,7678d7692
+< #line 850
+<   i915_dma_cleanup(dev);
+7679a7694,7695
+>   i915_dma_cleanup(dev);
+> #line 852
+7683c7699
+< #line 853 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 854 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7689,7690d7704
+< #line 855
+<   dev_priv = dev->dev_private;
+7692c7706
+<   i915_mem_release(dev, file_priv, dev_priv->agp_heap);
+---
+>   dev_priv = dev->dev_private;
+7693a7708,7709
+>   i915_mem_release(dev, file_priv, dev_priv->agp_heap);
+> #line 858
+7697c7713
+< #line 859 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 860 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7699c7715
+< #line 859
+---
+> #line 860
+7718c7734
+< #line 879 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 880 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7720c7736
+< #line 892 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+---
+> #line 893 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_dma.c"
+7726c7742
+< #line 894
+---
+> #line 895
+7825,7847d7840
+< #line 95 "include/asm/atomic_64.h"
+< __inline static void atomic_inc(atomic_t *v ) 
+< { 
+< 
+< 
+<   {
+< #line 97
+<   __asm__  volatile   (".section .smp_locks,\"a\"\n"
+<                        " "
+<                        ".balign 8"
+<                        " "
+<                        "\n"
+<                        " "
+<                        ".quad"
+<                        " "
+<                        "661f\n"
+<                        ".previous\n"
+<                        "661:\n\tlock; "
+<                        "incl %0": "=m" (v->counter): "m" (v->counter));
+< #line 100
+<   return;
+< }
+< }
+7865,7866d7857
+< #line 135
+< extern void __wake_up(wait_queue_head_t *q , unsigned int mode , int nr , void *key ) ;
+7926c7917
+< #line 922 "include/drm/drmP.h"
+---
+> #line 981 "include/drm/drmP.h"
+7928,7930c7919,7921
+< #line 996
+< extern void drm_vbl_send_signals(struct drm_device *dev ) ;
+< #line 997
+---
+> #line 1052
+> extern int drm_vblank_init(struct drm_device *dev , int num_crtcs ) ;
+> #line 1056
+7932c7923,7931
+< #line 1141 "include/drm/drmP.h"
+---
+> #line 1058
+> extern u32 drm_vblank_count(struct drm_device *dev , int crtc ) ;
+> #line 1059
+> extern void drm_handle_vblank(struct drm_device *dev , int crtc ) ;
+> #line 1060
+> extern int drm_vblank_get(struct drm_device *dev , int crtc ) ;
+> #line 1061
+> extern void drm_vblank_put(struct drm_device *dev , int crtc ) ;
+> #line 1209 "include/drm/drmP.h"
+7938c7937
+< #line 1143
+---
+> #line 1211
+7940c7939
+< #line 1143
+---
+> #line 1211
+7944c7943
+< #line 262 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 268 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+7946c7945
+< #line 284
+---
+> #line 294
+7948c7947
+< #line 285
+---
+> #line 295
+7950c7949
+< #line 43 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 42 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+7956c7955
+< #line 46
+---
+> #line 45
+7958c7957
+< #line 47
+---
+> #line 46
+7960c7959
+< #line 48
+---
+> #line 47
+7962c7961
+< #line 49
+---
+> #line 48
+7967c7966
+< #line 51
+---
+> #line 50
+7971c7970
+< #line 53 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 52 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+7977c7976
+< #line 56
+---
+> #line 55
+7979c7978
+< #line 57
+---
+> #line 56
+7981c7980
+< #line 58
+---
+> #line 57
+7983c7982
+< #line 59
+---
+> #line 58
+7988c7987
+< #line 61
+---
+> #line 60
+7992c7991,8062
+< #line 68 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 71 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> static int i915_get_pipe(struct drm_device *dev , int plane ) 
+> { 
+>   drm_i915_private_t *dev_priv ;
+>   u32 dspcntr ;
+>   unsigned int tmp ;
+>   unsigned int tmp___0 ;
+> 
+>   {
+> #line 74
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 77
+>   if (plane) {
+> #line 77
+>     tmp = readl((dev_priv->mmio_map)->handle + 463232);
+> #line 77
+>     dspcntr = tmp;
+>   } else {
+> #line 77
+>     tmp___0 = readl((dev_priv->mmio_map)->handle + 459136);
+> #line 77
+>     dspcntr = tmp___0;
+>   }
+> #line 79
+>   return (dspcntr & (unsigned int )(1 << 24) ? 1 : 0);
+> }
+> }
+> #line 91 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> static int i915_get_plane(struct drm_device *dev , int pipe ) 
+> { 
+>   int tmp ;
+> 
+>   {
+> #line 94
+>   tmp = i915_get_pipe(dev, 0);
+> #line 94
+>   if (tmp == pipe) {
+> #line 95
+>     return (0);
+>   } else {
+> 
+>   }
+> #line 96
+>   return (1);
+> }
+> }
+> #line 108 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> static int i915_pipe_enabled(struct drm_device *dev , int pipe ) 
+> { 
+>   drm_i915_private_t *dev_priv ;
+>   unsigned long pipeconf ;
+>   unsigned int tmp ;
+> 
+>   {
+> #line 111
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 112
+>   pipeconf = pipe ? 462856 : 458760;
+> #line 114
+>   tmp = readl((dev_priv->mmio_map)->handle + pipeconf);
+> #line 114
+>   if (tmp & (unsigned int )(1 << 31)) {
+> #line 115
+>     return (1);
+>   } else {
+> 
+>   }
+> #line 117
+>   return (0);
+> }
+> }
+> #line 125 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+8020a8091,8092
+>   int pipe ;
+>   int tmp___0 ;
+8024c8096
+<   struct drm_drawable_info *tmp___0 ;
+---
+>   struct drm_drawable_info *tmp___1 ;
+8033c8105
+<   int pipe ;
+---
+>   int plane ;
+8042d8113
+<   int tmp___1 ;
+8043a8115
+>   int tmp___3 ;
+8048c8120
+< #line 70
+---
+> #line 127
+8050,8054c8122
+< #line 74
+<   counter[0] = dev->vbl_received.counter;
+< #line 74
+<   counter[1] = dev->vbl_received2.counter;
+< #line 77
+---
+> #line 133
+8056c8124
+< #line 78
+---
+> #line 134
+8058c8126
+< #line 79
+---
+> #line 135
+8060c8128
+< #line 83
+---
+> #line 139
+8062c8130
+< #line 84
+---
+> #line 140
+8064c8132
+< #line 85
+---
+> #line 141
+8066c8134
+< #line 88
+---
+> #line 144
+8068c8136
+< #line 89
+---
+> #line 145
+8070c8138
+< #line 90
+---
+> #line 146
+8075c8143
+< #line 92
+---
+> #line 148
+8077c8145
+< #line 93
+---
+> #line 149
+8079c8147
+< #line 94
+---
+> #line 150
+8084c8152,8156
+< #line 97
+---
+> #line 153
+>   counter[0] = drm_vblank_count(dev, 0);
+> #line 154
+>   counter[1] = drm_vblank_count(dev, 1);
+> #line 156
+8086c8158
+< #line 97
+---
+> #line 156
+8088c8160
+< #line 97
+---
+> #line 156
+8093c8165
+< #line 97
+---
+> #line 156
+8096c8168
+< #line 99
+---
+> #line 158
+8098c8170
+< #line 101
+---
+> #line 160
+8100c8172
+< #line 101
+---
+> #line 160
+8102c8174
+< #line 103
+---
+> #line 162
+8104c8176
+< #line 103
+---
+> #line 162
+8106c8178
+< #line 103
+---
+> #line 162
+8109c8181
+< #line 106
+---
+> #line 165
+8111c8183
+< #line 106
+---
+> #line 165
+8113c8185
+< #line 106
+---
+> #line 165
+8115c8187
+< #line 106
+---
+> #line 165
+8119c8191
+< #line 106
+---
+> #line 165
+8122c8194
+< #line 108
+---
+> #line 167
+8124c8196
+< #line 108
+---
+> #line 167
+8126,8128c8198,8204
+< #line 110
+<     if (counter[vbl_swap->pipe] - vbl_swap->sequence > (unsigned int )(1 << 23)) {
+< #line 111
+---
+> #line 168
+>     tmp___0 = i915_get_pipe(dev, vbl_swap->plane);
+> #line 168
+>     pipe = tmp___0;
+> #line 170
+>     if (counter[pipe] - vbl_swap->sequence > (unsigned int )(1 << 23)) {
+> #line 171
+8133c8209
+< #line 113
+---
+> #line 173
+8135c8211
+< #line 114
+---
+> #line 174
+8137c8213,8215
+< #line 116
+---
+> #line 175
+>     drm_vblank_put(dev, pipe);
+> #line 177
+8139c8217
+< #line 117
+---
+> #line 178
+8141c8219
+< #line 119
+---
+> #line 180
+8143c8221
+< #line 121
+---
+> #line 182
+8145c8223
+< #line 122
+---
+> #line 183
+8147c8225
+< #line 123
+---
+> #line 184
+8149c8227
+< #line 124
+---
+> #line 185
+8151c8229
+< #line 125
+---
+> #line 186
+8156c8234
+< #line 128
+---
+> #line 189
+8158c8236
+< #line 128
+---
+> #line 189
+8160c8238
+< #line 128
+---
+> #line 189
+8162c8240
+< #line 128
+---
+> #line 189
+8166c8244
+< #line 128
+---
+> #line 189
+8169c8247
+< #line 130
+---
+> #line 191
+8171c8249
+< #line 130
+---
+> #line 191
+8173,8177c8251,8255
+< #line 131
+<       tmp___0 = drm_get_drawable_info(dev, swap_cmp->drw_id);
+< #line 131
+<       drw_cmp = tmp___0;
+< #line 134
+---
+> #line 192
+>       tmp___1 = drm_get_drawable_info(dev, swap_cmp->drw_id);
+> #line 192
+>       drw_cmp = tmp___1;
+> #line 195
+8179c8257
+< #line 136
+---
+> #line 197
+8181c8259
+< #line 137
+---
+> #line 198
+8186c8264
+< #line 128
+---
+> #line 189
+8189c8267
+< #line 141
+---
+> #line 202
+8191c8269
+< #line 144
+---
+> #line 205
+8193c8271
+< #line 145
+---
+> #line 206
+8198c8276
+< #line 147
+---
+> #line 208
+8200c8278
+< #line 149
+---
+> #line 210
+8203c8281
+< #line 106
+---
+> #line 165
+8205c8283
+< #line 106
+---
+> #line 165
+8208c8286
+< #line 152
+---
+> #line 213
+8210c8288
+< #line 153
+---
+> #line 214
+8212c8290
+< #line 153
+---
+> #line 214
+8214c8292
+< #line 153
+---
+> #line 214
+8217c8295
+< #line 154
+---
+> #line 215
+8222c8300
+< #line 157
+---
+> #line 218
+8224c8302
+< #line 159
+---
+> #line 220
+8226c8304
+< #line 161
+---
+> #line 222
+8228c8306
+< #line 162
+---
+> #line 223
+8230c8308
+< #line 162
+---
+> #line 223
+8232c8310
+< #line 162
+---
+> #line 223
+8237c8315
+< #line 162
+---
+> #line 223
+8239c8317
+< #line 162
+---
+> #line 223
+8241c8319
+< #line 162
+---
+> #line 223
+8243c8321
+< #line 162
+---
+> #line 223
+8245c8323
+< #line 162
+---
+> #line 223
+8248c8326
+< #line 164
+---
+> #line 225
+8250c8328
+< #line 164
+---
+> #line 225
+8252c8330
+< #line 164
+---
+> #line 225
+8254c8332
+< #line 164
+---
+> #line 225
+8256c8334
+< #line 164
+---
+> #line 225
+8258c8336
+< #line 164
+---
+> #line 225
+8261c8339
+< #line 165
+---
+> #line 226
+8263c8341
+< #line 165
+---
+> #line 226
+8265c8343
+< #line 165
+---
+> #line 226
+8267c8345
+< #line 165
+---
+> #line 226
+8269c8347
+< #line 165
+---
+> #line 226
+8271c8349
+< #line 165
+---
+> #line 226
+8274c8352
+< #line 166
+---
+> #line 227
+8276c8354
+< #line 166
+---
+> #line 227
+8278c8356
+< #line 166
+---
+> #line 227
+8280c8358
+< #line 166
+---
+> #line 227
+8282c8360
+< #line 166
+---
+> #line 227
+8284c8362
+< #line 166
+---
+> #line 227
+8287c8365
+< #line 167
+---
+> #line 228
+8289c8367
+< #line 167
+---
+> #line 228
+8291c8369
+< #line 167
+---
+> #line 228
+8293c8371
+< #line 167
+---
+> #line 228
+8295c8373
+< #line 167
+---
+> #line 228
+8297c8375
+< #line 167
+---
+> #line 228
+8300c8378
+< #line 168
+---
+> #line 229
+8302c8380
+< #line 168
+---
+> #line 229
+8304c8382
+< #line 168
+---
+> #line 229
+8306c8384
+< #line 168
+---
+> #line 229
+8308c8386
+< #line 168
+---
+> #line 229
+8312c8390
+< #line 170
+---
+> #line 231
+8314c8392
+< #line 170
+---
+> #line 231
+8316c8394
+< #line 170
+---
+> #line 231
+8321c8399
+< #line 170
+---
+> #line 231
+8323c8401
+< #line 170
+---
+> #line 231
+8325c8403
+< #line 170
+---
+> #line 231
+8327c8405
+< #line 170
+---
+> #line 231
+8329c8407
+< #line 170
+---
+> #line 231
+8332c8410
+< #line 172
+---
+> #line 233
+8334c8412
+< #line 172
+---
+> #line 233
+8336c8414
+< #line 172
+---
+> #line 233
+8338c8416
+< #line 172
+---
+> #line 233
+8340c8418
+< #line 172
+---
+> #line 233
+8342c8420
+< #line 172
+---
+> #line 233
+8345c8423
+< #line 173
+---
+> #line 234
+8347c8425
+< #line 173
+---
+> #line 234
+8349c8427
+< #line 173
+---
+> #line 234
+8351c8429
+< #line 173
+---
+> #line 234
+8353c8431
+< #line 173
+---
+> #line 234
+8355c8433
+< #line 173
+---
+> #line 234
+8358c8436
+< #line 174
+---
+> #line 235
+8360c8438
+< #line 174
+---
+> #line 235
+8362c8440
+< #line 174
+---
+> #line 235
+8364c8442
+< #line 174
+---
+> #line 235
+8366c8444
+< #line 174
+---
+> #line 235
+8368c8446
+< #line 174
+---
+> #line 235
+8371c8449
+< #line 175
+---
+> #line 236
+8373c8451
+< #line 175
+---
+> #line 236
+8375c8453
+< #line 175
+---
+> #line 236
+8377c8455
+< #line 175
+---
+> #line 236
+8379c8457
+< #line 175
+---
+> #line 236
+8381c8459
+< #line 175
+---
+> #line 236
+8384c8462
+< #line 176
+---
+> #line 237
+8386c8464
+< #line 176
+---
+> #line 237
+8388c8466
+< #line 176
+---
+> #line 237
+8390c8468
+< #line 176
+---
+> #line 237
+8392c8470
+< #line 176
+---
+> #line 237
+8394c8472
+< #line 176
+---
+> #line 237
+8397c8475
+< #line 177
+---
+> #line 238
+8399c8477
+< #line 177
+---
+> #line 238
+8401c8479
+< #line 177
+---
+> #line 238
+8403c8481
+< #line 177
+---
+> #line 238
+8405c8483
+< #line 177
+---
+> #line 238
+8407c8485
+< #line 177
+---
+> #line 238
+8410c8488
+< #line 179
+---
+> #line 240
+8412c8490
+< #line 179
+---
+> #line 240
+8414c8492
+< #line 179
+---
+> #line 240
+8416c8494
+< #line 179
+---
+> #line 240
+8418c8496
+< #line 179
+---
+> #line 240
+8422c8500
+< #line 182
+---
+> #line 243
+8424c8502
+< #line 184
+---
+> #line 245
+8426c8504
+< #line 184
+---
+> #line 245
+8428c8506
+< #line 185
+---
+> #line 246
+8430c8508
+< #line 185
+---
+> #line 246
+8432c8510
+< #line 185
+---
+> #line 246
+8434c8512
+< #line 186
+---
+> #line 247
+8436c8514
+< #line 186
+---
+> #line 247
+8438c8516
+< #line 186
+---
+> #line 247
+8440c8518
+< #line 187
+---
+> #line 248
+8442c8520
+< #line 188
+---
+> #line 249
+8444c8522
+< #line 190
+---
+> #line 251
+8446c8524
+< #line 197
+---
+> #line 258
+8448c8526
+< #line 197
+---
+> #line 258
+8450,8452c8528,8530
+< #line 197
+<     tmp___2 = i;
+< #line 197
+---
+> #line 258
+>     tmp___3 = i;
+> #line 258
+8454,8455c8532,8533
+< #line 197
+<     if (tmp___2 < nhits) {
+---
+> #line 258
+>     if (tmp___3 < nhits) {
+8458c8536
+< #line 197
+---
+> #line 258
+8461c8539
+< #line 200
+---
+> #line 261
+8463c8541
+< #line 201
+---
+> #line 262
+8465c8543
+< #line 201
+---
+> #line 262
+8470c8548
+< #line 203
+---
+> #line 264
+8472c8550
+< #line 203
+---
+> #line 264
+8474c8552
+< #line 203
+---
+> #line 264
+8476c8554
+< #line 203
+---
+> #line 264
+8480c8558
+< #line 203
+---
+> #line 264
+8483c8561
+< #line 205
+---
+> #line 266
+8485c8563
+< #line 205
+---
+> #line 266
+8487c8565
+< #line 210
+---
+> #line 271
+8489c8567
+< #line 212
+---
+> #line 273
+8491c8569
+< #line 213
+---
+> #line 274
+8496c8574
+< #line 215
+---
+> #line 276
+8498,8504c8576,8582
+< #line 216
+<       pipe = swap_hit->pipe;
+< #line 217
+<       top = upper[pipe];
+< #line 218
+<       bottom = lower[pipe];
+< #line 220
+---
+> #line 277
+>       plane = swap_hit->plane;
+> #line 278
+>       top = upper[plane];
+> #line 279
+>       bottom = lower[plane];
+> #line 281
+8506c8584
+< #line 220
+---
+> #line 281
+8508,8510c8586,8588
+< #line 220
+<         tmp___1 = num_rects;
+< #line 220
+---
+> #line 281
+>         tmp___2 = num_rects;
+> #line 281
+8512,8513c8590,8591
+< #line 220
+<         if (tmp___1) {
+---
+> #line 281
+>         if (tmp___2) {
+8516c8594
+< #line 220
+---
+> #line 281
+8519c8597
+< #line 221
+---
+> #line 282
+8521c8599
+< #line 221
+---
+> #line 282
+8523c8601
+< #line 221
+---
+> #line 282
+8525c8603
+< #line 222
+---
+> #line 283
+8527c8605
+< #line 222
+---
+> #line 283
+8529c8607
+< #line 222
+---
+> #line 283
+8531c8609
+< #line 224
+---
+> #line 285
+8533c8611
+< #line 225
+---
+> #line 286
+8538c8616
+< #line 227
+---
+> #line 288
+8540c8618
+< #line 227
+---
+> #line 288
+8542c8620
+< #line 227
+---
+> #line 288
+8547c8625
+< #line 227
+---
+> #line 288
+8549c8627
+< #line 227
+---
+> #line 288
+8551c8629
+< #line 227
+---
+> #line 288
+8553c8631
+< #line 227
+---
+> #line 288
+8555c8633
+< #line 227
+---
+> #line 288
+8558c8636
+< #line 229
+---
+> #line 290
+8560c8638
+< #line 229
+---
+> #line 290
+8562c8640
+< #line 229
+---
+> #line 290
+8564c8642
+< #line 229
+---
+> #line 290
+8566c8644
+< #line 229
+---
+> #line 290
+8568c8646
+< #line 229
+---
+> #line 290
+8571c8649
+< #line 230
+---
+> #line 291
+8573c8651
+< #line 230
+---
+> #line 291
+8575c8653
+< #line 230
+---
+> #line 291
+8577c8655
+< #line 230
+---
+> #line 291
+8579c8657
+< #line 230
+---
+> #line 291
+8581c8659
+< #line 230
+---
+> #line 291
+8584c8662
+< #line 231
+---
+> #line 292
+8586c8664
+< #line 231
+---
+> #line 292
+8588c8666
+< #line 231
+---
+> #line 292
+8590c8668
+< #line 231
+---
+> #line 292
+8592c8670
+< #line 231
+---
+> #line 292
+8594c8672
+< #line 231
+---
+> #line 292
+8597c8675
+< #line 232
+---
+> #line 293
+8599c8677
+< #line 232
+---
+> #line 293
+8601c8679
+< #line 232
+---
+> #line 293
+8603c8681
+< #line 232
+---
+> #line 293
+8605c8683
+< #line 232
+---
+> #line 293
+8607c8685
+< #line 232
+---
+> #line 293
+8610c8688
+< #line 233
+---
+> #line 294
+8612c8690
+< #line 233
+---
+> #line 294
+8614c8692
+< #line 233
+---
+> #line 294
+8616c8694
+< #line 233
+---
+> #line 294
+8618c8696
+< #line 233
+---
+> #line 294
+8620c8698
+< #line 233
+---
+> #line 294
+8623c8701
+< #line 234
+---
+> #line 295
+8625c8703
+< #line 234
+---
+> #line 295
+8627c8705
+< #line 234
+---
+> #line 295
+8629c8707
+< #line 234
+---
+> #line 295
+8631c8709
+< #line 234
+---
+> #line 295
+8633c8711
+< #line 234
+---
+> #line 295
+8636c8714
+< #line 235
+---
+> #line 296
+8638c8716
+< #line 235
+---
+> #line 296
+8640c8718
+< #line 235
+---
+> #line 296
+8642c8720
+< #line 235
+---
+> #line 296
+8644c8722
+< #line 235
+---
+> #line 296
+8646c8724
+< #line 235
+---
+> #line 296
+8649c8727
+< #line 236
+---
+> #line 297
+8651c8729
+< #line 236
+---
+> #line 297
+8653c8731
+< #line 236
+---
+> #line 297
+8655c8733
+< #line 236
+---
+> #line 297
+8657c8735
+< #line 236
+---
+> #line 297
+8659c8737
+< #line 236
+---
+> #line 297
+8662c8740
+< #line 238
+---
+> #line 299
+8664c8742
+< #line 238
+---
+> #line 299
+8666c8744
+< #line 238
+---
+> #line 299
+8668c8746
+< #line 238
+---
+> #line 299
+8670c8748
+< #line 238
+---
+> #line 299
+8674c8752
+< #line 220
+---
+> #line 281
+8678c8756
+< #line 203
+---
+> #line 264
+8681c8759
+< #line 197
+---
+> #line 258
+8683c8761
+< #line 197
+---
+> #line 258
+8685c8763
+< #line 197
+---
+> #line 258
+8687c8765
+< #line 197
+---
+> #line 258
+8690c8768
+< #line 243
+---
+> #line 304
+8692c8770
+< #line 243
+---
+> #line 304
+8694c8772
+< #line 243
+---
+> #line 304
+8697c8775
+< #line 245
+---
+> #line 306
+8699c8777
+< #line 245
+---
+> #line 306
+8701c8779
+< #line 245
+---
+> #line 306
+8703c8781
+< #line 245
+---
+> #line 306
+8707c8785
+< #line 245
+---
+> #line 306
+8710c8788
+< #line 247
+---
+> #line 308
+8712c8790
+< #line 247
+---
+> #line 308
+8714c8792
+< #line 249
+---
+> #line 310
+8716c8794
+< #line 251
+---
+> #line 312
+8718c8796
+< #line 245
+---
+> #line 306
+8720c8798
+< #line 245
+---
+> #line 306
+8723c8801
+< #line 253
+---
+> #line 314
+8727c8805,8870
+< #line 255 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 316 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> u32 i915_get_vblank_counter(struct drm_device *dev , int plane ) 
+> { 
+>   drm_i915_private_t *dev_priv ;
+>   unsigned long high_frame ;
+>   unsigned long low_frame ;
+>   u32 high1 ;
+>   u32 high2 ;
+>   u32 low ;
+>   u32 count ;
+>   int pipe ;
+>   int tmp ;
+>   unsigned int tmp___0 ;
+>   unsigned int tmp___1 ;
+>   unsigned int tmp___2 ;
+> 
+>   {
+> #line 318
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 324
+>   pipe = i915_get_pipe(dev, plane);
+> #line 325
+>   high_frame = pipe ? 462912 : 458816;
+> #line 326
+>   low_frame = pipe ? 462916 : 458820;
+> #line 328
+>   tmp = i915_pipe_enabled(dev, pipe);
+> #line 328
+>   if (tmp) {
+> 
+>   } else {
+> #line 329
+>     printk("<3>[drm:%s] *ERROR* trying to get vblank count for disabled pipe %d\n",
+>            "i915_get_vblank_counter", pipe);
+> #line 330
+>     return (0);
+>   }
+> #line 338
+>   while (1) {
+> #line 339
+>     tmp___0 = readl((dev_priv->mmio_map)->handle + high_frame);
+> #line 339
+>     high1 = (tmp___0 & 65535U) >> 0;
+> #line 341
+>     tmp___1 = readl((dev_priv->mmio_map)->handle + low_frame);
+> #line 341
+>     low = (tmp___1 & 4278190080U) >> 24;
+> #line 343
+>     tmp___2 = readl((dev_priv->mmio_map)->handle + high_frame);
+> #line 343
+>     high2 = (tmp___2 & 65535U) >> 0;
+> #line 338
+>     if (high1 != high2) {
+> 
+>     } else {
+> #line 338
+>       break;
+>     }
+>   }
+> #line 347
+>   count = (high1 << 8) | low;
+> #line 349
+>   return (count);
+> }
+> }
+> #line 352 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+8731a8875
+>   u32 iir ;
+8734,8735c8878,8880
+<   u32 iir ;
+<   int vblank_pipe ;
+---
+>   int vblank ;
+>   int tmp ;
+>   int tmp___0 ;
+8738c8883
+< #line 257
+---
+> #line 354
+8740c8885
+< #line 258
+---
+> #line 355
+8742,8746c8887,8889
+< #line 262
+<   pipea_stats = readl((dev_priv->mmio_map)->handle + 458788);
+< #line 263
+<   pipeb_stats = readl((dev_priv->mmio_map)->handle + 462884);
+< #line 265
+---
+> #line 358
+>   vblank = 0;
+> #line 360
+8748c8891
+< #line 266
+---
+> #line 361
+8753c8896
+< #line 267
+---
+> #line 362
+8755,8767c8898
+< #line 269
+<   while (1) {
+< #line 269
+<     if (drm_debug) {
+< #line 269
+<       printk("<7>[drm:%s] iir=%08x\n", "i915_driver_irq_handler", iir);
+<     } else {
+< 
+<     }
+< #line 269
+<     break;
+<   }
+< #line 271
+---
+> #line 364
+8769c8900
+< #line 272
+---
+> #line 365
+8771c8902
+< #line 273
+---
+> #line 366
+8773c8904
+< #line 274
+---
+> #line 367
+8778c8909
+< #line 276
+---
+> #line 369
+8783,8793c8914,8931
+< #line 279
+<   writel(pipea_stats, (dev_priv->mmio_map)->handle + 458788);
+< #line 280
+<   writel(pipeb_stats, (dev_priv->mmio_map)->handle + 462884);
+< #line 282
+<   writel(iir, (dev_priv->mmio_map)->handle + 8356);
+< #line 283
+<   if ((dev->pdev)->msi_enabled) {
+< #line 284
+<     writel(dev_priv->irq_mask_reg, (dev_priv->mmio_map)->handle + 8360);
+<   } else {
+---
+> #line 376
+>   if (iir & (unsigned int )(1 << 6)) {
+> #line 377
+>     pipea_stats = readl((dev_priv->mmio_map)->handle + 458788);
+> #line 378
+>     if (! (dev_priv->vblank_pipe & 1)) {
+> #line 379
+>       pipea_stats = (unsigned long )pipea_stats & ~ ((1UL << 18) | (1UL << 17));
+>     } else
+> #line 381
+>     if ((unsigned long )pipea_stats & ((1UL << 2) | (1UL << 1))) {
+> #line 383
+>       vblank = vblank + 1;
+> #line 384
+>       tmp = i915_get_plane(dev, 0);
+> #line 384
+>       drm_handle_vblank(dev, tmp);
+>     } else {
+8795,8803c8933,8935
+<   }
+< #line 285
+<   readl((dev_priv->mmio_map)->handle + 8356);
+< #line 287
+<   (dev_priv->sarea_priv)->last_dispatch = *((u32 volatile   *)dev_priv->hw_status_page + 5);
+< #line 289
+<   if (iir & (unsigned int )(1 << 1)) {
+< #line 290
+<     __wake_up(& dev_priv->irq_queue, 1, 1, (void *)0);
+---
+>     }
+> #line 387
+>     writel(pipea_stats, (dev_priv->mmio_map)->handle + 458788);
+8807,8826c8939,8948
+< #line 292
+<   if (iir & (unsigned int )((1 << 7) | (1 << 5))) {
+< #line 294
+<     vblank_pipe = dev_priv->vblank_pipe;
+< #line 296
+<     if ((vblank_pipe & (1 | 2)) == (1 | 2)) {
+< #line 299
+<       if (iir & (unsigned int )(1 << 7)) {
+< #line 300
+<         atomic_inc(& dev->vbl_received);
+<       } else {
+< 
+<       }
+< #line 301
+<       if (iir & (unsigned int )(1 << 5)) {
+< #line 302
+<         atomic_inc(& dev->vbl_received2);
+<       } else {
+< 
+<       }
+---
+> #line 389
+>   if (iir & (unsigned int )(1 << 4)) {
+> #line 390
+>     pipeb_stats = readl((dev_priv->mmio_map)->handle + 462884);
+> #line 392
+>     writel(pipeb_stats, (dev_priv->mmio_map)->handle + 462884);
+> #line 396
+>     if (! (dev_priv->vblank_pipe & 2)) {
+> #line 397
+>       pipeb_stats = (unsigned long )pipeb_stats & ~ ((1UL << 18) | (1UL << 17));
+8828,8831c8950,8957
+< #line 303
+<     if ((iir & (unsigned int )(1 << 7) && vblank_pipe & 1) || (iir & (unsigned int )(1 << 5) && vblank_pipe & 2)) {
+< #line 307
+<       atomic_inc(& dev->vbl_received);
+---
+> #line 399
+>     if ((unsigned long )pipeb_stats & ((1UL << 2) | (1UL << 1))) {
+> #line 401
+>       vblank = vblank + 1;
+> #line 402
+>       tmp___0 = i915_get_plane(dev, 1);
+> #line 402
+>       drm_handle_vblank(dev, tmp___0);
+8835,8842c8961,8964
+< #line 309
+<     __wake_up(& dev->vbl_queue, 1, 1, (void *)0);
+< #line 310
+<     drm_vbl_send_signals(dev);
+< #line 312
+<     if (dev_priv->swaps_pending > 0U) {
+< #line 313
+<       drm_locked_tasklet(dev, & i915_vblank_tasklet);
+---
+> #line 405
+>     if ((unsigned long )pipeb_stats & (1UL << 6)) {
+> #line 406
+>       opregion_asle_intr(dev);
+8845a8968,8969
+> #line 407
+>     writel(pipeb_stats, (dev_priv->mmio_map)->handle + 462884);
+8849c8973
+< #line 316
+---
+> #line 410
+8851c8975
+< #line 317
+---
+> #line 411
+8856,8859c8980,8985
+< #line 319
+<   if (iir & (unsigned int )(1 << 4)) {
+< #line 320
+<     opregion_asle_intr(dev);
+---
+> #line 413
+>   (dev_priv->sarea_priv)->last_dispatch = *((u32 volatile   *)dev_priv->hw_status_page + 5);
+> #line 415
+>   if ((dev->pdev)->msi_enabled) {
+> #line 416
+>     writel(dev_priv->irq_mask_reg, (dev_priv->mmio_map)->handle + 8360);
+8863c8989,9000
+< #line 322
+---
+> #line 417
+>   writel(iir, (dev_priv->mmio_map)->handle + 8356);
+> #line 418
+>   readl((dev_priv->mmio_map)->handle + 8356);
+> #line 420
+>   if (vblank && dev_priv->swaps_pending > 0U) {
+> #line 421
+>     drm_locked_tasklet(dev, & i915_vblank_tasklet);
+>   } else {
+> 
+>   }
+> #line 423
+8867c9004
+< #line 325 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 426 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+8875c9012
+<   unsigned long tmp ;
+---
+>   uint32_t tmp ;
+8878c9015
+< #line 327
+---
+> #line 428
+8880c9017
+< #line 330
+---
+> #line 431
+8882c9019
+< #line 332
+---
+> #line 433
+8884c9021
+< #line 332
+---
+> #line 433
+8886c9023
+< #line 332
+---
+> #line 433
+8891c9028
+< #line 332
+---
+> #line 433
+8894,8896c9031,9033
+< #line 334
+<   dev_priv->counter = dev_priv->counter + 1UL;
+< #line 334
+---
+> #line 435
+>   dev_priv->counter = dev_priv->counter + (uint32_t )1;
+> #line 435
+8898,8900c9035,9037
+< #line 336
+<   if (dev_priv->counter > 2147483647UL) {
+< #line 337
+---
+> #line 437
+>   if ((unsigned long )dev_priv->counter > 2147483647UL) {
+> #line 438
+8902c9039
+< #line 337
+---
+> #line 438
+8904c9041
+< #line 337
+---
+> #line 438
+8909c9046
+< #line 339
+---
+> #line 440
+8911c9048
+< #line 339
+---
+> #line 440
+8913c9050
+< #line 339
+---
+> #line 440
+8918c9055
+< #line 339
+---
+> #line 440
+8920c9057
+< #line 339
+---
+> #line 440
+8922c9059
+< #line 339
+---
+> #line 440
+8924c9061
+< #line 339
+---
+> #line 440
+8926c9063
+< #line 339
+---
+> #line 440
+8929c9066
+< #line 340
+---
+> #line 441
+8931c9068
+< #line 340
+---
+> #line 441
+8933c9070
+< #line 340
+---
+> #line 441
+8935c9072
+< #line 340
+---
+> #line 441
+8937c9074
+< #line 340
+---
+> #line 441
+8939c9076
+< #line 340
+---
+> #line 441
+8942c9079
+< #line 341
+---
+> #line 442
+8944c9081
+< #line 341
+---
+> #line 442
+8946c9083
+< #line 341
+---
+> #line 442
+8948c9085
+< #line 341
+---
+> #line 442
+8950c9087
+< #line 341
+---
+> #line 442
+8952c9089
+< #line 341
+---
+> #line 442
+8955c9092
+< #line 342
+---
+> #line 443
+8957c9094
+< #line 342
+---
+> #line 443
+8959c9096
+< #line 342
+---
+> #line 443
+8961c9098
+< #line 342
+---
+> #line 443
+8963c9100
+< #line 342
+---
+> #line 443
+8965c9102
+< #line 342
+---
+> #line 443
+8968c9105
+< #line 343
+---
+> #line 444
+8970c9107
+< #line 343
+---
+> #line 444
+8972c9109
+< #line 343
+---
+> #line 444
+8974c9111
+< #line 343
+---
+> #line 444
+8976c9113
+< #line 343
+---
+> #line 444
+8978c9115
+< #line 343
+---
+> #line 444
+8981c9118
+< #line 344
+---
+> #line 445
+8983c9120
+< #line 344
+---
+> #line 445
+8985c9122
+< #line 344
+---
+> #line 445
+8987c9124
+< #line 344
+---
+> #line 445
+8989c9126
+< #line 344
+---
+> #line 445
+8991c9128
+< #line 344
+---
+> #line 445
+8994c9131
+< #line 345
+---
+> #line 446
+8996c9133
+< #line 345
+---
+> #line 446
+8998c9135
+< #line 345
+---
+> #line 446
+9000c9137
+< #line 345
+---
+> #line 446
+9002c9139
+< #line 345
+---
+> #line 446
+9004c9141
+< #line 345
+---
+> #line 446
+9007c9144
+< #line 346
+---
+> #line 447
+9009c9146
+< #line 346
+---
+> #line 447
+9011c9148
+< #line 346
+---
+> #line 447
+9013c9150
+< #line 346
+---
+> #line 447
+9015c9152
+< #line 346
+---
+> #line 447
+9018c9155
+< #line 348
+---
+> #line 449
+9022c9159
+< #line 351 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 452 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9028c9165
+< #line 353
+---
+> #line 454
+9030c9167
+< #line 355
+---
+> #line 456
+9032c9169
+< #line 356
+---
+> #line 457
+9034c9171
+< #line 356
+---
+> #line 457
+9036c9173
+< #line 356
+---
+> #line 457
+9038c9175
+< #line 357
+---
+> #line 458
+9046c9183
+< #line 358
+---
+> #line 459
+9048c9185
+< #line 359
+---
+> #line 460
+9052,9053c9189,9190
+< #line 361 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< static void i915_user_irq_put(struct drm_device *dev ) 
+---
+> #line 462 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> void i915_user_irq_put(struct drm_device *dev ) 
+9059c9196
+< #line 363
+---
+> #line 464
+9061c9198
+< #line 365
+---
+> #line 466
+9063c9200
+< #line 366
+---
+> #line 467
+9065c9202
+< #line 366
+---
+> #line 467
+9068c9205
+< #line 366
+---
+> #line 467
+9070c9207
+< #line 366
+---
+> #line 467
+9072c9209
+< #line 366
+---
+> #line 467
+9079,9080c9216,9217
+<                              "i" (366), "i" (sizeof(struct bug_entry )));
+< #line 366
+---
+>                              "i" (467), "i" (sizeof(struct bug_entry )));
+> #line 467
+9084c9221
+< #line 366
+---
+> #line 467
+9090c9227
+< #line 366
+---
+> #line 467
+9093c9230
+< #line 367
+---
+> #line 468
+9095c9232
+< #line 367
+---
+> #line 468
+9097c9234
+< #line 367
+---
+> #line 468
+9099c9236
+< #line 368
+---
+> #line 469
+9107c9244
+< #line 369
+---
+> #line 470
+9109c9246
+< #line 370
+---
+> #line 471
+9113c9250
+< #line 372 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 473 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9127c9264
+< #line 374
+---
+> #line 475
+9129c9266
+< #line 375
+---
+> #line 476
+9131c9268
+< #line 377
+---
+> #line 478
+9133c9270
+< #line 377
+---
+> #line 478
+9135c9272
+< #line 377
+---
+> #line 478
+9140c9277
+< #line 377
+---
+> #line 478
+9143c9280
+< #line 380
+---
+> #line 481
+9145c9282
+< #line 381
+---
+> #line 482
+9147c9284
+< #line 382
+---
+> #line 483
+9152c9289
+< #line 385
+---
+> #line 486
+9154c9291
+< #line 387
+---
+> #line 488
+9156c9293
+< #line 388
+---
+> #line 489
+9158c9295
+< #line 388
+---
+> #line 489
+9160c9297
+< #line 388
+---
+> #line 489
+9162c9299
+< #line 388
+---
+> #line 489
+9164c9301
+< #line 388
+---
+> #line 489
+9166c9303
+< #line 388
+---
+> #line 489
+9168c9305
+< #line 388
+---
+> #line 489
+9170c9307
+< #line 388
+---
+> #line 489
+9172c9309
+< #line 388
+---
+> #line 489
+9174c9311
+< #line 388
+---
+> #line 489
+9176c9313
+< #line 388
+---
+> #line 489
+9178c9315
+< #line 388
+---
+> #line 489
+9180c9317
+< #line 388
+---
+> #line 489
+9182c9319
+< #line 388
+---
+> #line 489
+9185c9322
+< #line 388
+---
+> #line 489
+9187c9324
+< #line 388
+---
+> #line 489
+9192c9329
+< #line 388
+---
+> #line 489
+9194c9331
+< #line 388
+---
+> #line 489
+9196c9333
+< #line 388
+---
+> #line 489
+9201c9338
+< #line 388
+---
+> #line 489
+9203c9340
+< #line 388
+---
+> #line 489
+9205c9342
+< #line 388
+---
+> #line 489
+9207c9344
+< #line 388
+---
+> #line 489
+9209c9346
+< #line 388
+---
+> #line 489
+9211c9348
+< #line 388
+---
+> #line 489
+9217c9354
+< #line 388
+---
+> #line 489
+9219c9356
+< #line 388
+---
+> #line 489
+9221c9358
+< #line 388
+---
+> #line 489
+9223c9360
+< #line 388
+---
+> #line 489
+9226c9363
+< #line 388
+---
+> #line 489
+9228c9365
+< #line 388
+---
+> #line 489
+9231c9368
+< #line 390
+---
+> #line 491
+9233c9370
+< #line 392
+---
+> #line 493
+9235c9372
+< #line 393
+---
+> #line 494
+9241c9378
+< #line 397
+---
+> #line 498
+9243,9355c9380
+< #line 398
+<   return (ret);
+< }
+< }
+< #line 401 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< static int i915_driver_vblank_do_wait(struct drm_device *dev , unsigned int *sequence ,
+<                                       atomic_t *counter ) 
+< { 
+<   drm_i915_private_t *dev_priv ;
+<   unsigned int cur_vblank ;
+<   int ret ;
+<   wait_queue_t entry ;
+<   struct task_struct *tmp ;
+<   unsigned long end ;
+<   struct task_struct *tmp___0 ;
+<   struct task_struct *tmp___1 ;
+<   int tmp___2 ;
+<   struct task_struct *tmp___3 ;
+< 
+<   {
+< #line 404
+<   dev_priv = dev->dev_private;
+< #line 406
+<   ret = 0;
+< #line 408
+<   if (! dev_priv) {
+< #line 409
+<     printk("<3>[drm:%s] *ERROR* called with no initialization\n", "i915_driver_vblank_do_wait");
+< #line 410
+<     return (-22);
+<   } else {
+< 
+<   }
+< #line 413
+<   while (1) {
+< #line 413
+<     tmp = get_current();
+< #line 413
+<     entry.flags = 0U;
+< #line 413
+<     entry.private = tmp;
+< #line 413
+<     entry.func = & default_wake_function;
+< #line 413
+<     entry.task_list.next = (void *)0;
+< #line 413
+<     entry.task_list.prev = (void *)0;
+< #line 413
+<     end = jiffies + (unsigned long volatile   )(3 * 250);
+< #line 413
+<     add_wait_queue(& dev->vbl_queue, & entry);
+< #line 413
+<     while (1) {
+< #line 413
+<       while (1) {
+< #line 413
+<         tmp___0 = get_current();
+< #line 413
+<         tmp___0->state = 1;
+< #line 413
+<         break;
+<       }
+< #line 413
+<       cur_vblank = counter->counter;
+< #line 413
+<       if (cur_vblank - *sequence <= (unsigned int )(1 << 23)) {
+< #line 413
+<         break;
+<       } else {
+< 
+<       }
+< #line 413
+<       if ((long )jiffies - (long )end >= 0L) {
+< #line 413
+<         ret = -16;
+< #line 413
+<         break;
+<       } else {
+< 
+<       }
+< #line 413
+<       schedule_timeout(250 / 100 > 1 ? 250 / 100 : 1);
+< #line 413
+<       tmp___1 = get_current();
+< #line 413
+<       tmp___2 = signal_pending(tmp___1);
+< #line 413
+<       if (tmp___2) {
+< #line 413
+<         ret = -4;
+< #line 413
+<         break;
+<       } else {
+< 
+<       }
+<     }
+< #line 413
+<     while (1) {
+< #line 413
+<       tmp___3 = get_current();
+< #line 413
+<       tmp___3->state = 0;
+< #line 413
+<       break;
+<     }
+< #line 413
+<     remove_wait_queue(& dev->vbl_queue, & entry);
+< #line 413
+<     break;
+<   }
+< #line 417
+<   *sequence = cur_vblank;
+< #line 419
+---
+> #line 500
+9359,9383c9384
+< #line 423 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< int i915_driver_vblank_wait(struct drm_device *dev , unsigned int *sequence ) 
+< { 
+<   int tmp ;
+< 
+<   {
+< #line 425
+<   tmp = i915_driver_vblank_do_wait(dev, sequence, & dev->vbl_received);
+< #line 425
+<   return (tmp);
+< }
+< }
+< #line 428 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< int i915_driver_vblank_wait2(struct drm_device *dev , unsigned int *sequence ) 
+< { 
+<   int tmp ;
+< 
+<   {
+< #line 430
+<   tmp = i915_driver_vblank_do_wait(dev, sequence, & dev->vbl_received2);
+< #line 430
+<   return (tmp);
+< }
+< }
+< #line 435 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 505 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9392c9393
+< #line 438
+---
+> #line 508
+9394c9395
+< #line 439
+---
+> #line 509
+9396c9397
+< #line 442
+---
+> #line 512
+9398c9399
+< #line 442
+---
+> #line 512
+9400c9401
+< #line 442
+---
+> #line 512
+9404c9405
+< #line 442
+---
+> #line 512
+9409c9410
+< #line 442
+---
+> #line 512
+9412c9413
+< #line 444
+---
+> #line 514
+9414c9415
+< #line 445
+---
+> #line 515
+9416c9417
+< #line 446
+---
+> #line 516
+9421c9422
+< #line 449
+---
+> #line 519
+9423c9424
+< #line 451
+---
+> #line 521
+9425c9426
+< #line 451
+---
+> #line 521
+9427c9428
+< #line 452
+---
+> #line 522
+9429c9430
+< #line 453
+---
+> #line 523
+9434c9435
+< #line 456
+---
+> #line 526
+9438c9439
+< #line 461 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 531 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9446c9447
+< #line 464
+---
+> #line 534
+9448c9449
+< #line 465
+---
+> #line 535
+9450c9451
+< #line 467
+---
+> #line 537
+9452c9453
+< #line 468
+---
+> #line 538
+9454c9455
+< #line 469
+---
+> #line 539
+9459c9460
+< #line 472
+---
+> #line 542
+9461c9462
+< #line 472
+---
+> #line 542
+9465,9466c9466,9467
+< #line 477 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< int i915_vblank_pipe_set(struct drm_device *dev , void *data , struct drm_file *file_priv ) 
+---
+> #line 545 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> int i915_enable_vblank(struct drm_device *dev , int plane ) 
+9469,9471c9470,9473
+<   drm_i915_vblank_pipe_t *pipe ;
+<   u32 enable_mask ;
+<   u32 disable_mask ;
+---
+>   int pipe ;
+>   int tmp ;
+>   u32 pipestat_reg ;
+>   u32 pipestat ;
+9474,9487c9476,9522
+< #line 480
+<   dev_priv = dev->dev_private;
+< #line 481
+<   pipe = data;
+< #line 482
+<   enable_mask = 0;
+< #line 482
+<   disable_mask = 0;
+< #line 484
+<   if (! dev_priv) {
+< #line 485
+<     printk("<3>[drm:%s] *ERROR* called with no initialization\n", "i915_vblank_pipe_set");
+< #line 486
+<     return (-22);
+---
+> #line 547
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 548
+>   tmp = i915_get_pipe(dev, plane);
+> #line 548
+>   pipe = tmp;
+> #line 549
+>   pipestat_reg = 0;
+> #line 552
+>   switch (pipe) {
+>   case 0: 
+> #line 554
+>   pipestat_reg = 458788;
+> #line 555
+>   i915_enable_irq(dev_priv, 1 << 6);
+> #line 556
+>   break;
+>   case 1: 
+> #line 558
+>   pipestat_reg = 462884;
+> #line 559
+>   i915_enable_irq(dev_priv, 1 << 4);
+> #line 560
+>   break;
+>   default: 
+> #line 562
+>   printk("<3>[drm:%s] *ERROR* tried to enable vblank on non-existent pipe %d\n", "i915_enable_vblank",
+>          pipe);
+> #line 564
+>   break;
+>   }
+> #line 567
+>   if (pipestat_reg) {
+> #line 568
+>     pipestat = readl((dev_priv->mmio_map)->handle + pipestat_reg);
+> #line 569
+>     if (((((((((dev->pci_device == 10610 || dev->pci_device == 10626) || dev->pci_device == 10642) || dev->pci_device == 10658) || dev->pci_device == 10754) || dev->pci_device == 10770) || dev->pci_device == 10818) || dev->pci_device == 11778) || dev->pci_device == 11794) || dev->pci_device == 11810) {
+> #line 570
+>       pipestat = (unsigned long )pipestat | (1UL << 18);
+>     } else {
+> #line 572
+>       pipestat = (unsigned long )pipestat | (1UL << 17);
+>     }
+> #line 574
+>     pipestat = (unsigned long )pipestat | ((1UL << 2) | (1UL << 1));
+> #line 576
+>     writel(pipestat, (dev_priv->mmio_map)->handle + pipestat_reg);
+9491,9498c9526,9537
+< #line 489
+<   if (pipe->pipe & ~ (1 | 2)) {
+< #line 490
+<     printk("<3>[drm:%s] *ERROR* called with invalid pipe 0x%x\n", "i915_vblank_pipe_set",
+<            pipe->pipe);
+< #line 491
+<     return (-22);
+<   } else {
+---
+> #line 579
+>   return (0);
+> }
+> }
+> #line 582 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> void i915_disable_vblank(struct drm_device *dev , int plane ) 
+> { 
+>   drm_i915_private_t *dev_priv ;
+>   int pipe ;
+>   int tmp ;
+>   u32 pipestat_reg ;
+>   u32 pipestat ;
+9499a9539,9569
+>   {
+> #line 584
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 585
+>   tmp = i915_get_pipe(dev, plane);
+> #line 585
+>   pipe = tmp;
+> #line 586
+>   pipestat_reg = 0;
+> #line 589
+>   switch (pipe) {
+>   case 0: 
+> #line 591
+>   pipestat_reg = 458788;
+> #line 592
+>   i915_disable_irq(dev_priv, 1 << 6);
+> #line 593
+>   break;
+>   case 1: 
+> #line 595
+>   pipestat_reg = 462884;
+> #line 596
+>   i915_disable_irq(dev_priv, 1 << 4);
+> #line 597
+>   break;
+>   default: 
+> #line 599
+>   printk("<3>[drm:%s] *ERROR* tried to disable vblank on non-existent pipe %d\n",
+>          "i915_disable_vblank", pipe);
+> #line 601
+>   break;
+9501,9504c9571,9580
+< #line 494
+<   if (pipe->pipe & 1) {
+< #line 495
+<     enable_mask = enable_mask | (unsigned int )(1 << 7);
+---
+> #line 604
+>   if (pipestat_reg) {
+> #line 605
+>     pipestat = readl((dev_priv->mmio_map)->handle + pipestat_reg);
+> #line 606
+>     pipestat = (unsigned long )pipestat & ~ ((1UL << 18) | (1UL << 17));
+> #line 609
+>     pipestat = (unsigned long )pipestat | ((1UL << 2) | (1UL << 1));
+> #line 611
+>     writel(pipestat, (dev_priv->mmio_map)->handle + pipestat_reg);
+9506,9507c9582
+< #line 497
+<     disable_mask = disable_mask | (unsigned int )(1 << 7);
+---
+> 
+9509,9512c9584,9601
+< #line 499
+<   if (pipe->pipe & 2) {
+< #line 500
+<     enable_mask = enable_mask | (unsigned int )(1 << 5);
+---
+> #line 613
+>   return;
+> }
+> }
+> #line 617 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> int i915_vblank_pipe_set(struct drm_device *dev , void *data , struct drm_file *file_priv ) 
+> { 
+>   drm_i915_private_t *dev_priv ;
+> 
+>   {
+> #line 620
+>   dev_priv = dev->dev_private;
+> #line 622
+>   if (! dev_priv) {
+> #line 623
+>     printk("<3>[drm:%s] *ERROR* called with no initialization\n", "i915_vblank_pipe_set");
+> #line 624
+>     return (-22);
+9514,9515c9603
+< #line 502
+<     disable_mask = disable_mask | (unsigned int )(1 << 5);
+---
+> 
+9517,9523c9605
+< #line 504
+<   i915_enable_irq(dev_priv, enable_mask);
+< #line 505
+<   i915_disable_irq(dev_priv, disable_mask);
+< #line 507
+<   dev_priv->vblank_pipe = pipe->pipe;
+< #line 509
+---
+> #line 627
+9527c9609
+< #line 512 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 630 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9532,9533d9613
+<   u16 flag ;
+<   unsigned int tmp ;
+9536c9616
+< #line 515
+---
+> #line 633
+9538c9618
+< #line 516
+---
+> #line 634
+9540c9620
+< #line 519
+---
+> #line 636
+9542c9622
+< #line 520
+---
+> #line 637
+9544c9624
+< #line 521
+---
+> #line 638
+9549,9569c9629,9631
+< #line 524
+<   tmp = readl((dev_priv->mmio_map)->handle + 8360);
+< #line 524
+<   flag = tmp;
+< #line 525
+<   pipe->pipe = 0;
+< #line 526
+<   if ((int )flag & (1 << 7)) {
+< #line 527
+<     pipe->pipe = pipe->pipe | 1;
+<   } else {
+< 
+<   }
+< #line 528
+<   if ((int )flag & (1 << 5)) {
+< #line 529
+<     pipe->pipe = pipe->pipe | 2;
+<   } else {
+< 
+<   }
+< #line 531
+---
+> #line 641
+>   pipe->pipe = 1 | 2;
+> #line 643
+9573c9635
+< #line 537 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 649 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9581a9644
+>   unsigned int plane ;
+9584c9647,9649
+<   struct drm_drawable_info *tmp ;
+---
+>   int ret ;
+>   int tmp ;
+>   struct drm_drawable_info *tmp___0 ;
+9586c9651
+<   void *tmp___0 ;
+---
+>   void *tmp___1 ;
+9589c9654
+< #line 540
+---
+> #line 652
+9591c9656
+< #line 541
+---
+> #line 653
+9593c9658
+< #line 547
+---
+> #line 660
+9595c9660
+< #line 548
+---
+> #line 661
+9598c9663
+< #line 549
+---
+> #line 662
+9603c9668
+< #line 552
+---
+> #line 665
+9605c9670
+< #line 553
+---
+> #line 666
+9607c9672
+< #line 553
+---
+> #line 666
+9609c9674
+< #line 553
+---
+> #line 666
+9614c9679
+< #line 553
+---
+> #line 666
+9617c9682
+< #line 554
+---
+> #line 667
+9622c9687
+< #line 557
+---
+> #line 670
+9624c9689
+< #line 559
+---
+> #line 672
+9627c9692
+< #line 560
+---
+> #line 673
+9632,9634c9697,9703
+< #line 563
+<   pipe = (unsigned int )swap->seqtype & (unsigned int )_DRM_VBLANK_SECONDARY ? 1 : 0;
+< #line 565
+---
+> #line 676
+>   plane = (unsigned int )swap->seqtype & (unsigned int )_DRM_VBLANK_SECONDARY ? 1 : 0;
+> #line 677
+>   tmp = i915_get_pipe(dev, plane);
+> #line 677
+>   pipe = tmp;
+> #line 679
+9636c9705
+< #line 567
+---
+> #line 681
+9638c9707
+< #line 568
+---
+> #line 682
+9640c9709
+< #line 569
+---
+> #line 683
+9645c9714
+< #line 572
+---
+> #line 686
+9647c9716
+< #line 572
+---
+> #line 686
+9649c9718
+< #line 572
+---
+> #line 686
+9652,9655c9721,9724
+< #line 574
+<   tmp = drm_get_drawable_info(dev, swap->drawable);
+< #line 574
+<   if (tmp) {
+---
+> #line 688
+>   tmp___0 = drm_get_drawable_info(dev, swap->drawable);
+> #line 688
+>   if (tmp___0) {
+9658c9727
+< #line 575
+---
+> #line 689
+9660c9729
+< #line 575
+---
+> #line 689
+9662c9731
+< #line 575
+---
+> #line 689
+9665c9734
+< #line 576
+---
+> #line 690
+9667c9736
+< #line 576
+---
+> #line 690
+9669c9738
+< #line 576
+---
+> #line 690
+9674c9743
+< #line 576
+---
+> #line 690
+9677c9746
+< #line 577
+---
+> #line 691
+9680c9749
+< #line 580
+---
+> #line 694
+9682c9751
+< #line 580
+---
+> #line 694
+9684c9753
+< #line 580
+---
+> #line 694
+9687,9689c9756,9767
+< #line 582
+<   curseq = (pipe ? & dev->vbl_received2 : & dev->vbl_received)->counter;
+< #line 584
+---
+> #line 700
+>   ret = drm_vblank_get(dev, pipe);
+> #line 701
+>   if (ret) {
+> #line 702
+>     return (ret);
+>   } else {
+> 
+>   }
+> #line 703
+>   curseq = drm_vblank_count(dev, pipe);
+> #line 705
+9691c9769
+< #line 585
+---
+> #line 706
+9696c9774
+< #line 587
+---
+> #line 708
+9698c9776
+< #line 588
+---
+> #line 709
+9700c9778
+< #line 589
+---
+> #line 710
+9703c9781
+< #line 591
+---
+> #line 712
+9705c9783
+< #line 591
+---
+> #line 712
+9707c9785
+< #line 591
+---
+> #line 712
+9712c9790
+< #line 591
+---
+> #line 712
+9715c9793,9795
+< #line 592
+---
+> #line 713
+>       drm_vblank_put(dev, pipe);
+> #line 714
+9721c9801
+< #line 596
+---
+> #line 718
+9723c9803
+< #line 596
+---
+> #line 718
+9725c9805
+< #line 596
+---
+> #line 718
+9728c9808
+< #line 598
+---
+> #line 720
+9730c9810
+< #line 598
+---
+> #line 720
+9732c9812
+< #line 598
+---
+> #line 720
+9734c9814
+< #line 598
+---
+> #line 720
+9738c9818
+< #line 598
+---
+> #line 720
+9741c9821
+< #line 599
+---
+> #line 721
+9743c9823
+< #line 599
+---
+> #line 721
+9745,9747c9825,9827
+< #line 601
+<     if ((vbl_swap->drw_id == swap->drawable && vbl_swap->pipe == pipe) && vbl_swap->sequence == swap->sequence) {
+< #line 604
+---
+> #line 723
+>     if ((vbl_swap->drw_id == swap->drawable && vbl_swap->plane == plane) && vbl_swap->sequence == swap->sequence) {
+> #line 726
+9749c9829
+< #line 604
+---
+> #line 726
+9751c9831
+< #line 604
+---
+> #line 726
+9754c9834
+< #line 605
+---
+> #line 727
+9756c9836
+< #line 605
+---
+> #line 727
+9758c9838
+< #line 605
+---
+> #line 727
+9763c9843
+< #line 605
+---
+> #line 727
+9766c9846
+< #line 606
+---
+> #line 728
+9771c9851
+< #line 598
+---
+> #line 720
+9774c9854
+< #line 610
+---
+> #line 732
+9776c9856
+< #line 610
+---
+> #line 732
+9778c9858
+< #line 610
+---
+> #line 732
+9781c9861
+< #line 612
+---
+> #line 734
+9783c9863
+< #line 613
+---
+> #line 735
+9785c9865
+< #line 613
+---
+> #line 735
+9787c9867
+< #line 613
+---
+> #line 735
+9792c9872
+< #line 613
+---
+> #line 735
+9795c9875,9877
+< #line 614
+---
+> #line 736
+>     drm_vblank_put(dev, pipe);
+> #line 737
+9800,9804c9882,9886
+< #line 617
+<   tmp___0 = drm_calloc(1, sizeof(*vbl_swap), 2);
+< #line 617
+<   vbl_swap = tmp___0;
+< #line 619
+---
+> #line 740
+>   tmp___1 = drm_calloc(1, sizeof(*vbl_swap), 2);
+> #line 740
+>   vbl_swap = tmp___1;
+> #line 742
+9806c9888
+< #line 620
+---
+> #line 743
+9808c9890,9892
+< #line 621
+---
+> #line 744
+>     drm_vblank_put(dev, pipe);
+> #line 745
+9813c9897
+< #line 624
+---
+> #line 748
+9815c9899
+< #line 624
+---
+> #line 748
+9817c9901
+< #line 624
+---
+> #line 748
+9822c9906
+< #line 624
+---
+> #line 748
+9825c9909
+< #line 626
+---
+> #line 750
+9827,9829c9911,9913
+< #line 627
+<   vbl_swap->pipe = pipe;
+< #line 628
+---
+> #line 751
+>   vbl_swap->plane = plane;
+> #line 752
+9831c9915
+< #line 630
+---
+> #line 754
+9833c9917
+< #line 630
+---
+> #line 754
+9835c9919
+< #line 630
+---
+> #line 754
+9838c9922
+< #line 632
+---
+> #line 756
+9840c9924
+< #line 633
+---
+> #line 757
+9842c9926
+< #line 635
+---
+> #line 759
+9844c9928
+< #line 635
+---
+> #line 759
+9846c9930
+< #line 635
+---
+> #line 759
+9849c9933
+< #line 637
+---
+> #line 761
+9853c9937
+< #line 642 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 766 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9859c9943
+< #line 644
+---
+> #line 768
+9861,9865c9945,9949
+< #line 646
+<   writel(65534, (dev_priv->mmio_map)->handle + 8344);
+< #line 647
+<   writel(0, (dev_priv->mmio_map)->handle + 8360);
+< #line 648
+---
+> #line 770
+>   writel(61438, (dev_priv->mmio_map)->handle + 8344);
+> #line 771
+>   writel(4294967295U, (dev_priv->mmio_map)->handle + 8360);
+> #line 772
+9867c9951
+< #line 649
+---
+> #line 773
+9871c9955
+< #line 655 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 780 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9873,9874c9957,9958
+< #line 651 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+< void i915_driver_irq_postinstall(struct drm_device *dev ) 
+---
+> #line 775 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+> int i915_driver_irq_postinstall(struct drm_device *dev ) 
+9876a9961,9962
+>   int ret ;
+>   int num_pipes ;
+9879c9965
+< #line 653
+---
+> #line 777
+9881c9967,9969
+< #line 655
+---
+> #line 778
+>   num_pipes = 2;
+> #line 780
+9883c9971
+< #line 655
+---
+> #line 780
+9885c9973
+< #line 655
+---
+> #line 780
+9888c9976
+< #line 656
+---
+> #line 781
+9890c9978
+< #line 657
+---
+> #line 782
+9892,9899c9980
+< #line 659
+<   if (! dev_priv->vblank_pipe) {
+< #line 660
+<     dev_priv->vblank_pipe = 1;
+<   } else {
+< 
+<   }
+< #line 663
+---
+> #line 785
+9901,9911c9982,9987
+< #line 664
+<   if (dev_priv->vblank_pipe & 1) {
+< #line 665
+<     dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )(~ (1 << 7));
+<   } else {
+< 
+<   }
+< #line 666
+<   if (dev_priv->vblank_pipe & 2) {
+< #line 667
+<     dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )(~ (1 << 5));
+---
+> #line 787
+>   ret = drm_vblank_init(dev, num_pipes);
+> #line 788
+>   if (ret) {
+> #line 789
+>     return (ret);
+9915,9917c9991,10001
+< #line 669
+<   dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )(((((1 << 1) | (1 << 7)) | (1 << 5)) | (1 << 0)) | (1 << 4));
+< #line 671
+---
+> #line 791
+>   dev_priv->vblank_pipe = 1 | 2;
+> #line 792
+>   dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )(~ (1 << 7));
+> #line 793
+>   dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )(~ (1 << 5));
+> #line 795
+>   dev->max_vblank_count = 16777215;
+> #line 797
+>   dev_priv->irq_mask_reg = dev_priv->irq_mask_reg & (unsigned int )((((1 << 1) | (1 << 0)) | (1 << 6)) | (1 << 4));
+> #line 799
+9919,9921c10003,10005
+< #line 672
+<   writel(((((1 << 1) | (1 << 7)) | (1 << 5)) | (1 << 0)) | (1 << 4), (dev_priv->mmio_map)->handle + 8352);
+< #line 673
+---
+> #line 800
+>   writel((((1 << 1) | (1 << 0)) | (1 << 6)) | (1 << 4), (dev_priv->mmio_map)->handle + 8352);
+> #line 801
+9923c10007
+< #line 675
+---
+> #line 803
+9925c10009
+< #line 677
+---
+> #line 804
+9927,9928c10011,10012
+< #line 678
+<   return;
+---
+> #line 806
+>   return (0);
+9931c10015
+< #line 680 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+---
+> #line 809 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/17/dscv_tempdir/dscv/ri/68_1/drivers/gpu/drm/i915/i915_irq.c"
+9935,9936c10019
+<   u16 temp ;
+<   unsigned int tmp ;
+---
+>   u32 temp ;
+9939c10022
+< #line 682
+---
+> #line 811
+9941c10024
+< #line 685
+---
+> #line 814
+9943c10026
+< #line 686
+---
+> #line 815
+9948,9952c10031,10037
+< #line 688
+<   writel(65535, (dev_priv->mmio_map)->handle + 8344);
+< #line 689
+<   writel(65535, (dev_priv->mmio_map)->handle + 8360);
+< #line 690
+---
+> #line 817
+>   dev_priv->vblank_pipe = 0;
+> #line 819
+>   writel(4294967295U, (dev_priv->mmio_map)->handle + 8344);
+> #line 820
+>   writel(4294967295U, (dev_priv->mmio_map)->handle + 8360);
+> #line 821
+9954,9958c10039,10049
+< #line 692
+<   tmp = readl((dev_priv->mmio_map)->handle + 8356);
+< #line 692
+<   temp = tmp;
+< #line 693
+---
+> #line 823
+>   temp = readl((dev_priv->mmio_map)->handle + 458788);
+> #line 824
+>   writel(temp, (dev_priv->mmio_map)->handle + 458788);
+> #line 825
+>   temp = readl((dev_priv->mmio_map)->handle + 462884);
+> #line 826
+>   writel(temp, (dev_priv->mmio_map)->handle + 462884);
+> #line 827
+>   temp = readl((dev_priv->mmio_map)->handle + 8356);
+> #line 828
+9960c10051
+< #line 694
+---
+> #line 829
+11278c11369
+< static bool i915_pipe_enabled(struct drm_device *dev , enum pipe pipe ) 
+---
+> static bool i915_pipe_enabled___0(struct drm_device *dev , enum pipe pipe ) 
+11316c11407
+<   tmp = i915_pipe_enabled(dev, pipe);
+---
+>   tmp = i915_pipe_enabled___0(dev, pipe);
+11367c11458
+<   tmp = i915_pipe_enabled(dev, pipe);
+---
+>   tmp = i915_pipe_enabled___0(dev, pipe);
+12299c12390
+< #line 844 "include/drm/drmP.h"
+---
+> #line 903 "include/drm/drmP.h"

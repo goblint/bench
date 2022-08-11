@@ -1,0 +1,348 @@
+74,75d73
+< #line 33 "include/linux/types.h"
+< typedef _Bool bool;
+90,93d87
+< #line 114 "include/linux/types.h"
+< typedef __s32 int32_t;
+< #line 120 "include/linux/types.h"
+< typedef __u32 uint32_t;
+361,362d354
+< #line 282 "include/asm/elf.h"
+< struct linux_binprm;
+424c416
+< #line 63 "include/linux/kobject.h"
+---
+> #line 62 "include/linux/kobject.h"
+426c418
+< #line 63
+---
+> #line 62
+428c420
+< #line 63
+---
+> #line 62
+430c422
+< #line 63 "include/linux/kobject.h"
+---
+> #line 62 "include/linux/kobject.h"
+432c424
+<    char const   *k_name ;
+---
+>    char const   *name ;
+438a431,434
+>    unsigned int state_initialized : 1 ;
+>    unsigned int state_in_sysfs : 1 ;
+>    unsigned int state_add_uevent_sent : 1 ;
+>    unsigned int state_remove_uevent_sent : 1 ;
+440c436
+< #line 102 "include/linux/kobject.h"
+---
+> #line 107 "include/linux/kobject.h"
+442c438
+<    void (*release)(struct kobject * ) ;
+---
+>    void (*release)(struct kobject *kobj ) ;
+446c442
+< #line 108 "include/linux/kobject.h"
+---
+> #line 113 "include/linux/kobject.h"
+453c449
+< #line 115 "include/linux/kobject.h"
+---
+> #line 120 "include/linux/kobject.h"
+459c455
+< #line 140 "include/linux/kobject.h"
+---
+> #line 154 "include/linux/kobject.h"
+461d456
+<    struct kobj_type *ktype ;
+467,472d461
+< #line 226 "include/linux/kobject.h"
+< struct subsys_attribute {
+<    struct attribute attr ;
+<    ssize_t (*show)(struct kset * , char * ) ;
+<    ssize_t (*store)(struct kset * , char const   * , size_t  ) ;
+< };
+902c891
+<    unsigned long saved_auxv[2 * ((0 + (14 + 2)) + 1)] ;
+---
+>    unsigned long saved_auxv[2 * ((2 + (14 + 2)) + 1)] ;
+1368,1369c1357
+<    struct kset kset ;
+<    struct subsys_attribute user_attr ;
+---
+>    struct kobject kobj ;
+1372c1360
+< #line 573
+---
+> #line 568
+1374c1362
+< #line 574
+---
+> #line 569
+1376c1364
+< #line 577 "include/linux/sched.h"
+---
+> #line 572 "include/linux/sched.h"
+1385c1373
+< #line 594
+---
+> #line 589
+1387c1375
+< #line 598 "include/linux/sched.h"
+---
+> #line 593 "include/linux/sched.h"
+1398c1386
+< #line 639
+---
+> #line 634
+1405c1393
+< #line 682 "include/linux/sched.h"
+---
+> #line 677 "include/linux/sched.h"
+1412c1400
+< #line 699 "include/linux/sched.h"
+---
+> #line 694 "include/linux/sched.h"
+1453c1441
+< #line 776
+---
+> #line 771
+1455c1443
+< #line 779 "include/linux/sched.h"
+---
+> #line 774 "include/linux/sched.h"
+1463c1451
+< #line 816
+---
+> #line 811
+1465c1453
+< #line 818
+---
+> #line 813
+1467c1455
+< #line 821
+---
+> #line 816
+1469c1457
+< #line 824 "include/linux/sched.h"
+---
+> #line 819 "include/linux/sched.h"
+1487c1475
+< #line 852 "include/linux/sched.h"
+---
+> #line 847 "include/linux/sched.h"
+1492c1480
+< #line 866 "include/linux/sched.h"
+---
+> #line 861 "include/linux/sched.h"
+1530c1518
+< #line 917
+---
+> #line 912
+1532c1520
+< #line 917
+---
+> #line 912
+1534c1522
+< #line 917
+---
+> #line 912
+1536c1524
+< #line 917
+---
+> #line 912
+1538c1526
+< #line 917 "include/linux/sched.h"
+---
+> #line 912 "include/linux/sched.h"
+1695a1684,1707
+> #line 18 "include/linux/mm.h"
+> struct file_ra_state;
+> #line 20
+> struct writeback_control;
+> #line 146 "include/linux/mm.h"
+> struct vm_fault {
+>    unsigned int flags ;
+>    unsigned long pgoff ;
+>    void *virtual_address ;
+>    struct page *page ;
+> };
+> #line 163 "include/linux/mm.h"
+> struct vm_operations_struct {
+>    void (*open)(struct vm_area_struct *area ) ;
+>    void (*close)(struct vm_area_struct *area ) ;
+>    int (*fault)(struct vm_area_struct *vma , struct vm_fault *vmf ) ;
+>    struct page *(*nopage)(struct vm_area_struct *area , unsigned long address , int *type ) ;
+>    unsigned long (*nopfn)(struct vm_area_struct *area , unsigned long address ) ;
+>    int (*page_mkwrite)(struct vm_area_struct *vma , struct page *page ) ;
+>    int (*set_policy)(struct vm_area_struct *vma , struct mempolicy *new ) ;
+>    struct mempolicy *(*get_policy)(struct vm_area_struct *vma , unsigned long addr ) ;
+>    int (*migrate)(struct vm_area_struct *vma , nodemask_t const   *from , nodemask_t const   *to ,
+>                   unsigned long flags ) ;
+> };
+1981,1982d1992
+< #line 407 "include/linux/fs.h"
+< struct writeback_control;
+2381,2476d2390
+< #line 27 "include/linux/binfmts.h"
+< struct linux_binprm {
+<    char buf[128] ;
+<    struct vm_area_struct *vma ;
+<    struct mm_struct *mm ;
+<    unsigned long p ;
+<    int sh_bang ;
+<    struct file *file ;
+<    int e_uid ;
+<    int e_gid ;
+<    kernel_cap_t cap_inheritable ;
+<    kernel_cap_t cap_permitted ;
+<    bool cap_effective ;
+<    void *security ;
+<    int argc ;
+<    int envc ;
+<    char *filename ;
+<    char *interp ;
+<    unsigned int interp_flags ;
+<    unsigned int interp_data ;
+<    unsigned long loader ;
+<    unsigned long exec ;
+<    unsigned long argv_len ;
+< };
+< #line 66 "include/linux/binfmts.h"
+< struct linux_binfmt {
+<    struct list_head lh ;
+<    struct module *module ;
+<    int (*load_binary)(struct linux_binprm * , struct pt_regs *regs ) ;
+<    int (*load_shlib)(struct file * ) ;
+<    int (*core_dump)(long signr , struct pt_regs *regs , struct file *file , unsigned long limit ) ;
+<    unsigned long min_coredump ;
+<    int hasvdso ;
+< };
+< #line 27 "include/linux/key.h"
+< typedef int32_t key_serial_t;
+< #line 30 "include/linux/key.h"
+< typedef uint32_t key_perm_t;
+< #line 74
+< struct key_type;
+< #line 76
+< struct keyring_list;
+< #line 119
+< struct key_user;
+< #line 119 "include/linux/key.h"
+< union __anonunion_type_data_127 {
+<    struct list_head link ;
+<    unsigned long x[2] ;
+<    void *p[2] ;
+< };
+< #line 119 "include/linux/key.h"
+< union __anonunion_payload_128 {
+<    unsigned long value ;
+<    void *data ;
+<    struct keyring_list *subscriptions ;
+< };
+< #line 119 "include/linux/key.h"
+< struct key {
+<    atomic_t usage ;
+<    key_serial_t serial ;
+<    struct rb_node serial_node ;
+<    struct key_type *type ;
+<    struct rw_semaphore sem ;
+<    struct key_user *user ;
+<    void *security ;
+<    time_t expiry ;
+<    uid_t uid ;
+<    gid_t gid ;
+<    key_perm_t perm ;
+<    unsigned short quotalen ;
+<    unsigned short datalen ;
+<    unsigned long flags ;
+<    char *description ;
+<    union __anonunion_type_data_127 type_data ;
+<    union __anonunion_payload_128 payload ;
+< };
+< #line 145 "include/linux/mm.h"
+< struct vm_fault {
+<    unsigned int flags ;
+<    unsigned long pgoff ;
+<    void *virtual_address ;
+<    struct page *page ;
+< };
+< #line 162 "include/linux/mm.h"
+< struct vm_operations_struct {
+<    void (*open)(struct vm_area_struct *area ) ;
+<    void (*close)(struct vm_area_struct *area ) ;
+<    int (*fault)(struct vm_area_struct *vma , struct vm_fault *vmf ) ;
+<    struct page *(*nopage)(struct vm_area_struct *area , unsigned long address , int *type ) ;
+<    unsigned long (*nopfn)(struct vm_area_struct *area , unsigned long address ) ;
+<    int (*page_mkwrite)(struct vm_area_struct *vma , struct page *page ) ;
+<    int (*set_policy)(struct vm_area_struct *vma , struct mempolicy *new ) ;
+<    struct mempolicy *(*get_policy)(struct vm_area_struct *vma , unsigned long addr ) ;
+<    int (*migrate)(struct vm_area_struct *vma , nodemask_t const   *from , nodemask_t const   *to ,
+<                   unsigned long flags ) ;
+< };
+2559,2565c2473,2479
+<     STATE_NEEDS_INIT = 0,
+<     STATE_PREPARED = 1,
+<     STATE_QUEUED = 2,
+<     STATE_ACTIVE = 3,
+<     STATE_DONE = 4,
+<     STATE_ERROR = 5,
+<     STATE_IDLE = 6
+---
+>     VIDEOBUF_NEEDS_INIT = 0,
+>     VIDEOBUF_PREPARED = 1,
+>     VIDEOBUF_QUEUED = 2,
+>     VIDEOBUF_ACTIVE = 3,
+>     VIDEOBUF_DONE = 4,
+>     VIDEOBUF_ERROR = 5,
+>     VIDEOBUF_IDLE = 6
+2626c2540,2541
+<    unsigned int streaming ;
+---
+>    unsigned int streaming : 1 ;
+>    unsigned int reading : 1 ;
+2628d2542
+<    unsigned int reading ;
+2778c2692
+<     printk("<7>vbuf-sg: vm_open %p [count=%u,vma=%08lx-%08lx]\n", map, map->count,
+---
+>     printk("<7>vbuf-vmalloc: vm_open %p [count=%u,vma=%08lx-%08lx]\n", map, map->count,
+2804c2718
+<     printk("<7>vbuf-sg: vm_close %p [count=%u,vma=%08lx-%08lx]\n", map, map->count,
+---
+>     printk("<7>vbuf-vmalloc: vm_close %p [count=%u,vma=%08lx-%08lx]\n", map, map->count,
+2816c2730
+<       printk("<7>vbuf-sg: munmap %p q=%p\n", map, q);
+---
+>       printk("<7>vbuf-vmalloc: munmap %p q=%p\n", map, q);
+2896c2810
+<     printk("<7>vbuf-sg: %s: allocated at %p(%ld+%ld) & %p(%ld)\n", "__videobuf_alloc",
+---
+>     printk("<7>vbuf-vmalloc: %s: allocated at %p(%ld+%ld) & %p(%ld)\n", "__videobuf_alloc",
+3000c2914
+<     printk("<7>vbuf-sg: vmalloc is at addr 0x%08lx, size=%d\n", (unsigned long )mem->vmalloc,
+---
+>     printk("<7>vbuf-vmalloc: vmalloc is at addr 0x%08lx, size=%d\n", (unsigned long )mem->vmalloc,
+3020c2934
+<         printk("<7>vbuf-sg: mmap app bug: remap_vmalloc_range area %p error %d\n",
+---
+>         printk("<7>vbuf-vmalloc: mmap app bug: remap_vmalloc_range area %p error %d\n",
+3150c3064
+<       printk("<7>vbuf-sg: mmap app bug: offset invalid [offset=0x%lx]\n", vma->vm_pgoff << 12);
+---
+>       printk("<7>vbuf-vmalloc: mmap app bug: offset invalid [offset=0x%lx]\n", vma->vm_pgoff << 12);
+3252c3166
+<       printk("<7>vbuf-sg: mmap: postponing remap_vmalloc_range\n");
+---
+>       printk("<7>vbuf-vmalloc: mmap: postponing remap_vmalloc_range\n");
+3287,3288c3201,3202
+<     printk("<7>vbuf-sg: mmap %p: q=%p %08lx-%08lx (%lx) pgoff %08lx buf %d\n", map,
+<            q, vma->vm_start, vma->vm_end, (long )(q->bufs[first])->bsize, vma->vm_pgoff,
+---
+>     printk("<7>vbuf-vmalloc: mmap %p: q=%p %08lx-%08lx (%lx) pgoff %08lx buf %d\n",
+>            map, q, vma->vm_start, vma->vm_end, (long )(q->bufs[first])->bsize, vma->vm_pgoff,
+3495c3409
+<       printk("<7>vbuf-sg: vbihack: %d\n", *fc);
+---
+>       printk("<7>vbuf-vmalloc: vbihack: %d\n", *fc);

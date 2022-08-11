@@ -1,0 +1,4852 @@
+12538c12538,12539
+< __inline static int fast_user_write(unsigned long pfn , char *user_data , int l ) 
+---
+> __inline static int fast_user_write(unsigned long pfn , char *user_data , int l ,
+>                                     int o ) 
+12543c12544
+< #line 214
+---
+> #line 215
+12547c12548
+< #line 219 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 220 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12571c12572
+< #line 223
+---
+> #line 224
+12573c12574
+< #line 227
+---
+> #line 228
+12575,12576d12575
+< #line 229
+<   user_data = (char *)args->data_ptr;
+12578c12577
+<   remain = (ssize_t )args->size;
+---
+>   user_data = (char *)args->data_ptr;
+12579a12579,12580
+>   remain = (ssize_t )args->size;
+> #line 232
+12581c12582
+< #line 231
+---
+> #line 232
+12584c12585
+< #line 231
+---
+> #line 232
+12586,12587d12586
+< #line 231
+<   if (tmp___0 == 0L) {
+12588a12588,12589
+>   if (tmp___0 == 0L) {
+> #line 233
+12593,12594d12593
+< #line 235
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+12596c12595
+<   ret = i915_gem_object_pin(obj, 0U);
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+12598c12597
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, 0U);
+12600c12599
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if (ret != 0) {
+12601a12601,12602
+>     mutex_unlock(& dev->struct_mutex);
+> #line 240
+12606c12607
+< #line 241
+---
+> #line 242
+12608,12609d12608
+< #line 243
+<   if (ret != 0) {
+12610a12610,12611
+>   if (ret != 0) {
+> #line 245
+12615,12616d12615
+< #line 246
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+12618c12617
+<   offset = (loff_t )((uint64_t )obj_priv->gtt_offset + args->offset);
+---
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+12619a12619,12620
+>   offset = (loff_t )((uint64_t )obj_priv->gtt_offset + args->offset);
+> #line 249
+12621,12625c12622,12624
+< #line 250
+<   goto ldv_23949;
+<   ldv_23948: 
+< #line 260
+<   i = (int )(offset >> 12);
+---
+> #line 251
+>   goto ldv_23950;
+>   ldv_23949: 
+12627c12626
+<   o = (int )offset & 4095;
+---
+>   i = (int )(offset >> 12);
+12629c12628
+<   l = (int )remain;
+---
+>   o = (int )offset & 4095;
+12631c12630
+<   if ((unsigned int )(o + l) > 4096U) {
+---
+>   l = (int )remain;
+12632a12632,12633
+>   if ((unsigned int )(o + l) > 4096U) {
+> #line 265
+12637c12638
+< #line 266
+---
+> #line 267
+12639,12641c12640,12642
+< #line 268
+<   tmp___3 = fast_user_write(pfn, user_data, l);
+< #line 268
+---
+> #line 269
+>   tmp___3 = fast_user_write(pfn, user_data, l, o);
+> #line 269
+12643c12644
+< #line 272
+---
+> #line 273
+12645c12646
+< #line 272
+---
+> #line 273
+12647,12648d12647
+< #line 278
+<     if ((unsigned long )vaddr == (unsigned long )((char *)0)) {
+12650c12649
+<       ret = -14;
+---
+>     if ((unsigned long )vaddr == (unsigned long )((char *)0)) {
+12651a12651,12652
+>       ret = -14;
+> #line 281
+12656c12657
+< #line 282
+---
+> #line 283
+12659c12660
+< #line 282
+---
+> #line 283
+12661,12662d12661
+< #line 286
+<     iounmap((void volatile   *)vaddr);
+12664c12663
+<     if (unwritten != 0UL) {
+---
+>     iounmap((void volatile   *)vaddr);
+12666c12665
+<       ret = -14;
+---
+>     if (unwritten != 0UL) {
+12667a12667,12668
+>       ret = -14;
+> #line 290
+12675,12676d12675
+< #line 293
+<   remain = remain - (ssize_t )l;
+12678c12677
+<   user_data = user_data + (unsigned long )l;
+---
+>   remain = remain - (ssize_t )l;
+12679a12679,12680
+>   user_data = user_data + (unsigned long )l;
+> #line 296
+12681,12683c12682
+<   ldv_23949: ;
+< #line 250
+<   if (remain > 0L) {
+---
+>   ldv_23950: ;
+12685c12684,12686
+<     goto ldv_23948;
+---
+>   if (remain > 0L) {
+> #line 252
+>     goto ldv_23949;
+12691,12692d12691
+< #line 304
+<   i915_gem_object_unpin(obj);
+12693a12693,12694
+>   i915_gem_object_unpin(obj);
+> #line 306
+12695c12696
+< #line 307
+---
+> #line 308
+12699c12700
+< #line 311 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 312 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12708c12709
+< #line 319
+---
+> #line 320
+12710c12711
+< #line 321
+---
+> #line 322
+12712,12713d12712
+< #line 323
+<   if (ret != 0) {
+12715c12714
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if (ret != 0) {
+12716a12716,12717
+>     mutex_unlock(& dev->struct_mutex);
+> #line 326
+12721c12722
+< #line 328
+---
+> #line 329
+12723c12724
+< #line 330
+---
+> #line 331
+12726,12727d12726
+< #line 333
+<   if ((unsigned long long )written != args->size) {
+12729c12728
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if ((unsigned long long )written != args->size) {
+12731c12730
+<     if (written < 0L) {
+---
+>     mutex_unlock(& dev->struct_mutex);
+12732a12732,12733
+>     if (written < 0L) {
+> #line 337
+12735c12736
+< #line 338
+---
+> #line 339
+12741c12742
+< #line 341
+---
+> #line 342
+12743c12744
+< #line 343
+---
+> #line 344
+12747c12748
+< #line 352 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 353 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12756c12757
+< #line 355
+---
+> #line 356
+12758c12759
+< #line 358
+---
+> #line 359
+12760,12761d12760
+< #line 360
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12763c12762
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12764a12764,12765
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 363
+12769c12770
+< #line 363
+---
+> #line 364
+12771c12772
+< #line 369
+---
+> #line 370
+12773,12774d12773
+< #line 371
+<     drm_gem_object_unreference(obj);
+12775a12775,12776
+>     drm_gem_object_unreference(obj);
+> #line 373
+12780c12781
+< #line 381
+---
+> #line 382
+12782c12783
+< #line 383
+---
+> #line 384
+12785c12786
+< #line 385
+---
+> #line 386
+12788c12789
+< #line 392
+---
+> #line 393
+12790c12791
+< #line 394
+---
+> #line 395
+12794c12795
+< #line 401 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 402 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12802c12803
+< #line 404
+---
+> #line 405
+12804,12805d12804
+< #line 408
+<   if (((dev->driver)->driver_features & 4096U) == 0U) {
+12806a12806,12807
+>   if (((dev->driver)->driver_features & 4096U) == 0U) {
+> #line 410
+12811,12812d12811
+< #line 411
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12814c12813
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12815a12815,12816
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 414
+12820c12821
+< #line 415
+---
+> #line 416
+12822c12823
+< #line 420
+---
+> #line 421
+12824,12825d12824
+< #line 422
+<   drm_gem_object_unreference(obj);
+12827c12826
+<   mutex_unlock(& dev->struct_mutex);
+---
+>   drm_gem_object_unreference(obj);
+12828a12828,12829
+>   mutex_unlock(& dev->struct_mutex);
+> #line 425
+12832c12833
+< #line 431 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 432 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12841c12842
+< #line 434
+---
+> #line 435
+12843c12844
+< #line 437
+---
+> #line 438
+12845,12846d12845
+< #line 439
+<   if (((dev->driver)->driver_features & 4096U) == 0U) {
+12847a12847,12848
+>   if (((dev->driver)->driver_features & 4096U) == 0U) {
+> #line 441
+12852,12853d12852
+< #line 442
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+12855c12854
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+12857c12856
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12859c12858
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+12860a12860,12861
+>     mutex_unlock(& dev->struct_mutex);
+> #line 447
+12865c12866
+< #line 453
+---
+> #line 454
+12867,12868d12867
+< #line 456
+<   if ((int )obj->write_domain & 1 && obj_priv->pin_count != 0) {
+12870c12869
+<     i915_gem_clflush_object(obj);
+---
+>   if ((int )obj->write_domain & 1 && obj_priv->pin_count != 0) {
+12871a12871,12872
+>     i915_gem_clflush_object(obj);
+> #line 459
+12876,12877d12876
+< #line 460
+<   drm_gem_object_unreference(obj);
+12879c12878
+<   mutex_unlock(& dev->struct_mutex);
+---
+>   drm_gem_object_unreference(obj);
+12880a12880,12881
+>   mutex_unlock(& dev->struct_mutex);
+> #line 463
+12884c12885
+< #line 473 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 474 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12896c12897
+< #line 476
+---
+> #line 477
+12898,12899d12898
+< #line 481
+<   if (((dev->driver)->driver_features & 4096U) == 0U) {
+12900a12900,12901
+>   if (((dev->driver)->driver_features & 4096U) == 0U) {
+> #line 483
+12905,12906d12905
+< #line 484
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12908c12907
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+12909a12909,12910
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 487
+12914c12915
+< #line 488
+---
+> #line 489
+12916c12917
+< #line 490
+---
+> #line 491
+12918,12919d12918
+< #line 490
+<   down_write(& (tmp->mm)->mmap_sem);
+12920a12920,12921
+>   down_write(& (tmp->mm)->mmap_sem);
+> #line 492
+12922c12923
+< #line 494
+---
+> #line 495
+12924,12925d12924
+< #line 494
+<   up_write(& (tmp___0->mm)->mmap_sem);
+12927c12926
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+---
+>   up_write(& (tmp___0->mm)->mmap_sem);
+12929c12928
+<   drm_gem_object_unreference(obj);
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+12931c12930
+<   mutex_unlock(& dev->struct_mutex);
+---
+>   drm_gem_object_unreference(obj);
+12932a12932,12933
+>   mutex_unlock(& dev->struct_mutex);
+> #line 499
+12934,12935d12934
+< #line 498
+<   if (tmp___1 != 0L) {
+12936a12936,12937
+>   if (tmp___1 != 0L) {
+> #line 500
+12941c12942
+< #line 501
+---
+> #line 502
+12943c12944
+< #line 503
+---
+> #line 504
+12947c12948
+< #line 507 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 508 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+12955,12956d12955
+< #line 509
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+12957a12957,12958
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+> #line 511
+12959,12960d12959
+< #line 513
+<   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+12961a12961,12962
+>   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+> #line 515
+12966c12967
+< #line 517
+---
+> #line 518
+12968,12970d12968
+< #line 517
+<   goto ldv_24002;
+<   ldv_24001: ;
+12972c12970,12971
+<   if ((unsigned long )*(obj_priv->page_list + (unsigned long )i) != (unsigned long )((struct page *)0)) {
+---
+>   goto ldv_24003;
+>   ldv_24002: ;
+12974c12973
+<     if (obj_priv->dirty != 0) {
+---
+>   if ((unsigned long )*(obj_priv->page_list + (unsigned long )i) != (unsigned long )((struct page *)0)) {
+12975a12975,12976
+>     if (obj_priv->dirty != 0) {
+> #line 521
+12980,12981d12980
+< #line 521
+<     mark_page_accessed(*(obj_priv->page_list + (unsigned long )i));
+12982a12982,12983
+>     mark_page_accessed(*(obj_priv->page_list + (unsigned long )i));
+> #line 523
+12987c12988
+< #line 517
+---
+> #line 518
+12989,12991c12990
+<   ldv_24002: ;
+< #line 517
+<   if (i < page_count___0) {
+---
+>   ldv_24003: ;
+12993c12992,12994
+<     goto ldv_24001;
+---
+>   if (i < page_count___0) {
+> #line 519
+>     goto ldv_24002;
+12997c12998
+< #line 524
+---
+> #line 525
+12999c13000
+< #line 526
+---
+> #line 527
+13001,13002d13001
+< #line 529
+<   obj_priv->page_list = 0;
+13003a13003,13004
+>   obj_priv->page_list = 0;
+> #line 531
+13007c13008
+< #line 533 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 534 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13015,13016d13015
+< #line 535
+<   dev = obj->dev;
+13018c13017
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+---
+>   dev = obj->dev;
+13019a13019,13020
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 538
+13021,13022d13021
+< #line 540
+<   if (obj_priv->active == 0) {
+13024c13023
+<     drm_gem_object_reference(obj);
+---
+>   if (obj_priv->active == 0) {
+13025a13025,13026
+>     drm_gem_object_reference(obj);
+> #line 543
+13030c13031
+< #line 545
+---
+> #line 546
+13032c13033
+< #line 547
+---
+> #line 548
+13036c13037
+< #line 551 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 552 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13044,13045d13044
+< #line 553
+<   dev = obj->dev;
+13047c13046
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+---
+>   dev = obj->dev;
+13048a13048,13049
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 556
+13050,13051d13050
+< #line 558
+<   if (obj_priv->pin_count != 0) {
+13052a13052,13053
+>   if (obj_priv->pin_count != 0) {
+> #line 560
+13055c13056
+< #line 561
+---
+> #line 562
+13058,13059d13058
+< #line 563
+<   if (obj_priv->active != 0) {
+13061c13060
+<     obj_priv->active = 0;
+---
+>   if (obj_priv->active != 0) {
+13062a13062,13063
+>     obj_priv->active = 0;
+> #line 566
+13067c13068
+< #line 567
+---
+> #line 568
+13071c13072
+< #line 579 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 580 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13085c13086
+< #line 581
+---
+> #line 582
+13087c13088
+< #line 587
+---
+> #line 588
+13089,13090d13089
+< #line 587
+<   request = (struct drm_i915_gem_request *)tmp;
+13092c13091
+<   if ((unsigned long )request == (unsigned long )((struct drm_i915_gem_request *)0)) {
+---
+>   request = (struct drm_i915_gem_request *)tmp;
+13093a13093,13094
+>   if ((unsigned long )request == (unsigned long )((struct drm_i915_gem_request *)0)) {
+> #line 590
+13098,13099d13098
+< #line 594
+<   seqno = dev_priv->mm.next_gem_seqno;
+13101c13100
+<   dev_priv->mm.next_gem_seqno = dev_priv->mm.next_gem_seqno + (uint32_t )1;
+---
+>   seqno = dev_priv->mm.next_gem_seqno;
+13103c13102
+<   if (dev_priv->mm.next_gem_seqno == 0U) {
+---
+>   dev_priv->mm.next_gem_seqno = dev_priv->mm.next_gem_seqno + (uint32_t )1;
+13104a13104,13105
+>   if (dev_priv->mm.next_gem_seqno == 0U) {
+> #line 598
+13109c13110
+< #line 599
+---
+> #line 600
+13111c13112
+< #line 599
+---
+> #line 600
+13116,13123d13116
+< #line 599
+<   outcount = 0U;
+< #line 599
+<   outring = (unsigned int )dev_priv->ring.tail;
+< #line 599
+<   ringmask = (unsigned int )dev_priv->ring.tail_mask;
+< #line 599
+<   virt = (char volatile   *)dev_priv->ring.virtual_start;
+13125c13118
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = 276824065U;
+---
+>   outcount = 0U;
+13127c13120
+<   outcount = outcount + 1U;
+---
+>   outring = (unsigned int )dev_priv->ring.tail;
+13129c13122
+<   outring = outring + 4U;
+---
+>   ringmask = (unsigned int )dev_priv->ring.tail_mask;
+13131c13124
+<   outring = outring & ringmask;
+---
+>   virt = (char volatile   *)dev_priv->ring.virtual_start;
+13133c13126
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = 128U;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = 276824065U;
+13141c13134
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = seqno;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = 128U;
+13148,13150c13141,13143
+< #line 604
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = 16777216U;
+< #line 604
+---
+> #line 603
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = seqno;
+> #line 603
+13152c13145
+< #line 604
+---
+> #line 603
+13154c13147
+< #line 604
+---
+> #line 603
+13157c13150
+<   dev_priv->ring.tail = (int )outring;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = 16777216U;
+13159c13152
+<   dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+---
+>   outcount = outcount + 1U;
+13160a13154,13161
+>   outring = outring + 4U;
+> #line 605
+>   outring = outring & ringmask;
+> #line 606
+>   dev_priv->ring.tail = (int )outring;
+> #line 606
+>   dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+> #line 606
+13162c13163
+< #line 607
+---
+> #line 608
+13164c13165
+< #line 607
+---
+> #line 608
+13169,13170d13169
+< #line 609
+<   request->seqno = seqno;
+13172c13171
+<   request->emitted_jiffies = jiffies;
+---
+>   request->seqno = seqno;
+13174c13173
+<   request->flush_domains = flush_domains;
+---
+>   request->emitted_jiffies = jiffies;
+13176c13175
+<   was_empty = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+---
+>   request->flush_domains = flush_domains;
+13177a13177,13178
+>   was_empty = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+> #line 614
+13179,13180d13179
+< #line 615
+<   if (was_empty != 0 && dev_priv->mm.suspended == 0) {
+13181a13181,13182
+>   if (was_empty != 0 && dev_priv->mm.suspended == 0) {
+> #line 617
+13186c13187
+< #line 617
+---
+> #line 618
+13190c13191
+< #line 627 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 628 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13202,13203d13202
+< #line 629
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+13205c13204
+<   cmd = 33554436U;
+---
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+13206a13206,13207
+>   cmd = 33554436U;
+> #line 632
+13208,13209d13208
+< #line 635
+<   if (((((((((dev->pci_device == 10610 || dev->pci_device == 10626) || dev->pci_device == 10642) || dev->pci_device == 10658) || dev->pci_device == 10754) || dev->pci_device == 10770) || dev->pci_device == 10818) || dev->pci_device == 11778) || dev->pci_device == 11794) || dev->pci_device == 11810) {
+13210a13210,13211
+>   if (((((((((dev->pci_device == 10610 || dev->pci_device == 10626) || dev->pci_device == 10642) || dev->pci_device == 10658) || dev->pci_device == 10754) || dev->pci_device == 10770) || dev->pci_device == 10818) || dev->pci_device == 11778) || dev->pci_device == 11794) || dev->pci_device == 11810) {
+> #line 637
+13215c13216
+< #line 637
+---
+> #line 638
+13217c13218
+< #line 637
+---
+> #line 638
+13222,13229d13222
+< #line 637
+<   outcount = 0U;
+< #line 637
+<   outring = (unsigned int )dev_priv->ring.tail;
+< #line 637
+<   ringmask = (unsigned int )dev_priv->ring.tail_mask;
+< #line 637
+<   virt = (char volatile   *)dev_priv->ring.virtual_start;
+13231c13224
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = cmd;
+---
+>   outcount = 0U;
+13233c13226
+<   outcount = outcount + 1U;
+---
+>   outring = (unsigned int )dev_priv->ring.tail;
+13235c13228
+<   outring = outring + 4U;
+---
+>   ringmask = (unsigned int )dev_priv->ring.tail_mask;
+13237c13230
+<   outring = outring & ringmask;
+---
+>   virt = (char volatile   *)dev_priv->ring.virtual_start;
+13239c13232
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = cmd;
+13247c13240
+<   dev_priv->ring.tail = (int )outring;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+13249c13242
+<   dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+---
+>   outcount = outcount + 1U;
+13251c13244,13246
+<   writel(outring, (void volatile   *)dev_priv->regs + 8240U);
+---
+>   outring = outring + 4U;
+> #line 640
+>   outring = outring & ringmask;
+13252a13248,13253
+>   dev_priv->ring.tail = (int )outring;
+> #line 641
+>   dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+> #line 641
+>   writel(outring, (void volatile   *)dev_priv->regs + 8240U);
+> #line 642
+13256c13257
+< #line 649 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 650 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13272c13273
+< #line 652
+---
+> #line 653
+13274,13277c13275,13278
+< #line 657
+<   goto ldv_24050;
+<   ldv_24049: 
+< #line 661
+---
+> #line 658
+>   goto ldv_24051;
+>   ldv_24050: 
+> #line 662
+13279c13280
+< #line 661
+---
+> #line 662
+13281c13282
+< #line 664
+---
+> #line 665
+13283,13284d13283
+< #line 670
+<   if (obj_priv->last_rendering_seqno != request->seqno) {
+13285a13285,13286
+>   if (obj_priv->last_rendering_seqno != request->seqno) {
+> #line 672
+13290,13291d13290
+< #line 677
+<   if (obj->write_domain != 0U) {
+13292a13292,13293
+>   if (obj->write_domain != 0U) {
+> #line 679
+13295c13296
+< #line 681
+---
+> #line 682
+13298,13299c13299,13300
+<   ldv_24050: 
+< #line 657
+---
+>   ldv_24051: 
+> #line 658
+13301,13302d13301
+< #line 657
+<   if (tmp == 0) {
+13304c13303,13305
+<     goto ldv_24049;
+---
+>   if (tmp == 0) {
+> #line 659
+>     goto ldv_24050;
+13309c13310
+< #line 685
+---
+> #line 686
+13311c13312
+< #line 691
+---
+> #line 692
+13313c13314
+< #line 691
+---
+> #line 692
+13315c13316
+< #line 691
+---
+> #line 692
+13317c13318
+< #line 691
+---
+> #line 692
+13319,13322c13320,13323
+< #line 691
+<     goto ldv_24062;
+<     ldv_24061: 
+< #line 693
+---
+> #line 692
+>     goto ldv_24063;
+>     ldv_24062: 
+> #line 694
+13324,13325d13324
+< #line 695
+<     if ((obj___0->write_domain & request->flush_domains) != 0U) {
+13327c13326
+<       obj___0->write_domain = 0U;
+---
+>     if ((obj___0->write_domain & request->flush_domains) != 0U) {
+13328a13328,13329
+>       obj___0->write_domain = 0U;
+> #line 698
+13333c13334
+< #line 691
+---
+> #line 692
+13335c13336
+< #line 691
+---
+> #line 692
+13337c13338
+< #line 691
+---
+> #line 692
+13339,13341c13340
+<     ldv_24062: ;
+< #line 691
+<     if ((unsigned long )(& obj_priv___0->list) != (unsigned long )(& dev_priv->mm.flushing_list)) {
+---
+>     ldv_24063: ;
+13343c13342,13344
+<       goto ldv_24061;
+---
+>     if ((unsigned long )(& obj_priv___0->list) != (unsigned long )(& dev_priv->mm.flushing_list)) {
+> #line 693
+>       goto ldv_24062;
+13351c13352
+< #line 697
+---
+> #line 698
+13355c13356
+< #line 708 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 709 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13361c13362
+< #line 710
+---
+> #line 711
+13365c13366
+< #line 714 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 715 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13371c13372
+< #line 716
+---
+> #line 717
+13373c13374
+< #line 718
+---
+> #line 719
+13377c13378
+< #line 725 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 726 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13389c13390
+< #line 727
+---
+> #line 728
+13391c13392
+< #line 730
+---
+> #line 731
+13393,13396c13394,13397
+< #line 732
+<   goto ldv_24083;
+<   ldv_24082: 
+< #line 736
+---
+> #line 733
+>   goto ldv_24084;
+>   ldv_24083: 
+> #line 737
+13398c13399
+< #line 736
+---
+> #line 737
+13400c13401
+< #line 739
+---
+> #line 740
+13402c13403
+< #line 741
+---
+> #line 742
+13404c13405
+< #line 741
+---
+> #line 742
+13406c13407
+< #line 743
+---
+> #line 744
+13408,13409d13408
+< #line 745
+<     list_del(& request->list);
+13410a13410,13411
+>     list_del(& request->list);
+> #line 747
+13413,13414c13414,13415
+< #line 748
+<     goto ldv_24081;
+---
+> #line 749
+>     goto ldv_24082;
+13416,13417c13417,13418
+<   ldv_24083: 
+< #line 732
+---
+>   ldv_24084: 
+> #line 733
+13419,13420d13419
+< #line 732
+<   if (tmp___0 == 0) {
+13422c13421,13423
+<     goto ldv_24082;
+---
+>   if (tmp___0 == 0) {
+> #line 734
+>     goto ldv_24083;
+13426,13427c13427,13428
+<   ldv_24081: ;
+< #line 737
+---
+>   ldv_24082: ;
+> #line 738
+13431c13432
+< #line 753 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 754 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13440c13441
+< #line 758
+---
+> #line 759
+13442c13443
+< #line 758
+---
+> #line 759
+13444c13445
+< #line 760
+---
+> #line 761
+13446,13447d13446
+< #line 762
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+13449c13448
+<   i915_gem_retire_requests(dev);
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+13450a13450,13451
+>   i915_gem_retire_requests(dev);
+> #line 765
+13452c13453
+< #line 764
+---
+> #line 765
+13454c13455
+< #line 764
+---
+> #line 765
+13456c13457
+< #line 766
+---
+> #line 767
+13464,13465d13464
+< #line 767
+<   mutex_unlock(& dev->struct_mutex);
+13466a13466,13467
+>   mutex_unlock(& dev->struct_mutex);
+> #line 769
+13470c13471
+< #line 775 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 776 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13490,13491d13490
+< #line 777
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+13492a13492,13493
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 779
+13494c13495
+< #line 780
+---
+> #line 781
+13496c13497
+< #line 780
+---
+> #line 781
+13498c13499
+< #line 780
+---
+> #line 781
+13500,13503c13501,13504
+<                          "i" (780), "i" (24UL));
+<     ldv_24097: ;
+< #line 780
+<     goto ldv_24097;
+---
+>                          "i" (781), "i" (24UL));
+>     ldv_24098: ;
+> #line 781
+>     goto ldv_24098;
+13507c13508
+< #line 782
+---
+> #line 783
+13509c13510
+< #line 782
+---
+> #line 783
+13511,13512d13511
+< #line 782
+<   if (tmp___8 == 0) {
+13514c13513
+<     dev_priv->mm.waiting_gem_seqno = seqno;
+---
+>   if (tmp___8 == 0) {
+13516c13515
+<     i915_user_irq_get(dev);
+---
+>     dev_priv->mm.waiting_gem_seqno = seqno;
+13517a13517,13518
+>     i915_user_irq_get(dev);
+> #line 786
+13519c13520
+< #line 785
+---
+> #line 786
+13521c13522
+< #line 785
+---
+> #line 786
+13523c13524
+< #line 785
+---
+> #line 786
+13525c13526
+< #line 785
+---
+> #line 786
+13527c13528
+< #line 785
+---
+> #line 786
+13529c13530
+< #line 785
+---
+> #line 786
+13531c13532
+< #line 785
+---
+> #line 786
+13533c13534
+< #line 785
+---
+> #line 786
+13535c13536
+< #line 785
+---
+> #line 786
+13537,13538c13538,13539
+<       ldv_24102: 
+< #line 785
+---
+>       ldv_24103: 
+> #line 786
+13540c13541
+< #line 785
+---
+> #line 786
+13542c13543
+< #line 785
+---
+> #line 786
+13544c13545
+< #line 785
+---
+> #line 786
+13546,13547c13547,13548
+< #line 785
+<         goto ldv_24100;
+---
+> #line 786
+>         goto ldv_24101;
+13551c13552
+< #line 785
+---
+> #line 786
+13553c13554
+< #line 785
+---
+> #line 786
+13555c13556
+< #line 785
+---
+> #line 786
+13557c13558
+< #line 785
+---
+> #line 786
+13559,13560c13560,13561
+< #line 785
+<         goto ldv_24101;
+---
+> #line 786
+>         goto ldv_24102;
+13564c13565
+< #line 785
+---
+> #line 786
+13566,13572c13567,13573
+< #line 785
+<       goto ldv_24100;
+<       ldv_24101: ;
+< #line 785
+<       goto ldv_24102;
+<       ldv_24100: 
+< #line 785
+---
+> #line 786
+>       goto ldv_24101;
+>       ldv_24102: ;
+> #line 786
+>       goto ldv_24103;
+>       ldv_24101: 
+> #line 786
+13577c13578
+< #line 785
+---
+> #line 786
+13579,13580d13579
+< #line 789
+<     i915_user_irq_put(dev);
+13581a13581,13582
+>     i915_user_irq_put(dev);
+> #line 791
+13586,13587d13586
+< #line 792
+<   if (dev_priv->mm.wedged != 0) {
+13588a13588,13589
+>   if (dev_priv->mm.wedged != 0) {
+> #line 794
+13593,13594d13593
+< #line 795
+<   if (ret != 0 && ret != -512) {
+13595a13595,13596
+>   if (ret != 0 && ret != -512) {
+> #line 797
+13597c13598
+< #line 796
+---
+> #line 797
+13603,13604d13603
+< #line 804
+<   if (ret == 0) {
+13605a13605,13606
+>   if (ret == 0) {
+> #line 806
+13610c13611
+< #line 807
+---
+> #line 808
+13614c13615
+< #line 811 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 812 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13626c13627
+< #line 815
+---
+> #line 816
+13628,13629d13628
+< #line 824
+<   if ((int )flush_domains & 1) {
+13630a13630,13631
+>   if ((int )flush_domains & 1) {
+> #line 826
+13635c13636
+< #line 827
+---
+> #line 828
+13637,13638d13637
+< #line 857
+<     cmd = 33554436U;
+13639a13639,13640
+>     cmd = 33554436U;
+> #line 859
+13641c13642
+< #line 860
+---
+> #line 861
+13646c13647
+< #line 861
+---
+> #line 862
+13648,13649d13648
+< #line 866
+<       if ((invalidate_domains & 4U) != 0U) {
+13650a13650,13651
+>       if ((invalidate_domains & 4U) != 0U) {
+> #line 868
+13658,13659d13658
+< #line 869
+<     if ((invalidate_domains & 16U) != 0U) {
+13660a13660,13661
+>     if ((invalidate_domains & 16U) != 0U) {
+> #line 871
+13665c13666
+< #line 875
+---
+> #line 876
+13667c13668
+< #line 875
+---
+> #line 876
+13672,13679d13672
+< #line 875
+<     outcount = 0U;
+< #line 875
+<     outring = (unsigned int )dev_priv->ring.tail;
+< #line 875
+<     ringmask = (unsigned int )dev_priv->ring.tail_mask;
+< #line 875
+<     virt = (char volatile   *)dev_priv->ring.virtual_start;
+13681c13674
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = cmd;
+---
+>     outcount = 0U;
+13683c13676
+<     outcount = outcount + 1U;
+---
+>     outring = (unsigned int )dev_priv->ring.tail;
+13685c13678
+<     outring = outring + 4U;
+---
+>     ringmask = (unsigned int )dev_priv->ring.tail_mask;
+13687c13680
+<     outring = outring & ringmask;
+---
+>     virt = (char volatile   *)dev_priv->ring.virtual_start;
+13689c13682
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = cmd;
+13697c13690
+<     dev_priv->ring.tail = (int )outring;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+13699c13692
+<     dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+---
+>     outcount = outcount + 1U;
+13700a13694,13701
+>     outring = outring + 4U;
+> #line 878
+>     outring = outring & ringmask;
+> #line 879
+>     dev_priv->ring.tail = (int )outring;
+> #line 879
+>     dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+> #line 879
+13705c13706
+< #line 880
+---
+> #line 881
+13709c13710
+< #line 887 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 888 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13719,13720d13719
+< #line 889
+<   dev = obj->dev;
+13721a13721,13722
+>   dev = obj->dev;
+> #line 891
+13723,13724d13723
+< #line 896
+<   if ((obj->write_domain & 4294967230U) != 0U) {
+13725a13725,13726
+>   if ((obj->write_domain & 4294967230U) != 0U) {
+> #line 898
+13727c13728
+< #line 902
+---
+> #line 903
+13729,13730d13729
+< #line 904
+<     i915_gem_object_move_to_active(obj);
+13731a13731,13732
+>     i915_gem_object_move_to_active(obj);
+> #line 906
+13733c13734
+< #line 907
+---
+> #line 908
+13735c13736
+< #line 907
+---
+> #line 908
+13737c13738
+< #line 907
+---
+> #line 908
+13739,13742c13740,13743
+<                            "i" (907), "i" (24UL));
+<       ldv_24124: ;
+< #line 907
+<       goto ldv_24124;
+---
+>                            "i" (908), "i" (24UL));
+>       ldv_24125: ;
+> #line 908
+>       goto ldv_24125;
+13749c13750
+< #line 916
+---
+> #line 917
+13751,13752d13751
+< #line 921
+<     ret = i915_wait_request(dev, obj_priv->last_rendering_seqno);
+13754c13753
+<     if (ret != 0) {
+---
+>     ret = i915_wait_request(dev, obj_priv->last_rendering_seqno);
+13755a13755,13756
+>     if (ret != 0) {
+> #line 924
+13763c13764
+< #line 926
+---
+> #line 927
+13767c13768
+< #line 933 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 934 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13777,13778d13777
+< #line 935
+<   dev = obj->dev;
+13780c13779
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+---
+>   dev = obj->dev;
+13781a13781,13782
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+> #line 938
+13783,13784d13783
+< #line 943
+<   if ((unsigned long )obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+13785a13785,13786
+>   if ((unsigned long )obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+> #line 945
+13790,13791d13790
+< #line 946
+<   if (obj_priv->pin_count != 0) {
+13793c13792
+<     printk("<3>[drm:%s] *ERROR* Attempting to unbind pinned buffer\n", "i915_gem_object_unbind");
+---
+>   if (obj_priv->pin_count != 0) {
+13794a13794,13795
+>     printk("<3>[drm:%s] *ERROR* Attempting to unbind pinned buffer\n", "i915_gem_object_unbind");
+> #line 949
+13799,13800d13799
+< #line 953
+<   ret = i915_gem_object_wait_rendering(obj);
+13802c13801
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_wait_rendering(obj);
+13803a13803,13804
+>   if (ret != 0) {
+> #line 956
+13806c13807
+< #line 956
+---
+> #line 957
+13811c13812
+< #line 965
+---
+> #line 966
+13813,13814d13813
+< #line 967
+<   if (ret != 0) {
+13815a13815,13816
+>   if (ret != 0) {
+> #line 969
+13818c13819
+< #line 969
+---
+> #line 970
+13823,13824d13823
+< #line 972
+<   if ((unsigned long )obj_priv->agp_mem != (unsigned long )((struct agp_memory *)0)) {
+13826c13825
+<     drm_unbind_agp(obj_priv->agp_mem);
+---
+>   if ((unsigned long )obj_priv->agp_mem != (unsigned long )((struct agp_memory *)0)) {
+13828c13827
+<     drm_free_agp(obj_priv->agp_mem, (int )(obj->size / 4096UL));
+---
+>     drm_unbind_agp(obj_priv->agp_mem);
+13829a13829,13830
+>     drm_free_agp(obj_priv->agp_mem, (int )(obj->size / 4096UL));
+> #line 976
+13834c13835
+< #line 978
+---
+> #line 979
+13836c13837
+< #line 978
+---
+> #line 979
+13838c13839
+< #line 978
+---
+> #line 979
+13840,13843c13841,13844
+<                          "i" (978), "i" (24UL));
+<     ldv_24132: ;
+< #line 978
+<     goto ldv_24132;
+---
+>                          "i" (979), "i" (24UL));
+>     ldv_24133: ;
+> #line 979
+>     goto ldv_24133;
+13847c13848
+< #line 980
+---
+> #line 981
+13849,13850d13849
+< #line 982
+<   if ((unsigned long )obj_priv->gtt_space != (unsigned long )((struct drm_mm_node *)0)) {
+13852c13851
+<     atomic_dec(& dev->gtt_count);
+---
+>   if ((unsigned long )obj_priv->gtt_space != (unsigned long )((struct drm_mm_node *)0)) {
+13853a13853,13854
+>     atomic_dec(& dev->gtt_count);
+> #line 985
+13855,13856d13855
+< #line 986
+<     drm_mm_put_block(obj_priv->gtt_space);
+13857a13857,13858
+>     drm_mm_put_block(obj_priv->gtt_space);
+> #line 988
+13862c13863
+< #line 991
+---
+> #line 992
+13864,13865d13864
+< #line 991
+<   if (tmp___0 == 0) {
+13866a13866,13867
+>   if (tmp___0 == 0) {
+> #line 993
+13871c13872
+< #line 994
+---
+> #line 995
+13875c13876
+< #line 998 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 999 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+13897c13898
+< #line 1000
+---
+> #line 1001
+13899c13900
+< #line 1003
+---
+> #line 1004
+13901,13902c13902,13903
+<   ldv_24152: 
+< #line 1009
+---
+>   ldv_24153: 
+> #line 1010
+13904,13905d13904
+< #line 1009
+<   if (tmp___1 == 0) {
+13906a13906,13907
+>   if (tmp___1 == 0) {
+> #line 1011
+13908c13909
+< #line 1010
+---
+> #line 1011
+13910,13911d13910
+< #line 1013
+<     obj = obj_priv->obj;
+13912a13912,13913
+>     obj = obj_priv->obj;
+> #line 1015
+13914c13915
+< #line 1014
+---
+> #line 1015
+13916c13917
+< #line 1014
+---
+> #line 1015
+13918,13921c13919,13922
+<                            "i" (1014), "i" (24UL));
+<       ldv_24142: ;
+< #line 1014
+<       goto ldv_24142;
+---
+>                            "i" (1015), "i" (24UL));
+>       ldv_24143: ;
+> #line 1015
+>       goto ldv_24143;
+13925c13926
+< #line 1018
+---
+> #line 1019
+13927c13928
+< #line 1018
+---
+> #line 1019
+13929c13930
+< #line 1018
+---
+> #line 1019
+13931,13934c13932,13935
+<                            "i" (1018), "i" (24UL));
+<       ldv_24143: ;
+< #line 1018
+<       goto ldv_24143;
+---
+>                            "i" (1019), "i" (24UL));
+>       ldv_24144: ;
+> #line 1019
+>       goto ldv_24144;
+13938,13939d13938
+< #line 1021
+<     ret = i915_gem_object_unbind(obj);
+13941c13940,13942
+<     goto ldv_24144;
+---
+>     ret = i915_gem_object_unbind(obj);
+> #line 1023
+>     goto ldv_24145;
+13945c13946
+< #line 1029
+---
+> #line 1030
+13947c13948
+< #line 1029
+---
+> #line 1030
+13949c13950
+< #line 1032
+---
+> #line 1033
+13951c13952
+< #line 1032
+---
+> #line 1033
+13953,13954d13953
+< #line 1036
+<     ret = i915_wait_request(dev, request->seqno);
+13956c13955
+<     if (ret != 0) {
+---
+>     ret = i915_wait_request(dev, request->seqno);
+13958c13957,13959
+<       goto ldv_24144;
+---
+>     if (ret != 0) {
+> #line 1039
+>       goto ldv_24145;
+13962c13963
+< #line 1045
+---
+> #line 1046
+13964,13965d13964
+< #line 1045
+<     if (tmp___2 == 0) {
+13967c13966,13968
+<       goto ldv_24148;
+---
+>     if (tmp___2 == 0) {
+> #line 1047
+>       goto ldv_24149;
+13971,13972c13972,13973
+< #line 1047
+<     goto ldv_24144;
+---
+> #line 1048
+>     goto ldv_24145;
+13976c13977
+< #line 1055
+---
+> #line 1056
+13978,13979d13978
+< #line 1055
+<   if (tmp___4 == 0) {
+13980a13980,13981
+>   if (tmp___4 == 0) {
+> #line 1057
+13982c13983
+< #line 1056
+---
+> #line 1057
+13984c13985
+< #line 1059
+---
+> #line 1060
+13986c13987
+< #line 1061
+---
+> #line 1062
+13988c13989
+< #line 1064
+---
+> #line 1065
+13990,13991d13990
+< #line 1066
+<     obj = 0;
+13993c13992,13994
+<     goto ldv_24148;
+---
+>     obj = 0;
+> #line 1068
+>     goto ldv_24149;
+13997c13998
+< #line 1070
+---
+> #line 1071
+13999c14000
+< #line 1070
+---
+> #line 1071
+14001c14002
+< #line 1070
+---
+> #line 1071
+14003c14004
+< #line 1070
+---
+> #line 1071
+14006,14008d14006
+< #line 1078
+<   return (-12);
+<   ldv_24148: ;
+14010,14011c14008,14009
+<   goto ldv_24152;
+<   ldv_24144: ;
+---
+>   return (-12);
+>   ldv_24149: ;
+14012a14011,14013
+>   goto ldv_24153;
+>   ldv_24145: ;
+> #line 1081
+14016c14017
+< #line 1084 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1085 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14032c14033
+< #line 1086
+---
+> #line 1087
+14034,14035d14034
+< #line 1093
+<   if ((unsigned long )obj_priv->page_list != (unsigned long )((struct page **)0)) {
+14036a14036,14037
+>   if ((unsigned long )obj_priv->page_list != (unsigned long )((struct page **)0)) {
+> #line 1095
+14041,14042d14041
+< #line 1099
+<   page_count___0 = (int )(obj->size / 4096UL);
+14043a14043,14044
+>   page_count___0 = (int )(obj->size / 4096UL);
+> #line 1101
+14046c14047
+< #line 1100
+---
+> #line 1101
+14048c14049
+< #line 1100
+---
+> #line 1101
+14050,14053c14051,14054
+<                          "i" (1100), "i" (24UL));
+<     ldv_24163: ;
+< #line 1100
+<     goto ldv_24163;
+---
+>                          "i" (1101), "i" (24UL));
+>     ldv_24164: ;
+> #line 1101
+>     goto ldv_24164;
+14057c14058
+< #line 1101
+---
+> #line 1102
+14059c14060
+< #line 1101
+---
+> #line 1102
+14061,14062d14061
+< #line 1103
+<   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+14064c14063
+<     printk("<3>[drm:%s] *ERROR* Faled to allocate page list\n", "i915_gem_object_get_page_list");
+---
+>   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+14065a14065,14066
+>     printk("<3>[drm:%s] *ERROR* Faled to allocate page list\n", "i915_gem_object_get_page_list");
+> #line 1106
+14070,14071d14070
+< #line 1108
+<   inode = ((obj->filp)->f_path.dentry)->d_inode;
+14073c14072
+<   mapping = inode->i_mapping;
+---
+>   inode = ((obj->filp)->f_path.dentry)->d_inode;
+14074a14074,14075
+>   mapping = inode->i_mapping;
+> #line 1111
+14076,14078d14076
+< #line 1110
+<   goto ldv_24166;
+<   ldv_24165: 
+14080c14078,14079
+<   page = read_mapping_page(mapping, (unsigned long )i, 0);
+---
+>   goto ldv_24167;
+>   ldv_24166: 
+14081a14081,14082
+>   page = read_mapping_page(mapping, (unsigned long )i, 0);
+> #line 1113
+14083,14084d14083
+< #line 1112
+<   if (tmp___2 != 0L) {
+14085a14085,14086
+>   if (tmp___2 != 0L) {
+> #line 1114
+14087,14088d14087
+< #line 1113
+<     ret = (int )tmp___1;
+14089a14089,14090
+>     ret = (int )tmp___1;
+> #line 1115
+14092,14093d14092
+< #line 1115
+<     i915_gem_object_free_page_list(obj);
+14094a14094,14095
+>     i915_gem_object_free_page_list(obj);
+> #line 1117
+14099c14100
+< #line 1118
+---
+> #line 1119
+14101c14102
+< #line 1110
+---
+> #line 1111
+14103,14105c14104
+<   ldv_24166: ;
+< #line 1110
+<   if (i < page_count___0) {
+---
+>   ldv_24167: ;
+14107c14106,14108
+<     goto ldv_24165;
+---
+>   if (i < page_count___0) {
+> #line 1112
+>     goto ldv_24166;
+14112c14113
+< #line 1120
+---
+> #line 1121
+14116c14117
+< #line 1127 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1128 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14132,14133d14132
+< #line 1129
+<   dev = obj->dev;
+14135c14134
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+---
+>   dev = obj->dev;
+14136a14136,14137
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 1132
+14138,14139d14138
+< #line 1135
+<   if (alignment == 0U) {
+14140a14140,14141
+>   if (alignment == 0U) {
+> #line 1137
+14145,14146d14145
+< #line 1137
+<   if (((unsigned long )alignment & 4095UL) != 0UL) {
+14147a14147,14148
+>   if (((unsigned long )alignment & 4095UL) != 0UL) {
+> #line 1139
+14150c14151
+< #line 1139
+---
+> #line 1140
+14156c14157
+< #line 1143
+---
+> #line 1144
+14159,14160d14159
+< #line 1145
+<   if ((unsigned long )free_space != (unsigned long )((struct drm_mm_node *)0)) {
+14161a14161,14162
+>   if ((unsigned long )free_space != (unsigned long )((struct drm_mm_node *)0)) {
+> #line 1147
+14163,14164d14163
+< #line 1148
+<     if ((unsigned long )obj_priv->gtt_space != (unsigned long )((struct drm_mm_node *)0)) {
+14166c14165
+<       (obj_priv->gtt_space)->private = (void *)obj;
+---
+>     if ((unsigned long )obj_priv->gtt_space != (unsigned long )((struct drm_mm_node *)0)) {
+14167a14167,14168
+>       (obj_priv->gtt_space)->private = (void *)obj;
+> #line 1151
+14175c14176
+< #line 1153
+---
+> #line 1154
+14177c14178
+< #line 1160
+---
+> #line 1161
+14179c14180
+< #line 1160
+---
+> #line 1161
+14181c14182
+< #line 1160
+---
+> #line 1161
+14183c14184
+< #line 1160
+---
+> #line 1161
+14185c14186
+< #line 1160
+---
+> #line 1161
+14187c14188
+< #line 1160
+---
+> #line 1161
+14189,14190d14189
+< #line 1163
+<           printk("<3>[drm:%s] *ERROR* GTT full, but LRU list empty\n", "i915_gem_object_bind_to_gtt");
+14191a14191,14192
+>           printk("<3>[drm:%s] *ERROR* GTT full, but LRU list empty\n", "i915_gem_object_bind_to_gtt");
+> #line 1165
+14202,14203d14202
+< #line 1167
+<     ret = i915_gem_evict_something(dev);
+14205c14204
+<     if (ret != 0) {
+---
+>     ret = i915_gem_evict_something(dev);
+14206a14206,14207
+>     if (ret != 0) {
+> #line 1170
+14209c14210
+< #line 1170
+---
+> #line 1171
+14214c14215
+< #line 1172
+---
+> #line 1173
+14219,14220d14219
+< #line 1179
+<   ret = i915_gem_object_get_page_list(obj);
+14222c14221
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_get_page_list(obj);
+14224c14223
+<     drm_mm_put_block(obj_priv->gtt_space);
+---
+>   if (ret != 0) {
+14226c14225
+<     obj_priv->gtt_space = 0;
+---
+>     drm_mm_put_block(obj_priv->gtt_space);
+14227a14227,14228
+>     obj_priv->gtt_space = 0;
+> #line 1184
+14232c14233
+< #line 1186
+---
+> #line 1187
+14234c14235
+< #line 1190
+---
+> #line 1191
+14237,14238d14237
+< #line 1195
+<   if ((unsigned long )obj_priv->agp_mem == (unsigned long )((struct agp_memory *)0)) {
+14240c14239
+<     i915_gem_object_free_page_list(obj);
+---
+>   if ((unsigned long )obj_priv->agp_mem == (unsigned long )((struct agp_memory *)0)) {
+14242c14241
+<     drm_mm_put_block(obj_priv->gtt_space);
+---
+>     i915_gem_object_free_page_list(obj);
+14244c14243
+<     obj_priv->gtt_space = 0;
+---
+>     drm_mm_put_block(obj_priv->gtt_space);
+14245a14245,14246
+>     obj_priv->gtt_space = 0;
+> #line 1200
+14250,14251d14250
+< #line 1201
+<   atomic_inc(& dev->gtt_count);
+14252a14252,14253
+>   atomic_inc(& dev->gtt_count);
+> #line 1203
+14254c14255
+< #line 1208
+---
+> #line 1209
+14256c14257
+< #line 1208
+---
+> #line 1209
+14258c14259
+< #line 1208
+---
+> #line 1209
+14260,14263c14261,14264
+<                          "i" (1208), "i" (24UL));
+<     ldv_24180: ;
+< #line 1208
+<     goto ldv_24180;
+---
+>                          "i" (1209), "i" (24UL));
+>     ldv_24181: ;
+> #line 1209
+>     goto ldv_24181;
+14267c14268
+< #line 1209
+---
+> #line 1210
+14269c14270
+< #line 1209
+---
+> #line 1210
+14271c14272
+< #line 1209
+---
+> #line 1210
+14273,14276c14274,14277
+<                          "i" (1209), "i" (24UL));
+<     ldv_24181: ;
+< #line 1209
+<     goto ldv_24181;
+---
+>                          "i" (1210), "i" (24UL));
+>     ldv_24182: ;
+> #line 1210
+>     goto ldv_24182;
+14280c14281
+< #line 1211
+---
+> #line 1212
+14284c14285
+< #line 1215 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1216 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14290c14291
+< #line 1217
+---
+> #line 1218
+14292,14293d14292
+< #line 1223
+<   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+14294a14294,14295
+>   if ((unsigned long )obj_priv->page_list == (unsigned long )((struct page **)0)) {
+> #line 1225
+14299,14300d14299
+< #line 1226
+<   drm_clflush_pages(obj_priv->page_list, obj->size / 4096UL);
+14301a14301,14302
+>   drm_clflush_pages(obj_priv->page_list, obj->size / 4096UL);
+> #line 1228
+14305c14306
+< #line 1341 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1342 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14316,14317d14316
+< #line 1345
+<   dev = obj->dev;
+14319c14318
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+---
+>   dev = obj->dev;
+14321c14320
+<   invalidate_domains = 0U;
+---
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+14322a14322,14323
+>   invalidate_domains = 0U;
+> #line 1349
+14324,14325d14324
+< #line 1361
+<   if (write_domain == 0U) {
+14326a14326,14327
+>   if (write_domain == 0U) {
+> #line 1363
+14329c14330
+< #line 1364
+---
+> #line 1365
+14332,14333d14332
+< #line 1372
+<   if (obj->write_domain != 0U && obj->write_domain != read_domains) {
+14335c14334
+<     flush_domains = obj->write_domain | flush_domains;
+---
+>   if (obj->write_domain != 0U && obj->write_domain != read_domains) {
+14336a14336,14337
+>     flush_domains = obj->write_domain | flush_domains;
+> #line 1375
+14341,14342d14341
+< #line 1380
+<   invalidate_domains = (~ obj->read_domains & read_domains) | invalidate_domains;
+14343a14343,14344
+>   invalidate_domains = (~ obj->read_domains & read_domains) | invalidate_domains;
+> #line 1382
+14345c14346
+< #line 1391
+---
+> #line 1392
+14347,14348d14347
+< #line 1394
+<       ret = i915_gem_object_wait_rendering(obj);
+14350c14349
+<       if (ret != 0) {
+---
+>       ret = i915_gem_object_wait_rendering(obj);
+14351a14351,14352
+>       if (ret != 0) {
+> #line 1397
+14359c14360
+< #line 1398
+---
+> #line 1399
+14364,14365d14364
+< #line 1401
+<   if ((write_domain | flush_domains) != 0U) {
+14366a14366,14367
+>   if ((write_domain | flush_domains) != 0U) {
+> #line 1403
+14371c14372
+< #line 1407
+---
+> #line 1408
+14373c14374
+< #line 1410
+---
+> #line 1411
+14375c14376
+< #line 1412
+---
+> #line 1413
+14380c14381
+< #line 1414
+---
+> #line 1415
+14382,14383d14382
+< #line 1416
+<   dev->invalidate_domains = dev->invalidate_domains | invalidate_domains;
+14384a14384,14385
+>   dev->invalidate_domains = dev->invalidate_domains | invalidate_domains;
+> #line 1418
+14386c14387
+< #line 1424
+---
+> #line 1425
+14390c14391
+< #line 1434 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1435 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14402c14403
+< #line 1440
+---
+> #line 1441
+14404,14405d14404
+< #line 1443
+<   if ((int )obj->read_domains & 1) {
+14406a14406,14407
+>   if ((int )obj->read_domains & 1) {
+> #line 1445
+14411c14412
+< #line 1446
+---
+> #line 1447
+14413c14414
+< #line 1448
+---
+> #line 1449
+14415c14416
+< #line 1448
+---
+> #line 1449
+14420,14421d14420
+< #line 1452
+<   if ((obj->write_domain & 4294967230U) != 0U) {
+14423c14422
+<     ret = i915_gem_object_wait_rendering(obj);
+---
+>   if ((obj->write_domain & 4294967230U) != 0U) {
+14425c14424
+<     if (ret != 0) {
+---
+>     ret = i915_gem_object_wait_rendering(obj);
+14426a14426,14427
+>     if (ret != 0) {
+> #line 1456
+14434,14435d14434
+< #line 1458
+<   if ((unsigned long )obj_priv->page_cpu_valid == (unsigned long )((uint8_t *)0)) {
+14436a14436,14437
+>   if ((unsigned long )obj_priv->page_cpu_valid == (unsigned long )((uint8_t *)0)) {
+> #line 1460
+14438c14439
+< #line 1459
+---
+> #line 1460
+14443c14444
+< #line 1466
+---
+> #line 1467
+14445,14447d14445
+< #line 1466
+<   goto ldv_24208;
+<   ldv_24207: ;
+14449c14447,14448
+<   if ((unsigned int )*(obj_priv->page_cpu_valid + (unsigned long )i) != 0U) {
+---
+>   goto ldv_24209;
+>   ldv_24208: ;
+14451c14450,14452
+<     goto ldv_24206;
+---
+>   if ((unsigned int )*(obj_priv->page_cpu_valid + (unsigned long )i) != 0U) {
+> #line 1469
+>     goto ldv_24207;
+14455c14456
+< #line 1470
+---
+> #line 1471
+14457c14458
+< #line 1472
+---
+> #line 1473
+14459,14460c14460,14461
+<   ldv_24206: 
+< #line 1466
+---
+>   ldv_24207: 
+> #line 1467
+14462,14464c14463
+<   ldv_24208: ;
+< #line 1466
+<   if ((unsigned long long )i <= ((offset + size) - 1ULL) / 4096ULL) {
+---
+>   ldv_24209: ;
+14466c14465,14467
+<     goto ldv_24207;
+---
+>   if ((unsigned long long )i <= ((offset + size) - 1ULL) / 4096ULL) {
+> #line 1468
+>     goto ldv_24208;
+14471c14472
+< #line 1475
+---
+> #line 1476
+14475c14476
+< #line 1485 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1486 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14481c14482
+< #line 1487
+---
+> #line 1488
+14483c14484
+< #line 1493
+---
+> #line 1494
+14485c14486
+< #line 1500
+---
+> #line 1501
+14487,14488d14487
+< #line 1503
+<     dev->invalidate_domains = 0U;
+14489a14489,14490
+>     dev->invalidate_domains = 0U;
+> #line 1505
+14494c14495
+< #line 1507
+---
+> #line 1508
+14498c14499
+< #line 1514 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1515 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14519c14520
+< #line 1518
+---
+> #line 1519
+14521c14522
+< #line 1521
+---
+> #line 1522
+14523,14524d14523
+< #line 1523
+<   last_reloc_offset = 4294967295U;
+14525a14525,14526
+>   last_reloc_offset = 4294967295U;
+> #line 1525
+14527,14528d14527
+< #line 1527
+<   ret = i915_gem_object_pin(obj, (unsigned int )entry->alignment);
+14530c14529
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, (unsigned int )entry->alignment);
+14531a14531,14532
+>   if (ret != 0) {
+> #line 1530
+14536c14537
+< #line 1531
+---
+> #line 1532
+14538c14539
+< #line 1533
+---
+> #line 1534
+14540c14541
+< #line 1538
+---
+> #line 1539
+14542,14545c14543,14546
+< #line 1538
+<   goto ldv_24235;
+<   ldv_24234: 
+< #line 1544
+---
+> #line 1539
+>   goto ldv_24236;
+>   ldv_24235: 
+> #line 1545
+14548,14549d14548
+< #line 1544
+<   ret = (int )tmp;
+14551c14550
+<   if (ret != 0) {
+---
+>   ret = (int )tmp;
+14553c14552
+<     i915_gem_object_unpin(obj);
+---
+>   if (ret != 0) {
+14554a14554,14555
+>     i915_gem_object_unpin(obj);
+> #line 1548
+14559c14560
+< #line 1550
+---
+> #line 1551
+14561,14562d14561
+< #line 1552
+<   if ((unsigned long )target_obj == (unsigned long )((struct drm_gem_object *)0)) {
+14564c14563
+<     i915_gem_object_unpin(obj);
+---
+>   if ((unsigned long )target_obj == (unsigned long )((struct drm_gem_object *)0)) {
+14565a14565,14566
+>     i915_gem_object_unpin(obj);
+> #line 1555
+14570c14571
+< #line 1556
+---
+> #line 1557
+14572,14573d14572
+< #line 1561
+<   if ((unsigned long )target_obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+14574a14574,14575
+>   if ((unsigned long )target_obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+> #line 1563
+14577,14578d14577
+< #line 1564
+<     drm_gem_object_unreference(target_obj);
+14580c14579
+<     i915_gem_object_unpin(obj);
+---
+>     drm_gem_object_unreference(target_obj);
+14581a14581,14582
+>     i915_gem_object_unpin(obj);
+> #line 1567
+14586,14587d14586
+< #line 1569
+<   if (reloc.offset > (unsigned long long )(obj->size - 4UL)) {
+14588a14588,14589
+>   if (reloc.offset > (unsigned long long )(obj->size - 4UL)) {
+> #line 1571
+14592,14593d14592
+< #line 1574
+<     drm_gem_object_unreference(target_obj);
+14595c14594
+<     i915_gem_object_unpin(obj);
+---
+>     drm_gem_object_unreference(target_obj);
+14596a14596,14597
+>     i915_gem_object_unpin(obj);
+> #line 1577
+14601,14602d14601
+< #line 1578
+<   if ((reloc.offset & 3ULL) != 0ULL) {
+14603a14603,14604
+>   if ((reloc.offset & 3ULL) != 0ULL) {
+> #line 1580
+14606,14607d14606
+< #line 1583
+<     drm_gem_object_unreference(target_obj);
+14609c14608
+<     i915_gem_object_unpin(obj);
+---
+>     drm_gem_object_unreference(target_obj);
+14610a14610,14611
+>     i915_gem_object_unpin(obj);
+> #line 1586
+14615c14616
+< #line 1588
+---
+> #line 1589
+14617c14618
+< #line 1590
+---
+> #line 1591
+14621,14622d14621
+< #line 1597
+<     drm_gem_object_unreference(target_obj);
+14624c14623
+<     i915_gem_object_unpin(obj);
+---
+>     drm_gem_object_unreference(target_obj);
+14625a14625,14626
+>     i915_gem_object_unpin(obj);
+> #line 1600
+14630,14631d14630
+< #line 1617
+<   target_obj->pending_read_domains = target_obj->pending_read_domains | reloc.read_domains;
+14632a14632,14633
+>   target_obj->pending_read_domains = target_obj->pending_read_domains | reloc.read_domains;
+> #line 1619
+14634,14635d14634
+< #line 1623
+<   if ((uint64_t )target_obj_priv->gtt_offset == reloc.presumed_offset) {
+14637c14636
+<     drm_gem_object_unreference(target_obj);
+---
+>   if ((uint64_t )target_obj_priv->gtt_offset == reloc.presumed_offset) {
+14639c14638,14640
+<     goto ldv_24233;
+---
+>     drm_gem_object_unreference(target_obj);
+> #line 1626
+>     goto ldv_24234;
+14643c14644
+< #line 1632
+---
+> #line 1633
+14645,14646d14645
+< #line 1637
+<   if ((int )obj->write_domain & 1) {
+14648c14647
+<     i915_gem_clflush_object(obj);
+---
+>   if ((int )obj->write_domain & 1) {
+14650c14649
+<     drm_agp_chipset_flush(dev);
+---
+>     i915_gem_clflush_object(obj);
+14651a14651,14652
+>     drm_agp_chipset_flush(dev);
+> #line 1641
+14656,14657d14656
+< #line 1646
+<   reloc_offset = obj_priv->gtt_offset + (uint32_t )reloc.offset;
+14658a14658,14659
+>   reloc_offset = obj_priv->gtt_offset + (uint32_t )reloc.offset;
+> #line 1648
+14660,14661d14660
+< #line 1650
+<     if ((unsigned long )reloc_page != (unsigned long )((void *)0)) {
+14662a14662,14663
+>     if ((unsigned long )reloc_page != (unsigned long )((void *)0)) {
+> #line 1652
+14667c14668
+< #line 1653
+---
+> #line 1654
+14670,14671d14670
+< #line 1657
+<     last_reloc_offset = reloc_offset;
+14673c14672
+<     if ((unsigned long )reloc_page == (unsigned long )((void *)0)) {
+---
+>     last_reloc_offset = reloc_offset;
+14675c14674
+<       drm_gem_object_unreference(target_obj);
+---
+>     if ((unsigned long )reloc_page == (unsigned long )((void *)0)) {
+14677c14676
+<       i915_gem_object_unpin(obj);
+---
+>       drm_gem_object_unreference(target_obj);
+14678a14678,14679
+>       i915_gem_object_unpin(obj);
+> #line 1662
+14686c14687
+< #line 1665
+---
+> #line 1666
+14688c14689
+< #line 1667
+---
+> #line 1668
+14690c14691
+< #line 1674
+---
+> #line 1675
+14692,14693d14692
+< #line 1679
+<   reloc.presumed_offset = (uint64_t )target_obj_priv->gtt_offset;
+14694a14694,14695
+>   reloc.presumed_offset = (uint64_t )target_obj_priv->gtt_offset;
+> #line 1681
+14697,14698d14697
+< #line 1680
+<   ret = (int )tmp___0;
+14700c14699
+<   if (ret != 0) {
+---
+>   ret = (int )tmp___0;
+14702c14701
+<     drm_gem_object_unreference(target_obj);
+---
+>   if (ret != 0) {
+14704c14703
+<     i915_gem_object_unpin(obj);
+---
+>     drm_gem_object_unreference(target_obj);
+14705a14705,14706
+>     i915_gem_object_unpin(obj);
+> #line 1685
+14710c14711
+< #line 1687
+---
+> #line 1688
+14712,14713c14713,14714
+<   ldv_24233: 
+< #line 1538
+---
+>   ldv_24234: 
+> #line 1539
+14715,14717c14716
+<   ldv_24235: ;
+< #line 1538
+<   if ((uint32_t )i < entry->relocation_count) {
+---
+>   ldv_24236: ;
+14719c14718,14720
+<     goto ldv_24234;
+---
+>   if ((uint32_t )i < entry->relocation_count) {
+> #line 1540
+>     goto ldv_24235;
+14724,14725d14724
+< #line 1690
+<   if ((unsigned long )reloc_page != (unsigned long )((void *)0)) {
+14726a14726,14727
+>   if ((unsigned long )reloc_page != (unsigned long )((void *)0)) {
+> #line 1692
+14731c14732
+< #line 1697
+---
+> #line 1698
+14735c14736
+< #line 1703 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1704 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14754,14755d14754
+< #line 1707
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+14756a14756,14757
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 1709
+14758,14759d14758
+< #line 1710
+<   nbox = (int )exec->num_cliprects;
+14760a14760,14761
+>   nbox = (int )exec->num_cliprects;
+> #line 1712
+14762,14763d14762
+< #line 1715
+<   exec_start = (unsigned int )exec_offset + exec->batch_start_offset;
+14764a14764,14765
+>   exec_start = (unsigned int )exec_offset + exec->batch_start_offset;
+> #line 1717
+14766,14767d14766
+< #line 1718
+<   if (((exec_start | exec_len) & 7U) != 0U) {
+14769c14768
+<     printk("<3>[drm:%s] *ERROR* alignment\n", "i915_dispatch_gem_execbuffer");
+---
+>   if (((exec_start | exec_len) & 7U) != 0U) {
+14770a14770,14771
+>     printk("<3>[drm:%s] *ERROR* alignment\n", "i915_dispatch_gem_execbuffer");
+> #line 1721
+14775,14776d14775
+< #line 1723
+<   if (exec_start == 0U) {
+14777a14777,14778
+>   if (exec_start == 0U) {
+> #line 1725
+14782c14783
+< #line 1726
+---
+> #line 1727
+14784c14785
+< #line 1728
+---
+> #line 1729
+14786,14788d14786
+< #line 1728
+<   goto ldv_24256;
+<   ldv_24255: ;
+14790c14788,14789
+<   if (i < nbox) {
+---
+>   goto ldv_24257;
+>   ldv_24256: ;
+14791a14791,14792
+>   if (i < nbox) {
+> #line 1731
+14793c14794
+< #line 1730
+---
+> #line 1731
+14795,14796d14795
+< #line 1732
+<     if (ret != 0) {
+14797a14797,14798
+>     if (ret != 0) {
+> #line 1734
+14805,14806d14805
+< #line 1736
+<   if (dev->pci_device == 13687 || dev->pci_device == 9570) {
+14807a14807,14808
+>   if (dev->pci_device == 13687 || dev->pci_device == 9570) {
+> #line 1738
+14809c14810
+< #line 1737
+---
+> #line 1738
+14814,14821d14814
+< #line 1737
+<     outcount = 0U;
+< #line 1737
+<     outring = (unsigned int )dev_priv->ring.tail;
+< #line 1737
+<     ringmask = (unsigned int )dev_priv->ring.tail_mask;
+< #line 1737
+<     virt = (char volatile   *)dev_priv->ring.virtual_start;
+14823c14816
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = 402653185U;
+---
+>     outcount = 0U;
+14825c14818
+<     outcount = outcount + 1U;
+---
+>     outring = (unsigned int )dev_priv->ring.tail;
+14827c14820
+<     outring = outring + 4U;
+---
+>     ringmask = (unsigned int )dev_priv->ring.tail_mask;
+14829c14822
+<     outring = outring & ringmask;
+---
+>     virt = (char volatile   *)dev_priv->ring.virtual_start;
+14831c14824
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = exec_start | 1U;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = 402653185U;
+14839c14832
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = (exec_start + exec_len) - 4U;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = exec_start | 1U;
+14847c14840
+<     *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = (exec_start + exec_len) - 4U;
+14855c14848
+<     dev_priv->ring.tail = (int )outring;
+---
+>     *((unsigned int volatile   *)virt + (unsigned long )outring) = 0U;
+14857c14850
+<     dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+---
+>     outcount = outcount + 1U;
+14858a14852,14859
+>     outring = outring + 4U;
+> #line 1742
+>     outring = outring & ringmask;
+> #line 1743
+>     dev_priv->ring.tail = (int )outring;
+> #line 1743
+>     dev_priv->ring.space = (int )((unsigned int )dev_priv->ring.space - outcount * 4U);
+> #line 1743
+14861c14862
+< #line 1744
+---
+> #line 1745
+14863c14864
+< #line 1744
+---
+> #line 1745
+14868c14869
+< #line 1744
+---
+> #line 1745
+14870c14871
+< #line 1744
+---
+> #line 1745
+14872c14873
+< #line 1744
+---
+> #line 1745
+14874,14875d14874
+< #line 1744
+<     virt = (char volatile   *)dev_priv->ring.virtual_start;
+14877c14876
+<     if (((((((((dev->pci_device == 10610 || dev->pci_device == 10626) || dev->pci_device == 10642) || dev->pci_device == 10658) || dev->pci_device == 10754) || dev->pci_device == 10770) || dev->pci_device == 10818) || dev->pci_device == 11778) || dev->pci_device == 11794) || dev->pci_device == 11810) {
+---
+>     virt = (char volatile   *)dev_priv->ring.virtual_start;
+14878a14878,14879
+>     if (((((((((dev->pci_device == 10610 || dev->pci_device == 10626) || dev->pci_device == 10642) || dev->pci_device == 10658) || dev->pci_device == 10754) || dev->pci_device == 10770) || dev->pci_device == 10818) || dev->pci_device == 11778) || dev->pci_device == 11794) || dev->pci_device == 11810) {
+> #line 1747
+14880c14881
+< #line 1746
+---
+> #line 1747
+14882c14883
+< #line 1746
+---
+> #line 1747
+14884c14885
+< #line 1746
+---
+> #line 1747
+14886c14887
+< #line 1749
+---
+> #line 1750
+14888c14889
+< #line 1749
+---
+> #line 1750
+14890c14891
+< #line 1749
+---
+> #line 1750
+14892c14893
+< #line 1749
+---
+> #line 1750
+14895c14896
+< #line 1751
+---
+> #line 1752
+14897c14898
+< #line 1751
+---
+> #line 1752
+14899c14900
+< #line 1751
+---
+> #line 1752
+14901c14902
+< #line 1751
+---
+> #line 1752
+14903c14904
+< #line 1753
+---
+> #line 1754
+14905c14906
+< #line 1753
+---
+> #line 1754
+14907c14908
+< #line 1753
+---
+> #line 1754
+14909c14910
+< #line 1753
+---
+> #line 1754
+14912c14913
+< #line 1755
+---
+> #line 1756
+14914c14915
+< #line 1755
+---
+> #line 1756
+14916c14917
+< #line 1755
+---
+> #line 1756
+14919c14920
+< #line 1728
+---
+> #line 1729
+14921,14923c14922
+<   ldv_24256: ;
+< #line 1728
+<   if (i < count) {
+---
+>   ldv_24257: ;
+14925c14924,14926
+<     goto ldv_24255;
+---
+>   if (i < count) {
+> #line 1730
+>     goto ldv_24256;
+14930c14931
+< #line 1760
+---
+> #line 1761
+14934c14935
+< #line 1770 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1771 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14942,14943d14942
+< #line 1772
+<   i915_file_priv = (struct drm_i915_file_private *)file_priv->driver_priv;
+14944a14944,14945
+>   i915_file_priv = (struct drm_i915_file_private *)file_priv->driver_priv;
+> #line 1774
+14946,14947d14946
+< #line 1776
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+14949c14948
+<   seqno = i915_file_priv->mm.last_gem_throttle_seqno;
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+14950a14950,14951
+>   seqno = i915_file_priv->mm.last_gem_throttle_seqno;
+> #line 1779
+14952,14953d14952
+< #line 1780
+<   if (seqno != 0U) {
+14954a14954,14955
+>   if (seqno != 0U) {
+> #line 1782
+14959,14960d14959
+< #line 1782
+<   mutex_unlock(& dev->struct_mutex);
+14961a14961,14962
+>   mutex_unlock(& dev->struct_mutex);
+> #line 1784
+14965c14966
+< #line 1787 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 1788 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+14991,14992d14991
+< #line 1790
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+14994c14993
+<   i915_file_priv = (struct drm_i915_file_private *)file_priv->driver_priv;
+---
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+14996c14995
+<   args = (struct drm_i915_gem_execbuffer *)data;
+---
+>   i915_file_priv = (struct drm_i915_file_private *)file_priv->driver_priv;
+14998c14997
+<   exec_list = 0;
+---
+>   args = (struct drm_i915_gem_execbuffer *)data;
+14999a14999,15000
+>   exec_list = 0;
+> #line 1795
+15001c15002
+< #line 1796
+---
+> #line 1797
+15003,15004d15003
+< #line 1805
+<   if (args->buffer_count == 0U) {
+15005a15005,15006
+>   if (args->buffer_count == 0U) {
+> #line 1807
+15008c15009
+< #line 1807
+---
+> #line 1808
+15013c15014
+< #line 1810
+---
+> #line 1811
+15015c15016
+< #line 1810
+---
+> #line 1811
+15017c15018
+< #line 1812
+---
+> #line 1813
+15019c15020
+< #line 1812
+---
+> #line 1813
+15021,15022d15021
+< #line 1814
+<   if ((unsigned long )exec_list == (unsigned long )((struct drm_i915_gem_exec_object *)0) || (unsigned long )object_list == (unsigned long )((struct drm_gem_object **)0)) {
+15023a15023,15024
+>   if ((unsigned long )exec_list == (unsigned long )((struct drm_i915_gem_exec_object *)0) || (unsigned long )object_list == (unsigned long )((struct drm_gem_object **)0)) {
+> #line 1816
+15026,15027d15026
+< #line 1818
+<     ret = -12;
+15028a15028,15029
+>     ret = -12;
+> #line 1820
+15033c15034
+< #line 1821
+---
+> #line 1822
+15035c15036
+< #line 1821
+---
+> #line 1822
+15037,15038d15037
+< #line 1825
+<   if (ret != 0) {
+15039a15039,15040
+>   if (ret != 0) {
+> #line 1827
+15042c15043
+< #line 1828
+---
+> #line 1829
+15047c15048
+< #line 1831
+---
+> #line 1832
+15049,15050d15049
+< #line 1835
+<   if (dev_priv->mm.wedged != 0) {
+15052c15051
+<     printk("<3>[drm:%s] *ERROR* Execbuf while wedged\n", "i915_gem_execbuffer");
+---
+>   if (dev_priv->mm.wedged != 0) {
+15054c15053
+<     mutex_unlock(& dev->struct_mutex);
+---
+>     printk("<3>[drm:%s] *ERROR* Execbuf while wedged\n", "i915_gem_execbuffer");
+15055a15055,15056
+>     mutex_unlock(& dev->struct_mutex);
+> #line 1839
+15060,15061d15060
+< #line 1841
+<   if (dev_priv->mm.suspended != 0) {
+15063c15062
+<     printk("<3>[drm:%s] *ERROR* Execbuf while VT-switched.\n", "i915_gem_execbuffer");
+---
+>   if (dev_priv->mm.suspended != 0) {
+15065c15064
+<     mutex_unlock(& dev->struct_mutex);
+---
+>     printk("<3>[drm:%s] *ERROR* Execbuf while VT-switched.\n", "i915_gem_execbuffer");
+15066a15066,15067
+>     mutex_unlock(& dev->struct_mutex);
+> #line 1845
+15071,15072d15071
+< #line 1851
+<   dev->invalidate_domains = 0U;
+15073a15073,15074
+>   dev->invalidate_domains = 0U;
+> #line 1853
+15075c15076
+< #line 1855
+---
+> #line 1856
+15077,15079d15077
+< #line 1855
+<   goto ldv_24287;
+<   ldv_24286: 
+15080a15079,15081
+>   goto ldv_24288;
+>   ldv_24287: 
+> #line 1857
+15082,15083d15082
+< #line 1858
+<   if ((unsigned long )*(object_list + (unsigned long )i) == (unsigned long )((struct drm_gem_object *)0)) {
+15084a15084,15085
+>   if ((unsigned long )*(object_list + (unsigned long )i) == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 1860
+15087,15088d15087
+< #line 1861
+<     ret = -9;
+15089a15089,15090
+>     ret = -9;
+> #line 1863
+15094,15095d15094
+< #line 1865
+<   (*(object_list + (unsigned long )i))->pending_read_domains = 0U;
+15097c15096
+<   (*(object_list + (unsigned long )i))->pending_write_domain = 0U;
+---
+>   (*(object_list + (unsigned long )i))->pending_read_domains = 0U;
+15098a15098,15099
+>   (*(object_list + (unsigned long )i))->pending_write_domain = 0U;
+> #line 1868
+15101,15102d15101
+< #line 1870
+<   if (ret != 0) {
+15103a15103,15104
+>   if (ret != 0) {
+> #line 1872
+15106c15107
+< #line 1872
+---
+> #line 1873
+15111c15112
+< #line 1874
+---
+> #line 1875
+15113c15114
+< #line 1855
+---
+> #line 1856
+15115,15117c15116
+<   ldv_24287: ;
+< #line 1855
+<   if ((uint32_t )i < args->buffer_count) {
+---
+>   ldv_24288: ;
+15119c15118,15120
+<     goto ldv_24286;
+---
+>   if ((uint32_t )i < args->buffer_count) {
+> #line 1857
+>     goto ldv_24287;
+15123,15124d15123
+< #line 1878
+<   batch_obj = *(object_list + (unsigned long )(args->buffer_count - 1U));
+15126c15125
+<   batch_obj->pending_read_domains = 8U;
+---
+>   batch_obj = *(object_list + (unsigned long )(args->buffer_count - 1U));
+15127a15127,15128
+>   batch_obj->pending_read_domains = 8U;
+> #line 1881
+15129c15130
+< #line 1884
+---
+> #line 1885
+15131,15133d15131
+< #line 1884
+<   goto ldv_24292;
+<   ldv_24291: 
+15135c15133,15134
+<   obj = *(object_list + (unsigned long )i);
+---
+>   goto ldv_24293;
+>   ldv_24292: 
+15136a15136,15137
+>   obj = *(object_list + (unsigned long )i);
+> #line 1887
+15138c15139
+< #line 1888
+---
+> #line 1889
+15140,15141d15140
+< #line 1894
+<     ret = -12;
+15142a15142,15143
+>     ret = -12;
+> #line 1896
+15147c15148
+< #line 1899
+---
+> #line 1900
+15149,15150d15149
+< #line 1902
+<   if (ret != 0) {
+15151a15151,15152
+>   if (ret != 0) {
+> #line 1904
+15156c15157
+< #line 1884
+---
+> #line 1885
+15158,15160c15159
+<   ldv_24292: ;
+< #line 1884
+<   if ((uint32_t )i < args->buffer_count) {
+---
+>   ldv_24293: ;
+15162c15161,15163
+<     goto ldv_24291;
+---
+>   if ((uint32_t )i < args->buffer_count) {
+> #line 1886
+>     goto ldv_24292;
+15166c15167
+< #line 1909
+---
+> #line 1910
+15168c15169
+< #line 1920
+---
+> #line 1921
+15170c15171
+< #line 1929
+---
+> #line 1930
+15172,15173d15172
+< #line 1932
+<   ret = i915_dispatch_gem_execbuffer(dev, args, exec_offset);
+15175c15174
+<   if (ret != 0) {
+---
+>   ret = i915_dispatch_gem_execbuffer(dev, args, exec_offset);
+15177c15176
+<     printk("<3>[drm:%s] *ERROR* dispatch failed %d\n", "i915_gem_execbuffer", ret);
+---
+>   if (ret != 0) {
+15178a15178,15179
+>     printk("<3>[drm:%s] *ERROR* dispatch failed %d\n", "i915_gem_execbuffer", ret);
+> #line 1936
+15183c15184
+< #line 1942
+---
+> #line 1943
+15185,15186d15185
+< #line 1953
+<   seqno = i915_add_request(dev, flush_domains);
+15187a15187,15188
+>   seqno = i915_add_request(dev, flush_domains);
+> #line 1955
+15189c15190
+< #line 1954
+---
+> #line 1955
+15191c15192
+< #line 1954
+---
+> #line 1955
+15193,15196c15194,15197
+<                          "i" (1954), "i" (24UL));
+<     ldv_24294: ;
+< #line 1954
+<     goto ldv_24294;
+---
+>                          "i" (1955), "i" (24UL));
+>     ldv_24295: ;
+> #line 1955
+>     goto ldv_24295;
+15200,15201d15200
+< #line 1955
+<   i915_file_priv->mm.last_gem_seqno = seqno;
+15202a15202,15203
+>   i915_file_priv->mm.last_gem_seqno = seqno;
+> #line 1957
+15204,15206d15204
+< #line 1956
+<   goto ldv_24298;
+<   ldv_24297: 
+15208c15206,15207
+<   obj___0 = *(object_list + (unsigned long )i);
+---
+>   goto ldv_24299;
+>   ldv_24298: 
+15209a15209,15210
+>   obj___0 = *(object_list + (unsigned long )i);
+> #line 1959
+15211,15212d15211
+< #line 1960
+<   i915_gem_object_move_to_active(obj___0);
+15213a15213,15214
+>   i915_gem_object_move_to_active(obj___0);
+> #line 1962
+15215c15216
+< #line 1956
+---
+> #line 1957
+15217,15219c15218
+<   ldv_24298: ;
+< #line 1956
+<   if ((uint32_t )i < args->buffer_count) {
+---
+>   ldv_24299: ;
+15221c15220,15222
+<     goto ldv_24297;
+---
+>   if ((uint32_t )i < args->buffer_count) {
+> #line 1958
+>     goto ldv_24298;
+15225c15226
+< #line 1973
+---
+> #line 1974
+15227c15228
+< #line 1973
+---
+> #line 1974
+15229,15230d15229
+< #line 1977
+<   if (ret != 0) {
+15231a15231,15232
+>   if (ret != 0) {
+> #line 1979
+15238,15239d15238
+< #line 1982
+<   if ((unsigned long )object_list != (unsigned long )((struct drm_gem_object **)0)) {
+15240a15240,15241
+>   if ((unsigned long )object_list != (unsigned long )((struct drm_gem_object **)0)) {
+> #line 1984
+15242,15244d15242
+< #line 1983
+<     goto ldv_24301;
+<     ldv_24300: 
+15245a15244,15246
+>     goto ldv_24302;
+>     ldv_24301: 
+> #line 1985
+15247c15248
+< #line 1983
+---
+> #line 1984
+15249,15251c15250
+<     ldv_24301: ;
+< #line 1983
+<     if (i < pinned) {
+---
+>     ldv_24302: ;
+15253c15252,15254
+<       goto ldv_24300;
+---
+>     if (i < pinned) {
+> #line 1985
+>       goto ldv_24301;
+15257c15258
+< #line 1986
+---
+> #line 1987
+15259,15261d15259
+< #line 1986
+<     goto ldv_24304;
+<     ldv_24303: 
+15262a15261,15263
+>     goto ldv_24305;
+>     ldv_24304: 
+> #line 1988
+15264c15265
+< #line 1986
+---
+> #line 1987
+15266,15268c15267
+<     ldv_24304: ;
+< #line 1986
+<     if ((uint32_t )i < args->buffer_count) {
+---
+>     ldv_24305: ;
+15270c15269,15271
+<       goto ldv_24303;
+---
+>     if ((uint32_t )i < args->buffer_count) {
+> #line 1988
+>       goto ldv_24304;
+15278c15279
+< #line 1989
+---
+> #line 1990
+15281c15282
+< #line 1992
+---
+> #line 1993
+15283c15284
+< #line 1994
+---
+> #line 1995
+15285c15286
+< #line 1997
+---
+> #line 1998
+15289c15290
+< #line 2001 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2002 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15298,15299d15298
+< #line 2003
+<   dev = obj->dev;
+15300a15300,15301
+>   dev = obj->dev;
+> #line 2005
+15302,15303d15302
+< #line 2008
+<   if ((unsigned long )obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+15305c15304
+<     ret = i915_gem_object_bind_to_gtt(obj, alignment);
+---
+>   if ((unsigned long )obj_priv->gtt_space == (unsigned long )((struct drm_mm_node *)0)) {
+15307c15306
+<     if (ret != 0) {
+---
+>     ret = i915_gem_object_bind_to_gtt(obj, alignment);
+15309c15308
+<       printk("<3>[drm:%s] *ERROR* Failure to bind: %d", "i915_gem_object_pin", ret);
+---
+>     if (ret != 0) {
+15310a15310,15311
+>       printk("<3>[drm:%s] *ERROR* Failure to bind: %d", "i915_gem_object_pin", ret);
+> #line 2013
+15318c15319
+< #line 2015
+---
+> #line 2016
+15320,15321d15320
+< #line 2020
+<   if (obj_priv->pin_count == 1) {
+15323c15322
+<     atomic_inc(& dev->pin_count);
+---
+>   if (obj_priv->pin_count == 1) {
+15325c15324
+<     atomic_add((int )obj->size, & dev->pin_memory);
+---
+>     atomic_inc(& dev->pin_count);
+15326a15326,15327
+>     atomic_add((int )obj->size, & dev->pin_memory);
+> #line 2024
+15328c15329
+< #line 2023
+---
+> #line 2024
+15330c15331
+< #line 2023
+---
+> #line 2024
+15332c15333
+< #line 2027
+---
+> #line 2028
+15343c15344
+< #line 2031
+---
+> #line 2032
+15347c15348
+< #line 2035 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2036 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15357,15358d15357
+< #line 2037
+<   dev = obj->dev;
+15360c15359
+<   dev_priv = (drm_i915_private_t *)dev->dev_private;
+---
+>   dev = obj->dev;
+15361a15361,15362
+>   dev_priv = (drm_i915_private_t *)dev->dev_private;
+> #line 2040
+15363,15364d15363
+< #line 2042
+<   obj_priv->pin_count = obj_priv->pin_count - 1;
+15365a15365,15366
+>   obj_priv->pin_count = obj_priv->pin_count - 1;
+> #line 2044
+15367c15368
+< #line 2043
+---
+> #line 2044
+15369c15370
+< #line 2043
+---
+> #line 2044
+15371,15374c15372,15375
+<                          "i" (2043), "i" (24UL));
+<     ldv_24320: ;
+< #line 2043
+<     goto ldv_24320;
+---
+>                          "i" (2044), "i" (24UL));
+>     ldv_24321: ;
+> #line 2044
+>     goto ldv_24321;
+15378c15379
+< #line 2044
+---
+> #line 2045
+15381c15382
+< #line 2044
+---
+> #line 2045
+15383c15384
+< #line 2044
+---
+> #line 2045
+15385,15388c15386,15389
+<                          "i" (2044), "i" (24UL));
+<     ldv_24321: ;
+< #line 2044
+<     goto ldv_24321;
+---
+>                          "i" (2045), "i" (24UL));
+>     ldv_24322: ;
+> #line 2045
+>     goto ldv_24322;
+15392,15393d15392
+< #line 2050
+<   if (obj_priv->pin_count == 0) {
+15394a15394,15395
+>   if (obj_priv->pin_count == 0) {
+> #line 2052
+15396c15397
+< #line 2054
+---
+> #line 2055
+15401,15402d15401
+< #line 2056
+<     atomic_dec(& dev->pin_count);
+15403a15403,15404
+>     atomic_dec(& dev->pin_count);
+> #line 2058
+15408c15409
+< #line 2059
+---
+> #line 2060
+15412c15413
+< #line 2063 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2064 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15421c15422
+< #line 2066
+---
+> #line 2067
+15423c15424
+< #line 2071
+---
+> #line 2072
+15425,15426d15425
+< #line 2073
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+15428c15427
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+15429a15429,15430
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 2076
+15432,15433d15432
+< #line 2077
+<     mutex_unlock(& dev->struct_mutex);
+15434a15434,15435
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2079
+15439c15440
+< #line 2080
+---
+> #line 2081
+15441,15442d15441
+< #line 2082
+<   ret = i915_gem_object_pin(obj, (uint32_t )args->alignment);
+15444c15443
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, (uint32_t )args->alignment);
+15446c15445
+<     drm_gem_object_unreference(obj);
+---
+>   if (ret != 0) {
+15448c15447
+<     mutex_unlock(& dev->struct_mutex);
+---
+>     drm_gem_object_unreference(obj);
+15449a15449,15450
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2087
+15454,15455d15454
+< #line 2092
+<   if ((int )obj->write_domain & 1) {
+15457c15456
+<     i915_gem_clflush_object(obj);
+---
+>   if ((int )obj->write_domain & 1) {
+15459c15458
+<     drm_agp_chipset_flush(dev);
+---
+>     i915_gem_clflush_object(obj);
+15460a15460,15461
+>     drm_agp_chipset_flush(dev);
+> #line 2096
+15465,15466d15465
+< #line 2097
+<   args->offset = (uint64_t )obj_priv->gtt_offset;
+15468c15467
+<   drm_gem_object_unreference(obj);
+---
+>   args->offset = (uint64_t )obj_priv->gtt_offset;
+15469a15469,15470
+>   drm_gem_object_unreference(obj);
+> #line 2100
+15471c15472
+< #line 2101
+---
+> #line 2102
+15475c15476
+< #line 2105 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2106 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15482c15483
+< #line 2108
+---
+> #line 2109
+15484c15485
+< #line 2111
+---
+> #line 2112
+15486,15487d15486
+< #line 2113
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+15489c15488
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+15490a15490,15491
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 2116
+15493,15494d15493
+< #line 2117
+<     mutex_unlock(& dev->struct_mutex);
+15495a15495,15496
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2119
+15500c15501
+< #line 2121
+---
+> #line 2122
+15502,15503d15502
+< #line 2123
+<   drm_gem_object_unreference(obj);
+15505c15504
+<   mutex_unlock(& dev->struct_mutex);
+---
+>   drm_gem_object_unreference(obj);
+15506a15506,15507
+>   mutex_unlock(& dev->struct_mutex);
+> #line 2126
+15510c15511
+< #line 2129 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2130 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15518c15519
+< #line 2132
+---
+> #line 2133
+15520,15521d15520
+< #line 2136
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+15523c15522
+<   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+15525c15524
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_lookup(dev, file_priv, (int )args->handle);
+15526a15526,15527
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 2140
+15529,15530d15529
+< #line 2141
+<     mutex_unlock(& dev->struct_mutex);
+15531a15531,15532
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2143
+15536,15537d15536
+< #line 2145
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+15538a15538,15539
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+> #line 2147
+15540,15541d15540
+< #line 2148
+<   drm_gem_object_unreference(obj);
+15543c15542
+<   mutex_unlock(& dev->struct_mutex);
+---
+>   drm_gem_object_unreference(obj);
+15544a15544,15545
+>   mutex_unlock(& dev->struct_mutex);
+> #line 2151
+15548c15549
+< #line 2154 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2155 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15554c15555
+< #line 2157
+---
+> #line 2158
+15556c15557
+< #line 2157
+---
+> #line 2158
+15560c15561
+< #line 2160 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2161 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15567c15568
+< #line 2164
+---
+> #line 2165
+15569,15570d15569
+< #line 2164
+<   obj_priv = (struct drm_i915_gem_object *)tmp;
+15572c15571
+<   if ((unsigned long )obj_priv == (unsigned long )((struct drm_i915_gem_object *)0)) {
+---
+>   obj_priv = (struct drm_i915_gem_object *)tmp;
+15573a15573,15574
+>   if ((unsigned long )obj_priv == (unsigned long )((struct drm_i915_gem_object *)0)) {
+> #line 2167
+15578,15579d15578
+< #line 2174
+<   obj->write_domain = 1U;
+15580a15580,15581
+>   obj->write_domain = 1U;
+> #line 2176
+15582c15583
+< #line 2177
+---
+> #line 2178
+15584,15585d15584
+< #line 2179
+<   obj->driver_private = (void *)obj_priv;
+15587c15586
+<   obj_priv->obj = obj;
+---
+>   obj->driver_private = (void *)obj_priv;
+15589c15588
+<   INIT_LIST_HEAD(& obj_priv->list);
+---
+>   obj_priv->obj = obj;
+15590a15590,15591
+>   INIT_LIST_HEAD(& obj_priv->list);
+> #line 2183
+15594c15595
+< #line 2185 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2186 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15600c15601
+< #line 2187
+---
+> #line 2188
+15602,15604d15602
+< #line 2189
+<   goto ldv_24363;
+<   ldv_24362: 
+15605a15604,15606
+>   goto ldv_24364;
+>   ldv_24363: 
+> #line 2191
+15607,15609c15608
+<   ldv_24363: ;
+< #line 2189
+<   if (obj_priv->pin_count > 0) {
+---
+>   ldv_24364: ;
+15611c15610,15612
+<     goto ldv_24362;
+---
+>   if (obj_priv->pin_count > 0) {
+> #line 2191
+>     goto ldv_24363;
+15615c15616
+< #line 2192
+---
+> #line 2193
+15617,15618d15617
+< #line 2194
+<   drm_free((void *)obj_priv->page_cpu_valid, 1UL, 2);
+15620c15619
+<   drm_free(obj->driver_private, 1UL, 2);
+---
+>   drm_free((void *)obj_priv->page_cpu_valid, 1UL, 2);
+15621a15621,15622
+>   drm_free(obj->driver_private, 1UL, 2);
+> #line 2197
+15625c15626
+< #line 2199 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2200 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15636c15637
+< #line 2204
+---
+> #line 2205
+15638c15639
+< #line 2208
+---
+> #line 2209
+15640c15641
+< #line 2208
+---
+> #line 2209
+15642c15643
+< #line 2208
+---
+> #line 2209
+15644c15645
+< #line 2208
+---
+> #line 2209
+15646,15649c15647,15650
+<                          "i" (2208), "i" (24UL));
+<     ldv_24374: ;
+< #line 2208
+<     goto ldv_24374;
+---
+>                          "i" (2209), "i" (24UL));
+>     ldv_24375: ;
+> #line 2209
+>     goto ldv_24375;
+15653,15654d15653
+< #line 2210
+<   ret = i915_gem_object_set_domain(obj, read_domains, write_domain);
+15656c15655
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_set_domain(obj, read_domains, write_domain);
+15657a15657,15658
+>   if (ret != 0) {
+> #line 2213
+15662c15663
+< #line 2213
+---
+> #line 2214
+15664,15665d15664
+< #line 2215
+<   if ((flush_domains & 4294967230U) != 0U) {
+15666a15666,15667
+>   if ((flush_domains & 4294967230U) != 0U) {
+> #line 2217
+15671c15672
+< #line 2218
+---
+> #line 2219
+15675c15676
+< #line 2223 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2224 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15685,15687d15685
+< #line 2229
+<   goto ldv_24386;
+<   ldv_24385: 
+15688a15687,15689
+>   goto ldv_24387;
+>   ldv_24386: 
+> #line 2231
+15690c15691
+< #line 2230
+---
+> #line 2231
+15692c15693
+< #line 2233
+---
+> #line 2234
+15694,15695d15694
+< #line 2235
+<   if (obj_priv->pin_count != 0) {
+15697c15696
+<     printk("<3>[drm:%s] *ERROR* Pinned object in unbind list\n", "i915_gem_evict_from_list");
+---
+>   if (obj_priv->pin_count != 0) {
+15699c15698
+<     mutex_unlock(& dev->struct_mutex);
+---
+>     printk("<3>[drm:%s] *ERROR* Pinned object in unbind list\n", "i915_gem_evict_from_list");
+15700a15700,15701
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2239
+15705,15706d15705
+< #line 2241
+<   ret = i915_gem_object_unbind(obj);
+15708c15707
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_unbind(obj);
+15709a15709,15710
+>   if (ret != 0) {
+> #line 2244
+15712,15713d15712
+< #line 2245
+<     mutex_unlock(& dev->struct_mutex);
+15714a15714,15715
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2247
+15719,15720c15720,15721
+<   ldv_24386: 
+< #line 2229
+---
+>   ldv_24387: 
+> #line 2230
+15722,15723d15722
+< #line 2229
+<   if (tmp == 0) {
+15725c15724,15726
+<     goto ldv_24385;
+---
+>   if (tmp == 0) {
+> #line 2231
+>     goto ldv_24386;
+15730c15731
+< #line 2251
+---
+> #line 2252
+15734c15735
+< #line 2255 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2256 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15761c15762
+< #line 2257
+---
+> #line 2258
+15763c15764
+< #line 2261
+---
+> #line 2262
+15765,15766d15765
+< #line 2263
+<   if (dev_priv->mm.suspended != 0 || (unsigned long )dev_priv->ring.ring_obj == (unsigned long )((struct drm_gem_object *)0)) {
+15768c15767
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if (dev_priv->mm.suspended != 0 || (unsigned long )dev_priv->ring.ring_obj == (unsigned long )((struct drm_gem_object *)0)) {
+15769a15769,15770
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2266
+15774c15775
+< #line 2271
+---
+> #line 2272
+15776,15777d15776
+< #line 2275
+<   mutex_unlock(& dev->struct_mutex);
+15779c15778
+<   cancel_delayed_work_sync(& dev_priv->mm.retire_work);
+---
+>   mutex_unlock(& dev->struct_mutex);
+15780a15780,15781
+>   cancel_delayed_work_sync(& dev_priv->mm.retire_work);
+> #line 2278
+15782c15783
+< #line 2279
+---
+> #line 2280
+15784c15785
+< #line 2283
+---
+> #line 2284
+15786c15787
+< #line 2285
+---
+> #line 2286
+15788,15789d15788
+< #line 2288
+<   if (seqno == 0U) {
+15791c15790
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if (seqno == 0U) {
+15792a15792,15793
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2291
+15797,15798d15797
+< #line 2293
+<   dev_priv->mm.waiting_gem_seqno = seqno;
+15800c15799
+<   last_seqno = 0U;
+---
+>   dev_priv->mm.waiting_gem_seqno = seqno;
+15801a15801,15802
+>   last_seqno = 0U;
+> #line 2296
+15803,15805c15804
+<   ldv_24399: 
+< #line 2297
+<   cur_seqno = i915_get_gem_seqno(dev);
+---
+>   ldv_24400: 
+15806a15806,15807
+>   cur_seqno = i915_get_gem_seqno(dev);
+> #line 2299
+15808,15809d15808
+< #line 2298
+<   if (tmp != 0) {
+15811c15810,15812
+<     goto ldv_24397;
+---
+>   if (tmp != 0) {
+> #line 2300
+>     goto ldv_24398;
+15815,15816d15815
+< #line 2300
+<   if (last_seqno == cur_seqno) {
+15817a15817,15818
+>   if (last_seqno == cur_seqno) {
+> #line 2302
+15819c15820
+< #line 2301
+---
+> #line 2302
+15821,15822d15821
+< #line 2301
+<     if (tmp___0 > 100) {
+15824c15823
+<       printk("<3>[drm:%s] *ERROR* hardware wedged\n", "i915_gem_idle");
+---
+>     if (tmp___0 > 100) {
+15826c15825
+<       dev_priv->mm.wedged = 1;
+---
+>       printk("<3>[drm:%s] *ERROR* hardware wedged\n", "i915_gem_idle");
+15828c15827
+<       __wake_up(& dev_priv->irq_queue, 1U, 1, 0);
+---
+>       dev_priv->mm.wedged = 1;
+15830c15829,15831
+<       goto ldv_24397;
+---
+>       __wake_up(& dev_priv->irq_queue, 1U, 1, 0);
+> #line 2306
+>       goto ldv_24398;
+15837,15838d15837
+< #line 2308
+<   msleep(10U);
+15840c15839
+<   last_seqno = cur_seqno;
+---
+>   msleep(10U);
+15842,15843c15841
+<   goto ldv_24399;
+<   ldv_24397: 
+---
+>   last_seqno = cur_seqno;
+15844a15843,15845
+>   goto ldv_24400;
+>   ldv_24398: 
+> #line 2312
+15846c15847
+< #line 2313
+---
+> #line 2314
+15848c15849
+< #line 2318
+---
+> #line 2319
+15850c15851
+< #line 2318
+---
+> #line 2319
+15852c15853
+< #line 2318
+---
+> #line 2319
+15854c15855
+< #line 2318
+---
+> #line 2319
+15856,15859c15857,15860
+<                          "i" (2318), "i" (24UL));
+<     ldv_24400: ;
+< #line 2318
+<     goto ldv_24400;
+---
+>                          "i" (2319), "i" (24UL));
+>     ldv_24401: ;
+> #line 2319
+>     goto ldv_24401;
+15863c15864
+< #line 2319
+---
+> #line 2320
+15865c15866
+< #line 2319
+---
+> #line 2320
+15867c15868
+< #line 2319
+---
+> #line 2320
+15869c15870
+< #line 2319
+---
+> #line 2320
+15871,15874c15872,15875
+<                          "i" (2319), "i" (24UL));
+<     ldv_24401: ;
+< #line 2319
+<     goto ldv_24401;
+---
+>                          "i" (2320), "i" (24UL));
+>     ldv_24402: ;
+> #line 2320
+>     goto ldv_24402;
+15878c15879
+< #line 2324
+---
+> #line 2325
+15880c15881
+< #line 2324
+---
+> #line 2325
+15882c15883
+< #line 2324
+---
+> #line 2325
+15884c15885
+< #line 2324
+---
+> #line 2325
+15886,15889c15887,15890
+<                          "i" (2324), "i" (24UL));
+<     ldv_24402: ;
+< #line 2324
+<     goto ldv_24402;
+---
+>                          "i" (2325), "i" (24UL));
+>     ldv_24403: ;
+> #line 2325
+>     goto ldv_24403;
+15893,15894d15893
+< #line 2327
+<   ret = i915_gem_evict_from_list(dev, & dev_priv->mm.inactive_list);
+15896c15895
+<   if (ret != 0) {
+---
+>   ret = i915_gem_evict_from_list(dev, & dev_priv->mm.inactive_list);
+15898c15897
+<     mutex_unlock(& dev->struct_mutex);
+---
+>   if (ret != 0) {
+15899a15899,15900
+>     mutex_unlock(& dev->struct_mutex);
+> #line 2331
+15904,15918d15904
+< #line 2333
+<   tmp___7 = list_empty((struct list_head  const  *)(& dev_priv->mm.active_list));
+< #line 2333
+<   tmp___8 = __builtin_expect(tmp___7 == 0, 0L);
+< #line 2333
+<   if (tmp___8 != 0L) {
+< #line 2333
+<     __asm__  volatile   ("1:\tud2\n.pushsection __bug_table,\"a\"\n2:\t.quad 1b, %c0\n\t.word %c1, 0\n\t.org 2b+%c2\n.popsection": : "i" ((char *)"/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"),
+<                          "i" (2333), "i" (24UL));
+<     ldv_24403: ;
+< #line 2333
+<     goto ldv_24403;
+<   } else {
+< 
+<   }
+15920c15906
+<   tmp___9 = list_empty((struct list_head  const  *)(& dev_priv->mm.flushing_list));
+---
+>   tmp___7 = list_empty((struct list_head  const  *)(& dev_priv->mm.active_list));
+15922c15908
+<   tmp___10 = __builtin_expect(tmp___9 == 0, 0L);
+---
+>   tmp___8 = __builtin_expect(tmp___7 == 0, 0L);
+15924c15910
+<   if (tmp___10 != 0L) {
+---
+>   if (tmp___8 != 0L) {
+15935c15921
+<   tmp___11 = list_empty((struct list_head  const  *)(& dev_priv->mm.inactive_list));
+---
+>   tmp___9 = list_empty((struct list_head  const  *)(& dev_priv->mm.flushing_list));
+15937c15923
+<   tmp___12 = __builtin_expect(tmp___11 == 0, 0L);
+---
+>   tmp___10 = __builtin_expect(tmp___9 == 0, 0L);
+15939c15925
+<   if (tmp___12 != 0L) {
+---
+>   if (tmp___10 != 0L) {
+15950c15936
+<   tmp___13 = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+---
+>   tmp___11 = list_empty((struct list_head  const  *)(& dev_priv->mm.inactive_list));
+15952c15938
+<   tmp___14 = __builtin_expect(tmp___13 == 0, 0L);
+---
+>   tmp___12 = __builtin_expect(tmp___11 == 0, 0L);
+15954c15940
+<   if (tmp___14 != 0L) {
+---
+>   if (tmp___12 != 0L) {
+15964,15965c15950,15964
+< #line 2338
+<   i915_gem_cleanup_ringbuffer(dev);
+---
+> #line 2337
+>   tmp___13 = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+> #line 2337
+>   tmp___14 = __builtin_expect(tmp___13 == 0, 0L);
+> #line 2337
+>   if (tmp___14 != 0L) {
+> #line 2337
+>     __asm__  volatile   ("1:\tud2\n.pushsection __bug_table,\"a\"\n2:\t.quad 1b, %c0\n\t.word %c1, 0\n\t.org 2b+%c2\n.popsection": : "i" ((char *)"/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"),
+>                          "i" (2337), "i" (24UL));
+>     ldv_24407: ;
+> #line 2337
+>     goto ldv_24407;
+>   } else {
+> 
+>   }
+15966a15966,15967
+>   i915_gem_cleanup_ringbuffer(dev);
+> #line 2340
+15968c15969
+< #line 2341
+---
+> #line 2342
+15972c15973
+< #line 2345 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2346 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+15981c15982
+< #line 2347
+---
+> #line 2348
+15983,15984d15983
+< #line 2355
+<   if ((((dev->pci_device != 10690 && dev->pci_device != 10674) && dev->pci_device != 10706) && dev->pci_device != 10818) && ((dev->pci_device != 11778 && dev->pci_device != 11794) && dev->pci_device != 11810)) {
+15985a15985,15986
+>   if ((((dev->pci_device != 10690 && dev->pci_device != 10674) && dev->pci_device != 10706) && dev->pci_device != 10818) && ((dev->pci_device != 11778 && dev->pci_device != 11794) && dev->pci_device != 11810)) {
+> #line 2357
+15990,15991d15990
+< #line 2358
+<   obj = drm_gem_object_alloc(dev, 4096UL);
+15993c15992
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_alloc(dev, 4096UL);
+15995c15994
+<     printk("<3>[drm:%s] *ERROR* Failed to allocate status page\n", "i915_gem_init_hws");
+---
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+15996a15996,15997
+>     printk("<3>[drm:%s] *ERROR* Failed to allocate status page\n", "i915_gem_init_hws");
+> #line 2362
+16001,16002d16001
+< #line 2363
+<   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+16003a16003,16004
+>   obj_priv = (struct drm_i915_gem_object *)obj->driver_private;
+> #line 2365
+16005,16006d16005
+< #line 2366
+<   ret = i915_gem_object_pin(obj, 4096U);
+16008c16007
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, 4096U);
+16010c16009
+<     drm_gem_object_unreference(obj);
+---
+>   if (ret != 0) {
+16011a16011,16012
+>     drm_gem_object_unreference(obj);
+> #line 2370
+16016c16017
+< #line 2372
+---
+> #line 2373
+16018,16019d16018
+< #line 2374
+<   dev_priv->hw_status_page = kmap(*(obj_priv->page_list));
+16021c16020
+<   if ((unsigned long )dev_priv->hw_status_page == (unsigned long )((void *)0)) {
+---
+>   dev_priv->hw_status_page = kmap(*(obj_priv->page_list));
+16023c16022
+<     printk("<3>[drm:%s] *ERROR* Failed to map status page.\n", "i915_gem_init_hws");
+---
+>   if ((unsigned long )dev_priv->hw_status_page == (unsigned long )((void *)0)) {
+16025c16024
+<     memset((void *)(& dev_priv->hws_map), 0, 40UL);
+---
+>     printk("<3>[drm:%s] *ERROR* Failed to map status page.\n", "i915_gem_init_hws");
+16027c16026
+<     drm_gem_object_unreference(obj);
+---
+>     memset((void *)(& dev_priv->hws_map), 0, 40UL);
+16028a16028,16029
+>     drm_gem_object_unreference(obj);
+> #line 2380
+16033,16034d16033
+< #line 2381
+<   dev_priv->hws_obj = obj;
+16036c16035
+<   memset(dev_priv->hw_status_page, 0, 4096UL);
+---
+>   dev_priv->hws_obj = obj;
+16038c16037
+<   writel(dev_priv->status_gfx_addr, (void volatile   *)dev_priv->regs + 8320U);
+---
+>   memset(dev_priv->hw_status_page, 0, 4096UL);
+16040c16039
+<   readl((void const volatile   *)dev_priv->regs + 8320U);
+---
+>   writel(dev_priv->status_gfx_addr, (void volatile   *)dev_priv->regs + 8320U);
+16041a16041,16042
+>   readl((void const volatile   *)dev_priv->regs + 8320U);
+> #line 2386
+16043c16044
+< #line 2385
+---
+> #line 2386
+16048c16049
+< #line 2387
+---
+> #line 2388
+16052c16053
+< #line 2391 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2392 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16076c16077
+< #line 2393
+---
+> #line 2394
+16078,16079d16078
+< #line 2399
+<   ret = i915_gem_init_hws(dev);
+16081c16080
+<   if (ret != 0) {
+---
+>   ret = i915_gem_init_hws(dev);
+16082a16082,16083
+>   if (ret != 0) {
+> #line 2402
+16087,16088d16087
+< #line 2403
+<   obj = drm_gem_object_alloc(dev, 131072UL);
+16090c16089
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_alloc(dev, 131072UL);
+16092c16091
+<     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+16093a16093,16094
+>     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+> #line 2407
+16098c16099
+< #line 2408
+---
+> #line 2409
+16100,16101d16100
+< #line 2410
+<   ret = i915_gem_object_pin(obj, 4096U);
+16103c16102
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, 4096U);
+16105c16104
+<     drm_gem_object_unreference(obj);
+---
+>   if (ret != 0) {
+16106a16106,16107
+>     drm_gem_object_unreference(obj);
+> #line 2414
+16111,16112d16111
+< #line 2417
+<   dev_priv->ring.Size = obj->size;
+16113a16113,16114
+>   dev_priv->ring.Size = obj->size;
+> #line 2419
+16115,16116d16115
+< #line 2420
+<   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+16118c16117
+<   dev_priv->ring.map.size = obj->size;
+---
+>   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+16120c16119
+<   dev_priv->ring.map.type = _DRM_FRAME_BUFFER;
+---
+>   dev_priv->ring.map.size = obj->size;
+16122c16121
+<   dev_priv->ring.map.flags = 0;
+---
+>   dev_priv->ring.map.type = _DRM_FRAME_BUFFER;
+16123a16123,16124
+>   dev_priv->ring.map.flags = 0;
+> #line 2425
+16125,16126d16125
+< #line 2426
+<   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+16128c16127
+<   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+---
+>   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+16130c16129
+<     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+16132c16131
+<     memset((void *)(& dev_priv->ring), 0, 88UL);
+---
+>     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+16134c16133
+<     drm_gem_object_unreference(obj);
+---
+>     memset((void *)(& dev_priv->ring), 0, 88UL);
+16135a16135,16136
+>     drm_gem_object_unreference(obj);
+> #line 2432
+16140,16141d16140
+< #line 2433
+<   dev_priv->ring.ring_obj = obj;
+16142a16142,16143
+>   dev_priv->ring.ring_obj = obj;
+> #line 2435
+16144,16145d16144
+< #line 2437
+<   writel(0U, (void volatile   *)dev_priv->regs + 8252U);
+16147c16146
+<   writel(0U, (void volatile   *)dev_priv->regs + 8240U);
+---
+>   writel(0U, (void volatile   *)dev_priv->regs + 8252U);
+16148a16148,16149
+>   writel(0U, (void volatile   *)dev_priv->regs + 8240U);
+> #line 2440
+16150,16151d16150
+< #line 2442
+<   writel(obj_priv->gtt_offset, (void volatile   *)dev_priv->regs + 8248U);
+16152a16152,16153
+>   writel(obj_priv->gtt_offset, (void volatile   *)dev_priv->regs + 8248U);
+> #line 2444
+16154c16155
+< #line 2443
+---
+> #line 2444
+16156,16157d16156
+< #line 2446
+<   if (head != 0U) {
+16158a16158,16159
+>   if (head != 0U) {
+> #line 2448
+16160c16161
+< #line 2447
+---
+> #line 2448
+16162c16163
+< #line 2447
+---
+> #line 2448
+16164c16165
+< #line 2447
+---
+> #line 2448
+16166c16167
+< #line 2447
+---
+> #line 2448
+16169c16170
+< #line 2453
+---
+> #line 2454
+16171c16172
+< #line 2455
+---
+> #line 2456
+16173c16174
+< #line 2455
+---
+> #line 2456
+16175c16176
+< #line 2455
+---
+> #line 2456
+16177c16178
+< #line 2455
+---
+> #line 2456
+16179c16180
+< #line 2455
+---
+> #line 2456
+16185c16186
+< #line 2463
+---
+> #line 2464
+16187c16188
+< #line 2468
+---
+> #line 2469
+16189c16190
+< #line 2468
+---
+> #line 2469
+16191,16192d16191
+< #line 2471
+<   if (head != 0U) {
+16193a16193,16194
+>   if (head != 0U) {
+> #line 2473
+16195c16196
+< #line 2472
+---
+> #line 2473
+16197c16198
+< #line 2472
+---
+> #line 2473
+16199c16200
+< #line 2472
+---
+> #line 2473
+16201c16202
+< #line 2472
+---
+> #line 2473
+16204c16205
+< #line 2478
+---
+> #line 2479
+16209c16210
+< #line 2482
+---
+> #line 2483
+16211c16212
+< #line 2484
+---
+> #line 2485
+16215c16216
+< #line 2488 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2489 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16223c16224
+< #line 2490
+---
+> #line 2491
+16225,16226d16225
+< #line 2492
+<   if ((unsigned long )dev_priv->ring.ring_obj == (unsigned long )((struct drm_gem_object *)0)) {
+16227a16227,16228
+>   if ((unsigned long )dev_priv->ring.ring_obj == (unsigned long )((struct drm_gem_object *)0)) {
+> #line 2494
+16232c16233
+< #line 2495
+---
+> #line 2496
+16234,16235d16234
+< #line 2497
+<   i915_gem_object_unpin(dev_priv->ring.ring_obj);
+16237c16236
+<   drm_gem_object_unreference(dev_priv->ring.ring_obj);
+---
+>   i915_gem_object_unpin(dev_priv->ring.ring_obj);
+16239c16238
+<   dev_priv->ring.ring_obj = 0;
+---
+>   drm_gem_object_unreference(dev_priv->ring.ring_obj);
+16240a16240,16241
+>   dev_priv->ring.ring_obj = 0;
+> #line 2501
+16242,16243d16242
+< #line 2502
+<   if ((unsigned long )dev_priv->hws_obj != (unsigned long )((struct drm_gem_object *)0)) {
+16245c16244
+<     obj = dev_priv->hws_obj;
+---
+>   if ((unsigned long )dev_priv->hws_obj != (unsigned long )((struct drm_gem_object *)0)) {
+16246a16246,16247
+>     obj = dev_priv->hws_obj;
+> #line 2505
+16248,16249d16248
+< #line 2507
+<     i915_gem_object_unpin(obj);
+16251c16250
+<     drm_gem_object_unreference(obj);
+---
+>     i915_gem_object_unpin(obj);
+16253c16252
+<     dev_priv->hws_obj = 0;
+---
+>     drm_gem_object_unreference(obj);
+16255c16254
+<     memset((void *)(& dev_priv->hws_map), 0, 40UL);
+---
+>     dev_priv->hws_obj = 0;
+16256a16256,16257
+>     memset((void *)(& dev_priv->hws_map), 0, 40UL);
+> #line 2512
+16258c16259
+< #line 2514
+---
+> #line 2515
+16263c16264
+< #line 2516
+---
+> #line 2517
+16267c16268
+< #line 2519 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2520 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16282c16283
+< #line 2522
+---
+> #line 2523
+16284,16285d16284
+< #line 2525
+<   if (dev_priv->mm.wedged != 0) {
+16287c16286
+<     printk("<3>[drm:%s] *ERROR* Reenabling wedged hardware, good luck\n", "i915_gem_entervt_ioctl");
+---
+>   if (dev_priv->mm.wedged != 0) {
+16288a16288,16289
+>     printk("<3>[drm:%s] *ERROR* Reenabling wedged hardware, good luck\n", "i915_gem_entervt_ioctl");
+> #line 2528
+16293,16294d16293
+< #line 2530
+<   ret = i915_gem_init_ringbuffer(dev);
+16296c16295
+<   if (ret != 0) {
+---
+>   ret = i915_gem_init_ringbuffer(dev);
+16297a16297,16298
+>   if (ret != 0) {
+> #line 2533
+16302,16307d16302
+< #line 2534
+<   mutex_lock_nested(& dev->struct_mutex, 0U);
+< #line 2535
+<   tmp = list_empty((struct list_head  const  *)(& dev_priv->mm.active_list));
+< #line 2535
+<   tmp___0 = __builtin_expect(tmp == 0, 0L);
+16309,16318c16304
+<   if (tmp___0 != 0L) {
+< #line 2535
+<     __asm__  volatile   ("1:\tud2\n.pushsection __bug_table,\"a\"\n2:\t.quad 1b, %c0\n\t.word %c1, 0\n\t.org 2b+%c2\n.popsection": : "i" ((char *)"/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"),
+<                          "i" (2535), "i" (24UL));
+<     ldv_24438: ;
+< #line 2535
+<     goto ldv_24438;
+<   } else {
+< 
+<   }
+---
+>   mutex_lock_nested(& dev->struct_mutex, 0U);
+16320c16306
+<   tmp___1 = list_empty((struct list_head  const  *)(& dev_priv->mm.flushing_list));
+---
+>   tmp = list_empty((struct list_head  const  *)(& dev_priv->mm.active_list));
+16322c16308
+<   tmp___2 = __builtin_expect(tmp___1 == 0, 0L);
+---
+>   tmp___0 = __builtin_expect(tmp == 0, 0L);
+16324c16310
+<   if (tmp___2 != 0L) {
+---
+>   if (tmp___0 != 0L) {
+16335c16321
+<   tmp___3 = list_empty((struct list_head  const  *)(& dev_priv->mm.inactive_list));
+---
+>   tmp___1 = list_empty((struct list_head  const  *)(& dev_priv->mm.flushing_list));
+16337c16323
+<   tmp___4 = __builtin_expect(tmp___3 == 0, 0L);
+---
+>   tmp___2 = __builtin_expect(tmp___1 == 0, 0L);
+16339c16325
+<   if (tmp___4 != 0L) {
+---
+>   if (tmp___2 != 0L) {
+16350c16336
+<   tmp___5 = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+---
+>   tmp___3 = list_empty((struct list_head  const  *)(& dev_priv->mm.inactive_list));
+16352c16338
+<   tmp___6 = __builtin_expect(tmp___5 == 0, 0L);
+---
+>   tmp___4 = __builtin_expect(tmp___3 == 0, 0L);
+16354c16340
+<   if (tmp___6 != 0L) {
+---
+>   if (tmp___4 != 0L) {
+16365c16351,16364
+<   dev_priv->mm.suspended = 0;
+---
+>   tmp___5 = list_empty((struct list_head  const  *)(& dev_priv->mm.request_list));
+> #line 2539
+>   tmp___6 = __builtin_expect(tmp___5 == 0, 0L);
+> #line 2539
+>   if (tmp___6 != 0L) {
+> #line 2539
+>     __asm__  volatile   ("1:\tud2\n.pushsection __bug_table,\"a\"\n2:\t.quad 1b, %c0\n\t.word %c1, 0\n\t.org 2b+%c2\n.popsection": : "i" ((char *)"/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"),
+>                          "i" (2539), "i" (24UL));
+>     ldv_24442: ;
+> #line 2539
+>     goto ldv_24442;
+>   } else {
+> 
+>   }
+16366a16366,16367
+>   dev_priv->mm.suspended = 0;
+> #line 2541
+16368c16369
+< #line 2542
+---
+> #line 2543
+16370c16371
+< #line 2544
+---
+> #line 2545
+16374c16375
+< #line 2548 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2549 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16380,16381d16380
+< #line 2553
+<   ret = i915_gem_idle(dev);
+16382a16382,16383
+>   ret = i915_gem_idle(dev);
+> #line 2555
+16384c16385
+< #line 2556
+---
+> #line 2557
+16388c16389
+< #line 2560 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2561 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16394,16395d16394
+< #line 2564
+<   ret = i915_gem_idle(dev);
+16397c16396
+<   if (ret != 0) {
+---
+>   ret = i915_gem_idle(dev);
+16398a16398,16399
+>   if (ret != 0) {
+> #line 2567
+16404c16405
+< #line 2567
+---
+> #line 2568
+16408c16409
+< #line 2570 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2571 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16418c16419
+< #line 2572
+---
+> #line 2573
+16420,16421d16420
+< #line 2574
+<   INIT_LIST_HEAD(& dev_priv->mm.active_list);
+16423c16422
+<   INIT_LIST_HEAD(& dev_priv->mm.flushing_list);
+---
+>   INIT_LIST_HEAD(& dev_priv->mm.active_list);
+16425c16424
+<   INIT_LIST_HEAD(& dev_priv->mm.inactive_list);
+---
+>   INIT_LIST_HEAD(& dev_priv->mm.flushing_list);
+16427c16426
+<   INIT_LIST_HEAD(& dev_priv->mm.request_list);
+---
+>   INIT_LIST_HEAD(& dev_priv->mm.inactive_list);
+16428a16428,16429
+>   INIT_LIST_HEAD(& dev_priv->mm.request_list);
+> #line 2579
+16430c16431
+< #line 2578
+---
+> #line 2579
+16432c16433
+< #line 2578
+---
+> #line 2579
+16435c16436
+< #line 2578
+---
+> #line 2579
+16437c16438
+< #line 2578
+---
+> #line 2579
+16439c16440
+< #line 2578
+---
+> #line 2579
+16441c16442
+< #line 2580
+---
+> #line 2581
+16443c16444
+< #line 2580
+---
+> #line 2581
+16445c16446
+< #line 2580
+---
+> #line 2581
+16448c16449
+< #line 2580
+---
+> #line 2581
+16450c16451
+< #line 2580
+---
+> #line 2581
+16452c16453
+< #line 2582
+---
+> #line 2583
+16454,16455d16454
+< #line 2584
+<   i915_gem_detect_bit_6_swizzle(dev);
+16456a16456,16457
+>   i915_gem_detect_bit_6_swizzle(dev);
+> #line 2586
+16460c16461
+< #line 2598 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2599 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16466c16467
+< #line 2604
+---
+> #line 2605
+16468c16469
+< #line 2606
+---
+> #line 2607
+16470c16471
+< #line 2606
+---
+> #line 2607
+16474c16475
+< #line 2620 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2621 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16480c16481
+< #line 2626
+---
+> #line 2627
+16482,16483d16482
+< #line 2628
+<   kmem_cache_alloc(ldv_func_arg1, ldv_func_arg2);
+16484a16484,16485
+>   kmem_cache_alloc(ldv_func_arg1, ldv_func_arg2);
+> #line 2630
+16488c16489
+< #line 2664 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2665 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16494c16495
+< #line 2670
+---
+> #line 2671
+16496,16497d16496
+< #line 2672
+<   kmem_cache_alloc(ldv_func_arg1, ldv_func_arg2);
+16498a16498,16499
+>   kmem_cache_alloc(ldv_func_arg1, ldv_func_arg2);
+> #line 2674
+16502c16503
+< #line 2707 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2708 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--43_1a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/43_1a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+16509c16510
+< #line 2714
+---
+> #line 2715
+16511c16512
+< #line 2716
+---
+> #line 2717
+16513c16514
+< #line 2716
+---
+> #line 2717

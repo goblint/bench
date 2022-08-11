@@ -1,0 +1,999 @@
+226c226
+< #line 328
+---
+> #line 323
+231a232,244
+> #line 50 "include/asm/ds.h"
+> typedef void (*ds_ovfl_callback_t)(struct task_struct * );
+> #line 209 "include/asm/ds.h"
+> struct ds_context {
+>    unsigned char *ds ;
+>    struct task_struct *owner[2] ;
+>    ds_ovfl_callback_t callback[2] ;
+>    void *buffer[2] ;
+>    unsigned int pages[2] ;
+>    unsigned long count ;
+>    struct ds_context **this ;
+>    struct task_struct *task ;
+> };
+297c310,312
+< #line 283 "include/asm/processor.h"
+---
+> #line 144 "include/asm/processor.h"
+> struct seq_operations;
+> #line 285 "include/asm/processor.h"
+309,310c324,325
+< #line 299 "include/asm/processor.h"
+< struct __anonstruct____missing_field_name_25 {
+---
+> #line 301 "include/asm/processor.h"
+> struct __anonstruct____missing_field_name_26 {
+314,315c329,330
+< #line 299 "include/asm/processor.h"
+< struct __anonstruct____missing_field_name_26 {
+---
+> #line 301 "include/asm/processor.h"
+> struct __anonstruct____missing_field_name_27 {
+321,323c336,337
+< #line 299 "include/asm/processor.h"
+< union __anonunion____missing_field_name_24 {
+<    struct __anonstruct____missing_field_name_25 __annonCompField6 ;
+---
+> #line 301 "include/asm/processor.h"
+> union __anonunion____missing_field_name_25 {
+324a339,344
+>    struct __anonstruct____missing_field_name_27 __annonCompField8 ;
+> };
+> #line 301 "include/asm/processor.h"
+> union __anonunion____missing_field_name_28 {
+>    u32 padding1[12] ;
+>    u32 sw_reserved[12] ;
+326c346
+< #line 299 "include/asm/processor.h"
+---
+> #line 301 "include/asm/processor.h"
+332c352
+<    union __anonunion____missing_field_name_24 __annonCompField8 ;
+---
+>    union __anonunion____missing_field_name_25 __annonCompField9 ;
+337c357,358
+<    u32 padding[24] ;
+---
+>    u32 padding[12] ;
+>    union __anonunion____missing_field_name_28 __annonCompField10 ;
+339c360
+< #line 329 "include/asm/processor.h"
+---
+> #line 336 "include/asm/processor.h"
+358c379,390
+< #line 349 "include/asm/processor.h"
+---
+> #line 356 "include/asm/processor.h"
+> struct xsave_hdr_struct {
+>    u64 xstate_bv ;
+>    u64 reserved1[2] ;
+>    u64 reserved2[5] ;
+> } __attribute__((__packed__)) ;
+> #line 362 "include/asm/processor.h"
+> struct xsave_struct {
+>    struct i387_fxsave_struct i387 ;
+>    struct xsave_hdr_struct xsave_hdr ;
+> } __attribute__((__packed__, __aligned__(64))) ;
+> #line 368 "include/asm/processor.h"
+362a395
+>    struct xsave_struct xsave ;
+364c397
+< #line 362
+---
+> #line 382
+366c399
+< #line 367 "include/asm/processor.h"
+---
+> #line 387 "include/asm/processor.h"
+393c426,427
+<    unsigned long ds_area_msr ;
+---
+>    struct ds_context *ds_ctx ;
+>    unsigned int bts_ovfl_signal ;
+395,396c429,430
+< #line 599 "include/asm/processor.h"
+< struct __anonstruct_mm_segment_t_27 {
+---
+> #line 624 "include/asm/processor.h"
+> struct __anonstruct_mm_segment_t_29 {
+399,400c433,434
+< #line 599 "include/asm/processor.h"
+< typedef struct __anonstruct_mm_segment_t_27 mm_segment_t;
+---
+> #line 624 "include/asm/processor.h"
+> typedef struct __anonstruct_mm_segment_t_29 mm_segment_t;
+442c476
+< struct __anonstruct_raw_rwlock_t_29 {
+---
+> struct __anonstruct_raw_rwlock_t_31 {
+446c480
+< typedef struct __anonstruct_raw_rwlock_t_29 raw_rwlock_t;
+---
+> typedef struct __anonstruct_raw_rwlock_t_31 raw_rwlock_t;
+449c483
+< #line 5 "include/linux/stacktrace.h"
+---
+> #line 7 "include/linux/stacktrace.h"
+517c551
+< struct __anonstruct_spinlock_t_30 {
+---
+> struct __anonstruct_spinlock_t_32 {
+525c559
+< typedef struct __anonstruct_spinlock_t_30 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_32 spinlock_t;
+527c561
+< struct __anonstruct_rwlock_t_31 {
+---
+> struct __anonstruct_rwlock_t_33 {
+535c569
+< typedef struct __anonstruct_rwlock_t_31 rwlock_t;
+---
+> typedef struct __anonstruct_rwlock_t_33 rwlock_t;
+537c571
+< struct __anonstruct_atomic_t_32 {
+---
+> struct __anonstruct_atomic_t_34 {
+541c575
+< typedef struct __anonstruct_atomic_t_32 atomic_t;
+---
+> typedef struct __anonstruct_atomic_t_34 atomic_t;
+543c577
+< struct __anonstruct_atomic64_t_33 {
+---
+> struct __anonstruct_atomic64_t_35 {
+547c581
+< typedef struct __anonstruct_atomic64_t_33 atomic64_t;
+---
+> typedef struct __anonstruct_atomic64_t_35 atomic64_t;
+551c585
+< struct __anonstruct_seqlock_t_34 {
+---
+> struct __anonstruct_seqlock_t_36 {
+556c590
+< typedef struct __anonstruct_seqlock_t_34 seqlock_t;
+---
+> typedef struct __anonstruct_seqlock_t_36 seqlock_t;
+578c612
+< struct __anonstruct_nodemask_t_35 {
+---
+> struct __anonstruct_nodemask_t_37 {
+582c616
+< typedef struct __anonstruct_nodemask_t_35 nodemask_t;
+---
+> typedef struct __anonstruct_nodemask_t_37 nodemask_t;
+632c666
+< #line 13 "include/linux/completion.h"
+---
+> #line 25 "include/linux/completion.h"
+654,655c688,689
+< #line 13 "include/asm/mmu.h"
+< struct __anonstruct_mm_context_t_36 {
+---
+> #line 11 "include/asm/mmu.h"
+> struct __anonstruct_mm_context_t_38 {
+657d690
+<    rwlock_t ldtlock ;
+662,663c695,696
+< #line 13 "include/asm/mmu.h"
+< typedef struct __anonstruct_mm_context_t_36 mm_context_t;
+---
+> #line 11 "include/asm/mmu.h"
+> typedef struct __anonstruct_mm_context_t_38 mm_context_t;
+669c702
+< struct __anonstruct____missing_field_name_38 {
+---
+> struct __anonstruct____missing_field_name_40 {
+674c707
+< union __anonunion____missing_field_name_37 {
+---
+> union __anonunion____missing_field_name_39 {
+676c709
+<    struct __anonstruct____missing_field_name_38 __annonCompField9 ;
+---
+>    struct __anonstruct____missing_field_name_40 __annonCompField11 ;
+679c712
+< struct __anonstruct____missing_field_name_40 {
+---
+> struct __anonstruct____missing_field_name_42 {
+684,685c717,718
+< union __anonunion____missing_field_name_39 {
+<    struct __anonstruct____missing_field_name_40 __annonCompField11 ;
+---
+> union __anonunion____missing_field_name_41 {
+>    struct __anonstruct____missing_field_name_42 __annonCompField13 ;
+691c724
+< union __anonunion____missing_field_name_41 {
+---
+> union __anonunion____missing_field_name_43 {
+699d731
+<    union __anonunion____missing_field_name_37 __annonCompField10 ;
+701c733,734
+<    union __anonunion____missing_field_name_41 __annonCompField13 ;
+---
+>    union __anonunion____missing_field_name_41 __annonCompField14 ;
+>    union __anonunion____missing_field_name_43 __annonCompField15 ;
+706c739
+< struct __anonstruct_vm_set_43 {
+---
+> struct __anonstruct_vm_set_45 {
+712,713c745,746
+< union __anonunion_shared_42 {
+<    struct __anonstruct_vm_set_43 vm_set ;
+---
+> union __anonunion_shared_44 {
+>    struct __anonstruct_vm_set_45 vm_set ;
+733c766
+<    union __anonunion_shared_42 shared ;
+---
+>    union __anonunion_shared_44 shared ;
+1050,1051d1082
+< #line 292 "include/linux/slab.h"
+< struct seq_operations;
+1072c1103
+< struct __anonstruct_sigset_t_96 {
+---
+> struct __anonstruct_sigset_t_98 {
+1076c1107
+< typedef struct __anonstruct_sigset_t_96 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_98 sigset_t;
+1085c1116
+< #line 162 "include/asm/signal.h"
+---
+> #line 165 "include/asm/signal.h"
+1092c1123
+< #line 169 "include/asm/signal.h"
+---
+> #line 172 "include/asm/signal.h"
+1104c1135
+< struct __anonstruct__kill_98 {
+---
+> struct __anonstruct__kill_100 {
+1109c1140
+< struct __anonstruct__timer_99 {
+---
+> struct __anonstruct__timer_101 {
+1117c1148
+< struct __anonstruct__rt_100 {
+---
+> struct __anonstruct__rt_102 {
+1123c1154
+< struct __anonstruct__sigchld_101 {
+---
+> struct __anonstruct__sigchld_103 {
+1131c1162
+< struct __anonstruct__sigfault_102 {
+---
+> struct __anonstruct__sigfault_104 {
+1135c1166
+< struct __anonstruct__sigpoll_103 {
+---
+> struct __anonstruct__sigpoll_105 {
+1140c1171
+< union __anonunion__sifields_97 {
+---
+> union __anonunion__sifields_99 {
+1142,1147c1173,1178
+<    struct __anonstruct__kill_98 _kill ;
+<    struct __anonstruct__timer_99 _timer ;
+<    struct __anonstruct__rt_100 _rt ;
+<    struct __anonstruct__sigchld_101 _sigchld ;
+<    struct __anonstruct__sigfault_102 _sigfault ;
+<    struct __anonstruct__sigpoll_103 _sigpoll ;
+---
+>    struct __anonstruct__kill_100 _kill ;
+>    struct __anonstruct__timer_101 _timer ;
+>    struct __anonstruct__rt_102 _rt ;
+>    struct __anonstruct__sigchld_103 _sigchld ;
+>    struct __anonstruct__sigfault_104 _sigfault ;
+>    struct __anonstruct__sigpoll_105 _sigpoll ;
+1154c1185
+<    union __anonunion__sifields_97 _sifields ;
+---
+>    union __anonunion__sifields_99 _sifields ;
+1213d1243
+<    int shift ;
+1214a1245
+>    int shift ;
+1218c1249
+< struct __anonstruct_seccomp_t_106 {
+---
+> struct __anonstruct_seccomp_t_108 {
+1222c1253
+< typedef struct __anonstruct_seccomp_t_106 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_108 seccomp_t;
+1245c1276
+< #line 53
+---
+> #line 60
+1250c1281,1282
+<     HRTIMER_CB_IRQSAFE_NO_SOFTIRQ = 3
+---
+>     HRTIMER_CB_IRQSAFE_PERCPU = 3,
+>     HRTIMER_CB_IRQSAFE_UNLOCKED = 4
+1252c1284
+< #line 112 "include/linux/hrtimer.h"
+---
+> #line 122 "include/linux/hrtimer.h"
+1265c1297
+< #line 153 "include/linux/hrtimer.h"
+---
+> #line 163 "include/linux/hrtimer.h"
+1278c1310
+< #line 189 "include/linux/hrtimer.h"
+---
+> #line 199 "include/linux/hrtimer.h"
+1331c1363
+< union __anonunion_ki_obj_108 {
+---
+> union __anonunion_ki_obj_110 {
+1346c1378
+<    union __anonunion_ki_obj_108 ki_obj ;
+---
+>    union __anonunion_ki_obj_110 ki_obj ;
+1407c1439
+< union __anonunion____missing_field_name_109 {
+---
+> union __anonunion____missing_field_name_111 {
+1412c1444
+< union __anonunion____missing_field_name_110 {
+---
+> union __anonunion____missing_field_name_112 {
+1432d1463
+<    struct task_struct *group_exit_task ;
+1433a1465
+>    struct task_struct *group_exit_task ;
+1444c1476
+<    union __anonunion____missing_field_name_109 __annonCompField14 ;
+---
+>    union __anonunion____missing_field_name_111 __annonCompField16 ;
+1446c1478
+<    union __anonunion____missing_field_name_110 __annonCompField15 ;
+---
+>    union __anonunion____missing_field_name_112 __annonCompField17 ;
+1591a1624
+>    char *name ;
+1593c1626
+< #line 844
+---
+> #line 847
+1595c1628
+< #line 847 "include/linux/sched.h"
+---
+> #line 850 "include/linux/sched.h"
+1603c1636
+< #line 884
+---
+> #line 887
+1605,1606d1637
+< #line 886
+< struct pipe_inode_info;
+1607a1639,1640
+> struct pipe_inode_info;
+> #line 892
+1609c1642
+< #line 892 "include/linux/sched.h"
+---
+> #line 895 "include/linux/sched.h"
+1616c1649
+<    void (*check_preempt_curr)(struct rq *rq , struct task_struct *p ) ;
+---
+>    void (*check_preempt_curr)(struct rq *rq , struct task_struct *p , int sync ) ;
+1639c1672
+< #line 940 "include/linux/sched.h"
+---
+> #line 943 "include/linux/sched.h"
+1644c1677
+< #line 954 "include/linux/sched.h"
+---
+> #line 957 "include/linux/sched.h"
+1687c1720
+< #line 1011
+---
+> #line 1014
+1689c1722
+< #line 1011 "include/linux/sched.h"
+---
+> #line 1014 "include/linux/sched.h"
+1692d1724
+<    unsigned int time_slice ;
+1693a1726
+>    unsigned int time_slice ;
+1700c1733
+< #line 1027
+---
+> #line 1030
+1702c1735
+< #line 1027
+---
+> #line 1030
+1704c1737
+< #line 1027
+---
+> #line 1030
+1706c1739
+< #line 1027
+---
+> #line 1030
+1708c1741
+< #line 1027 "include/linux/sched.h"
+---
+> #line 1030 "include/linux/sched.h"
+1871c1904
+< #line 74 "include/linux/irq.h"
+---
+> #line 75 "include/linux/irq.h"
+1891c1924
+< struct __anonstruct_sync_serial_settings_113 {
+---
+> struct __anonstruct_sync_serial_settings_115 {
+1897c1930
+< typedef struct __anonstruct_sync_serial_settings_113 sync_serial_settings;
+---
+> typedef struct __anonstruct_sync_serial_settings_115 sync_serial_settings;
+1899c1932
+< struct __anonstruct_te1_settings_114 {
+---
+> struct __anonstruct_te1_settings_116 {
+1906c1939
+< typedef struct __anonstruct_te1_settings_114 te1_settings;
+---
+> typedef struct __anonstruct_te1_settings_116 te1_settings;
+1908c1941
+< struct __anonstruct_raw_hdlc_proto_115 {
+---
+> struct __anonstruct_raw_hdlc_proto_117 {
+1913c1946
+< typedef struct __anonstruct_raw_hdlc_proto_115 raw_hdlc_proto;
+---
+> typedef struct __anonstruct_raw_hdlc_proto_117 raw_hdlc_proto;
+1915c1948
+< struct __anonstruct_fr_proto_116 {
+---
+> struct __anonstruct_fr_proto_118 {
+1925c1958
+< typedef struct __anonstruct_fr_proto_116 fr_proto;
+---
+> typedef struct __anonstruct_fr_proto_118 fr_proto;
+1927c1960
+< struct __anonstruct_fr_proto_pvc_117 {
+---
+> struct __anonstruct_fr_proto_pvc_119 {
+1931c1964
+< typedef struct __anonstruct_fr_proto_pvc_117 fr_proto_pvc;
+---
+> typedef struct __anonstruct_fr_proto_pvc_119 fr_proto_pvc;
+1933c1966
+< struct __anonstruct_fr_proto_pvc_info_118 {
+---
+> struct __anonstruct_fr_proto_pvc_info_120 {
+1938c1971
+< typedef struct __anonstruct_fr_proto_pvc_info_118 fr_proto_pvc_info;
+---
+> typedef struct __anonstruct_fr_proto_pvc_info_120 fr_proto_pvc_info;
+1940c1973
+< struct __anonstruct_cisco_proto_119 {
+---
+> struct __anonstruct_cisco_proto_121 {
+1945,1946c1978,1979
+< typedef struct __anonstruct_cisco_proto_119 cisco_proto;
+< #line 122 "include/linux/if.h"
+---
+> typedef struct __anonstruct_cisco_proto_121 cisco_proto;
+> #line 123 "include/linux/if.h"
+1955,1956c1988,1989
+< #line 133 "include/linux/if.h"
+< union __anonunion_ifs_ifsu_122 {
+---
+> #line 134 "include/linux/if.h"
+> union __anonunion_ifs_ifsu_124 {
+1965c1998
+< #line 133 "include/linux/if.h"
+---
+> #line 134 "include/linux/if.h"
+1969c2002
+<    union __anonunion_ifs_ifsu_122 ifs_ifsu ;
+---
+>    union __anonunion_ifs_ifsu_124 ifs_ifsu ;
+1971,1972c2004,2005
+< #line 158 "include/linux/if.h"
+< union __anonunion_ifr_ifrn_123 {
+---
+> #line 159 "include/linux/if.h"
+> union __anonunion_ifr_ifrn_125 {
+1975,1976c2008,2009
+< #line 158 "include/linux/if.h"
+< union __anonunion_ifr_ifru_124 {
+---
+> #line 159 "include/linux/if.h"
+> union __anonunion_ifr_ifru_126 {
+1991c2024
+< #line 158 "include/linux/if.h"
+---
+> #line 159 "include/linux/if.h"
+1993,1994c2026,2027
+<    union __anonunion_ifr_ifrn_123 ifr_ifrn ;
+<    union __anonunion_ifr_ifru_124 ifr_ifru ;
+---
+>    union __anonunion_ifr_ifrn_125 ifr_ifrn ;
+>    union __anonunion_ifr_ifru_126 ifr_ifru ;
+2060c2093
+< struct __anonstruct_local_t_187 {
+---
+> struct __anonstruct_local_t_189 {
+2064c2097
+< typedef struct __anonstruct_local_t_187 local_t;
+---
+> typedef struct __anonstruct_local_t_189 local_t;
+2195c2228
+<    struct klist *n_klist ;
+---
+>    void *n_klist ;
+2290c2323,2325
+< #line 223 "include/linux/device.h"
+---
+> #line 202
+> struct device_type;
+> #line 235 "include/linux/device.h"
+2296c2331
+< #line 270 "include/linux/device.h"
+---
+> #line 282 "include/linux/device.h"
+2306c2341
+< #line 283 "include/linux/device.h"
+---
+> #line 295 "include/linux/device.h"
+2313c2348
+< #line 343 "include/linux/device.h"
+---
+> #line 355 "include/linux/device.h"
+2318c2353
+< #line 352
+---
+> #line 364
+2320c2355
+< #line 352 "include/linux/device.h"
+---
+> #line 364 "include/linux/device.h"
+2347c2382
+<    struct list_head node ;
+---
+>    struct klist_node knode_class ;
+2394,2395d2428
+<    dma_addr_t (*map_simple)(struct device *hwdev , phys_addr_t ptr , size_t size ,
+<                             int direction ) ;
+2430c2463
+< #line 192 "include/linux/skbuff.h"
+---
+> #line 198 "include/linux/skbuff.h"
+2432c2465
+< #line 253
+---
+> #line 259
+2434c2467
+< #line 253
+---
+> #line 259
+2436,2437c2469,2470
+< #line 253 "include/linux/skbuff.h"
+< union __anonunion____missing_field_name_192 {
+---
+> #line 259 "include/linux/skbuff.h"
+> union __anonunion____missing_field_name_194 {
+2441c2474
+< #line 253
+---
+> #line 259
+2443,2444c2476,2477
+< #line 253 "include/linux/skbuff.h"
+< struct __anonstruct____missing_field_name_194 {
+---
+> #line 259 "include/linux/skbuff.h"
+> struct __anonstruct____missing_field_name_196 {
+2448,2449c2481,2482
+< #line 253 "include/linux/skbuff.h"
+< union __anonunion____missing_field_name_193 {
+---
+> #line 259 "include/linux/skbuff.h"
+> union __anonunion____missing_field_name_195 {
+2451c2484
+<    struct __anonstruct____missing_field_name_194 __annonCompField18 ;
+---
+>    struct __anonstruct____missing_field_name_196 __annonCompField20 ;
+2453c2486
+< #line 253 "include/linux/skbuff.h"
+---
+> #line 259 "include/linux/skbuff.h"
+2460c2493
+<    union __anonunion____missing_field_name_192 __annonCompField17 ;
+---
+>    union __anonunion____missing_field_name_194 __annonCompField19 ;
+2467c2500
+<    union __anonunion____missing_field_name_193 __annonCompField19 ;
+---
+>    union __anonunion____missing_field_name_195 __annonCompField21 ;
+2523c2556
+< #line 46 "include/linux/netdevice.h"
+---
+> #line 47 "include/linux/netdevice.h"
+2525,2526d2557
+< #line 47
+< struct ethtool_ops;
+2527a2559,2560
+> struct ethtool_ops;
+> #line 49
+2529c2562
+< #line 50
+---
+> #line 51
+2531c2564
+< #line 124 "include/linux/netdevice.h"
+---
+> #line 125 "include/linux/netdevice.h"
+2557,2558d2589
+< #line 174
+< struct neighbour;
+2559a2591,2592
+> struct neighbour;
+> #line 176
+2561c2594
+< #line 188 "include/linux/netdevice.h"
+---
+> #line 189 "include/linux/netdevice.h"
+2570c2603
+< #line 208 "include/linux/netdevice.h"
+---
+> #line 209 "include/linux/netdevice.h"
+2580c2613
+< #line 254 "include/linux/netdevice.h"
+---
+> #line 255 "include/linux/netdevice.h"
+2589c2622
+< #line 444
+---
+> #line 445
+2591c2624
+< #line 444 "include/linux/netdevice.h"
+---
+> #line 445 "include/linux/netdevice.h"
+2600c2633
+< #line 463
+---
+> #line 464
+2602c2635
+< #line 463
+---
+> #line 464
+2604,2605c2637,2638
+< #line 463
+< enum __anonenum_reg_state_204 {
+---
+> #line 464
+> enum __anonenum_reg_state_206 {
+2612c2645
+< #line 463
+---
+> #line 464
+2614c2647
+< #line 463
+---
+> #line 464
+2616c2649
+< #line 463
+---
+> #line 464
+2618c2651
+< #line 463
+---
+> #line 464
+2620c2653
+< #line 463 "include/linux/netdevice.h"
+---
+> #line 464 "include/linux/netdevice.h"
+2623a2657
+>    char *ifalias ;
+2665a2700
+>    void *dsa_ptr ;
+2691c2726
+<    enum __anonenum_reg_state_204 reg_state ;
+---
+>    enum __anonenum_reg_state_206 reg_state ;
+2853c2888
+< union __anonunion_d_u_208 {
+---
+> union __anonunion_d_u_210 {
+2871c2906
+<    union __anonunion_d_u_208 d_u ;
+---
+>    union __anonunion_d_u_210 d_u ;
+2900c2935,2944
+< #line 298 "include/linux/fs.h"
+---
+> #line 14 "include/linux/fiemap.h"
+> struct fiemap_extent {
+>    __u64 fe_logical ;
+>    __u64 fe_physical ;
+>    __u64 fe_length ;
+>    __u64 fe_reserved64[2] ;
+>    __u32 fe_flags ;
+>    __u32 fe_reserved[3] ;
+> };
+> #line 303 "include/linux/fs.h"
+2902c2946
+< #line 305
+---
+> #line 310
+2904c2948
+< #line 350 "include/linux/fs.h"
+---
+> #line 355 "include/linux/fs.h"
+3010c3054
+< union __anonunion_u_211 {
+---
+> union __anonunion_u_213 {
+3024c3068
+<    union __anonunion_u_211 u ;
+---
+>    union __anonunion_u_213 u ;
+3098,3099c3142,3143
+< #line 455 "include/linux/fs.h"
+< union __anonunion_arg_213 {
+---
+> #line 460 "include/linux/fs.h"
+> union __anonunion_arg_215 {
+3103,3104c3147,3148
+< #line 455 "include/linux/fs.h"
+< struct __anonstruct_read_descriptor_t_212 {
+---
+> #line 460 "include/linux/fs.h"
+> struct __anonstruct_read_descriptor_t_214 {
+3107c3151
+<    union __anonunion_arg_213 arg ;
+---
+>    union __anonunion_arg_215 arg ;
+3110,3112c3154,3156
+< #line 455 "include/linux/fs.h"
+< typedef struct __anonstruct_read_descriptor_t_212 read_descriptor_t;
+< #line 468 "include/linux/fs.h"
+---
+> #line 460 "include/linux/fs.h"
+> typedef struct __anonstruct_read_descriptor_t_214 read_descriptor_t;
+> #line 473 "include/linux/fs.h"
+3138c3182
+< #line 525 "include/linux/fs.h"
+---
+> #line 530 "include/linux/fs.h"
+3157c3201
+< #line 549
+---
+> #line 554
+3159c3203
+< #line 549
+---
+> #line 554
+3161c3205
+< #line 549 "include/linux/fs.h"
+---
+> #line 554 "include/linux/fs.h"
+3182c3226
+< #line 619
+---
+> #line 624
+3184c3228
+< #line 619
+---
+> #line 624
+3186c3230
+< #line 619
+---
+> #line 624
+3188,3189c3232,3233
+< #line 619 "include/linux/fs.h"
+< union __anonunion____missing_field_name_214 {
+---
+> #line 624 "include/linux/fs.h"
+> union __anonunion____missing_field_name_216 {
+3194c3238
+< #line 619
+---
+> #line 624
+3196c3240
+< #line 619 "include/linux/fs.h"
+---
+> #line 624 "include/linux/fs.h"
+3228c3272
+<    union __anonunion____missing_field_name_214 __annonCompField20 ;
+---
+>    union __anonunion____missing_field_name_216 __annonCompField22 ;
+3242c3286
+< #line 774 "include/linux/fs.h"
+---
+> #line 779 "include/linux/fs.h"
+3251c3295
+< #line 785 "include/linux/fs.h"
+---
+> #line 790 "include/linux/fs.h"
+3260,3261c3304,3305
+< #line 808 "include/linux/fs.h"
+< union __anonunion_f_u_215 {
+---
+> #line 813 "include/linux/fs.h"
+> union __anonunion_f_u_217 {
+3265c3309
+< #line 808 "include/linux/fs.h"
+---
+> #line 813 "include/linux/fs.h"
+3267c3311
+<    union __anonunion_f_u_215 f_u ;
+---
+>    union __anonunion_f_u_217 f_u ;
+3286c3330
+< #line 927 "include/linux/fs.h"
+---
+> #line 932 "include/linux/fs.h"
+3288c3332
+< #line 929 "include/linux/fs.h"
+---
+> #line 934 "include/linux/fs.h"
+3293c3337
+< #line 934 "include/linux/fs.h"
+---
+> #line 939 "include/linux/fs.h"
+3318,3319c3362,3363
+< #line 948 "include/linux/fs.h"
+< struct __anonstruct_afs_217 {
+---
+> #line 953 "include/linux/fs.h"
+> struct __anonstruct_afs_219 {
+3323,3324c3367,3368
+< #line 948 "include/linux/fs.h"
+< union __anonunion_fl_u_216 {
+---
+> #line 953 "include/linux/fs.h"
+> union __anonunion_fl_u_218 {
+3327c3371
+<    struct __anonstruct_afs_217 afs ;
+---
+>    struct __anonstruct_afs_219 afs ;
+3329c3373
+< #line 948 "include/linux/fs.h"
+---
+> #line 953 "include/linux/fs.h"
+3347c3391
+<    union __anonunion_fl_u_216 fl_u ;
+---
+>    union __anonunion_fl_u_218 fl_u ;
+3349c3393
+< #line 1027 "include/linux/fs.h"
+---
+> #line 1032 "include/linux/fs.h"
+3356c3400
+< #line 1062
+---
+> #line 1067
+3358c3402
+< #line 1062
+---
+> #line 1067
+3360c3404
+< #line 1062
+---
+> #line 1067
+3362c3406
+< #line 1062
+---
+> #line 1067
+3364c3408
+< #line 1062 "include/linux/fs.h"
+---
+> #line 1067 "include/linux/fs.h"
+3409c3453,3460
+< #line 1235 "include/linux/fs.h"
+---
+> #line 1189 "include/linux/fs.h"
+> struct fiemap_extent_info {
+>    unsigned int fi_flags ;
+>    unsigned int fi_extents_mapped ;
+>    unsigned int fi_extents_max ;
+>    struct fiemap_extent *fi_extents_start ;
+> };
+> #line 1254 "include/linux/fs.h"
+3446c3497
+< #line 1265 "include/linux/fs.h"
+---
+> #line 1284 "include/linux/fs.h"
+3469a3521
+>    int (*fiemap)(struct inode * , struct fiemap_extent_info * , u64 start , u64 len ) ;
+3471c3523
+< #line 1306 "include/linux/fs.h"
+---
+> #line 1327 "include/linux/fs.h"
+3494c3546
+< #line 1488 "include/linux/fs.h"
+---
+> #line 1509 "include/linux/fs.h"
+3511c3563
+< enum __anonenum_dmx_output_t_234 {
+---
+> enum __anonenum_dmx_output_t_236 {
+3518c3570
+< typedef enum __anonenum_dmx_output_t_234 dmx_output_t;
+---
+> typedef enum __anonenum_dmx_output_t_236 dmx_output_t;
+3520c3572
+< enum __anonenum_dmx_input_t_235 {
+---
+> enum __anonenum_dmx_input_t_237 {
+3525c3577
+< typedef enum __anonenum_dmx_input_t_235 dmx_input_t;
+---
+> typedef enum __anonenum_dmx_input_t_237 dmx_input_t;
+3527c3579
+< enum __anonenum_dmx_pes_type_t_236 {
+---
+> enum __anonenum_dmx_pes_type_t_238 {
+3551c3603
+< typedef enum __anonenum_dmx_pes_type_t_236 dmx_pes_type_t;
+---
+> typedef enum __anonenum_dmx_pes_type_t_238 dmx_pes_type_t;
+3581c3633
+< enum __anonenum_dmx_source_t_237 {
+---
+> enum __anonenum_dmx_source_t_239 {
+3592c3644
+< typedef enum __anonenum_dmx_source_t_237 dmx_source_t;
+---
+> typedef enum __anonenum_dmx_source_t_239 dmx_source_t;
+3763c3815
+< union __anonunion_feed_241 {
+---
+> union __anonunion_feed_243 {
+3768c3820
+< union __anonunion_cb_242 {
+---
+> union __anonunion_cb_244 {
+3778,3779c3830,3831
+<    union __anonunion_feed_241 feed ;
+<    union __anonunion_cb_242 cb ;
+---
+>    union __anonunion_feed_243 feed ;
+>    union __anonunion_cb_244 cb ;
+3848c3900
+< union __anonunion_filter_243 {
+---
+> union __anonunion_filter_245 {
+3852c3904
+< union __anonunion_feed_244 {
+---
+> union __anonunion_feed_246 {
+3857c3909
+< union __anonunion_params_245 {
+---
+> union __anonunion_params_247 {
+3865,3867c3917,3919
+<    union __anonunion_filter_243 filter ;
+<    union __anonunion_feed_244 feed ;
+<    union __anonunion_params_245 params ;
+---
+>    union __anonunion_filter_245 filter ;
+>    union __anonunion_feed_246 feed ;
+>    union __anonunion_params_247 params ;
+4099c4151
+< union __anonunion_u_246 {
+---
+> union __anonunion_u_248 {
+4109c4161
+<    union __anonunion_u_246 u ;
+---
+>    union __anonunion_u_248 u ;
+6299c6351
+<     printk("dvb-ttpci: A frontend driver was not found for device %04x/%04x subsystem %04x/%04x\n",
+---
+>     printk("dvb-ttpci: A frontend driver was not found for device [%04x:%04x] subsystem [%04x:%04x]\n",

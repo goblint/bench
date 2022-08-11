@@ -1,0 +1,1087 @@
+72,73d71
+< #line 33 "include/linux/types.h"
+< typedef _Bool bool;
+218a217,218
+> #line 328
+> struct raw_spinlock;
+347c347
+< #line 690
+---
+> #line 475
+349c349
+< #line 690 "include/linux/list.h"
+---
+> #line 475 "include/linux/list.h"
+353c353
+< #line 694 "include/linux/list.h"
+---
+> #line 479 "include/linux/list.h"
+408c408
+< struct __anonstruct_raw_spinlock_t_28 {
+---
+> struct raw_spinlock {
+412c412
+< typedef struct __anonstruct_raw_spinlock_t_28 raw_spinlock_t;
+---
+> typedef struct raw_spinlock raw_spinlock_t;
+414c414
+< struct __anonstruct_raw_rwlock_t_29 {
+---
+> struct __anonstruct_raw_rwlock_t_28 {
+418c418
+< typedef struct __anonstruct_raw_rwlock_t_29 raw_rwlock_t;
+---
+> typedef struct __anonstruct_raw_rwlock_t_28 raw_rwlock_t;
+472c472
+< #line 189 "include/linux/lockdep.h"
+---
+> #line 192 "include/linux/lockdep.h"
+487c487
+< struct __anonstruct_spinlock_t_30 {
+---
+> struct __anonstruct_spinlock_t_29 {
+495c495
+< typedef struct __anonstruct_spinlock_t_30 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_29 spinlock_t;
+497c497
+< struct __anonstruct_rwlock_t_31 {
+---
+> struct __anonstruct_rwlock_t_30 {
+505c505
+< typedef struct __anonstruct_rwlock_t_31 rwlock_t;
+---
+> typedef struct __anonstruct_rwlock_t_30 rwlock_t;
+507c507
+< struct __anonstruct_atomic_t_32 {
+---
+> struct __anonstruct_atomic_t_31 {
+511c511
+< typedef struct __anonstruct_atomic_t_32 atomic_t;
+---
+> typedef struct __anonstruct_atomic_t_31 atomic_t;
+513c513
+< struct __anonstruct_atomic64_t_33 {
+---
+> struct __anonstruct_atomic64_t_32 {
+517c517
+< typedef struct __anonstruct_atomic64_t_33 atomic64_t;
+---
+> typedef struct __anonstruct_atomic64_t_32 atomic64_t;
+660c660
+< union __anonunion____missing_field_name_39 {
+---
+> union __anonunion____missing_field_name_38 {
+671c671
+<    union __anonunion____missing_field_name_39 __annonCompField9 ;
+---
+>    union __anonunion____missing_field_name_38 __annonCompField9 ;
+703,704c703
+<    void (*call)(struct marker  const  *mdata , void *call_private , char const   *fmt 
+<                 , ...) ;
+---
+>    void (*call)(struct marker  const  *mdata , void *call_private  , ...) ;
+709c708
+< struct __anonstruct_nodemask_t_40 {
+---
+> struct __anonstruct_nodemask_t_39 {
+713c712
+< typedef struct __anonstruct_nodemask_t_40 nodemask_t;
+---
+> typedef struct __anonstruct_nodemask_t_39 nodemask_t;
+748c747,778
+< #line 181 "include/linux/pm.h"
+---
+> #line 217 "include/linux/pm.h"
+> struct pm_ops {
+>    int (*prepare)(struct device *dev ) ;
+>    void (*complete)(struct device *dev ) ;
+>    int (*suspend)(struct device *dev ) ;
+>    int (*resume)(struct device *dev ) ;
+>    int (*freeze)(struct device *dev ) ;
+>    int (*thaw)(struct device *dev ) ;
+>    int (*poweroff)(struct device *dev ) ;
+>    int (*restore)(struct device *dev ) ;
+> };
+> #line 275 "include/linux/pm.h"
+> struct pm_ext_ops {
+>    struct pm_ops base ;
+>    int (*suspend_noirq)(struct device *dev ) ;
+>    int (*resume_noirq)(struct device *dev ) ;
+>    int (*freeze_noirq)(struct device *dev ) ;
+>    int (*thaw_noirq)(struct device *dev ) ;
+>    int (*poweroff_noirq)(struct device *dev ) ;
+>    int (*restore_noirq)(struct device *dev ) ;
+> };
+> #line 373
+> enum dpm_state {
+>     DPM_INVALID = 0,
+>     DPM_ON = 1,
+>     DPM_PREPARING = 2,
+>     DPM_RESUMING = 3,
+>     DPM_SUSPENDING = 4,
+>     DPM_OFF = 5,
+>     DPM_OFF_IRQ = 6
+> } ;
+> #line 383 "include/linux/pm.h"
+753c783
+<    bool sleeping : 1 ;
+---
+>    enum dpm_state status ;
+757c787
+< struct __anonstruct_mm_context_t_89 {
+---
+> struct __anonstruct_mm_context_t_88 {
+765c795
+< typedef struct __anonstruct_mm_context_t_89 mm_context_t;
+---
+> typedef struct __anonstruct_mm_context_t_88 mm_context_t;
+870c900
+< struct __anonstruct_local_t_95 {
+---
+> struct __anonstruct_local_t_94 {
+874c904
+< typedef struct __anonstruct_local_t_95 local_t;
+---
+> typedef struct __anonstruct_local_t_94 local_t;
+975c1005,1010
+< #line 49 "include/linux/rcupdate.h"
+---
+> #line 13 "include/linux/completion.h"
+> struct completion {
+>    unsigned int done ;
+>    wait_queue_head_t wait ;
+> };
+> #line 50 "include/linux/rcupdate.h"
+980c1015
+< #line 10 "include/linux/dcache.h"
+---
+> #line 11 "include/linux/dcache.h"
+982,983d1016
+< #line 11
+< struct path;
+984a1018,1019
+> struct path;
+> #line 13
+986c1021
+< #line 32 "include/linux/dcache.h"
+---
+> #line 33 "include/linux/dcache.h"
+992c1027
+< #line 77
+---
+> #line 78
+994c1029
+< #line 81
+---
+> #line 82
+996,997c1031,1032
+< #line 81 "include/linux/dcache.h"
+< union __anonunion_d_u_96 {
+---
+> #line 82 "include/linux/dcache.h"
+> union __anonunion_d_u_95 {
+1001c1036
+< #line 81
+---
+> #line 82
+1003c1038
+< #line 81
+---
+> #line 82
+1005c1040
+< #line 81 "include/linux/dcache.h"
+---
+> #line 82 "include/linux/dcache.h"
+1015c1050
+<    union __anonunion_d_u_96 d_u ;
+---
+>    union __anonunion_d_u_95 d_u ;
+1026c1061
+< #line 128 "include/linux/dcache.h"
+---
+> #line 129 "include/linux/dcache.h"
+1048c1083
+< enum __anonenum_97 {
+---
+> enum __anonenum_96 {
+1052c1087
+< union __anonunion_intent_98 {
+---
+> union __anonunion_intent_97 {
+1063c1098
+<    union __anonunion_intent_98 intent ;
+---
+>    union __anonunion_intent_97 intent ;
+1253c1288
+< union __anonunion_u_103 {
+---
+> union __anonunion_u_102 {
+1267c1302
+<    union __anonunion_u_103 u ;
+---
+>    union __anonunion_u_102 u ;
+1425c1460
+< union __anonunion____missing_field_name_104 {
+---
+> union __anonunion____missing_field_name_103 {
+1464c1499
+<    union __anonunion____missing_field_name_104 __annonCompField10 ;
+---
+>    union __anonunion____missing_field_name_103 __annonCompField10 ;
+1497c1532
+< union __anonunion_f_u_105 {
+---
+> union __anonunion_f_u_104 {
+1503c1538
+<    union __anonunion_f_u_105 f_u ;
+---
+>    union __anonunion_f_u_104 f_u ;
+1559c1594
+< struct __anonstruct_afs_107 {
+---
+> struct __anonstruct_afs_106 {
+1564c1599
+< union __anonunion_fl_u_106 {
+---
+> union __anonunion_fl_u_105 {
+1567c1602
+<    struct __anonstruct_afs_107 afs ;
+---
+>    struct __anonstruct_afs_106 afs ;
+1574a1610,1611
+>    unsigned char fl_flags ;
+>    unsigned char fl_type ;
+1579,1580d1615
+<    unsigned char fl_flags ;
+<    unsigned char fl_type ;
+1587c1622
+<    union __anonunion_fl_u_106 fl_u ;
+---
+>    union __anonunion_fl_u_105 fl_u ;
+1750c1785
+< #line 1831
+---
+> #line 1835
+1757,1761d1791
+< #line 13 "include/linux/completion.h"
+< struct completion {
+<    unsigned int done ;
+<    wait_queue_head_t wait ;
+< };
+1815a1846
+>    struct pm_ext_ops *pm ;
+1818c1849
+< #line 120 "include/linux/device.h"
+---
+> #line 122 "include/linux/device.h"
+1829a1861
+>    struct pm_ops *pm ;
+1832c1864
+< #line 149 "include/linux/device.h"
+---
+> #line 153 "include/linux/device.h"
+1838c1870
+< #line 181
+---
+> #line 185
+1840c1872
+< #line 181 "include/linux/device.h"
+---
+> #line 185 "include/linux/device.h"
+1850a1883
+>    struct kobject *dev_kobj ;
+1855a1889
+>    struct pm_ops *pm ;
+1857c1891
+< #line 209 "include/linux/device.h"
+---
+> #line 218 "include/linux/device.h"
+1863c1897
+< #line 246 "include/linux/device.h"
+---
+> #line 255 "include/linux/device.h"
+1870a1905
+>    struct pm_ops *pm ;
+1872c1907
+< #line 256 "include/linux/device.h"
+---
+> #line 268 "include/linux/device.h"
+1879c1914
+< #line 316 "include/linux/device.h"
+---
+> #line 328 "include/linux/device.h"
+1884c1919
+< #line 325
+---
+> #line 337
+1886c1921
+< #line 325 "include/linux/device.h"
+---
+> #line 337 "include/linux/device.h"
+1931c1966
+< struct __anonstruct____missing_field_name_113 {
+---
+> struct __anonstruct____missing_field_name_112 {
+1936c1971
+< union __anonunion____missing_field_name_112 {
+---
+> union __anonunion____missing_field_name_111 {
+1938c1973
+<    struct __anonstruct____missing_field_name_113 __annonCompField11 ;
+---
+>    struct __anonstruct____missing_field_name_112 __annonCompField11 ;
+1941c1976
+< struct __anonstruct____missing_field_name_115 {
+---
+> struct __anonstruct____missing_field_name_114 {
+1946,1947c1981,1982
+< union __anonunion____missing_field_name_114 {
+<    struct __anonstruct____missing_field_name_115 __annonCompField13 ;
+---
+> union __anonunion____missing_field_name_113 {
+>    struct __anonstruct____missing_field_name_114 __annonCompField13 ;
+1953c1988
+< union __anonunion____missing_field_name_116 {
+---
+> union __anonunion____missing_field_name_115 {
+1961,1963c1996,1998
+<    union __anonunion____missing_field_name_112 __annonCompField12 ;
+<    union __anonunion____missing_field_name_114 __annonCompField14 ;
+<    union __anonunion____missing_field_name_116 __annonCompField15 ;
+---
+>    union __anonunion____missing_field_name_111 __annonCompField12 ;
+>    union __anonunion____missing_field_name_113 __annonCompField14 ;
+>    union __anonunion____missing_field_name_115 __annonCompField15 ;
+1968c2003
+< struct __anonstruct_vm_set_118 {
+---
+> struct __anonstruct_vm_set_117 {
+1974,1975c2009,2010
+< union __anonunion_shared_117 {
+<    struct __anonstruct_vm_set_118 vm_set ;
+---
+> union __anonunion_shared_116 {
+>    struct __anonstruct_vm_set_117 vm_set ;
+1993c2028
+<    union __anonunion_shared_117 shared ;
+---
+>    union __anonunion_shared_116 shared ;
+2087c2122
+< struct __anonstruct_sigset_t_119 {
+---
+> struct __anonstruct_sigset_t_118 {
+2091c2126
+< typedef struct __anonstruct_sigset_t_119 sigset_t;
+---
+> typedef struct __anonstruct_sigset_t_118 sigset_t;
+2119c2154
+< struct __anonstruct__kill_121 {
+---
+> struct __anonstruct__kill_120 {
+2124c2159
+< struct __anonstruct__timer_122 {
+---
+> struct __anonstruct__timer_121 {
+2132c2167
+< struct __anonstruct__rt_123 {
+---
+> struct __anonstruct__rt_122 {
+2138c2173
+< struct __anonstruct__sigchld_124 {
+---
+> struct __anonstruct__sigchld_123 {
+2146c2181
+< struct __anonstruct__sigfault_125 {
+---
+> struct __anonstruct__sigfault_124 {
+2150c2185
+< struct __anonstruct__sigpoll_126 {
+---
+> struct __anonstruct__sigpoll_125 {
+2155c2190
+< union __anonunion__sifields_120 {
+---
+> union __anonunion__sifields_119 {
+2157,2162c2192,2197
+<    struct __anonstruct__kill_121 _kill ;
+<    struct __anonstruct__timer_122 _timer ;
+<    struct __anonstruct__rt_123 _rt ;
+<    struct __anonstruct__sigchld_124 _sigchld ;
+<    struct __anonstruct__sigfault_125 _sigfault ;
+<    struct __anonstruct__sigpoll_126 _sigpoll ;
+---
+>    struct __anonstruct__kill_120 _kill ;
+>    struct __anonstruct__timer_121 _timer ;
+>    struct __anonstruct__rt_122 _rt ;
+>    struct __anonstruct__sigchld_123 _sigchld ;
+>    struct __anonstruct__sigfault_124 _sigfault ;
+>    struct __anonstruct__sigpoll_125 _sigpoll ;
+2169c2204
+<    union __anonunion__sifields_120 _sifields ;
+---
+>    union __anonunion__sifields_119 _sifields ;
+2197c2232
+< struct __anonstruct_seccomp_t_129 {
+---
+> struct __anonstruct_seccomp_t_128 {
+2201c2236
+< typedef struct __anonstruct_seccomp_t_129 seccomp_t;
+---
+> typedef struct __anonstruct_seccomp_t_128 seccomp_t;
+2287c2322
+< #line 332
+---
+> #line 334
+2302c2337
+< union __anonunion_ki_obj_131 {
+---
+> union __anonunion_ki_obj_130 {
+2317c2352
+<    union __anonunion_ki_obj_131 ki_obj ;
+---
+>    union __anonunion_ki_obj_130 ki_obj ;
+2360c2395
+< #line 410 "include/linux/sched.h"
+---
+> #line 412 "include/linux/sched.h"
+2367c2402
+< #line 417 "include/linux/sched.h"
+---
+> #line 419 "include/linux/sched.h"
+2377,2378c2412,2413
+< #line 432 "include/linux/sched.h"
+< union __anonunion____missing_field_name_132 {
+---
+> #line 434 "include/linux/sched.h"
+> union __anonunion____missing_field_name_131 {
+2382,2383c2417,2418
+< #line 432 "include/linux/sched.h"
+< union __anonunion____missing_field_name_133 {
+---
+> #line 434 "include/linux/sched.h"
+> union __anonunion____missing_field_name_132 {
+2387c2422
+< #line 432
+---
+> #line 434
+2389c2424
+< #line 432
+---
+> #line 434
+2391c2426
+< #line 432
+---
+> #line 434
+2393c2428
+< #line 432 "include/linux/sched.h"
+---
+> #line 434 "include/linux/sched.h"
+2413c2448
+<    union __anonunion____missing_field_name_132 __annonCompField16 ;
+---
+>    union __anonunion____missing_field_name_131 __annonCompField16 ;
+2415c2450
+<    union __anonunion____missing_field_name_133 __annonCompField17 ;
+---
+>    union __anonunion____missing_field_name_132 __annonCompField17 ;
+2446c2481
+< #line 577 "include/linux/sched.h"
+---
+> #line 579 "include/linux/sched.h"
+2464c2499
+< #line 618
+---
+> #line 620
+2466c2501
+< #line 621 "include/linux/sched.h"
+---
+> #line 623 "include/linux/sched.h"
+2475c2510
+< #line 642 "include/linux/sched.h"
+---
+> #line 644 "include/linux/sched.h"
+2486c2521
+< #line 683
+---
+> #line 685
+2493c2528
+< #line 727 "include/linux/sched.h"
+---
+> #line 729 "include/linux/sched.h"
+2500c2535
+< #line 744
+---
+> #line 746
+2510c2545
+< #line 762 "include/linux/sched.h"
+---
+> #line 764 "include/linux/sched.h"
+2553c2588
+< #line 827
+---
+> #line 829
+2555c2590
+< #line 830 "include/linux/sched.h"
+---
+> #line 832 "include/linux/sched.h"
+2563c2598
+< #line 867
+---
+> #line 869
+2565c2600
+< #line 872
+---
+> #line 874
+2567c2602
+< #line 875 "include/linux/sched.h"
+---
+> #line 877 "include/linux/sched.h"
+2597c2632
+< #line 923 "include/linux/sched.h"
+---
+> #line 925 "include/linux/sched.h"
+2602c2637
+< #line 937 "include/linux/sched.h"
+---
+> #line 939 "include/linux/sched.h"
+2645c2680
+< #line 994
+---
+> #line 996
+2647c2682
+< #line 994 "include/linux/sched.h"
+---
+> #line 996 "include/linux/sched.h"
+2658c2693
+< #line 1010
+---
+> #line 1012
+2660c2695
+< #line 1010
+---
+> #line 1012
+2662c2697
+< #line 1010
+---
+> #line 1012
+2664c2699
+< #line 1010 "include/linux/sched.h"
+---
+> #line 1012 "include/linux/sched.h"
+2687,2688d2721
+<    struct list_head ptrace_children ;
+<    struct list_head ptrace_list ;
+2704a2738,2739
+>    struct list_head ptraced ;
+>    struct list_head ptrace_entry ;
+2986c3021
+< enum __anonenum_123 {
+---
+> enum __anonenum_122 {
+3030a3066
+>    unsigned int needs_binding : 1 ;
+3035c3071
+< #line 203 "include/linux/usb.h"
+---
+> #line 204 "include/linux/usb.h"
+3041c3077
+< #line 255 "include/linux/usb.h"
+---
+> #line 256 "include/linux/usb.h"
+3051c3087
+< #line 286 "include/linux/usb.h"
+---
+> #line 287 "include/linux/usb.h"
+3055c3091
+< #line 293
+---
+> #line 294
+3057c3093
+< #line 293 "include/linux/usb.h"
+---
+> #line 294 "include/linux/usb.h"
+3061c3097
+<    char *bus_name ;
+---
+>    char const   *bus_name ;
+3078c3114
+< #line 343
+---
+> #line 344
+3080c3116
+< #line 408 "include/linux/usb.h"
+---
+> #line 409 "include/linux/usb.h"
+3135c3171
+< #line 1118 "include/linux/usb.h"
+---
+> #line 1120 "include/linux/usb.h"
+3142c3178
+< #line 1125
+---
+> #line 1127
+3144c3180
+< #line 1127 "include/linux/usb.h"
+---
+> #line 1129 "include/linux/usb.h"
+3150c3186
+< #line 1309 "include/linux/usb.h"
+---
+> #line 1311 "include/linux/usb.h"
+3209c3245
+< __inline static void ( __attribute__((__always_inline__)) atomic_inc)(atomic_t *v ) 
+---
+> __inline static void atomic_inc(atomic_t *v ) 
+3232c3268
+< __inline static int ( __attribute__((__always_inline__)) atomic_dec_and_test)(atomic_t *v ) 
+---
+> __inline static int atomic_dec_and_test(atomic_t *v ) 
+3300c3336
+< __inline static unsigned int ( __attribute__((__always_inline__)) iminor)(struct inode  const  *inode ) 
+---
+> __inline static unsigned int iminor(struct inode  const  *inode ) 
+3314c3350
+< __inline static long ( __attribute__((__always_inline__)) PTR_ERR)(void const   *ptr ) 
+---
+> __inline static long PTR_ERR(void const   *ptr ) 
+3324c3360
+< __inline static long ( __attribute__((__always_inline__)) IS_ERR)(void const   *ptr ) 
+---
+> __inline static long IS_ERR(void const   *ptr ) 
+3335c3371
+< #line 234 "include/linux/device.h"
+---
+> #line 243 "include/linux/device.h"
+3337c3373
+< #line 235
+---
+> #line 244
+3339,3344c3375,3382
+< #line 461
+< extern struct device *( /* format attribute */  device_create)(struct class *cls ,
+<                                                                struct device *parent ,
+<                                                                dev_t devt , char const   *fmt 
+<                                                                , ...) ;
+< #line 470
+---
+> #line 476
+> extern struct device *( /* format attribute */  device_create_drvdata)(struct class *cls ,
+>                                                                        struct device *parent ,
+>                                                                        dev_t devt ,
+>                                                                        void *drvdata ,
+>                                                                        char const   *fmt 
+>                                                                        , ...) ;
+> #line 482
+3346c3384
+< #line 327 "include/linux/sched.h"
+---
+> #line 329 "include/linux/sched.h"
+3533c3571
+< __inline static int ( __attribute__((__always_inline__)) status_reg)(struct pi_adapter *pi ) 
+---
+> __inline static int status_reg(struct pi_adapter *pi ) 
+3545,3546c3583
+< __inline static int ( __attribute__((__always_inline__)) read_reg)(struct pi_adapter *pi ,
+<                                                                    int reg ) 
+---
+> __inline static int read_reg(struct pi_adapter *pi , int reg ) 
+3558,3559c3595
+< __inline static void ( __attribute__((__always_inline__)) write_reg)(struct pi_adapter *pi ,
+<                                                                      int reg , int val ) 
+---
+> __inline static void write_reg(struct pi_adapter *pi , int reg , int val ) 
+3571c3607
+< __inline static u8 ( __attribute__((__always_inline__)) DRIVE)(struct pt_unit *tape ) 
+---
+> __inline static u8 DRIVE(struct pt_unit *tape ) 
+5613,5615c5649,5653
+<       device_create(pt_class, (void *)0, (major << 20) | unit, "pt%d", unit);
+< #line 985
+<       device_create(pt_class, (void *)0, (major << 20) | (unit + 128), "pt%dn", unit);
+---
+>       device_create_drvdata(pt_class, (void *)0, (major << 20) | unit, (void *)0,
+>                             "pt%d", unit);
+> #line 986
+>       device_create_drvdata(pt_class, (void *)0, (major << 20) | (unit + 128), (void *)0,
+>                             "pt%dn", unit);
+5622c5660
+< #line 988
+---
+> #line 990
+5625c5663
+< #line 991
+---
+> #line 993
+5628c5666
+< #line 993
+---
+> #line 995
+5632c5670
+< #line 996
+---
+> #line 998
+5634c5672
+< #line 996 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 998 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5640c5678
+< #line 999
+---
+> #line 1001
+5642c5680
+< #line 999
+---
+> #line 1001
+5644c5682
+< #line 999
+---
+> #line 1001
+5648c5686
+< #line 999
+---
+> #line 1001
+5651c5689
+< #line 1000
+---
+> #line 1002
+5653c5691
+< #line 1001
+---
+> #line 1003
+5655c5693
+< #line 1002
+---
+> #line 1004
+5660c5698
+< #line 999
+---
+> #line 1001
+5663c5701
+< #line 1004
+---
+> #line 1006
+5665c5703
+< #line 1005
+---
+> #line 1007
+5667c5705
+< #line 1006
+---
+> #line 1008
+5669c5707
+< #line 1006
+---
+> #line 1008
+5671c5709
+< #line 1006
+---
+> #line 1008
+5675c5713
+< #line 1006
+---
+> #line 1008
+5678c5716
+< #line 1007
+---
+> #line 1009
+5680c5718
+< #line 1008
+---
+> #line 1010
+5685c5723
+< #line 1006
+---
+> #line 1008
+5688c5726
+< #line 1009
+---
+> #line 1011
+5692,5694c5730,5732
+< #line 1011 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+< static char const   __mod_license1011[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+< #line 1011
+---
+> #line 1013 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+> static char const   __mod_license1013[12]  __attribute__((__used__, __unused__, __section__(".modinfo")))  = 
+> #line 1013
+5698c5736
+< #line 1012 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1014 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5704c5742
+< #line 1012
+---
+> #line 1014
+5706c5744
+< #line 1012
+---
+> #line 1014
+5710c5748
+< #line 1013 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1015 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5716c5754
+< #line 1013
+---
+> #line 1015
+5718c5756
+< #line 1013
+---
+> #line 1015
+5722c5760
+< #line 1031
+---
+> #line 1033
+5724c5762
+< #line 1034
+---
+> #line 1036
+5726c5764
+< #line 1040
+---
+> #line 1042
+5728c5766
+< #line 1043
+---
+> #line 1045
+5730c5768
+< #line 1046
+---
+> #line 1048
+5732c5770
+< #line 1049 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1051 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5734c5772
+< #line 1116 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1118 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5736c5774
+< #line 1172 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1174 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5738c5776
+< #line 1276 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1278 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5740c5778
+< #line 1052 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+---
+> #line 1054 "/work/ldvuser/novikov/work/current--X--drivers/block/paride/pt.ko--X--defaultlinux--X--68_1--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/68_1/drivers/block/paride/pt.c"
+5759c5797
+< #line 1332
+---
+> #line 1334
+5761c5799
+< #line 1341
+---
+> #line 1343
+5763c5801
+< #line 1393
+---
+> #line 1395
+5765c5803
+< #line 1394
+---
+> #line 1396
+5767c5805
+< #line 1394
+---
+> #line 1396
+5769c5807
+< #line 1395
+---
+> #line 1397
+5774c5812
+< #line 1396
+---
+> #line 1398
+5776c5814
+< #line 1400
+---
+> #line 1402
+5778c5816
+< #line 1400
+---
+> #line 1402
+5780c5818
+< #line 1400
+---
+> #line 1402
+5784c5822
+< #line 1400
+---
+> #line 1402
+5787c5825
+< #line 1404
+---
+> #line 1406
+5789c5827
+< #line 1404
+---
+> #line 1406
+5792c5830
+< #line 1409
+---
+> #line 1411
+5794c5832
+< #line 1460
+---
+> #line 1462
+5796c5834
+< #line 1461
+---
+> #line 1463
+5798c5836
+< #line 1462
+---
+> #line 1464
+5800c5838
+< #line 1463
+---
+> #line 1465
+5802c5840
+< #line 1464
+---
+> #line 1466
+5807c5845
+< #line 1465
+---
+> #line 1467
+5812c5850
+< #line 1471
+---
+> #line 1473
+5815c5853
+< #line 1475
+---
+> #line 1477
+5817c5855
+< #line 1526
+---
+> #line 1528
+5819c5857
+< #line 1527
+---
+> #line 1529
+5821c5859
+< #line 1528
+---
+> #line 1530
+5823c5861
+< #line 1529
+---
+> #line 1531
+5825c5863
+< #line 1530
+---
+> #line 1532
+5830c5868
+< #line 1531
+---
+> #line 1533
+5835c5873
+< #line 1537
+---
+> #line 1539
+5838c5876
+< #line 1541
+---
+> #line 1543
+5840c5878
+< #line 1592
+---
+> #line 1594
+5842c5880
+< #line 1593
+---
+> #line 1595
+5845c5883
+< #line 1594
+---
+> #line 1596
+5847c5885
+< #line 1595
+---
+> #line 1597
+5849c5887
+< #line 1596
+---
+> #line 1598
+5854c5892
+< #line 1597
+---
+> #line 1599
+5859c5897
+< #line 1603
+---
+> #line 1605
+5862c5900
+< #line 1607
+---
+> #line 1609
+5864c5902
+< #line 1658
+---
+> #line 1660
+5866c5904
+< #line 1659
+---
+> #line 1661
+5868c5906
+< #line 1660
+---
+> #line 1662
+5873c5911
+< #line 1666
+---
+> #line 1668
+5876c5914
+< #line 1721
+---
+> #line 1723
+5878c5916
+< #line 1722
+---
+> #line 1724
+5880c5918
+< #line 1729
+---
+> #line 1731
+5883c5921
+< #line 1730
+---
+> #line 1732
+5888c5926
+< #line 1788
+---
+> #line 1790
+5890c5928
+< #line 1789
+---
+> #line 1791
+5893c5931
+< #line 1792
+---
+> #line 1794
+5895c5933
+< #line 1795
+---
+> #line 1797
+5899c5937
+< #line 1448 "include/linux/usb.h"
+---
+> #line 1450 "include/linux/usb.h"
+5901c5939
+< #line 1449
+---
+> #line 1451
+5904c5942
+< __inline static void ( __attribute__((__always_inline__)) ldv_error)(void) 
+---
+> __inline static void ldv_error(void) 
+5915c5953
+< __inline static void ( __attribute__((__always_inline__)) ldv_stop)(void) 
+---
+> __inline static void ldv_stop(void) 

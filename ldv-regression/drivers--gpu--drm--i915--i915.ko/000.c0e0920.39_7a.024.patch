@@ -1,0 +1,869 @@
+4091c4091
+< #line 612 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+---
+> #line 614 "/work/ldvuser/novikov/inst/current/envs/linux/linux/drivers/gpu/drm/i915/i915_drv.h"
+5364c5364
+< #line 611
+---
+> #line 613
+14795c14795
+<   *((unsigned int volatile   *)virt + (unsigned long )outring) = 64U;
+---
+>   *((unsigned int volatile   *)virt + (unsigned long )outring) = 128U;
+15036c15036
+<   return ((uint32_t )*((u32 volatile   *)dev_priv->hw_status_page + 16UL));
+---
+>   return ((uint32_t )*((u32 volatile   *)dev_priv->hw_status_page + 32UL));
+17705a17706,17720
+>   u32 head ;
+>   unsigned int tmp ;
+>   unsigned int tmp___0 ;
+>   unsigned int tmp___1 ;
+>   unsigned int tmp___2 ;
+>   unsigned int tmp___3 ;
+>   unsigned int tmp___4 ;
+>   unsigned int tmp___5 ;
+>   unsigned int tmp___6 ;
+>   unsigned int tmp___7 ;
+>   unsigned int tmp___8 ;
+>   unsigned int tmp___9 ;
+>   unsigned int tmp___10 ;
+>   unsigned int tmp___11 ;
+>   unsigned int tmp___12 ;
+17710,17711d17724
+< #line 2437
+<   ret = i915_gem_init_hws(dev);
+17713c17726
+<   if (ret != 0) {
+---
+>   ret = i915_gem_init_hws(dev);
+17714a17728,17729
+>   if (ret != 0) {
+> #line 2440
+17719,17720d17733
+< #line 2441
+<   obj = drm_gem_object_alloc(dev, 131072UL);
+17722c17735
+<   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+---
+>   obj = drm_gem_object_alloc(dev, 131072UL);
+17724c17737
+<     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )obj == (unsigned long )((struct drm_gem_object *)0)) {
+17725a17739,17740
+>     printk("<3>[drm:%s] *ERROR* Failed to allocate ringbuffer\n", "i915_gem_init_ringbuffer");
+> #line 2445
+17730c17745
+< #line 2446
+---
+> #line 2447
+17732,17733d17746
+< #line 2448
+<   ret = i915_gem_object_pin(obj, 4096U);
+17735c17748
+<   if (ret != 0) {
+---
+>   ret = i915_gem_object_pin(obj, 4096U);
+17737c17750
+<     drm_gem_object_unreference(obj);
+---
+>   if (ret != 0) {
+17738a17752,17753
+>     drm_gem_object_unreference(obj);
+> #line 2452
+17743,17744d17757
+< #line 2455
+<   dev_priv->ring.Size = obj->size;
+17745a17759,17760
+>   dev_priv->ring.Size = obj->size;
+> #line 2457
+17747,17748d17761
+< #line 2458
+<   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+17750c17763
+<   dev_priv->ring.map.size = obj->size;
+---
+>   dev_priv->ring.map.offset = (dev->agp)->base + (unsigned long )obj_priv->gtt_offset;
+17752c17765
+<   dev_priv->ring.map.type = _DRM_FRAME_BUFFER;
+---
+>   dev_priv->ring.map.size = obj->size;
+17754c17767
+<   dev_priv->ring.map.flags = 0;
+---
+>   dev_priv->ring.map.type = _DRM_FRAME_BUFFER;
+17755a17769,17770
+>   dev_priv->ring.map.flags = 0;
+> #line 2463
+17757,17758d17771
+< #line 2464
+<   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+17760c17773
+<   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+---
+>   drm_core_ioremap_wc(& dev_priv->ring.map, dev);
+17762c17775
+<     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+---
+>   if ((unsigned long )dev_priv->ring.map.handle == (unsigned long )((void *)0)) {
+17764c17777
+<     memset((void *)(& dev_priv->ring), 0, 88UL);
+---
+>     printk("<3>[drm:%s] *ERROR* Failed to map ringbuffer.\n", "i915_gem_init_ringbuffer");
+17766c17779
+<     drm_gem_object_unreference(obj);
+---
+>     memset((void *)(& dev_priv->ring), 0, 88UL);
+17767a17781,17782
+>     drm_gem_object_unreference(obj);
+> #line 2470
+17772,17773d17786
+< #line 2471
+<   dev_priv->ring.ring_obj = obj;
+17774a17788,17789
+>   dev_priv->ring.ring_obj = obj;
+> #line 2473
+17776,17777d17790
+< #line 2475
+<   writel(0U, (void volatile   *)dev_priv->regs + 8252U);
+17779c17792
+<   writel(0U, (void volatile   *)dev_priv->regs + 8244U);
+---
+>   writel(0U, (void volatile   *)dev_priv->regs + 8252U);
+17783c17796
+<   writel(0U, (void volatile   *)dev_priv->regs + 8248U);
+---
+>   writel(0U, (void volatile   *)dev_priv->regs + 8244U);
+17786a17800,17832
+>   tmp = readl((void const volatile   *)dev_priv->regs + 8244U);
+> #line 2482
+>   head = tmp & 2097148U;
+> #line 2485
+>   if (head != 0U) {
+> #line 2486
+>     tmp___0 = readl((void const volatile   *)dev_priv->regs + 8248U);
+> #line 2486
+>     tmp___1 = readl((void const volatile   *)dev_priv->regs + 8240U);
+> #line 2486
+>     tmp___2 = readl((void const volatile   *)dev_priv->regs + 8244U);
+> #line 2486
+>     tmp___3 = readl((void const volatile   *)dev_priv->regs + 8252U);
+> #line 2486
+>     printk("<3>[drm:%s] *ERROR* Ring head not reset to zero ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___3, tmp___2, tmp___1, tmp___0);
+> #line 2492
+>     writel(0U, (void volatile   *)dev_priv->regs + 8244U);
+> #line 2494
+>     tmp___4 = readl((void const volatile   *)dev_priv->regs + 8248U);
+> #line 2494
+>     tmp___5 = readl((void const volatile   *)dev_priv->regs + 8240U);
+> #line 2494
+>     tmp___6 = readl((void const volatile   *)dev_priv->regs + 8244U);
+> #line 2494
+>     tmp___7 = readl((void const volatile   *)dev_priv->regs + 8252U);
+> #line 2494
+>     printk("<3>[drm:%s] *ERROR* Ring head forced to zero ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___7, tmp___6, tmp___5, tmp___4);
+>   } else {
+> 
+>   }
+> #line 2502
+17788c17834,17856
+< #line 2488
+---
+> #line 2507
+>   tmp___8 = readl((void const volatile   *)dev_priv->regs + 8244U);
+> #line 2507
+>   head = tmp___8 & 2097148U;
+> #line 2510
+>   if (head != 0U) {
+> #line 2511
+>     tmp___9 = readl((void const volatile   *)dev_priv->regs + 8248U);
+> #line 2511
+>     tmp___10 = readl((void const volatile   *)dev_priv->regs + 8240U);
+> #line 2511
+>     tmp___11 = readl((void const volatile   *)dev_priv->regs + 8244U);
+> #line 2511
+>     tmp___12 = readl((void const volatile   *)dev_priv->regs + 8252U);
+> #line 2511
+>     printk("<3>[drm:%s] *ERROR* Ring initialization failed ctl %08x head %08x tail %08x start %08x\n",
+>            "i915_gem_init_ringbuffer", tmp___12, tmp___11, tmp___10, tmp___9);
+> #line 2517
+>     return (-5);
+>   } else {
+> 
+>   }
+> #line 2521
+17790c17858
+< #line 2490
+---
+> #line 2523
+17794c17862
+< #line 2494 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2527 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+17800c17868
+< #line 2496
+---
+> #line 2529
+17802c17870
+< #line 2498
+---
+> #line 2531
+17804c17872
+< #line 2499
+---
+> #line 2532
+17809c17877
+< #line 2501
+---
+> #line 2534
+17811c17879
+< #line 2503
+---
+> #line 2536
+17813c17881
+< #line 2504
+---
+> #line 2537
+17815c17883
+< #line 2505
+---
+> #line 2538
+17817c17885
+< #line 2506
+---
+> #line 2539
+17819c17887
+< #line 2508
+---
+> #line 2541
+17821c17889
+< #line 2509
+---
+> #line 2542
+17823c17891
+< #line 2510
+---
+> #line 2543
+17825c17893
+< #line 2511
+---
+> #line 2544
+17827c17895
+< #line 2512
+---
+> #line 2545
+17829c17897
+< #line 2515
+---
+> #line 2548
+17834c17902
+< #line 2517
+---
+> #line 2550
+17838c17906
+< #line 2520 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2553 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+17853c17921
+< #line 2523
+---
+> #line 2556
+17855c17923
+< #line 2526
+---
+> #line 2559
+17857c17925
+< #line 2527
+---
+> #line 2560
+17859c17927
+< #line 2528
+---
+> #line 2561
+17864c17932
+< #line 2531
+---
+> #line 2564
+17866c17934
+< #line 2532
+---
+> #line 2565
+17868c17936
+< #line 2533
+---
+> #line 2566
+17873c17941
+< #line 2535
+---
+> #line 2568
+17875c17943
+< #line 2536
+---
+> #line 2569
+17877c17945
+< #line 2536
+---
+> #line 2569
+17879c17947
+< #line 2536
+---
+> #line 2569
+17881c17949
+< #line 2536
+---
+> #line 2569
+17883,17886c17951,17954
+<                          "i" (2536), "i" (24UL));
+<     ldv_24164: ;
+< #line 2536
+<     goto ldv_24164;
+---
+>                          "i" (2569), "i" (24UL));
+>     ldv_24165: ;
+> #line 2569
+>     goto ldv_24165;
+17890c17958
+< #line 2537
+---
+> #line 2570
+17892c17960
+< #line 2537
+---
+> #line 2570
+17894c17962
+< #line 2537
+---
+> #line 2570
+17896c17964
+< #line 2537
+---
+> #line 2570
+17898,17901c17966,17969
+<                          "i" (2537), "i" (24UL));
+<     ldv_24165: ;
+< #line 2537
+<     goto ldv_24165;
+---
+>                          "i" (2570), "i" (24UL));
+>     ldv_24166: ;
+> #line 2570
+>     goto ldv_24166;
+17905c17973
+< #line 2538
+---
+> #line 2571
+17907c17975
+< #line 2538
+---
+> #line 2571
+17909c17977
+< #line 2538
+---
+> #line 2571
+17911c17979
+< #line 2538
+---
+> #line 2571
+17913,17916c17981,17984
+<                          "i" (2538), "i" (24UL));
+<     ldv_24166: ;
+< #line 2538
+<     goto ldv_24166;
+---
+>                          "i" (2571), "i" (24UL));
+>     ldv_24167: ;
+> #line 2571
+>     goto ldv_24167;
+17920c17988
+< #line 2539
+---
+> #line 2572
+17922c17990
+< #line 2539
+---
+> #line 2572
+17924c17992
+< #line 2539
+---
+> #line 2572
+17926c17994
+< #line 2539
+---
+> #line 2572
+17928,17931c17996,17999
+<                          "i" (2539), "i" (24UL));
+<     ldv_24167: ;
+< #line 2539
+<     goto ldv_24167;
+---
+>                          "i" (2572), "i" (24UL));
+>     ldv_24168: ;
+> #line 2572
+>     goto ldv_24168;
+17935c18003
+< #line 2540
+---
+> #line 2573
+17937c18005
+< #line 2541
+---
+> #line 2574
+17939c18007
+< #line 2543
+---
+> #line 2576
+17941c18009
+< #line 2545
+---
+> #line 2578
+17945c18013
+< #line 2549 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2582 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+17951c18019
+< #line 2554
+---
+> #line 2587
+17953c18021
+< #line 2555
+---
+> #line 2588
+17955c18023
+< #line 2556
+---
+> #line 2589
+17957c18025
+< #line 2557
+---
+> #line 2590
+17962c18030
+< #line 2558
+---
+> #line 2591
+17964c18032
+< #line 2560
+---
+> #line 2593
+17966c18034
+< #line 2562
+---
+> #line 2595
+17970c18038
+< #line 2566 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2599 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+17977c18045
+< #line 2569
+---
+> #line 2602
+17979c18047
+< #line 2571
+---
+> #line 2604
+17981c18049
+< #line 2573
+---
+> #line 2606
+17983c18051
+< #line 2574
+---
+> #line 2607
+17985c18053
+< #line 2575
+---
+> #line 2608
+17987c18055
+< #line 2576
+---
+> #line 2609
+17993c18061
+< #line 2578
+---
+> #line 2611
+17998c18066
+< #line 2581
+---
+> #line 2614
+18000c18068
+< #line 2582
+---
+> #line 2615
+18004c18072
+< #line 2585 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2618 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18014c18082
+< #line 2587
+---
+> #line 2620
+18016c18084
+< #line 2589
+---
+> #line 2622
+18018c18086
+< #line 2590
+---
+> #line 2623
+18020c18088
+< #line 2591
+---
+> #line 2624
+18022c18090
+< #line 2592
+---
+> #line 2625
+18024c18092
+< #line 2593
+---
+> #line 2626
+18026c18094
+< #line 2593
+---
+> #line 2626
+18028c18096
+< #line 2593
+---
+> #line 2626
+18031c18099
+< #line 2593
+---
+> #line 2626
+18033c18101
+< #line 2593
+---
+> #line 2626
+18035c18103
+< #line 2593
+---
+> #line 2626
+18037c18105
+< #line 2595
+---
+> #line 2628
+18039c18107
+< #line 2595
+---
+> #line 2628
+18041c18109
+< #line 2595
+---
+> #line 2628
+18044c18112
+< #line 2595
+---
+> #line 2628
+18046c18114
+< #line 2595
+---
+> #line 2628
+18048c18116
+< #line 2597
+---
+> #line 2630
+18050c18118
+< #line 2599
+---
+> #line 2632
+18052c18120
+< #line 2600
+---
+> #line 2633
+18056c18124
+< #line 2602 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2635 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18062c18130
+< #line 2607
+---
+> #line 2640
+18064c18132
+< #line 2609
+---
+> #line 2642
+18066c18134
+< #line 2610
+---
+> #line 2643
+18070c18138
+< #line 2612 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2645 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18076c18144
+< #line 2617
+---
+> #line 2650
+18078c18146
+< #line 2619
+---
+> #line 2652
+18080c18148
+< #line 2620
+---
+> #line 2653
+18084c18152
+< #line 2622 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2655 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18092c18160
+< #line 2627
+---
+> #line 2660
+18094c18162
+< #line 2627
+---
+> #line 2660
+18096c18164
+< #line 2629
+---
+> #line 2662
+18098c18166
+< #line 2629
+---
+> #line 2662
+18100c18168
+< #line 2631
+---
+> #line 2664
+18104c18172
+< #line 2634 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2667 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18110c18178
+< #line 2639
+---
+> #line 2672
+18112c18180
+< #line 2641
+---
+> #line 2674
+18114c18182
+< #line 2642
+---
+> #line 2675
+18118c18186
+< #line 2644 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2677 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18124c18192
+< #line 2649
+---
+> #line 2682
+18126c18194
+< #line 2651
+---
+> #line 2684
+18128c18196
+< #line 2652
+---
+> #line 2685
+18132c18200
+< #line 2654 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2687 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18138c18206
+< #line 2659
+---
+> #line 2692
+18140c18208
+< #line 2661
+---
+> #line 2694
+18142c18210
+< #line 2662
+---
+> #line 2695
+18146c18214
+< #line 2664 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2697 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18152c18220
+< #line 2669
+---
+> #line 2702
+18154c18222
+< #line 2671
+---
+> #line 2704
+18156c18224
+< #line 2672
+---
+> #line 2705
+18160c18228
+< #line 2674 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2707 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18166c18234
+< #line 2679
+---
+> #line 2712
+18168c18236
+< #line 2681
+---
+> #line 2714
+18170c18238
+< #line 2682
+---
+> #line 2715
+18174c18242
+< #line 2684 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2717 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18180c18248
+< #line 2689
+---
+> #line 2722
+18182c18250
+< #line 2691
+---
+> #line 2724
+18184c18252
+< #line 2692
+---
+> #line 2725
+18188c18256
+< #line 2694 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2727 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18194c18262
+< #line 2699
+---
+> #line 2732
+18196c18264
+< #line 2701
+---
+> #line 2734
+18198c18266
+< #line 2702
+---
+> #line 2735
+18202c18270
+< #line 2704 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2737 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18208c18276
+< #line 2709
+---
+> #line 2742
+18210c18278
+< #line 2711
+---
+> #line 2744
+18212c18280
+< #line 2712
+---
+> #line 2745
+18216c18284
+< #line 2714 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2747 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18222c18290
+< #line 2719
+---
+> #line 2752
+18224c18292
+< #line 2721
+---
+> #line 2754
+18226c18294
+< #line 2722
+---
+> #line 2755
+18230c18298
+< #line 2724 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2757 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18236c18304
+< #line 2729
+---
+> #line 2762
+18238c18306
+< #line 2731
+---
+> #line 2764
+18240c18308
+< #line 2732
+---
+> #line 2765
+18244c18312
+< #line 2734 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2767 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18250c18318
+< #line 2739
+---
+> #line 2772
+18252c18320
+< #line 2741
+---
+> #line 2774
+18254c18322
+< #line 2742
+---
+> #line 2775
+18258c18326
+< #line 2744 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2777 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18264c18332
+< #line 2749
+---
+> #line 2782
+18266c18334
+< #line 2751
+---
+> #line 2784
+18268c18336
+< #line 2752
+---
+> #line 2785
+18272c18340
+< #line 2754 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2787 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18278c18346
+< #line 2759
+---
+> #line 2792
+18280c18348
+< #line 2761
+---
+> #line 2794
+18282c18350
+< #line 2762
+---
+> #line 2795
+18286c18354
+< #line 2764 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2797 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18292c18360
+< #line 2769
+---
+> #line 2802
+18294c18362
+< #line 2771
+---
+> #line 2804
+18296c18364
+< #line 2772
+---
+> #line 2805
+18300c18368
+< #line 2774 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+---
+> #line 2807 "/work/ldvuser/novikov/work/current--X--drivers/gpu/drm/i915/i915.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/21/dscv_tempdir/dscv/ri/39_7a/drivers/gpu/drm/i915/i915_gem.c.prepared"
+18306c18374
+< #line 2779
+---
+> #line 2812
+18308c18376
+< #line 2781
+---
+> #line 2814
+18310c18378
+< #line 2782
+---
+> #line 2815

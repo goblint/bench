@@ -1,0 +1,5266 @@
+14,15d13
+< #line 19 "include/asm/types.h"
+< typedef int __s32;
+42c40
+< #line 56 "include/asm/alternative_64.h"
+---
+> #line 58 "include/asm/alternative.h"
+44c42
+< #line 37 "include/asm/bug.h"
+---
+> #line 74 "include/linux/log2.h"
+55,57c53,77
+< #line 115 "include/asm/page_64.h"
+< struct page;
+< #line 335 "include/asm/msr.h"
+---
+> #line 100 "include/asm/ptrace-abi.h"
+> struct pt_regs {
+>    unsigned long r15 ;
+>    unsigned long r14 ;
+>    unsigned long r13 ;
+>    unsigned long r12 ;
+>    unsigned long bp ;
+>    unsigned long bx ;
+>    unsigned long r11 ;
+>    unsigned long r10 ;
+>    unsigned long r9 ;
+>    unsigned long r8 ;
+>    unsigned long ax ;
+>    unsigned long cx ;
+>    unsigned long dx ;
+>    unsigned long si ;
+>    unsigned long di ;
+>    unsigned long orig_ax ;
+>    unsigned long ip ;
+>    unsigned long cs ;
+>    unsigned long flags ;
+>    unsigned long sp ;
+>    unsigned long ss ;
+> };
+> #line 71 "include/asm/ds.h"
+59,61c79,153
+< #line 6 "include/asm/mmsegment.h"
+< struct __anonstruct_mm_segment_t_8 {
+<    unsigned long seg ;
+---
+> #line 212 "include/asm/vm86.h"
+> struct info {
+>    long ___orig_eip ;
+>    long ___ebx ;
+>    long ___ecx ;
+>    long ___edx ;
+>    long ___esi ;
+>    long ___edi ;
+>    long ___ebp ;
+>    long ___eax ;
+>    long ___ds ;
+>    long ___es ;
+>    long ___fs ;
+>    long ___orig_eax ;
+>    long ___eip ;
+>    long ___cs ;
+>    long ___eflags ;
+>    long ___esp ;
+>    long ___ss ;
+>    long ___vm86_es ;
+>    long ___vm86_ds ;
+>    long ___vm86_fs ;
+>    long ___vm86_gs ;
+> };
+> #line 52 "include/asm/page.h"
+> struct page;
+> #line 135 "include/asm/page.h"
+> struct __anonstruct_ldv_1793_11 {
+>    unsigned int a ;
+>    unsigned int b ;
+> };
+> #line 135 "include/asm/page.h"
+> struct __anonstruct_ldv_1808_12 {
+>    u16 limit0 ;
+>    u16 base0 ;
+>    unsigned char base1 ;
+>    unsigned char type : 4 ;
+>    unsigned char s : 1 ;
+>    unsigned char dpl : 2 ;
+>    unsigned char p : 1 ;
+>    unsigned char limit : 4 ;
+>    unsigned char avl : 1 ;
+>    unsigned char l : 1 ;
+>    unsigned char d : 1 ;
+>    unsigned char g : 1 ;
+>    unsigned char base2 ;
+> };
+> #line 135 "include/asm/page.h"
+> union __anonunion_ldv_1809_10 {
+>    struct __anonstruct_ldv_1793_11 ldv_1793 ;
+>    struct __anonstruct_ldv_1808_12 ldv_1808 ;
+> };
+> #line 135 "include/asm/page.h"
+> struct desc_struct {
+>    union __anonunion_ldv_1809_10 ldv_1809 ;
+> };
+> #line 40 "include/asm/desc_defs.h"
+> struct gate_struct64 {
+>    u16 offset_low ;
+>    u16 segment ;
+>    unsigned char ist : 3 ;
+>    unsigned char zero0 : 5 ;
+>    unsigned char type : 5 ;
+>    unsigned char dpl : 2 ;
+>    unsigned char p : 1 ;
+>    u16 offset_middle ;
+>    u32 offset_high ;
+>    u32 zero1 ;
+> };
+> #line 73 "include/asm/desc_defs.h"
+> typedef struct gate_struct64 gate_desc;
+> #line 76 "include/asm/desc_defs.h"
+> struct desc_ptr {
+>    unsigned short size ;
+>    unsigned long address ;
+63,65c155,202
+< #line 6 "include/asm/mmsegment.h"
+< typedef struct __anonstruct_mm_segment_t_8 mm_segment_t;
+< #line 49 "include/asm/percpu_64.h"
+---
+> #line 423 "include/linux/cpumask.h"
+> struct thread_struct;
+> #line 424
+> struct tss_struct;
+> #line 71 "include/asm/paravirt.h"
+> struct pv_lazy_ops {
+>    void (*enter)(void) ;
+>    void (*leave)(void) ;
+> };
+> #line 89 "include/asm/paravirt.h"
+> struct pv_cpu_ops {
+>    unsigned long (*get_debugreg)(int  ) ;
+>    void (*set_debugreg)(int  , unsigned long  ) ;
+>    void (*clts)(void) ;
+>    unsigned long (*read_cr0)(void) ;
+>    void (*write_cr0)(unsigned long  ) ;
+>    unsigned long (*read_cr4_safe)(void) ;
+>    unsigned long (*read_cr4)(void) ;
+>    void (*write_cr4)(unsigned long  ) ;
+>    unsigned long (*read_cr8)(void) ;
+>    void (*write_cr8)(unsigned long  ) ;
+>    void (*load_tr_desc)(void) ;
+>    void (*load_gdt)(struct desc_ptr  const  * ) ;
+>    void (*load_idt)(struct desc_ptr  const  * ) ;
+>    void (*store_gdt)(struct desc_ptr * ) ;
+>    void (*store_idt)(struct desc_ptr * ) ;
+>    void (*set_ldt)(void const   * , unsigned int  ) ;
+>    unsigned long (*store_tr)(void) ;
+>    void (*load_tls)(struct thread_struct * , unsigned int  ) ;
+>    void (*write_ldt_entry)(struct desc_struct * , int  , void const   * ) ;
+>    void (*write_gdt_entry)(struct desc_struct * , int  , void const   * , int  ) ;
+>    void (*write_idt_entry)(gate_desc * , int  , gate_desc const   * ) ;
+>    void (*load_sp0)(struct tss_struct * , struct thread_struct * ) ;
+>    void (*set_iopl_mask)(unsigned int  ) ;
+>    void (*wbinvd)(void) ;
+>    void (*io_delay)(void) ;
+>    void (*cpuid)(unsigned int * , unsigned int * , unsigned int * , unsigned int * ) ;
+>    u64 (*read_msr)(unsigned int  , int * ) ;
+>    int (*write_msr)(unsigned int  , unsigned int  , unsigned int  ) ;
+>    u64 (*read_tsc)(void) ;
+>    u64 (*read_pmc)(int  ) ;
+>    unsigned long long (*read_tscp)(unsigned int * ) ;
+>    void (*irq_enable_syscall_ret)(void) ;
+>    void (*iret)(void) ;
+>    void (*swapgs)(void) ;
+>    struct pv_lazy_ops lazy_mode ;
+> };
+> #line 189 "include/asm/msr.h"
+83a221,344
+> #line 164 "include/asm/processor.h"
+> struct x86_hw_tss {
+>    u32 reserved1 ;
+>    u64 sp0 ;
+>    u64 sp1 ;
+>    u64 sp2 ;
+>    u64 reserved2 ;
+>    u64 ist[7U] ;
+>    u32 reserved3 ;
+>    u32 reserved4 ;
+>    u16 reserved5 ;
+>    u16 io_bitmap_base ;
+> };
+> #line 202 "include/asm/processor.h"
+> struct tss_struct {
+>    struct x86_hw_tss x86_tss ;
+>    unsigned long io_bitmap[1025U] ;
+>    unsigned long io_bitmap_max ;
+>    struct thread_struct *io_bitmap_owner ;
+>    unsigned long __cacheline_filler[35U] ;
+>    unsigned long stack[64U] ;
+> };
+> #line 245 "include/asm/processor.h"
+> struct i387_fsave_struct {
+>    u32 cwd ;
+>    u32 swd ;
+>    u32 twd ;
+>    u32 fip ;
+>    u32 fcs ;
+>    u32 foo ;
+>    u32 fos ;
+>    u32 st_space[20U] ;
+>    u32 status ;
+> };
+> #line 259 "include/asm/processor.h"
+> struct __anonstruct_ldv_3874_15 {
+>    u64 rip ;
+>    u64 rdp ;
+> };
+> #line 259 "include/asm/processor.h"
+> struct __anonstruct_ldv_3880_16 {
+>    u32 fip ;
+>    u32 fcs ;
+>    u32 foo ;
+>    u32 fos ;
+> };
+> #line 259 "include/asm/processor.h"
+> union __anonunion_ldv_3881_14 {
+>    struct __anonstruct_ldv_3874_15 ldv_3874 ;
+>    struct __anonstruct_ldv_3880_16 ldv_3880 ;
+> };
+> #line 259 "include/asm/processor.h"
+> struct i387_fxsave_struct {
+>    u16 cwd ;
+>    u16 swd ;
+>    u16 twd ;
+>    u16 fop ;
+>    union __anonunion_ldv_3881_14 ldv_3881 ;
+>    u32 mxcsr ;
+>    u32 mxcsr_mask ;
+>    u32 st_space[32U] ;
+>    u32 xmm_space[64U] ;
+>    u32 padding[24U] ;
+> };
+> #line 283 "include/asm/processor.h"
+> struct i387_soft_struct {
+>    u32 cwd ;
+>    u32 swd ;
+>    u32 twd ;
+>    u32 fip ;
+>    u32 fcs ;
+>    u32 foo ;
+>    u32 fos ;
+>    u32 st_space[20U] ;
+>    u8 ftop ;
+>    u8 changed ;
+>    u8 lookahead ;
+>    u8 no_update ;
+>    u8 rm ;
+>    u8 alimit ;
+>    struct info *info ;
+>    u32 entry_eip ;
+> };
+> #line 297 "include/asm/processor.h"
+> union i387_union {
+>    struct i387_fsave_struct fsave ;
+>    struct i387_fxsave_struct fxsave ;
+>    struct i387_soft_struct soft ;
+> };
+> #line 318 "include/asm/processor.h"
+> struct thread_struct {
+>    struct desc_struct tls_array[3U] ;
+>    unsigned long sp0 ;
+>    unsigned long sp ;
+>    unsigned long usersp ;
+>    unsigned short es ;
+>    unsigned short ds ;
+>    unsigned short fsindex ;
+>    unsigned short gsindex ;
+>    unsigned long ip ;
+>    unsigned long fs ;
+>    unsigned long gs ;
+>    unsigned long debugreg0 ;
+>    unsigned long debugreg1 ;
+>    unsigned long debugreg2 ;
+>    unsigned long debugreg3 ;
+>    unsigned long debugreg6 ;
+>    unsigned long debugreg7 ;
+>    unsigned long cr2 ;
+>    unsigned long trap_no ;
+>    unsigned long error_code ;
+>    union i387_union i387 ;
+>    unsigned long *io_bitmap_ptr ;
+>    unsigned long iopl ;
+>    unsigned int io_bitmap_max ;
+>    unsigned long debugctlmsr ;
+>    unsigned long ds_area_msr ;
+> };
+> #line 537 "include/asm/processor.h"
+> struct __anonstruct_mm_segment_t_17 {
+>    unsigned long seg ;
+> };
+> #line 537 "include/asm/processor.h"
+> typedef struct __anonstruct_mm_segment_t_17 mm_segment_t;
+90c351
+< struct __anonstruct_raw_spinlock_t_10 {
+---
+> struct __anonstruct_raw_spinlock_t_18 {
+94c355
+< typedef struct __anonstruct_raw_spinlock_t_10 raw_spinlock_t;
+---
+> typedef struct __anonstruct_raw_spinlock_t_18 raw_spinlock_t;
+97c358
+< #line 53 "include/linux/debug_locks.h"
+---
+> #line 54 "include/linux/debug_locks.h"
+104c365
+< #line 27 "include/linux/stacktrace.h"
+---
+> #line 29 "include/linux/stacktrace.h"
+136c397
+< struct __anonstruct_spinlock_t_12 {
+---
+> struct __anonstruct_spinlock_t_20 {
+144c405
+< typedef struct __anonstruct_spinlock_t_12 spinlock_t;
+---
+> typedef struct __anonstruct_spinlock_t_20 spinlock_t;
+146c407
+< struct __anonstruct_atomic_t_14 {
+---
+> struct __anonstruct_atomic_t_22 {
+150c411
+< typedef struct __anonstruct_atomic_t_14 atomic_t;
+---
+> typedef struct __anonstruct_atomic_t_22 atomic_t;
+152c413
+< struct __anonstruct_atomic64_t_15 {
+---
+> struct __anonstruct_atomic64_t_23 {
+156c417
+< typedef struct __anonstruct_atomic64_t_15 atomic64_t;
+---
+> typedef struct __anonstruct_atomic64_t_23 atomic64_t;
+172c433
+< struct __anonstruct_ldv_3157_17 {
+---
+> struct __anonstruct_ldv_4835_25 {
+179c440
+< struct __anonstruct_futex_18 {
+---
+> struct __anonstruct_futex_26 {
+182a444
+>    u32 bitset ;
+186,188c448,450
+< union __anonunion_ldv_3164_16 {
+<    struct __anonstruct_ldv_3157_17 ldv_3157 ;
+<    struct __anonstruct_futex_18 futex ;
+---
+> union __anonunion_ldv_4843_24 {
+>    struct __anonstruct_ldv_4835_25 ldv_4835 ;
+>    struct __anonstruct_futex_26 futex ;
+193c455
+<    union __anonunion_ldv_3164_16 ldv_3164 ;
+---
+>    union __anonunion_ldv_4843_24 ldv_4843 ;
+195c457
+< #line 32 "include/linux/thread_info.h"
+---
+> #line 33 "include/linux/thread_info.h"
+204a467
+>    void *sysenter_return ;
+206,230c469
+< #line 96 "include/linux/kmod.h"
+< struct pt_regs {
+<    unsigned long r15 ;
+<    unsigned long r14 ;
+<    unsigned long r13 ;
+<    unsigned long r12 ;
+<    unsigned long rbp ;
+<    unsigned long rbx ;
+<    unsigned long r11 ;
+<    unsigned long r10 ;
+<    unsigned long r9 ;
+<    unsigned long r8 ;
+<    unsigned long rax ;
+<    unsigned long rcx ;
+<    unsigned long rdx ;
+<    unsigned long rsi ;
+<    unsigned long rdi ;
+<    unsigned long orig_rax ;
+<    unsigned long rip ;
+<    unsigned long cs ;
+<    unsigned long eflags ;
+<    unsigned long rsp ;
+<    unsigned long ss ;
+< };
+< #line 25 "include/linux/elf.h"
+---
+> #line 27 "include/linux/elf.h"
+232c471
+< #line 26 "include/linux/elf.h"
+---
+> #line 28 "include/linux/elf.h"
+234c473
+< #line 30 "include/linux/elf.h"
+---
+> #line 32 "include/linux/elf.h"
+236c475
+< #line 31 "include/linux/elf.h"
+---
+> #line 33 "include/linux/elf.h"
+238c477
+< #line 178 "include/linux/elf.h"
+---
+> #line 180 "include/linux/elf.h"
+247c486
+< #line 186 "include/linux/elf.h"
+---
+> #line 188 "include/linux/elf.h"
+249c488
+< #line 398
+---
+> #line 402
+251c490
+< #line 399 "include/linux/elf.h"
+---
+> #line 403 "include/linux/elf.h"
+259a499
+>    int (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+262c502
+< #line 72 "include/linux/sysfs.h"
+---
+> #line 74 "include/linux/sysfs.h"
+267c507
+< #line 116 "include/linux/sysfs.h"
+---
+> #line 118 "include/linux/sysfs.h"
+278c518
+< #line 52 "include/linux/kobject.h"
+---
+> #line 51 "include/linux/kobject.h"
+280c520
+< #line 52
+---
+> #line 51
+282c522
+< #line 52
+---
+> #line 51
+284c524
+< #line 52 "include/linux/kobject.h"
+---
+> #line 51 "include/linux/kobject.h"
+286c526
+<    char const   *k_name ;
+---
+>    char const   *name ;
+292a533,536
+>    unsigned char state_initialized : 1 ;
+>    unsigned char state_in_sysfs : 1 ;
+>    unsigned char state_add_uevent_sent : 1 ;
+>    unsigned char state_remove_uevent_sent : 1 ;
+294c538
+< #line 101 "include/linux/kobject.h"
+---
+> #line 106 "include/linux/kobject.h"
+300c544
+< #line 107 "include/linux/kobject.h"
+---
+> #line 112 "include/linux/kobject.h"
+307c551
+< #line 114 "include/linux/kobject.h"
+---
+> #line 119 "include/linux/kobject.h"
+313c557
+< #line 120 "include/linux/kobject.h"
+---
+> #line 136 "include/linux/kobject.h"
+315d558
+<    struct kobj_type *ktype ;
+334,353d576
+< #line 559 "include/linux/mmzone.h"
+< struct rw_semaphore;
+< #line 561 "include/linux/mmzone.h"
+< struct rw_semaphore {
+<    __s32 activity ;
+<    spinlock_t wait_lock ;
+<    struct list_head wait_list ;
+<    struct lockdep_map dep_map ;
+< };
+< #line 52 "include/linux/srcu.h"
+< struct notifier_block {
+<    int (*notifier_call)(struct notifier_block * , unsigned long  , void * ) ;
+<    struct notifier_block *next ;
+<    int priority ;
+< };
+< #line 60 "include/linux/notifier.h"
+< struct blocking_notifier_head {
+<    struct rw_semaphore rwsem ;
+<    struct notifier_block *head ;
+< };
+403c626
+<    int defrag_ratio ;
+---
+>    int remote_node_defrag_ratio ;
+407,408c630,631
+< #line 10 "include/asm/local_64.h"
+< struct __anonstruct_local_t_76 {
+---
+> #line 12 "include/asm/local.h"
+> struct __anonstruct_local_t_84 {
+411,413c634,636
+< #line 10 "include/asm/local_64.h"
+< typedef struct __anonstruct_local_t_76 local_t;
+< #line 148 "include/asm/local_64.h"
+---
+> #line 12 "include/asm/local.h"
+> typedef struct __anonstruct_local_t_84 local_t;
+> #line 164 "include/asm/local.h"
+417c640
+< #line 151 "include/asm/local_64.h"
+---
+> #line 167 "include/asm/local.h"
+521c744
+< #line 466
+---
+> #line 469
+523c746
+< #line 614 "include/linux/module.h"
+---
+> #line 591 "include/linux/module.h"
+533c756
+< #line 154 "include/linux/ioport.h"
+---
+> #line 155 "include/linux/ioport.h"
+538,539d760
+< #line 54 "include/linux/completion.h"
+< struct klist_node;
+540a762,763
+> struct klist_node;
+> #line 56 "include/linux/completion.h"
+566c789
+< struct class;
+---
+> struct driver_private;
+568c791
+< struct class_device;
+---
+> struct class;
+569a793,794
+> struct class_device;
+> #line 14
+571c796,798
+< #line 14 "include/asm/device.h"
+---
+> #line 15
+> struct bus_type_private;
+> #line 16 "include/asm/device.h"
+577c804
+< #line 51 "include/linux/device.h"
+---
+> #line 54 "include/linux/device.h"
+579c806
+< #line 51
+---
+> #line 54
+581c808
+< #line 51 "include/linux/device.h"
+---
+> #line 54 "include/linux/device.h"
+584,590d810
+<    struct module *owner ;
+<    struct kset subsys ;
+<    struct kset drivers ;
+<    struct kset devices ;
+<    struct klist klist_devices ;
+<    struct klist klist_drivers ;
+<    struct blocking_notifier_head bus_notifier ;
+603c823
+<    unsigned char drivers_autoprobe : 1 ;
+---
+>    struct bus_type_private *p ;
+605c825
+< #line 109 "include/linux/device.h"
+---
+> #line 120 "include/linux/device.h"
+609,611d828
+<    struct kobject kobj ;
+<    struct klist klist_devices ;
+<    struct klist_node knode_bus ;
+614d830
+<    struct module_kobject *mkobj ;
+619a836,837
+>    struct attribute_group **groups ;
+>    struct driver_private *p ;
+621c839
+< #line 148 "include/linux/device.h"
+---
+> #line 147 "include/linux/device.h"
+627c845
+< #line 168
+---
+> #line 176
+629c847
+< #line 168
+---
+> #line 176
+631c849
+< #line 168 "include/linux/device.h"
+---
+> #line 176 "include/linux/device.h"
+652c870
+< #line 202 "include/linux/device.h"
+---
+> #line 214 "include/linux/device.h"
+658c876
+< #line 216 "include/linux/device.h"
+---
+> #line 229 "include/linux/device.h"
+664c882
+< #line 228 "include/linux/device.h"
+---
+> #line 242 "include/linux/device.h"
+678c896
+< #line 321 "include/linux/device.h"
+---
+> #line 333 "include/linux/device.h"
+687c905
+< #line 339 "include/linux/device.h"
+---
+> #line 351 "include/linux/device.h"
+694c912,917
+< #line 399
+---
+> #line 412 "include/linux/device.h"
+> struct device_dma_parameters {
+>    unsigned int max_segment_size ;
+>    unsigned long segment_boundary_mask ;
+> };
+> #line 421
+696c919
+< #line 399 "include/linux/device.h"
+---
+> #line 421 "include/linux/device.h"
+716a940
+>    struct device_dma_parameters *dma_parms ;
+728c952
+< #line 579 "include/linux/device.h"
+---
+> #line 626 "include/linux/device.h"
+752c976
+< #line 255 "include/asm/io_64.h"
+---
+> #line 282 "include/asm/io_64.h"
+759c983
+< #line 235 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 239 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+764c988
+< #line 251 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 255 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+813a1038,1051
+> #line 290 "include/asm/paravirt.h"
+> extern struct pv_cpu_ops pv_cpu_ops ;
+> #line 797 "include/asm/paravirt.h"
+> __inline static void slow_down_io(void) 
+> { 
+> 
+> 
+>   {
+> #line 798
+>   (*(pv_cpu_ops.io_delay))();
+> #line 799
+>   return;
+> }
+> }
+816c1054
+< #line 144
+---
+> #line 149
+818c1056
+< #line 147
+---
+> #line 152
+820c1058
+< #line 151
+---
+> #line 156
+822c1060
+< #line 155
+---
+> #line 160
+824c1062
+< #line 159
+---
+> #line 164
+826c1064
+< #line 163
+---
+> #line 168
+828c1066
+< #line 167
+---
+> #line 172
+830c1068
+< #line 171
+---
+> #line 176
+832c1070
+< #line 175
+---
+> #line 180
+834c1072
+< #line 179
+---
+> #line 184
+836c1074
+< #line 183
+---
+> #line 188
+838c1076
+< #line 187
+---
+> #line 192
+840c1078
+< #line 191
+---
+> #line 196
+842c1080
+< #line 195
+---
+> #line 200
+844c1082
+< #line 199
+---
+> #line 204
+846c1084
+< #line 7 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 7 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+876c1114
+< #line 104 "include/linux/sysfs.h"
+---
+> #line 106 "include/linux/sysfs.h"
+878c1116
+< #line 106
+---
+> #line 108
+882c1120
+< #line 76 "include/linux/jiffies.h"
+---
+> #line 82 "include/linux/jiffies.h"
+884c1122
+< #line 163 "include/linux/slub_def.h"
+---
+> #line 166 "include/linux/slub_def.h"
+886c1124
+< #line 165 "include/linux/slub_def.h"
+---
+> #line 168 "include/linux/slub_def.h"
+892c1130
+< #line 181
+---
+> #line 184
+894c1132
+< #line 181
+---
+> #line 184
+912c1150
+< #line 98 "include/linux/ioport.h"
+---
+> #line 99 "include/linux/ioport.h"
+914c1152
+< #line 118
+---
+> #line 119
+917c1155
+< #line 128
+---
+> #line 129
+919c1157
+< #line 352 "include/linux/device.h"
+---
+> #line 364 "include/linux/device.h"
+921c1159
+< #line 474 "include/linux/device.h"
+---
+> #line 497 "include/linux/device.h"
+927c1165
+< #line 476
+---
+> #line 499
+931c1169
+< #line 480 "include/linux/device.h"
+---
+> #line 502 "include/linux/device.h"
+937c1175
+< #line 482
+---
+> #line 504
+939c1177
+< #line 483
+---
+> #line 505
+943c1181
+< #line 556
+---
+> #line 587
+1016c1254
+< #line 80 "include/asm/io_64.h"
+---
+> #line 103 "include/asm/io_64.h"
+1022c1260
+< #line 80
+---
+> #line 103
+1024c1262
+< #line 80
+---
+> #line 103
+1028c1266
+< #line 80 "include/asm/io_64.h"
+---
+> #line 103 "include/asm/io_64.h"
+1034,1036c1272,1276
+< #line 80
+<   __asm__  volatile   ("inb %w1,%0\noutb %%al,$0x80": "=a" (_v): "Nd" (port));
+< #line 80
+---
+> #line 103
+>   __asm__  volatile   ("inb %w1,%0": "=a" (_v): "Nd" (port));
+> #line 103
+>   slow_down_io();
+> #line 103
+1040c1280
+< #line 89 "include/asm/io_64.h"
+---
+> #line 112 "include/asm/io_64.h"
+1046c1286
+< #line 89
+---
+> #line 112
+1048c1288
+< #line 90
+---
+> #line 113
+1052c1292
+< #line 89 "include/asm/io_64.h"
+---
+> #line 112 "include/asm/io_64.h"
+1058,1060c1298,1302
+< #line 89
+<   __asm__  volatile   ("outb %b0,%w1\noutb %%al,$0x80": : "a" (value), "Nd" (port));
+< #line 90
+---
+> #line 112
+>   __asm__  volatile   ("outb %b0,%w1": : "a" (value), "Nd" (port));
+> #line 112
+>   slow_down_io();
+> #line 113
+1064c1306,1308
+< #line 71 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 71 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+> static unsigned short force_id  ;
+> #line 75 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1066c1310
+< #line 82 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 86 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1072c1316
+< #line 84
+---
+> #line 88
+1074c1318
+< #line 85
+---
+> #line 89
+1076c1320
+< #line 85
+---
+> #line 89
+1080c1324
+< #line 88 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 92 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1089c1333
+< #line 91
+---
+> #line 95
+1091c1335
+< #line 91
+---
+> #line 95
+1093c1337
+< #line 91
+---
+> #line 95
+1095c1339
+< #line 92
+---
+> #line 96
+1097c1341
+< #line 92
+---
+> #line 96
+1099c1343
+< #line 93
+---
+> #line 97
+1101c1345
+< #line 94
+---
+> #line 98
+1103c1347
+< #line 94
+---
+> #line 98
+1105c1349
+< #line 95
+---
+> #line 99
+1109c1353
+< #line 99 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 103 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1115c1359
+< #line 101
+---
+> #line 105
+1117c1361
+< #line 102
+---
+> #line 106
+1119c1363
+< #line 103
+---
+> #line 107
+1123c1367
+< #line 106 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 110 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1129c1373
+< #line 108
+---
+> #line 112
+1131c1375
+< #line 109
+---
+> #line 113
+1133c1377
+< #line 110
+---
+> #line 114
+1135c1379
+< #line 111
+---
+> #line 115
+1137c1381
+< #line 112
+---
+> #line 116
+1141c1385
+< #line 115 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 119 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1147c1391
+< #line 117
+---
+> #line 121
+1149c1393
+< #line 118
+---
+> #line 122
+1151c1395
+< #line 119
+---
+> #line 123
+1155c1399
+< #line 135 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 139 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1157c1401
+< #line 138 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 142 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1159c1403
+< #line 174 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 178 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1162c1406
+< #line 175 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 179 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1165c1409
+< #line 176 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 180 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1168c1412
+< #line 177 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 181 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1171c1415
+< #line 198 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 202 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1178c1422
+< #line 200
+---
+> #line 204
+1180c1424
+< #line 201
+---
+> #line 205
+1185c1429
+< #line 202
+---
+> #line 206
+1187c1431
+< #line 202
+---
+> #line 206
+1189c1433
+< #line 203
+---
+> #line 207
+1192c1436
+< #line 203
+---
+> #line 207
+1196c1440
+< #line 207 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 211 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1202c1446
+< #line 209
+---
+> #line 213
+1204c1448
+< #line 210
+---
+> #line 214
+1209c1453
+< #line 211
+---
+> #line 215
+1211c1455
+< #line 211
+---
+> #line 215
+1215c1459
+< #line 225 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 229 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1221c1465
+< #line 227
+---
+> #line 231
+1223,1226c1467,1470
+< #line 228
+<   goto ldv_7730;
+<   ldv_7729: 
+< #line 229
+---
+> #line 232
+>   goto ldv_9557;
+>   ldv_9556: 
+> #line 233
+1228,1229c1472,1473
+<   ldv_7730: ;
+< #line 228
+---
+>   ldv_9557: ;
+> #line 232
+1231c1475
+< #line 228
+---
+> #line 232
+1233c1477
+< #line 228
+---
+> #line 232
+1235,1236c1479,1480
+< #line 229
+<       goto ldv_7729;
+---
+> #line 233
+>       goto ldv_9556;
+1238,1239c1482,1483
+< #line 231
+<       goto ldv_7731;
+---
+> #line 235
+>       goto ldv_9558;
+1244,1245c1488,1489
+<   ldv_7731: ;
+< #line 230
+---
+>   ldv_9558: ;
+> #line 234
+1249c1493
+< #line 234 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 238 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1251c1495
+< #line 234
+---
+> #line 238
+1254c1498
+< #line 284
+---
+> #line 288
+1256c1500
+< #line 285
+---
+> #line 289
+1258c1502
+< #line 287
+---
+> #line 291
+1260c1504
+< #line 288
+---
+> #line 292
+1262c1506
+< #line 289
+---
+> #line 293
+1264c1508
+< #line 290
+---
+> #line 294
+1266c1510
+< #line 291
+---
+> #line 295
+1268c1512
+< #line 294 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 298 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1270,1294c1514,1517
+< #line 294
+<      {& it87_probe, & it87_remove, 0, 0, 0, 0, 0, {"it87", 0, {0, {{0}}, {0, 0}, 0,
+<                                                              0, 0, 0}, {{{0U}, 0U,
+<                                                                          0U, 0, {0,
+<                                                                                  0,
+<                                                                                  0,
+<                                                                                  0}},
+<                                                                         {0, 0}, 0,
+<                                                                         0}, {0, {0,
+<                                                                                  0},
+<                                                                              {{0}},
+<                                                                              {0U,
+<                                                                               {{{0U},
+<                                                                                 0U,
+<                                                                                 0U,
+<                                                                                 0,
+<                                                                                 {0,
+<                                                                                  0,
+<                                                                                  0,
+<                                                                                  0}},
+<                                                                                {0,
+<                                                                                 0}}}},
+<                                                  & __this_module, 0, 0, 0, 0, 0, 0,
+<                                                  0}};
+< #line 303 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 298
+>      {& it87_probe, & it87_remove, 0, 0, 0, 0, 0, {"it87", 0, & __this_module, 0, 0,
+>                                                  0, 0, 0, 0, 0, 0}};
+> #line 307 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1305c1528
+< #line 306
+---
+> #line 310
+1307c1530
+< #line 306
+---
+> #line 310
+1309c1532
+< #line 307
+---
+> #line 311
+1311c1534
+< #line 309
+---
+> #line 313
+1313c1536
+< #line 309
+---
+> #line 313
+1315c1538
+< #line 310
+---
+> #line 314
+1317c1540
+< #line 310
+---
+> #line 314
+1321c1544
+< #line 313 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 317 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1332c1555
+< #line 316
+---
+> #line 320
+1334c1557
+< #line 316
+---
+> #line 320
+1336c1559
+< #line 317
+---
+> #line 321
+1338c1561
+< #line 319
+---
+> #line 323
+1340c1563
+< #line 319
+---
+> #line 323
+1342c1565
+< #line 320
+---
+> #line 324
+1344c1567
+< #line 320
+---
+> #line 324
+1348c1571
+< #line 323 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 327 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1359c1582
+< #line 326
+---
+> #line 330
+1361c1584
+< #line 326
+---
+> #line 330
+1363c1586
+< #line 327
+---
+> #line 331
+1365c1588
+< #line 329
+---
+> #line 333
+1367c1590
+< #line 329
+---
+> #line 333
+1369c1592
+< #line 330
+---
+> #line 334
+1371c1594
+< #line 330
+---
+> #line 334
+1375c1598
+< #line 333 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 337 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1389c1612
+< #line 336
+---
+> #line 340
+1391c1614
+< #line 336
+---
+> #line 340
+1393c1616
+< #line 337
+---
+> #line 341
+1395c1618
+< #line 339
+---
+> #line 343
+1397c1620
+< #line 339
+---
+> #line 343
+1399c1622
+< #line 340
+---
+> #line 344
+1401c1624
+< #line 340
+---
+> #line 344
+1403c1626
+< #line 342
+---
+> #line 346
+1405c1628
+< #line 343
+---
+> #line 347
+1407c1630
+< #line 343
+---
+> #line 347
+1409c1632
+< #line 344
+---
+> #line 348
+1411c1634
+< #line 346
+---
+> #line 350
+1413c1636
+< #line 347
+---
+> #line 351
+1417c1640
+< #line 349 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 353 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1431c1654
+< #line 352
+---
+> #line 356
+1433c1656
+< #line 352
+---
+> #line 356
+1435c1658
+< #line 353
+---
+> #line 357
+1437c1660
+< #line 355
+---
+> #line 359
+1439c1662
+< #line 355
+---
+> #line 359
+1441c1664
+< #line 356
+---
+> #line 360
+1443c1666
+< #line 356
+---
+> #line 360
+1445c1668
+< #line 358
+---
+> #line 362
+1447c1670
+< #line 359
+---
+> #line 363
+1449c1672
+< #line 359
+---
+> #line 363
+1451c1674
+< #line 360
+---
+> #line 364
+1453c1676
+< #line 362
+---
+> #line 366
+1455c1678
+< #line 363
+---
+> #line 367
+1459c1682
+< #line 376 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 380 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1461c1684
+< #line 377 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 381 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1463c1686
+< #line 377 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 381 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1465c1688
+< #line 378 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 382 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1467c1690
+< #line 379 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 383 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1469c1692
+< #line 379 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 383 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1471c1694
+< #line 380 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 384 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1473c1696
+< #line 381 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 385 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1475c1698
+< #line 381 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 385 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1477c1700
+< #line 382 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 386 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1479c1702
+< #line 383 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 387 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1481c1704
+< #line 383 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 387 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1483c1706
+< #line 384 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 388 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1485c1708
+< #line 385 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 389 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1487c1710
+< #line 385 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 389 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1489c1712
+< #line 386 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 390 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1491c1714
+< #line 387 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 391 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1493c1716
+< #line 387 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 391 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1495c1718
+< #line 388 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 392 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1497c1720
+< #line 389 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 393 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1499c1722
+< #line 389 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 393 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1501c1724
+< #line 390 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 394 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1503c1726
+< #line 391 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 395 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1505c1728
+< #line 391 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 395 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1507c1730
+< #line 392 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 396 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1509c1732
+< #line 395 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 399 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1520c1743
+< #line 398
+---
+> #line 402
+1522c1745
+< #line 398
+---
+> #line 402
+1524c1747
+< #line 399
+---
+> #line 403
+1526c1749
+< #line 401
+---
+> #line 405
+1528c1751
+< #line 401
+---
+> #line 405
+1530c1753
+< #line 402
+---
+> #line 406
+1532c1755
+< #line 402
+---
+> #line 406
+1536c1759
+< #line 404 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 408 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1548c1771
+< #line 407
+---
+> #line 411
+1550c1773
+< #line 407
+---
+> #line 411
+1552c1775
+< #line 408
+---
+> #line 412
+1554c1777
+< #line 410
+---
+> #line 414
+1556c1779
+< #line 410
+---
+> #line 414
+1558c1781
+< #line 411
+---
+> #line 415
+1560c1783
+< #line 411
+---
+> #line 415
+1564c1787
+< #line 413 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 417 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1576c1799
+< #line 416
+---
+> #line 420
+1578c1801
+< #line 416
+---
+> #line 420
+1580c1803
+< #line 417
+---
+> #line 421
+1582c1805
+< #line 419
+---
+> #line 423
+1584c1807
+< #line 419
+---
+> #line 423
+1586c1809
+< #line 420
+---
+> #line 424
+1588c1811
+< #line 420
+---
+> #line 424
+1592c1815
+< #line 422 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 426 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1606c1829
+< #line 425
+---
+> #line 429
+1608c1831
+< #line 425
+---
+> #line 429
+1610c1833
+< #line 426
+---
+> #line 430
+1612c1835
+< #line 428
+---
+> #line 432
+1614c1837
+< #line 428
+---
+> #line 432
+1616c1839
+< #line 429
+---
+> #line 433
+1618c1841
+< #line 429
+---
+> #line 433
+1620c1843
+< #line 431
+---
+> #line 435
+1622c1845
+< #line 432
+---
+> #line 436
+1625c1848
+< #line 432
+---
+> #line 436
+1627c1850
+< #line 433
+---
+> #line 437
+1629c1852
+< #line 434
+---
+> #line 438
+1631c1854
+< #line 435
+---
+> #line 439
+1635c1858
+< #line 437 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 441 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1649c1872
+< #line 440
+---
+> #line 444
+1651c1874
+< #line 440
+---
+> #line 444
+1653c1876
+< #line 441
+---
+> #line 445
+1655c1878
+< #line 443
+---
+> #line 447
+1657c1880
+< #line 443
+---
+> #line 447
+1659c1882
+< #line 444
+---
+> #line 448
+1661c1884
+< #line 444
+---
+> #line 448
+1663c1886
+< #line 446
+---
+> #line 450
+1665c1888
+< #line 447
+---
+> #line 451
+1668c1891
+< #line 447
+---
+> #line 451
+1670c1893
+< #line 448
+---
+> #line 452
+1672c1895
+< #line 449
+---
+> #line 453
+1674c1897
+< #line 450
+---
+> #line 454
+1678c1901
+< #line 460 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 464 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1680c1903
+< #line 460 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 464 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1682c1905
+< #line 460 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 464 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1684c1907
+< #line 461 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 465 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1686c1909
+< #line 461 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 465 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1688c1911
+< #line 461 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 465 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1690c1913
+< #line 462 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 466 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1692c1915
+< #line 462 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 466 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1694c1917
+< #line 462 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 466 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1696c1919
+< #line 464 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 468 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1710c1933
+< #line 467
+---
+> #line 471
+1712c1935
+< #line 467
+---
+> #line 471
+1714c1937
+< #line 468
+---
+> #line 472
+1716c1939
+< #line 470
+---
+> #line 474
+1718c1941
+< #line 470
+---
+> #line 474
+1720c1943
+< #line 471
+---
+> #line 475
+1722c1945
+< #line 473
+---
+> #line 477
+1724c1947
+< #line 474
+---
+> #line 478
+1726c1949
+< #line 474
+---
+> #line 478
+1731c1954
+< #line 475
+---
+> #line 479
+1733c1956
+< #line 476
+---
+> #line 480
+1735c1958
+< #line 476
+---
+> #line 480
+1740c1963
+< #line 477
+---
+> #line 481
+1742c1965
+< #line 477
+---
+> #line 481
+1746c1969
+< #line 479 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 483 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1759c1982
+< #line 482
+---
+> #line 486
+1761c1984
+< #line 482
+---
+> #line 486
+1763c1986
+< #line 483
+---
+> #line 487
+1765c1988
+< #line 485
+---
+> #line 489
+1767c1990
+< #line 485
+---
+> #line 489
+1769c1992
+< #line 486
+---
+> #line 490
+1771c1994
+< #line 486
+---
+> #line 490
+1773c1996
+< #line 488
+---
+> #line 492
+1775c1998
+< #line 490
+---
+> #line 494
+1777c2000
+< #line 491
+---
+> #line 495
+1779c2002
+< #line 493
+---
+> #line 497
+1781c2004
+< #line 494
+---
+> #line 498
+1784c2007
+< #line 495
+---
+> #line 499
+1786c2009
+< #line 496
+---
+> #line 500
+1789c2012
+< #line 497
+---
+> #line 501
+1791c2014
+< #line 498
+---
+> #line 502
+1793c2016
+< #line 499
+---
+> #line 503
+1798c2021
+< #line 501
+---
+> #line 505
+1800c2023
+< #line 502
+---
+> #line 506
+1802c2025
+< #line 503
+---
+> #line 507
+1806c2029
+< #line 509 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 513 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1808c2031
+< #line 510 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 514 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1810c2033
+< #line 511 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 515 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1812c2035
+< #line 514 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 518 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1823c2046
+< #line 517
+---
+> #line 521
+1825c2048
+< #line 517
+---
+> #line 521
+1827c2050
+< #line 518
+---
+> #line 522
+1829c2052
+< #line 520
+---
+> #line 524
+1831c2054
+< #line 520
+---
+> #line 524
+1833c2056
+< #line 521
+---
+> #line 525
+1835c2058
+< #line 521
+---
+> #line 525
+1839c2062
+< #line 524 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 528 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1850c2073
+< #line 527
+---
+> #line 531
+1852c2075
+< #line 527
+---
+> #line 531
+1854c2077
+< #line 528
+---
+> #line 532
+1856c2079
+< #line 530
+---
+> #line 534
+1858c2081
+< #line 530
+---
+> #line 534
+1860c2083
+< #line 531
+---
+> #line 535
+1862c2085
+< #line 531
+---
+> #line 535
+1866c2089
+< #line 534 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 538 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1877c2100
+< #line 537
+---
+> #line 541
+1879c2102
+< #line 537
+---
+> #line 541
+1881c2104
+< #line 538
+---
+> #line 542
+1883c2106
+< #line 540
+---
+> #line 544
+1885c2108
+< #line 540
+---
+> #line 544
+1887c2110
+< #line 541
+---
+> #line 545
+1889c2112
+< #line 541
+---
+> #line 545
+1893c2116
+< #line 543 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 547 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1905c2128
+< #line 546
+---
+> #line 550
+1907c2130
+< #line 546
+---
+> #line 550
+1909c2132
+< #line 547
+---
+> #line 551
+1911c2134
+< #line 549
+---
+> #line 553
+1913c2136
+< #line 549
+---
+> #line 553
+1915c2138
+< #line 550
+---
+> #line 554
+1917c2140
+< #line 550
+---
+> #line 554
+1921c2144
+< #line 552 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 556 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1932c2155
+< #line 555
+---
+> #line 559
+1934c2157
+< #line 555
+---
+> #line 559
+1936c2159
+< #line 556
+---
+> #line 560
+1938c2161
+< #line 558
+---
+> #line 562
+1940c2163
+< #line 558
+---
+> #line 562
+1942c2165
+< #line 559
+---
+> #line 563
+1944c2167
+< #line 559
+---
+> #line 563
+1948c2171
+< #line 561 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 565 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1958c2181
+< #line 564
+---
+> #line 568
+1960c2183
+< #line 564
+---
+> #line 568
+1962c2185
+< #line 565
+---
+> #line 569
+1964c2187
+< #line 567
+---
+> #line 571
+1966c2189
+< #line 567
+---
+> #line 571
+1970c2193
+< #line 569 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 573 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+1986c2209
+< #line 572
+---
+> #line 576
+1988c2211
+< #line 572
+---
+> #line 576
+1990c2213
+< #line 573
+---
+> #line 577
+1992c2215
+< #line 575
+---
+> #line 579
+1994c2217
+< #line 575
+---
+> #line 579
+1996c2219
+< #line 576
+---
+> #line 580
+1998c2221
+< #line 576
+---
+> #line 580
+2000c2223
+< #line 579
+---
+> #line 583
+2002c2225
+< #line 580
+---
+> #line 584
+2004c2227
+< #line 580
+---
+> #line 584
+2006c2229
+< #line 581
+---
+> #line 585
+2009c2232
+< #line 582
+---
+> #line 586
+2011,2012c2234,2235
+< #line 582
+<   goto ldv_8018;
+---
+> #line 586
+>   goto ldv_9845;
+2014c2237
+< #line 583
+---
+> #line 587
+2016,2017c2239,2240
+< #line 583
+<   goto ldv_8018;
+---
+> #line 587
+>   goto ldv_9845;
+2019c2242
+< #line 584
+---
+> #line 588
+2021,2022c2244,2245
+< #line 584
+<   goto ldv_8018;
+---
+> #line 588
+>   goto ldv_9845;
+2024,2025c2247,2248
+<   ldv_8018: 
+< #line 587
+---
+>   ldv_9845: 
+> #line 591
+2027c2250
+< #line 587
+---
+> #line 591
+2029c2252
+< #line 588
+---
+> #line 592
+2031c2254
+< #line 589
+---
+> #line 593
+2033c2256
+< #line 590
+---
+> #line 594
+2037c2260
+< #line 592 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 596 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2055c2278
+< #line 595
+---
+> #line 599
+2057c2280
+< #line 595
+---
+> #line 599
+2059c2282
+< #line 596
+---
+> #line 600
+2061c2284
+< #line 598
+---
+> #line 602
+2063c2286
+< #line 598
+---
+> #line 602
+2065c2288
+< #line 599
+---
+> #line 603
+2067,2068d2289
+< #line 599
+<   val = tmp___0;
+2069a2291,2292
+>   val = tmp___0;
+> #line 607
+2071c2294
+< #line 604
+---
+> #line 608
+2073c2296
+< #line 604
+---
+> #line 608
+2075c2298
+< #line 607
+---
+> #line 611
+2077c2300
+< #line 609
+---
+> #line 613
+2081c2304
+< #line 612
+---
+> #line 616
+2083c2306
+< #line 612
+---
+> #line 616
+2085,2086c2308,2309
+< #line 613
+<   goto ldv_8037;
+---
+> #line 617
+>   goto ldv_9864;
+2088c2311
+< #line 615
+---
+> #line 619
+2090c2313
+< #line 616
+---
+> #line 620
+2093c2316
+< #line 618
+---
+> #line 622
+2097,2098c2320,2321
+<   ldv_8037: 
+< #line 620
+---
+>   ldv_9864: 
+> #line 624
+2100c2323
+< #line 621
+---
+> #line 625
+2102c2325
+< #line 622
+---
+> #line 626
+2104c2327
+< #line 623
+---
+> #line 627
+2106c2329
+< #line 624
+---
+> #line 628
+2111c2334
+< #line 625
+---
+> #line 629
+2113c2336
+< #line 628
+---
+> #line 632
+2115c2338
+< #line 628
+---
+> #line 632
+2117c2340
+< #line 629
+---
+> #line 633
+2119c2342
+< #line 631
+---
+> #line 635
+2121c2344
+< #line 632
+---
+> #line 636
+2125c2348
+< #line 634 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 638 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2139c2362
+< #line 637
+---
+> #line 641
+2141c2364
+< #line 637
+---
+> #line 641
+2143c2366
+< #line 638
+---
+> #line 642
+2145c2368
+< #line 640
+---
+> #line 644
+2147c2370
+< #line 640
+---
+> #line 644
+2149c2372
+< #line 641
+---
+> #line 645
+2151c2374
+< #line 641
+---
+> #line 645
+2153c2376
+< #line 643
+---
+> #line 647
+2155c2378
+< #line 645
+---
+> #line 649
+2157c2380
+< #line 648
+---
+> #line 652
+2159c2382
+< #line 649
+---
+> #line 653
+2161c2384
+< #line 651
+---
+> #line 655
+2163c2386
+< #line 652
+---
+> #line 656
+2166c2389
+< #line 653
+---
+> #line 657
+2168c2391
+< #line 655
+---
+> #line 659
+2170c2393
+< #line 656
+---
+> #line 660
+2172c2395
+< #line 658
+---
+> #line 662
+2175c2398
+< #line 660
+---
+> #line 664
+2177c2400
+< #line 661
+---
+> #line 665
+2180c2403
+< #line 664
+---
+> #line 668
+2182c2405
+< #line 665
+---
+> #line 669
+2186c2409
+< #line 667 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 671 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2199c2422
+< #line 670
+---
+> #line 674
+2201c2424
+< #line 670
+---
+> #line 674
+2203c2426
+< #line 671
+---
+> #line 675
+2205c2428
+< #line 673
+---
+> #line 677
+2207c2430
+< #line 673
+---
+> #line 677
+2209c2432
+< #line 674
+---
+> #line 678
+2211c2434
+< #line 674
+---
+> #line 678
+2213c2436
+< #line 676
+---
+> #line 680
+2215c2438
+< #line 677
+---
+> #line 681
+2220c2443
+< #line 679
+---
+> #line 683
+2222c2445
+< #line 680
+---
+> #line 684
+2224c2447
+< #line 681
+---
+> #line 685
+2226c2449
+< #line 682
+---
+> #line 686
+2231c2454
+< #line 683
+---
+> #line 687
+2233c2456
+< #line 684
+---
+> #line 688
+2237c2460
+< #line 686 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 690 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2249c2472
+< #line 689
+---
+> #line 693
+2251c2474
+< #line 689
+---
+> #line 693
+2253c2476
+< #line 690
+---
+> #line 694
+2255,2256d2477
+< #line 690
+<   val = tmp___0;
+2257a2479,2480
+>   val = tmp___0;
+> #line 698
+2259,2262c2482,2485
+< #line 694
+<   goto ldv_8075;
+<   ldv_8074: ;
+< #line 695
+---
+> #line 698
+>   goto ldv_9902;
+>   ldv_9901: ;
+> #line 699
+2264,2265c2487,2488
+< #line 696
+<     goto ldv_8073;
+---
+> #line 700
+>     goto ldv_9900;
+2269c2492
+< #line 694
+---
+> #line 698
+2271,2272c2494,2495
+<   ldv_8075: ;
+< #line 694
+---
+>   ldv_9902: ;
+> #line 698
+2274,2275c2497,2498
+< #line 695
+<     goto ldv_8074;
+---
+> #line 699
+>     goto ldv_9901;
+2279,2280c2502,2503
+<   ldv_8073: 
+< #line 699
+---
+>   ldv_9900: 
+> #line 703
+2282c2505
+< #line 700
+---
+> #line 704
+2284c2507
+< #line 700
+---
+> #line 704
+2286c2509
+< #line 701
+---
+> #line 705
+2288c2511
+< #line 702
+---
+> #line 706
+2290c2513
+< #line 703
+---
+> #line 707
+2292c2515
+< #line 705
+---
+> #line 709
+2296c2519
+< #line 716 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 720 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2298c2521
+< #line 716 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 720 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2300c2523
+< #line 716 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 720 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2302c2525
+< #line 717 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 721 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2304c2527
+< #line 717 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 721 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2306c2529
+< #line 717 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 721 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2308c2531
+< #line 718 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 722 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2310c2533
+< #line 718 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 722 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2312c2535
+< #line 718 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 722 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2314c2537
+< #line 729 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 733 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2316c2539
+< #line 729 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 733 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2318c2541
+< #line 729 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 733 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2320c2543
+< #line 730 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 734 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2322c2545
+< #line 730 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 734 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2324c2547
+< #line 730 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 734 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2326c2549
+< #line 731 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 735 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2328c2551
+< #line 731 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 735 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2330c2553
+< #line 731 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 735 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2332c2555
+< #line 734 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 738 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2343c2566
+< #line 737
+---
+> #line 741
+2345c2568
+< #line 737
+---
+> #line 741
+2347c2570
+< #line 738
+---
+> #line 742
+2349c2572
+< #line 739
+---
+> #line 743
+2351c2574
+< #line 739
+---
+> #line 743
+2353c2576
+< #line 740
+---
+> #line 744
+2355c2578
+< #line 740
+---
+> #line 744
+2359c2582
+< #line 743 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 747 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2371c2594
+< #line 746
+---
+> #line 750
+2373c2596
+< #line 746
+---
+> #line 750
+2375c2598
+< #line 747
+---
+> #line 751
+2377c2600
+< #line 748
+---
+> #line 752
+2379c2602
+< #line 748
+---
+> #line 752
+2381c2604
+< #line 749
+---
+> #line 753
+2383c2606
+< #line 749
+---
+> #line 753
+2387c2610
+< #line 752 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 756 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2400c2623
+< #line 755
+---
+> #line 759
+2402c2625
+< #line 755
+---
+> #line 759
+2404c2627
+< #line 756
+---
+> #line 760
+2406c2629
+< #line 757
+---
+> #line 761
+2408c2631
+< #line 757
+---
+> #line 761
+2410c2633
+< #line 758
+---
+> #line 762
+2412c2635
+< #line 758
+---
+> #line 762
+2414c2637
+< #line 760
+---
+> #line 764
+2416c2639
+< #line 761
+---
+> #line 765
+2418c2641
+< #line 762
+---
+> #line 766
+2420c2643
+< #line 764
+---
+> #line 768
+2422c2645
+< #line 766
+---
+> #line 770
+2424c2647
+< #line 767
+---
+> #line 771
+2428c2651
+< #line 781 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 785 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2430c2653
+< #line 781 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 785 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2432c2655
+< #line 782 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 786 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2434c2657
+< #line 782 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 786 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2436c2659
+< #line 783 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 787 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2438c2661
+< #line 783 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 787 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2440c2663
+< #line 784 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 788 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2442c2665
+< #line 784 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 788 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2444c2667
+< #line 785 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 789 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2446c2669
+< #line 785 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 789 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2448c2671
+< #line 788 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 792 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2456c2679
+< #line 790
+---
+> #line 794
+2458c2681
+< #line 790
+---
+> #line 794
+2460c2683
+< #line 791
+---
+> #line 795
+2462c2685
+< #line 791
+---
+> #line 795
+2466c2689
+< #line 793 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 797 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2468c2691
+< #line 796 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 800 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2476c2699
+< #line 798
+---
+> #line 802
+2478c2701
+< #line 798
+---
+> #line 802
+2480c2703
+< #line 799
+---
+> #line 803
+2482c2705
+< #line 799
+---
+> #line 803
+2486c2709
+< #line 802 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 806 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2496c2719
+< #line 804
+---
+> #line 808
+2498c2721
+< #line 804
+---
+> #line 808
+2500c2723
+< #line 807
+---
+> #line 811
+2502c2725
+< #line 807
+---
+> #line 811
+2504c2727
+< #line 808
+---
+> #line 812
+2506c2729
+< #line 810
+---
+> #line 814
+2510c2733
+< #line 812 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 816 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2512c2735
+< #line 815 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 819 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2521c2744
+< #line 817
+---
+> #line 821
+2523c2746
+< #line 817
+---
+> #line 821
+2525c2748
+< #line 818
+---
+> #line 822
+2527c2750
+< #line 818
+---
+> #line 822
+2529c2752
+< #line 818
+---
+> #line 822
+2533c2756
+< #line 820 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 824 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2535c2758
+< #line 822 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 826 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2543c2766
+< #line 825
+---
+> #line 829
+2545c2768
+< #line 825
+---
+> #line 829
+2547c2770
+< #line 826
+---
+> #line 830
+2549c2772
+< #line 826
+---
+> #line 830
+2553c2776
+< #line 828 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 832 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2555c2778
+< #line 830 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 834 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2557c2780
+< #line 830
+---
+> #line 834
+2568,2570c2791,2793
+< #line 875 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+< static struct attribute_group  const  it87_group  =    {0, (struct attribute **)(& it87_attributes)};
+< #line 879 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 879 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+> static struct attribute_group  const  it87_group  =    {0, 0, (struct attribute **)(& it87_attributes)};
+> #line 883 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2572c2795
+< #line 879
+---
+> #line 883
+2580,2582c2803,2805
+< #line 913 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+< static struct attribute_group  const  it87_group_opt  =    {0, (struct attribute **)(& it87_attributes_opt)};
+< #line 918 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 917 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+> static struct attribute_group  const  it87_group_opt  =    {0, 0, (struct attribute **)(& it87_attributes_opt)};
+> #line 922 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2595c2818
+< #line 921
+---
+> #line 925
+2597c2820
+< #line 924
+---
+> #line 928
+2599,2603c2822,2832
+< #line 925
+<   tmp = superio_inw(32);
+< #line 925
+<   chip_type = (u16 )tmp;
+< #line 927
+---
+> #line 929
+>   if ((unsigned int )force_id == 0U) {
+> #line 929
+>     tmp = superio_inw(32);
+> #line 929
+>     chip_type = (u16 )tmp;
+>   } else {
+> #line 929
+>     chip_type = force_id;
+>   }
+> #line 931
+2606c2835
+< #line 929
+---
+> #line 933
+2608,2609c2837,2838
+< #line 930
+<   goto ldv_8183;
+---
+> #line 934
+>   goto ldv_10010;
+2611c2840
+< #line 932
+---
+> #line 936
+2613,2614c2842,2843
+< #line 933
+<   goto ldv_8183;
+---
+> #line 937
+>   goto ldv_10010;
+2617c2846
+< #line 936
+---
+> #line 940
+2619,2620c2848,2849
+< #line 937
+<   goto ldv_8183;
+---
+> #line 941
+>   goto ldv_10010;
+2622c2851
+< #line 939
+---
+> #line 943
+2624,2625c2853,2854
+< #line 940
+<   goto ldv_8183;
+---
+> #line 944
+>   goto ldv_10010;
+2627c2856
+< #line 942
+---
+> #line 946
+2630c2859
+< #line 944
+---
+> #line 948
+2632c2861
+< #line 946
+---
+> #line 950
+2635,2636c2864,2865
+<   ldv_8183: 
+< #line 949
+---
+>   ldv_10010: 
+> #line 953
+2638c2867
+< #line 950
+---
+> #line 954
+2640c2869
+< #line 950
+---
+> #line 954
+2642c2871
+< #line 951
+---
+> #line 955
+2644c2873
+< #line 952
+---
+> #line 956
+2649c2878
+< #line 955
+---
+> #line 959
+2651c2880
+< #line 955
+---
+> #line 959
+2653c2882
+< #line 956
+---
+> #line 960
+2655c2884
+< #line 957
+---
+> #line 961
+2657c2886
+< #line 958
+---
+> #line 962
+2662c2891
+< #line 961
+---
+> #line 965
+2664c2893
+< #line 962
+---
+> #line 966
+2666c2895
+< #line 962
+---
+> #line 966
+2669c2898
+< #line 966
+---
+> #line 970
+2671c2900
+< #line 969
+---
+> #line 973
+2673c2902
+< #line 970
+---
+> #line 974
+2675c2904
+< #line 971
+---
+> #line 975
+2677c2906
+< #line 971
+---
+> #line 975
+2682c2911
+< #line 973
+---
+> #line 977
+2684c2913
+< #line 974
+---
+> #line 978
+2686c2915
+< #line 975
+---
+> #line 979
+2691c2920
+< #line 976
+---
+> #line 980
+2693c2922
+< #line 977
+---
+> #line 981
+2702c2931
+< #line 981
+---
+> #line 985
+2704c2933
+< #line 982
+---
+> #line 986
+2708c2937
+< #line 985 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 989 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+2728c2957
+< #line 989
+---
+> #line 993
+2730c2959
+< #line 990
+---
+> #line 994
+2732c2961
+< #line 991
+---
+> #line 995
+2734c2963
+< #line 993
+---
+> #line 997
+2736c2965
+< #line 993
+---
+> #line 997
+2738c2967
+< #line 993
+---
+> #line 997
+2740c2969
+< #line 993
+---
+> #line 997
+2742c2971
+< #line 1000
+---
+> #line 1004
+2744c2973
+< #line 1001
+---
+> #line 1005
+2746c2975
+< #line 1001
+---
+> #line 1005
+2748c2977
+< #line 1002
+---
+> #line 1006
+2750c2979
+< #line 1002
+---
+> #line 1006
+2753c2982
+< #line 1005
+---
+> #line 1009
+2755c2984
+< #line 1006
+---
+> #line 1010
+2760c2989
+< #line 1009
+---
+> #line 1013
+2762c2991
+< #line 1009
+---
+> #line 1013
+2764c2993
+< #line 1009
+---
+> #line 1013
+2766c2995
+< #line 1010
+---
+> #line 1014
+2768c2997
+< #line 1011
+---
+> #line 1015
+2773c3002
+< #line 1014
+---
+> #line 1018
+2775c3004
+< #line 1015
+---
+> #line 1019
+2777c3006
+< #line 1016
+---
+> #line 1020
+2779c3008
+< #line 1019
+---
+> #line 1023
+2781c3010
+< #line 1019
+---
+> #line 1023
+2783c3012
+< #line 1021
+---
+> #line 1025
+2785c3014
+< #line 1022
+---
+> #line 1026
+2788c3017
+< #line 1019
+---
+> #line 1023
+2790c3019
+< #line 1019
+---
+> #line 1023
+2792c3021
+< #line 1021
+---
+> #line 1025
+2794c3023
+< #line 1022
+---
+> #line 1026
+2800c3029
+< #line 1025
+---
+> #line 1029
+2802c3031
+< #line 1027
+---
+> #line 1031
+2804c3033
+< #line 1030
+---
+> #line 1034
+2806c3035
+< #line 1033
+---
+> #line 1037
+2808c3037
+< #line 1036
+---
+> #line 1040
+2810c3039
+< #line 1036
+---
+> #line 1040
+2812c3041
+< #line 1037
+---
+> #line 1041
+2817c3046
+< #line 1040
+---
+> #line 1044
+2819c3048
+< #line 1042
+---
+> #line 1046
+2821c3050
+< #line 1043
+---
+> #line 1047
+2823,2824d3051
+< #line 1043
+<       if (err != 0) {
+2825a3053,3054
+>       if (err != 0) {
+> #line 1051
+2828c3057
+< #line 1043
+---
+> #line 1047
+2830,2831d3058
+< #line 1043
+<         if (err != 0) {
+2832a3060,3061
+>         if (err != 0) {
+> #line 1051
+2841c3070
+< #line 1049
+---
+> #line 1053
+2843c3072
+< #line 1050
+---
+> #line 1054
+2845,2846d3073
+< #line 1050
+<       if (err != 0) {
+2847a3075,3076
+>       if (err != 0) {
+> #line 1058
+2850c3079
+< #line 1050
+---
+> #line 1054
+2852,2853d3080
+< #line 1050
+<         if (err != 0) {
+2854a3082,3083
+>         if (err != 0) {
+> #line 1058
+2863c3092
+< #line 1056
+---
+> #line 1060
+2865c3094
+< #line 1057
+---
+> #line 1061
+2867,2868d3095
+< #line 1057
+<       if (err != 0) {
+2869a3097,3098
+>       if (err != 0) {
+> #line 1065
+2872c3101
+< #line 1057
+---
+> #line 1061
+2874,2875d3102
+< #line 1057
+<         if (err != 0) {
+2876a3104,3105
+>         if (err != 0) {
+> #line 1065
+2885c3114
+< #line 1063
+---
+> #line 1067
+2887c3116
+< #line 1064
+---
+> #line 1068
+2889,2890d3117
+< #line 1064
+<       if (err != 0) {
+2891a3119,3120
+>       if (err != 0) {
+> #line 1072
+2894c3123
+< #line 1064
+---
+> #line 1068
+2896,2897d3124
+< #line 1064
+<         if (err != 0) {
+2898a3126,3127
+>         if (err != 0) {
+> #line 1072
+2907c3136
+< #line 1070
+---
+> #line 1074
+2909c3138
+< #line 1071
+---
+> #line 1075
+2911,2912d3139
+< #line 1071
+<       if (err != 0) {
+2913a3141,3142
+>       if (err != 0) {
+> #line 1079
+2916c3145
+< #line 1071
+---
+> #line 1075
+2918,2919d3146
+< #line 1071
+<         if (err != 0) {
+2920a3148,3149
+>         if (err != 0) {
+> #line 1079
+2930c3159
+< #line 1079
+---
+> #line 1083
+2932c3161
+< #line 1080
+---
+> #line 1084
+2934c3163
+< #line 1080
+---
+> #line 1084
+2936c3165
+< #line 1086
+---
+> #line 1090
+2939c3168
+< #line 1080
+---
+> #line 1084
+2941c3170
+< #line 1080
+---
+> #line 1084
+2943c3172
+< #line 1086
+---
+> #line 1090
+2946c3175
+< #line 1080
+---
+> #line 1084
+2948c3177
+< #line 1080
+---
+> #line 1084
+2950c3179
+< #line 1086
+---
+> #line 1090
+2960c3189
+< #line 1088
+---
+> #line 1092
+2962c3191
+< #line 1089
+---
+> #line 1093
+2964c3193
+< #line 1089
+---
+> #line 1093
+2966c3195
+< #line 1095
+---
+> #line 1099
+2969c3198
+< #line 1089
+---
+> #line 1093
+2971c3200
+< #line 1089
+---
+> #line 1093
+2973c3202
+< #line 1095
+---
+> #line 1099
+2976c3205
+< #line 1089
+---
+> #line 1093
+2978c3207
+< #line 1089
+---
+> #line 1093
+2980c3209
+< #line 1095
+---
+> #line 1099
+2990c3219
+< #line 1097
+---
+> #line 1101
+2992c3221
+< #line 1098
+---
+> #line 1102
+2994c3223
+< #line 1098
+---
+> #line 1102
+2996c3225
+< #line 1104
+---
+> #line 1108
+2999c3228
+< #line 1098
+---
+> #line 1102
+3001c3230
+< #line 1098
+---
+> #line 1102
+3003c3232
+< #line 1104
+---
+> #line 1108
+3006c3235
+< #line 1098
+---
+> #line 1102
+3008c3237
+< #line 1098
+---
+> #line 1102
+3010c3239
+< #line 1104
+---
+> #line 1108
+3021c3250
+< #line 1108
+---
+> #line 1112
+3023c3252
+< #line 1109
+---
+> #line 1113
+3025c3254
+< #line 1109
+---
+> #line 1113
+3027c3256
+< #line 1127
+---
+> #line 1131
+3030c3259
+< #line 1109
+---
+> #line 1113
+3032c3261
+< #line 1109
+---
+> #line 1113
+3034c3263
+< #line 1127
+---
+> #line 1131
+3037c3266
+< #line 1109
+---
+> #line 1113
+3039c3268
+< #line 1109
+---
+> #line 1113
+3041c3270
+< #line 1127
+---
+> #line 1131
+3044c3273
+< #line 1109
+---
+> #line 1113
+3046c3275
+< #line 1109
+---
+> #line 1113
+3048c3277
+< #line 1127
+---
+> #line 1131
+3051c3280
+< #line 1109
+---
+> #line 1113
+3053c3282
+< #line 1109
+---
+> #line 1113
+3055c3284
+< #line 1127
+---
+> #line 1131
+3058c3287
+< #line 1109
+---
+> #line 1113
+3060c3289
+< #line 1109
+---
+> #line 1113
+3062c3291
+< #line 1127
+---
+> #line 1131
+3065c3294
+< #line 1109
+---
+> #line 1113
+3067c3296
+< #line 1109
+---
+> #line 1113
+3069c3298
+< #line 1127
+---
+> #line 1131
+3072c3301
+< #line 1109
+---
+> #line 1113
+3074c3303
+< #line 1109
+---
+> #line 1113
+3076c3305
+< #line 1127
+---
+> #line 1131
+3079c3308
+< #line 1109
+---
+> #line 1113
+3081c3310
+< #line 1109
+---
+> #line 1113
+3083c3312
+< #line 1127
+---
+> #line 1131
+3099c3328
+< #line 1130
+---
+> #line 1134
+3101c3330
+< #line 1132
+---
+> #line 1136
+3103c3332
+< #line 1134
+---
+> #line 1138
+3105c3334
+< #line 1135
+---
+> #line 1139
+3107,3108d3335
+< #line 1135
+<     if (err != 0) {
+3109a3337,3338
+>     if (err != 0) {
+> #line 1143
+3112c3341
+< #line 1135
+---
+> #line 1139
+3114,3115d3342
+< #line 1135
+<       if (err != 0) {
+3116a3344,3345
+>       if (err != 0) {
+> #line 1143
+3125c3354
+< #line 1142
+---
+> #line 1146
+3127c3356
+< #line 1143
+---
+> #line 1147
+3129c3358
+< #line 1143
+---
+> #line 1147
+3131c3360
+< #line 1144
+---
+> #line 1148
+3133c3362
+< #line 1144
+---
+> #line 1148
+3135c3364
+< #line 1145
+---
+> #line 1149
+3140c3369
+< #line 1148
+---
+> #line 1152
+3143c3372
+< #line 1151
+---
+> #line 1155
+3145c3374
+< #line 1152
+---
+> #line 1156
+3148c3377
+< #line 1154
+---
+> #line 1158
+3150c3379
+< #line 1155
+---
+> #line 1159
+3153c3382
+< #line 1157
+---
+> #line 1161
+3156c3385
+< #line 1159
+---
+> #line 1163
+3160c3389
+< #line 1162 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1166 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3167c3396
+< #line 1164
+---
+> #line 1168
+3169c3398
+< #line 1164
+---
+> #line 1168
+3171c3400
+< #line 1166
+---
+> #line 1170
+3173c3402
+< #line 1167
+---
+> #line 1171
+3175c3404
+< #line 1168
+---
+> #line 1172
+3177c3406
+< #line 1170
+---
+> #line 1174
+3179c3408
+< #line 1171
+---
+> #line 1175
+3181c3410
+< #line 1172
+---
+> #line 1176
+3183c3412
+< #line 1174
+---
+> #line 1178
+3187c3416
+< #line 1180 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1184 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3193c3422
+< #line 1182
+---
+> #line 1186
+3195c3424
+< #line 1183
+---
+> #line 1187
+3197c3426
+< #line 1183
+---
+> #line 1187
+3201c3430
+< #line 1189 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1193 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3207c3436
+< #line 1191
+---
+> #line 1195
+3209c3438
+< #line 1192
+---
+> #line 1196
+3211c3440
+< #line 1193
+---
+> #line 1197
+3215c3444
+< #line 1196 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1200 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3231c3460
+< #line 1198
+---
+> #line 1202
+3233,3234d3461
+< #line 1198
+<   data = (struct it87_data *)tmp;
+3235a3463,3464
+>   data = (struct it87_data *)tmp;
+> #line 1206
+3237c3466
+< #line 1202
+---
+> #line 1206
+3239c3468
+< #line 1203
+---
+> #line 1207
+3241c3470
+< #line 1204
+---
+> #line 1208
+3243c3472
+< #line 1211
+---
+> #line 1215
+3245,3248c3474,3477
+< #line 1211
+<       goto ldv_8228;
+<       ldv_8227: 
+< #line 1212
+---
+> #line 1215
+>       goto ldv_10055;
+>       ldv_10054: 
+> #line 1216
+3250c3479
+< #line 1212
+---
+> #line 1216
+3252c3481
+< #line 1211
+---
+> #line 1215
+3254,3255c3483,3484
+<       ldv_8228: ;
+< #line 1211
+---
+>       ldv_10055: ;
+> #line 1215
+3257,3258c3486,3487
+< #line 1212
+<         goto ldv_8227;
+---
+> #line 1216
+>         goto ldv_10054;
+3263c3492
+< #line 1219
+---
+> #line 1223
+3265c3494
+< #line 1220
+---
+> #line 1224
+3267c3496
+< #line 1220
+---
+> #line 1224
+3269c3498
+< #line 1222
+---
+> #line 1226
+3271c3500
+< #line 1224
+---
+> #line 1228
+3273,3276c3502,3505
+< #line 1224
+<         goto ldv_8231;
+<         ldv_8230: 
+< #line 1225
+---
+> #line 1228
+>         goto ldv_10058;
+>         ldv_10057: 
+> #line 1229
+3278c3507
+< #line 1224
+---
+> #line 1228
+3280,3281c3509,3510
+<         ldv_8231: ;
+< #line 1224
+---
+>         ldv_10058: ;
+> #line 1228
+3283,3284c3512,3513
+< #line 1225
+<           goto ldv_8230;
+---
+> #line 1229
+>           goto ldv_10057;
+3289c3518
+< #line 1228
+---
+> #line 1232
+3294c3523
+< #line 1231
+---
+> #line 1235
+3296c3525
+< #line 1231
+---
+> #line 1235
+3301c3530
+< #line 1235
+---
+> #line 1239
+3303c3532
+< #line 1235
+---
+> #line 1239
+3306c3535
+< #line 1237
+---
+> #line 1241
+3309c3538
+< #line 1238
+---
+> #line 1242
+3311c3540
+< #line 1239
+---
+> #line 1243
+3313c3542
+< #line 1239
+---
+> #line 1243
+3318c3547
+< #line 1243
+---
+> #line 1247
+3322c3551
+< #line 1247 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1251 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3334c3563
+< #line 1249
+---
+> #line 1253
+3336c3565
+< #line 1249
+---
+> #line 1253
+3338c3567
+< #line 1259
+---
+> #line 1263
+3340,3343c3569,3572
+< #line 1259
+<   goto ldv_8240;
+<   ldv_8239: 
+< #line 1260
+---
+> #line 1263
+>   goto ldv_10067;
+>   ldv_10066: 
+> #line 1264
+3345c3574
+< #line 1259
+---
+> #line 1263
+3347,3348c3576,3577
+<   ldv_8240: ;
+< #line 1259
+---
+>   ldv_10067: ;
+> #line 1263
+3350,3351c3579,3580
+< #line 1260
+<     goto ldv_8239;
+---
+> #line 1264
+>     goto ldv_10066;
+3355c3584
+< #line 1268
+---
+> #line 1272
+3357,3360c3586,3589
+< #line 1268
+<   goto ldv_8243;
+<   ldv_8242: 
+< #line 1269
+---
+> #line 1272
+>   goto ldv_10070;
+>   ldv_10069: 
+> #line 1273
+3362c3591
+< #line 1270
+---
+> #line 1274
+3364c3593
+< #line 1271
+---
+> #line 1275
+3369c3598
+< #line 1268
+---
+> #line 1272
+3371,3372c3600,3601
+<   ldv_8243: ;
+< #line 1268
+---
+>   ldv_10070: ;
+> #line 1272
+3374,3375c3603,3604
+< #line 1269
+<     goto ldv_8242;
+---
+> #line 1273
+>     goto ldv_10069;
+3379c3608
+< #line 1273
+---
+> #line 1277
+3381,3384c3610,3613
+< #line 1273
+<   goto ldv_8246;
+<   ldv_8245: 
+< #line 1274
+---
+> #line 1277
+>   goto ldv_10073;
+>   ldv_10072: 
+> #line 1278
+3386c3615
+< #line 1275
+---
+> #line 1279
+3388c3617
+< #line 1276
+---
+> #line 1280
+3393c3622
+< #line 1273
+---
+> #line 1277
+3395,3396c3624,3625
+<   ldv_8246: ;
+< #line 1273
+---
+>   ldv_10073: ;
+> #line 1277
+3398,3399c3627,3628
+< #line 1274
+<     goto ldv_8245;
+---
+> #line 1278
+>     goto ldv_10072;
+3403c3632
+< #line 1280
+---
+> #line 1284
+3405c3634
+< #line 1281
+---
+> #line 1285
+3407c3636
+< #line 1283
+---
+> #line 1287
+3409c3638
+< #line 1284
+---
+> #line 1288
+3414c3643
+< #line 1286
+---
+> #line 1290
+3416c3645
+< #line 1289
+---
+> #line 1293
+3418c3647
+< #line 1290
+---
+> #line 1294
+3420c3649
+< #line 1292
+---
+> #line 1296
+3425c3654
+< #line 1296
+---
+> #line 1300
+3427c3656
+< #line 1296
+---
+> #line 1300
+3429c3658
+< #line 1297
+---
+> #line 1301
+3431c3660
+< #line 1299
+---
+> #line 1303
+3433c3662
+< #line 1300
+---
+> #line 1304
+3438c3667
+< #line 1302
+---
+> #line 1306
+3440c3669
+< #line 1305
+---
+> #line 1309
+3442c3671
+< #line 1306
+---
+> #line 1310
+3444c3673
+< #line 1307
+---
+> #line 1311
+3446c3675
+< #line 1308
+---
+> #line 1312
+3448c3677
+< #line 1308
+---
+> #line 1312
+3450c3679
+< #line 1310
+---
+> #line 1314
+3455c3684
+< #line 1313
+---
+> #line 1317
+3457c3686
+< #line 1314
+---
+> #line 1318
+3462c3691
+< #line 1315
+---
+> #line 1319
+3464c3693
+< #line 1316
+---
+> #line 1320
+3472c3701
+< #line 1321
+---
+> #line 1325
+3474,3477c3703,3706
+< #line 1321
+<   goto ldv_8249;
+<   ldv_8248: ;
+< #line 1322
+---
+> #line 1325
+>   goto ldv_10076;
+>   ldv_10075: ;
+> #line 1326
+3479c3708
+< #line 1324
+---
+> #line 1328
+3481c3710
+< #line 1325
+---
+> #line 1329
+3485c3714
+< #line 1332
+---
+> #line 1336
+3491c3720
+< #line 1321
+---
+> #line 1325
+3493,3494c3722,3723
+<   ldv_8249: ;
+< #line 1321
+---
+>   ldv_10076: ;
+> #line 1325
+3496,3497c3725,3726
+< #line 1322
+<     goto ldv_8248;
+---
+> #line 1326
+>     goto ldv_10075;
+3501c3730
+< #line 1338
+---
+> #line 1342
+3503c3732
+< #line 1338
+---
+> #line 1342
+3505c3734
+< #line 1341
+---
+> #line 1345
+3509c3738
+< #line 1343 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1347 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3536c3765
+< #line 1345
+---
+> #line 1349
+3538c3767
+< #line 1345
+---
+> #line 1349
+3540c3769
+< #line 1348
+---
+> #line 1352
+3542c3771
+< #line 1350
+---
+> #line 1354
+3544c3773
+< #line 1353
+---
+> #line 1357
+3546c3775
+< #line 1356
+---
+> #line 1360
+3548c3777
+< #line 1356
+---
+> #line 1360
+3553c3782
+< #line 1359
+---
+> #line 1363
+3555,3558c3784,3787
+< #line 1359
+<     goto ldv_8263;
+<     ldv_8262: 
+< #line 1360
+---
+> #line 1363
+>     goto ldv_10090;
+>     ldv_10089: 
+> #line 1364
+3560c3789
+< #line 1360
+---
+> #line 1364
+3562c3791
+< #line 1362
+---
+> #line 1366
+3564c3793
+< #line 1362
+---
+> #line 1366
+3566c3795
+< #line 1364
+---
+> #line 1368
+3568c3797
+< #line 1364
+---
+> #line 1368
+3570c3799
+< #line 1359
+---
+> #line 1363
+3572,3573c3801,3802
+<     ldv_8263: ;
+< #line 1359
+---
+>     ldv_10090: ;
+> #line 1363
+3575,3576c3804,3805
+< #line 1360
+<       goto ldv_8262;
+---
+> #line 1364
+>       goto ldv_10089;
+3580c3809
+< #line 1368
+---
+> #line 1372
+3582c3811
+< #line 1368
+---
+> #line 1372
+3584c3813
+< #line 1371
+---
+> #line 1375
+3586,3589c3815,3818
+< #line 1371
+<     goto ldv_8267;
+<     ldv_8266: ;
+< #line 1373
+---
+> #line 1375
+>     goto ldv_10094;
+>     ldv_10093: ;
+> #line 1377
+3591,3592c3820,3821
+< #line 1374
+<       goto ldv_8265;
+---
+> #line 1378
+>       goto ldv_10092;
+3596c3825
+< #line 1376
+---
+> #line 1380
+3598c3827
+< #line 1376
+---
+> #line 1380
+3600c3829
+< #line 1378
+---
+> #line 1382
+3602c3831
+< #line 1378
+---
+> #line 1382
+3604c3833
+< #line 1381
+---
+> #line 1385
+3606c3835
+< #line 1382
+---
+> #line 1386
+3608c3837
+< #line 1382
+---
+> #line 1386
+3610c3839
+< #line 1384
+---
+> #line 1388
+3612c3841
+< #line 1384
+---
+> #line 1388
+3617,3618c3846,3847
+<     ldv_8265: 
+< #line 1371
+---
+>     ldv_10092: 
+> #line 1375
+3620,3621c3849,3850
+<     ldv_8267: ;
+< #line 1371
+---
+>     ldv_10094: ;
+> #line 1375
+3623,3624c3852,3853
+< #line 1372
+<       goto ldv_8266;
+---
+> #line 1376
+>       goto ldv_10093;
+3628c3857
+< #line 1388
+---
+> #line 1392
+3630,3633c3859,3862
+< #line 1388
+<     goto ldv_8270;
+<     ldv_8269: 
+< #line 1389
+---
+> #line 1392
+>     goto ldv_10097;
+>     ldv_10096: 
+> #line 1393
+3635c3864
+< #line 1389
+---
+> #line 1393
+3637c3866
+< #line 1391
+---
+> #line 1395
+3639c3868
+< #line 1391
+---
+> #line 1395
+3641c3870
+< #line 1393
+---
+> #line 1397
+3643c3872
+< #line 1393
+---
+> #line 1397
+3645c3874
+< #line 1388
+---
+> #line 1392
+3647,3648c3876,3877
+<     ldv_8270: ;
+< #line 1388
+---
+>     ldv_10097: ;
+> #line 1392
+3650,3651c3879,3880
+< #line 1389
+<       goto ldv_8269;
+---
+> #line 1393
+>       goto ldv_10096;
+3656c3885
+< #line 1398
+---
+> #line 1402
+3658c3887
+< #line 1400
+---
+> #line 1404
+3660c3889
+< #line 1401
+---
+> #line 1405
+3662c3891
+< #line 1402
+---
+> #line 1406
+3664c3893
+< #line 1403
+---
+> #line 1407
+3669c3898
+< #line 1406
+---
+> #line 1410
+3671c3900
+< #line 1406
+---
+> #line 1410
+3673c3902
+< #line 1406
+---
+> #line 1410
+3675,3676d3903
+< #line 1406
+<     data->alarms = (u32 )((tmp___12 | (tmp___13 << 8)) | (tmp___14 << 16));
+3677a3905,3906
+>     data->alarms = (u32 )((tmp___12 | (tmp___13 << 8)) | (tmp___14 << 16));
+> #line 1414
+3679c3908
+< #line 1410
+---
+> #line 1414
+3681c3910
+< #line 1412
+---
+> #line 1416
+3683c3912
+< #line 1412
+---
+> #line 1416
+3685c3914
+< #line 1414
+---
+> #line 1418
+3687c3916
+< #line 1414
+---
+> #line 1418
+3689c3918
+< #line 1416
+---
+> #line 1420
+3691c3920
+< #line 1417
+---
+> #line 1421
+3693c3922
+< #line 1417
+---
+> #line 1421
+3695c3924
+< #line 1420
+---
+> #line 1424
+3700c3929
+< #line 1422
+---
+> #line 1426
+3702c3931
+< #line 1423
+---
+> #line 1427
+3707c3936
+< #line 1426
+---
+> #line 1430
+3709c3938
+< #line 1428
+---
+> #line 1432
+3713c3942
+< #line 1431 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1435 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3720c3949
+< #line 1434
+---
+> #line 1438
+3722c3951
+< #line 1434
+---
+> #line 1438
+3724c3953
+< #line 1434
+---
+> #line 1438
+3726c3955
+< #line 1434
+---
+> #line 1438
+3728c3957
+< #line 1434
+---
+> #line 1438
+3730c3959
+< #line 1434
+---
+> #line 1438
+3732c3961
+< #line 1434
+---
+> #line 1438
+3734c3963
+< #line 1442
+---
+> #line 1446
+3736c3965
+< #line 1443
+---
+> #line 1447
+3738c3967
+< #line 1444
+---
+> #line 1448
+3740c3969
+< #line 1445
+---
+> #line 1449
+3742c3971
+< #line 1446
+---
+> #line 1450
+3747c3976
+< #line 1449
+---
+> #line 1453
+3749c3978
+< #line 1450
+---
+> #line 1454
+3751c3980
+< #line 1451
+---
+> #line 1455
+3753c3982
+< #line 1453
+---
+> #line 1457
+3758c3987
+< #line 1456
+---
+> #line 1460
+3760c3989
+< #line 1458
+---
+> #line 1462
+3762c3991
+< #line 1459
+---
+> #line 1463
+3764c3993
+< #line 1460
+---
+> #line 1464
+3769c3998
+< #line 1463
+---
+> #line 1467
+3771c4000
+< #line 1464
+---
+> #line 1468
+3773c4002
+< #line 1465
+---
+> #line 1469
+3775c4004
+< #line 1467
+---
+> #line 1471
+3780c4009
+< #line 1470
+---
+> #line 1474
+3783c4012
+< #line 1473
+---
+> #line 1477
+3786c4015
+< #line 1475
+---
+> #line 1479
+3790c4019
+< #line 1478 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1482 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3798c4027
+< #line 1481
+---
+> #line 1485
+3800c4029
+< #line 1484
+---
+> #line 1488
+3802c4031
+< #line 1485
+---
+> #line 1489
+3804c4033
+< #line 1486
+---
+> #line 1490
+3809c4038
+< #line 1487
+---
+> #line 1491
+3811c4040
+< #line 1488
+---
+> #line 1492
+3813c4042
+< #line 1489
+---
+> #line 1493
+3818c4047
+< #line 1491
+---
+> #line 1495
+3820c4049
+< #line 1492
+---
+> #line 1496
+3822c4051
+< #line 1493
+---
+> #line 1497
+3824c4053
+< #line 1494
+---
+> #line 1498
+3829c4058
+< #line 1497
+---
+> #line 1501
+3833c4062
+< #line 1500 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1504 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3839c4068
+< #line 1502
+---
+> #line 1506
+3841c4070
+< #line 1503
+---
+> #line 1507
+3843c4072
+< #line 1504
+---
+> #line 1508
+3847c4076
+< #line 1535
+---
+> #line 1539
+3849c4078
+< #line 1538
+---
+> #line 1542
+3851c4080
+< #line 1541
+---
+> #line 1545
+3853c4082
+< #line 1544
+---
+> #line 1548
+3855c4084
+< #line 1547
+---
+> #line 1551
+3857c4086
+< #line 1550
+---
+> #line 1554
+3859c4088
+< #line 1553 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1557 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3861c4090
+< #line 1556 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 1560 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3872c4101
+< #line 1872
+---
+> #line 1876
+3874c4103
+< #line 1762
+---
+> #line 1766
+3876c4105
+< #line 1771
+---
+> #line 1775
+3878c4107
+< #line 1869
+---
+> #line 1873
+3880c4109
+< #line 1870
+---
+> #line 1874
+3882c4111
+< #line 1870
+---
+> #line 1874
+3884c4113
+< #line 1871
+---
+> #line 1875
+3889,3891d4117
+< #line 1875
+<   goto ldv_8344;
+<   ldv_8343: 
+3892a4119,4121
+>   goto ldv_10171;
+>   ldv_10170: 
+> #line 1883
+3894c4123
+< #line 1879
+---
+> #line 1883
+3897c4126
+< #line 1884
+---
+> #line 1888
+3899c4128
+< #line 1981
+---
+> #line 1985
+3901c4130
+< #line 1982
+---
+> #line 1986
+3903c4132
+< #line 1983
+---
+> #line 1987
+3905c4134
+< #line 1984
+---
+> #line 1988
+3907c4136
+< #line 1985
+---
+> #line 1989
+3912c4141
+< #line 1986
+---
+> #line 1990
+3917,3919d4145
+< #line 1992
+<   goto ldv_8340;
+<   case 1: ;
+3920a4147,4149
+>   goto ldv_10167;
+>   case 1: ;
+> #line 2000
+3922c4151
+< #line 2093
+---
+> #line 2097
+3924c4153
+< #line 2094
+---
+> #line 2098
+3926c4155
+< #line 2095
+---
+> #line 2099
+3931,3932c4160,4161
+< #line 2101
+<   goto ldv_8340;
+---
+> #line 2105
+>   goto ldv_10167;
+3934,3935c4163,4164
+< #line 2102
+<   goto ldv_8340;
+---
+> #line 2106
+>   goto ldv_10167;
+3937,3939c4166,4168
+<   ldv_8340: ;
+<   ldv_8344: 
+< #line 1875
+---
+>   ldv_10167: ;
+>   ldv_10171: 
+> #line 1879
+3941c4170
+< #line 1875
+---
+> #line 1879
+3943,3944c4172,4173
+< #line 1877
+<     goto ldv_8343;
+---
+> #line 1881
+>     goto ldv_10170;
+3950c4179
+< #line 2206
+---
+> #line 2210
+3952c4181
+< #line 2207
+---
+> #line 2211
+3955c4184
+< #line 2210
+---
+> #line 2214
+3957c4186
+< #line 2213
+---
+> #line 2217
+3961c4190
+< #line 2217 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2221 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3967c4196
+< #line 2222
+---
+> #line 2226
+3969c4198
+< #line 2224
+---
+> #line 2228
+3971c4200
+< #line 2225
+---
+> #line 2229
+3975c4204
+< #line 2227 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2231 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3981c4210
+< #line 2232
+---
+> #line 2236
+3983c4212
+< #line 2234
+---
+> #line 2238
+3985c4214
+< #line 2235
+---
+> #line 2239
+3989c4218
+< #line 2237 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2241 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+3995c4224
+< #line 2242
+---
+> #line 2246
+3997c4226
+< #line 2244
+---
+> #line 2248
+3999c4228
+< #line 2245
+---
+> #line 2249
+4003c4232
+< #line 2247 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2251 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4009c4238
+< #line 2252
+---
+> #line 2256
+4011c4240
+< #line 2254
+---
+> #line 2258
+4013c4242
+< #line 2255
+---
+> #line 2259
+4017c4246
+< #line 2257 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2261 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4023c4252
+< #line 2262
+---
+> #line 2266
+4025c4254
+< #line 2264
+---
+> #line 2268
+4027c4256
+< #line 2265
+---
+> #line 2269
+4031c4260
+< #line 2267 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2271 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4037c4266
+< #line 2272
+---
+> #line 2276
+4039c4268
+< #line 2274
+---
+> #line 2278
+4041c4270
+< #line 2275
+---
+> #line 2279
+4045c4274
+< #line 2277 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2281 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4051c4280
+< #line 2282
+---
+> #line 2286
+4053c4282
+< #line 2284
+---
+> #line 2288
+4055c4284
+< #line 2285
+---
+> #line 2289
+4059c4288
+< #line 2287 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2291 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4065c4294
+< #line 2292
+---
+> #line 2296
+4067c4296
+< #line 2294
+---
+> #line 2298
+4069c4298
+< #line 2295
+---
+> #line 2299
+4073c4302
+< #line 2297 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2301 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4079c4308
+< #line 2302
+---
+> #line 2306
+4081c4310
+< #line 2304
+---
+> #line 2308
+4083c4312
+< #line 2305
+---
+> #line 2309
+4087c4316
+< #line 2307 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2311 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4093c4322
+< #line 2312
+---
+> #line 2316
+4095c4324
+< #line 2314
+---
+> #line 2318
+4097c4326
+< #line 2315
+---
+> #line 2319
+4101c4330
+< #line 2317 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2321 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4107c4336
+< #line 2322
+---
+> #line 2326
+4109c4338
+< #line 2324
+---
+> #line 2328
+4111c4340
+< #line 2325
+---
+> #line 2329
+4115c4344
+< #line 2327 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2331 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4121c4350
+< #line 2332
+---
+> #line 2336
+4123c4352
+< #line 2334
+---
+> #line 2338
+4125c4354
+< #line 2335
+---
+> #line 2339
+4129c4358
+< #line 2337 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2341 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4135c4364
+< #line 2342
+---
+> #line 2346
+4137c4366
+< #line 2344
+---
+> #line 2348
+4139c4368
+< #line 2345
+---
+> #line 2349
+4143c4372
+< #line 2347 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2351 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4149c4378
+< #line 2352
+---
+> #line 2356
+4151c4380
+< #line 2354
+---
+> #line 2358
+4153c4382
+< #line 2355
+---
+> #line 2359
+4157c4386
+< #line 2357 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2361 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4163c4392
+< #line 2362
+---
+> #line 2366
+4165c4394
+< #line 2364
+---
+> #line 2368
+4167c4396
+< #line 2365
+---
+> #line 2369
+4171c4400
+< #line 2367 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2371 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4177c4406
+< #line 2372
+---
+> #line 2376
+4179c4408
+< #line 2374
+---
+> #line 2378
+4181c4410
+< #line 2375
+---
+> #line 2379
+4185c4414
+< #line 2377 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2381 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4191c4420
+< #line 2382
+---
+> #line 2386
+4193c4422
+< #line 2384
+---
+> #line 2388
+4195c4424
+< #line 2385
+---
+> #line 2389
+4199c4428
+< #line 2387 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2391 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4205c4434
+< #line 2392
+---
+> #line 2396
+4207c4436
+< #line 2394
+---
+> #line 2398
+4209c4438
+< #line 2395
+---
+> #line 2399
+4213c4442
+< #line 2397 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2401 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4219c4448
+< #line 2402
+---
+> #line 2406
+4221c4450
+< #line 2404
+---
+> #line 2408
+4223c4452
+< #line 2405
+---
+> #line 2409
+4227c4456
+< #line 2407 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2411 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4233c4462
+< #line 2412
+---
+> #line 2416
+4235c4464
+< #line 2414
+---
+> #line 2418
+4237c4466
+< #line 2415
+---
+> #line 2419
+4241c4470
+< #line 2417 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2421 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4247c4476
+< #line 2422
+---
+> #line 2426
+4249c4478
+< #line 2424
+---
+> #line 2428
+4251c4480
+< #line 2425
+---
+> #line 2429
+4255c4484
+< #line 2427 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2431 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4261c4490
+< #line 2432
+---
+> #line 2436
+4263c4492
+< #line 2434
+---
+> #line 2438
+4265c4494
+< #line 2435
+---
+> #line 2439
+4269c4498
+< #line 2437 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2441 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4275c4504
+< #line 2442
+---
+> #line 2446
+4277c4506
+< #line 2444
+---
+> #line 2448
+4279c4508
+< #line 2445
+---
+> #line 2449
+4283c4512
+< #line 2447 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2451 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4289c4518
+< #line 2452
+---
+> #line 2456
+4291c4520
+< #line 2454
+---
+> #line 2458
+4293c4522
+< #line 2455
+---
+> #line 2459
+4297c4526
+< #line 2457 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2461 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4303c4532
+< #line 2462
+---
+> #line 2466
+4305c4534
+< #line 2464
+---
+> #line 2468
+4307c4536
+< #line 2465
+---
+> #line 2469
+4311c4540
+< #line 2467 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+---
+> #line 2471 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/hwmon/it87.c.prepared"
+4317c4546
+< #line 2472
+---
+> #line 2476
+4319c4548
+< #line 2474
+---
+> #line 2478
+4321c4550
+< #line 2475
+---
+> #line 2479
+4348c4577
+< #line 8 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 8 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4350c4579
+< #line 11 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 11 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4377c4606
+< #line 37 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 37 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4404c4633
+< #line 63 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 63 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4423c4652
+< #line 72 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 72 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4450c4679
+< #line 98 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 98 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4478c4707
+< #line 123 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 123 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4502c4731
+< #line 152 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 152 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4521c4750
+< #line 162 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 162 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+4533c4762
+< #line 169 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/10/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"
+---
+> #line 169 "/work/ldvuser/novikov/work/current--X--drivers/hwmon/it87.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/rule-instrumentor/32_7a/common-model/ldv_common_model.c"

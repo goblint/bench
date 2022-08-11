@@ -1,0 +1,1151 @@
+2982,2983d2981
+< void *__builtin_memcpy(void * , void const   * , unsigned long  ) ;
+< #line 1
+2987,2988d2984
+< #line 33 "include/asm/string_64.h"
+< extern void *__memcpy(void * , void const   * , size_t  ) ;
+3192d3187
+<   int pages ;
+3196,3197c3191
+<   int retval ;
+<   int tmp___1 ;
+---
+>   int pages ;
+3200c3194
+< #line 144
+---
+> #line 143
+3202c3196
+< #line 146
+---
+> #line 145
+3205c3199
+< #line 146
+---
+> #line 145
+3207c3201
+< #line 146
+---
+> #line 145
+3209,3212c3203,3206
+<                          "i" (146), "i" (24UL));
+<     ldv_19321: ;
+< #line 146
+<     goto ldv_19321;
+---
+>                          "i" (145), "i" (24UL));
+>     ldv_19320: ;
+> #line 145
+>     goto ldv_19320;
+3216c3210
+< #line 148
+---
+> #line 147
+3218c3212
+< #line 148
+---
+> #line 147
+3220c3214
+< #line 148
+---
+> #line 147
+3222c3216
+< #line 148
+---
+> #line 147
+3224,3227c3218,3231
+<                          "i" (148), "i" (24UL));
+<     ldv_19322: ;
+< #line 148
+<     goto ldv_19322;
+---
+>                          "i" (147), "i" (24UL));
+>     ldv_19321: ;
+> #line 147
+>     goto ldv_19321;
+>   } else {
+> 
+>   }
+> #line 149
+>   switch ((unsigned int )vb->memory) {
+>   case 1U: ;
+> #line 151
+>   if (debug > 0) {
+> #line 151
+>     printk("<7>vbuf-vmalloc: %s memory method MMAP\n", "__videobuf_iolock");
+3231,3234c3235,3236
+< #line 150
+<   pages = (int )((vb->size + 4095UL) >> 12);
+< #line 153
+<   if ((unsigned int )vb->memory != 1U && (unsigned int )vb->memory != 2U) {
+---
+> #line 154
+>   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+3236c3238
+<     printk("<3>Method currently unsupported.\n");
+---
+>     printk("<3>memory is not alloced/mmapped.\n");
+3242,3243c3244,3246
+< #line 160
+<   mem->vmalloc = vmalloc_user((vb->size + 4095UL) & 0xfffffffffffff000UL);
+---
+> #line 158
+>   goto ldv_19324;
+>   case 2U: 
+3245,3247c3248
+<   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+< #line 162
+<     printk("<3>vmalloc (%d pages) failed\n", pages);
+---
+>   pages = (int )((unsigned int )vb->size + 4095U) & -4096;
+3249c3250,3252
+<     return (-12);
+---
+>   if (debug > 0) {
+> #line 163
+>     printk("<7>vbuf-vmalloc: %s memory method USERPTR\n", "__videobuf_iolock");
+3254,3257c3257,3261
+<   if (debug > 0) {
+< #line 166
+<     printk("<7>vbuf-vmalloc: vmalloc is at addr 0x%08lx, size=%d\n", (unsigned long )mem->vmalloc,
+<            pages << 12);
+---
+>   if (vb->baddr != 0UL) {
+> #line 167
+>     printk("<3>USERPTR is currently not supported\n");
+> #line 168
+>     return (-22);
+3261,3268d3264
+< #line 173
+<   if ((unsigned long )mem->vma != (unsigned long )((struct vm_area_struct *)0)) {
+< #line 174
+<     tmp___1 = remap_vmalloc_range(mem->vma, mem->vmalloc, 0UL);
+< #line 174
+<     retval = tmp___1;
+< #line 175
+<     kfree((void const   *)mem->vma);
+3270c3266
+<     mem->vma = 0;
+---
+>   mem->vmalloc = vmalloc_user((unsigned long )pages);
+3272,3274c3268
+<     if (retval < 0) {
+< #line 178
+<       if (debug > 0) {
+---
+>   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+3276,3283c3270,3273
+<         printk("<7>vbuf-vmalloc: mmap app bug: remap_vmalloc_range area %p error %d\n",
+<                mem->vmalloc, retval);
+<       } else {
+< 
+<       }
+< #line 180
+<       return (retval);
+<     } else {
+---
+>     printk("<3>vmalloc (%d pages) failed\n", pages);
+> #line 179
+>     return (-12);
+>   } else {
+3285c3275,3279
+<     }
+---
+>   }
+> #line 181
+>   if (debug > 0) {
+> #line 181
+>     printk("<7>vbuf-vmalloc: vmalloc is at addr %p (%d pages)\n", mem->vmalloc, pages);
+3289c3283,3300
+< #line 184
+---
+> #line 203
+>   goto ldv_19324;
+>   case 3U: ;
+>   default: ;
+> #line 207
+>   if (debug > 0) {
+> #line 207
+>     printk("<7>vbuf-vmalloc: %s memory method OVERLAY/unknown\n", "__videobuf_iolock");
+>   } else {
+> 
+>   }
+> #line 210
+>   printk("<3>Memory method currently unsupported.\n");
+> #line 211
+>   return (-22);
+>   }
+>   ldv_19324: ;
+> #line 214
+3293c3304
+< #line 187 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 217 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3299c3310
+< #line 190
+---
+> #line 220
+3303c3314
+< #line 193 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 223 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3309c3320,3327
+< #line 197
+---
+> #line 227
+>   if (debug > 0) {
+> #line 227
+>     printk("<7>vbuf-vmalloc: %s\n", "__videobuf_mmap_free");
+>   } else {
+> 
+>   }
+> #line 228
+3311,3314c3329,3332
+< #line 197
+<   goto ldv_19333;
+<   ldv_19332: ;
+< #line 198
+---
+> #line 228
+>   goto ldv_19339;
+>   ldv_19338: ;
+> #line 229
+3316c3334
+< #line 199
+---
+> #line 230
+3318c3336
+< #line 200
+---
+> #line 231
+3326c3344
+< #line 197
+---
+> #line 228
+3328,3329c3346,3347
+<   ldv_19333: ;
+< #line 197
+---
+>   ldv_19339: ;
+> #line 228
+3331,3332c3349,3350
+< #line 198
+<     goto ldv_19332;
+---
+> #line 229
+>     goto ldv_19338;
+3337c3355
+< #line 204
+---
+> #line 235
+3341c3359
+< #line 207 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 238 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3347a3366
+>   int pages ;
+3349,3350c3368,3369
+<   struct videobuf_mapping *tmp ;
+<   void *tmp___0 ;
+---
+>   void *tmp ;
+>   long tmp___0 ;
+3352,3355d3370
+<   long tmp___2 ;
+<   void *tmp___3 ;
+<   size_t __len ;
+<   void *__ret ;
+3358c3373
+< #line 214
+---
+> #line 245
+3360c3375,3382
+< #line 216
+---
+> #line 247
+>   if (debug > 0) {
+> #line 247
+>     printk("<7>vbuf-vmalloc: %s\n", "__videobuf_mmap_mapper");
+>   } else {
+> 
+>   }
+> #line 248
+3362c3384
+< #line 217
+---
+> #line 249
+3367c3389
+< #line 220
+---
+> #line 252
+3369,3372c3391,3394
+< #line 220
+<   goto ldv_19347;
+<   ldv_19346: ;
+< #line 221
+---
+> #line 252
+>   goto ldv_19355;
+>   ldv_19354: ;
+> #line 253
+3374,3375c3396,3397
+< #line 222
+<     goto ldv_19344;
+---
+> #line 254
+>     goto ldv_19352;
+3379c3401
+< #line 224
+---
+> #line 256
+3381,3382c3403,3404
+< #line 225
+<     goto ldv_19344;
+---
+> #line 257
+>     goto ldv_19352;
+3386c3408
+< #line 226
+---
+> #line 258
+3388,3389c3410,3411
+< #line 227
+<     goto ldv_19345;
+---
+> #line 259
+>     goto ldv_19353;
+3393,3394c3415,3416
+<   ldv_19344: 
+< #line 220
+---
+>   ldv_19352: 
+> #line 252
+3396,3397c3418,3419
+<   ldv_19347: ;
+< #line 220
+---
+>   ldv_19355: ;
+> #line 252
+3399,3400c3421,3422
+< #line 221
+<     goto ldv_19346;
+---
+> #line 253
+>     goto ldv_19354;
+3404,3405c3426,3427
+<   ldv_19345: ;
+< #line 229
+---
+>   ldv_19353: ;
+> #line 261
+3407c3429
+< #line 230
+---
+> #line 262
+3409c3431
+< #line 230
+---
+> #line 262
+3414c3436
+< #line 232
+---
+> #line 264
+3419,3427c3441,3445
+< #line 236
+<   tmp___0 = kzalloc(32UL, 208U);
+< #line 236
+<   tmp = (struct videobuf_mapping *)tmp___0;
+< #line 236
+<   (q->bufs[first])->map = tmp;
+< #line 236
+<   map = tmp;
+< #line 237
+---
+> #line 268
+>   tmp = kzalloc(32UL, 208U);
+> #line 268
+>   map = (struct videobuf_mapping *)tmp;
+> #line 269
+3429c3447
+< #line 238
+---
+> #line 270
+3434c3452,3454
+< #line 240
+---
+> #line 272
+>   (q->bufs[first])->map = map;
+> #line 273
+3436c3456
+< #line 241
+---
+> #line 274
+3438c3458
+< #line 242
+---
+> #line 275
+3440c3460
+< #line 244
+---
+> #line 277
+3442,3448c3462
+< #line 246
+<   vma->vm_ops = & videobuf_vm_ops;
+< #line 247
+<   vma->vm_flags = vma->vm_flags | 786432UL;
+< #line 248
+<   vma->vm_private_data = (void *)map;
+< #line 250
+---
+> #line 279
+3450,3451c3464,3465
+< #line 251
+<   tmp___1 = __builtin_expect((unsigned long )mem == (unsigned long )((struct videobuf_vmalloc_memory *)0),
+---
+> #line 280
+>   tmp___0 = __builtin_expect((unsigned long )mem == (unsigned long )((struct videobuf_vmalloc_memory *)0),
+3453,3455c3467,3469
+< #line 251
+<   if (tmp___1 != 0L) {
+< #line 251
+---
+> #line 280
+>   if (tmp___0 != 0L) {
+> #line 280
+3457,3460c3471,3474
+<                          "i" (251), "i" (24UL));
+<     ldv_19348: ;
+< #line 251
+<     goto ldv_19348;
+---
+>                          "i" (280), "i" (24UL));
+>     ldv_19356: ;
+> #line 280
+>     goto ldv_19356;
+3464,3468c3478,3482
+< #line 252
+<   tmp___2 = __builtin_expect(mem->magic != 404886051U, 0L);
+< #line 252
+<   if (tmp___2 != 0L) {
+< #line 252
+---
+> #line 281
+>   tmp___1 = __builtin_expect(mem->magic != 404886051U, 0L);
+> #line 281
+>   if (tmp___1 != 0L) {
+> #line 281
+3470c3484
+< #line 252
+---
+> #line 281
+3472,3475c3486,3489
+<                          "i" (252), "i" (24UL));
+<     ldv_19349: ;
+< #line 252
+<     goto ldv_19349;
+---
+>                          "i" (281), "i" (24UL));
+>     ldv_19357: ;
+> #line 281
+>     goto ldv_19357;
+3479,3487c3493,3503
+< #line 255
+<   retval = remap_vmalloc_range(vma, mem->vmalloc, 0UL);
+< #line 256
+<   if (retval < 0) {
+< #line 257
+<     if (debug > 0) {
+< #line 257
+<       printk("<7>vbuf-vmalloc: mmap: postponing remap_vmalloc_range\n");
+<     } else {
+---
+> #line 283
+>   pages = (int )(((unsigned int )vma->vm_end - (unsigned int )vma->vm_start) + 4095U) & -4096;
+> #line 284
+>   mem->vmalloc = vmalloc_user((unsigned long )pages);
+> #line 285
+>   if ((unsigned long )mem->vmalloc == (unsigned long )((void *)0)) {
+> #line 286
+>     printk("<3>vmalloc (%d pages) failed\n", pages);
+> #line 287
+>     goto error;
+>   } else {
+3489,3502c3505,3510
+<     }
+< #line 259
+<     tmp___3 = kmalloc(176UL, 208U);
+< #line 259
+<     mem->vma = (struct vm_area_struct *)tmp___3;
+< #line 260
+<     if ((unsigned long )mem->vma == (unsigned long )((struct vm_area_struct *)0)) {
+< #line 261
+<       kfree((void const   *)map);
+< #line 262
+<       (q->bufs[first])->map = 0;
+< #line 263
+<       return (-12);
+<     } else {
+---
+>   }
+> #line 289
+>   if (debug > 0) {
+> #line 289
+>     printk("<7>vbuf-vmalloc: vmalloc is at addr %p (%d pages)\n", mem->vmalloc, pages);
+>   } else {
+3504,3514c3512,3522
+<     }
+< #line 265
+<     __len = 176UL;
+< #line 265
+<     if (__len > 63UL) {
+< #line 265
+<       __ret = __memcpy((void *)mem->vma, (void const   *)vma, __len);
+<     } else {
+< #line 265
+<       __ret = __builtin_memcpy((void *)mem->vma, (void const   *)vma, __len);
+<     }
+---
+>   }
+> #line 293
+>   retval = remap_vmalloc_range(vma, mem->vmalloc, 0UL);
+> #line 294
+>   if (retval < 0) {
+> #line 295
+>     printk("<3>mmap: remap failed with error %d. ", retval);
+> #line 296
+>     vfree((void const   *)mem->vmalloc);
+> #line 297
+>     goto error;
+3518c3526,3532
+< #line 268
+---
+> #line 300
+>   vma->vm_ops = & videobuf_vm_ops;
+> #line 301
+>   vma->vm_flags = vma->vm_flags | 786432UL;
+> #line 302
+>   vma->vm_private_data = (void *)map;
+> #line 304
+3520c3534
+< #line 268
+---
+> #line 304
+3527c3541
+< #line 273
+---
+> #line 309
+3529c3543
+< #line 275
+---
+> #line 311
+3530a3545,3551
+>   error: 
+> #line 314
+>   mem = 0;
+> #line 315
+>   kfree((void const   *)map);
+> #line 316
+>   return (-12);
+3533c3554
+< #line 278 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 319 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3544c3565
+< #line 282
+---
+> #line 323
+3546c3567
+< #line 283
+---
+> #line 324
+3549c3570
+< #line 283
+---
+> #line 324
+3551c3572
+< #line 283
+---
+> #line 324
+3553,3556c3574,3577
+<                          "i" (283), "i" (24UL));
+<     ldv_19360: ;
+< #line 283
+<     goto ldv_19360;
+---
+>                          "i" (324), "i" (24UL));
+>     ldv_19366: ;
+> #line 324
+>     goto ldv_19366;
+3560c3581
+< #line 284
+---
+> #line 325
+3562c3583
+< #line 284
+---
+> #line 325
+3564c3585
+< #line 284
+---
+> #line 325
+3566c3587
+< #line 284
+---
+> #line 325
+3568,3571c3589,3592
+<                          "i" (284), "i" (24UL));
+<     ldv_19361: ;
+< #line 284
+<     goto ldv_19361;
+---
+>                          "i" (325), "i" (24UL));
+>     ldv_19367: ;
+> #line 325
+>     goto ldv_19367;
+3575c3596
+< #line 286
+---
+> #line 327
+3578c3599
+< #line 286
+---
+> #line 327
+3580c3601
+< #line 286
+---
+> #line 327
+3582,3585c3603,3606
+<                          "i" (286), "i" (24UL));
+<     ldv_19362: ;
+< #line 286
+<     goto ldv_19362;
+---
+>                          "i" (327), "i" (24UL));
+>     ldv_19368: ;
+> #line 327
+>     goto ldv_19368;
+3589c3610
+< #line 289
+---
+> #line 330
+3591c3612
+< #line 290
+---
+> #line 331
+3596c3617
+< #line 292
+---
+> #line 333
+3599c3620
+< #line 292
+---
+> #line 333
+3601c3622
+< #line 293
+---
+> #line 334
+3606c3627
+< #line 295
+---
+> #line 336
+3610c3631
+< #line 298 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 339 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3621c3642
+< #line 303
+---
+> #line 344
+3623c3644
+< #line 304
+---
+> #line 345
+3626c3647
+< #line 304
+---
+> #line 345
+3628c3649
+< #line 304
+---
+> #line 345
+3630,3633c3651,3654
+<                          "i" (304), "i" (24UL));
+<     ldv_19373: ;
+< #line 304
+<     goto ldv_19373;
+---
+>                          "i" (345), "i" (24UL));
+>     ldv_19379: ;
+> #line 345
+>     goto ldv_19379;
+3637c3658
+< #line 305
+---
+> #line 346
+3639c3660
+< #line 305
+---
+> #line 346
+3641c3662
+< #line 305
+---
+> #line 346
+3643c3664
+< #line 305
+---
+> #line 346
+3645,3648c3666,3669
+<                          "i" (305), "i" (24UL));
+<     ldv_19374: ;
+< #line 305
+<     goto ldv_19374;
+---
+>                          "i" (346), "i" (24UL));
+>     ldv_19380: ;
+> #line 346
+>     goto ldv_19380;
+3652c3673
+< #line 307
+---
+> #line 348
+3654c3675
+< #line 312
+---
+> #line 353
+3656c3677
+< #line 313
+---
+> #line 354
+3658c3679
+< #line 314
+---
+> #line 355
+3660c3681
+< #line 315
+---
+> #line 356
+3662c3683
+< #line 315
+---
+> #line 356
+3670c3691
+< #line 319
+---
+> #line 360
+3672c3693
+< #line 319
+---
+> #line 360
+3674c3695
+< #line 321
+---
+> #line 362
+3676c3697
+< #line 322
+---
+> #line 363
+3681c3702
+< #line 324
+---
+> #line 365
+3685c3706
+< #line 327 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 368 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3687c3708
+< #line 327
+---
+> #line 368
+3690c3711
+< #line 339 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 380 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3698c3719
+< #line 348
+---
+> #line 389
+3701c3722
+< #line 350
+---
+> #line 391
+3705c3726
+< #line 354 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 395 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3713c3734
+< #line 356
+---
+> #line 397
+3715c3736
+< #line 357
+---
+> #line 398
+3718c3739
+< #line 357
+---
+> #line 398
+3720c3741
+< #line 357
+---
+> #line 398
+3722,3725c3743,3746
+<                          "i" (357), "i" (24UL));
+<     ldv_19403: ;
+< #line 357
+<     goto ldv_19403;
+---
+>                          "i" (398), "i" (24UL));
+>     ldv_19409: ;
+> #line 398
+>     goto ldv_19409;
+3729c3750
+< #line 358
+---
+> #line 399
+3731c3752
+< #line 358
+---
+> #line 399
+3733c3754
+< #line 358
+---
+> #line 399
+3735c3756
+< #line 358
+---
+> #line 399
+3737,3740c3758,3761
+<                          "i" (358), "i" (24UL));
+<     ldv_19404: ;
+< #line 358
+<     goto ldv_19404;
+---
+>                          "i" (399), "i" (24UL));
+>     ldv_19410: ;
+> #line 399
+>     goto ldv_19410;
+3744c3765
+< #line 360
+---
+> #line 401
+3748c3769
+< #line 364 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 405 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3753d3773
+<   long tmp___0 ;
+3756c3776
+< #line 366
+---
+> #line 407
+3758,3768c3778,3781
+< #line 367
+<   tmp = __builtin_expect((unsigned long )mem == (unsigned long )((struct videobuf_vmalloc_memory *)0),
+<                          0L);
+< #line 367
+<   if (tmp != 0L) {
+< #line 367
+<     __asm__  volatile   ("1:\tud2\n.pushsection __bug_table,\"a\"\n2:\t.quad 1b, %c0\n\t.word %c1, 0\n\t.org 2b+%c2\n.popsection": : "i" ((char *)"/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"),
+<                          "i" (367), "i" (24UL));
+<     ldv_19415: ;
+< #line 367
+<     goto ldv_19415;
+---
+> #line 409
+>   if ((unsigned long )mem == (unsigned long )((struct videobuf_vmalloc_memory *)0)) {
+> #line 410
+>     return;
+3772,3776c3785,3789
+< #line 369
+<   tmp___0 = __builtin_expect(mem->magic != 404886051U, 0L);
+< #line 369
+<   if (tmp___0 != 0L) {
+< #line 369
+---
+> #line 412
+>   tmp = __builtin_expect(mem->magic != 404886051U, 0L);
+> #line 412
+>   if (tmp != 0L) {
+> #line 412
+3778c3791
+< #line 369
+---
+> #line 412
+3780,3783c3793,3796
+<                          "i" (369), "i" (24UL));
+<     ldv_19416: ;
+< #line 369
+<     goto ldv_19416;
+---
+>                          "i" (412), "i" (24UL));
+>     ldv_19421: ;
+> #line 412
+>     goto ldv_19421;
+3787c3800
+< #line 371
+---
+> #line 414
+3789c3802
+< #line 372
+---
+> #line 415
+3791c3804
+< #line 374
+---
+> #line 421
+3795c3808
+< #line 400
+---
+> #line 447
+3797c3810
+< #line 409
+---
+> #line 456
+3799c3812
+< #line 412
+---
+> #line 459
+3801c3814
+< #line 415
+---
+> #line 462
+3803c3816
+< #line 418 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 465 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3805c3818
+< #line 421 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 468 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3827c3840
+< #line 556
+---
+> #line 641
+3829c3842
+< #line 546
+---
+> #line 631
+3831c3844
+< #line 555
+---
+> #line 640
+3833,3836c3846,3849
+< #line 561
+<   goto ldv_19466;
+<   ldv_19465: 
+< #line 565
+---
+> #line 646
+>   goto ldv_19471;
+>   ldv_19470: 
+> #line 650
+3838c3851
+< #line 565
+---
+> #line 650
+3841c3854
+< #line 570
+---
+> #line 655
+3843c3856
+< #line 582
+---
+> #line 667
+3845c3858
+< #line 583
+---
+> #line 668
+3847c3860
+< #line 584
+---
+> #line 675
+3852,3853c3865,3866
+< #line 590
+<   goto ldv_19455;
+---
+> #line 681
+>   goto ldv_19460;
+3855c3868
+< #line 594
+---
+> #line 685
+3857c3870
+< #line 606
+---
+> #line 697
+3859c3872
+< #line 607
+---
+> #line 698
+3861c3874
+< #line 608
+---
+> #line 705
+3866,3867c3879,3880
+< #line 614
+<   goto ldv_19455;
+---
+> #line 711
+>   goto ldv_19460;
+3869c3882
+< #line 630
+---
+> #line 727
+3871c3884
+< #line 631
+---
+> #line 728
+3873,3874c3886,3887
+< #line 638
+<   goto ldv_19455;
+---
+> #line 741
+>   goto ldv_19460;
+3876c3889
+< #line 654
+---
+> #line 757
+3878c3891
+< #line 655
+---
+> #line 758
+3880,3881c3893,3894
+< #line 662
+<   goto ldv_19455;
+---
+> #line 765
+>   goto ldv_19460;
+3883c3896
+< #line 678
+---
+> #line 785
+3885c3898
+< #line 679
+---
+> #line 786
+3887,3888c3900,3901
+< #line 686
+<   goto ldv_19455;
+---
+> #line 793
+>   goto ldv_19460;
+3890c3903
+< #line 702
+---
+> #line 813
+3892c3905
+< #line 703
+---
+> #line 814
+3894,3895c3907,3908
+< #line 710
+<   goto ldv_19455;
+---
+> #line 821
+>   goto ldv_19460;
+3897c3910
+< #line 726
+---
+> #line 841
+3899c3912
+< #line 727
+---
+> #line 842
+3901,3902c3914,3915
+< #line 734
+<   goto ldv_19455;
+---
+> #line 849
+>   goto ldv_19460;
+3904c3917
+< #line 750
+---
+> #line 869
+3906c3919
+< #line 751
+---
+> #line 870
+3909,3910c3922,3923
+< #line 758
+<   goto ldv_19455;
+---
+> #line 877
+>   goto ldv_19460;
+3912c3925
+< #line 774
+---
+> #line 897
+3914c3927
+< #line 775
+---
+> #line 898
+3918,3919c3931,3932
+< #line 782
+<   goto ldv_19455;
+---
+> #line 905
+>   goto ldv_19460;
+3921,3922c3934,3935
+< #line 783
+<   goto ldv_19455;
+---
+> #line 906
+>   goto ldv_19460;
+3924,3926c3937,3939
+<   ldv_19455: ;
+<   ldv_19466: 
+< #line 561
+---
+>   ldv_19460: ;
+>   ldv_19471: 
+> #line 646
+3928c3941
+< #line 561
+---
+> #line 646
+3930,3931c3943,3944
+< #line 563
+<     goto ldv_19465;
+---
+> #line 648
+>     goto ldv_19470;
+3937c3950
+< #line 792
+---
+> #line 915
+3939c3952
+< #line 795
+---
+> #line 918
+3943c3956
+< #line 799 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 922 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3949c3962
+< #line 804
+---
+> #line 927
+3951c3964
+< #line 806
+---
+> #line 929
+3953c3966
+< #line 807
+---
+> #line 930
+3957c3970
+< #line 809 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+---
+> #line 932 "/work/ldvuser/novikov/work/current--X--drivers/media/video/videobuf-vmalloc.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/32_7a/drivers/media/video/videobuf-vmalloc.c.prepared"
+3963c3976
+< #line 814
+---
+> #line 937
+3965c3978
+< #line 816
+---
+> #line 939
+3967c3980
+< #line 817
+---
+> #line 940

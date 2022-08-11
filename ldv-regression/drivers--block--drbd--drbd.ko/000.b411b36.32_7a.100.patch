@@ -1,0 +1,716 @@
+29920a29921
+>   int ping_timeout_active ;
+29947c29948,29949
+<   enum drbd_thread_state tmp___23 ;
+---
+>   struct asender_cmd *tmp___23 ;
+>   enum drbd_thread_state tmp___24 ;
+29966c29968,29970
+< #line 4614
+---
+> #line 4613
+>   ping_timeout_active = 0;
+> #line 4615
+29968c29972
+< #line 4614
+---
+> #line 4615
+29970c29974
+< #line 4614
+---
+> #line 4615
+29972c29976
+< #line 4616
+---
+> #line 4617
+29974,29975d29977
+< #line 4616
+<   tmp___1->policy = 2U;
+29976a29979,29980
+>   tmp___1->policy = 2U;
+> #line 4618
+29978c29982
+< #line 4617
+---
+> #line 4618
+29980,29982d29983
+< #line 4619
+<   goto ldv_49603;
+<   ldv_49607: 
+29984c29985,29986
+<   drbd_thread_current_set_cpu(mdev);
+---
+>   goto ldv_49604;
+>   ldv_49608: 
+29985a29988,29989
+>   drbd_thread_current_set_cpu(mdev);
+> #line 4622
+29987,29988d29990
+< #line 4621
+<   if (tmp___4 != 0) {
+29989a29992,29993
+>   if (tmp___4 != 0) {
+> #line 4623
+29991c29995
+< #line 4622
+---
+> #line 4623
+29993c29997
+< #line 4622
+---
+> #line 4623
+29995c29999
+< #line 4622
+---
+> #line 4623
+29998c30002
+<               4622);
+---
+>               4623);
+30002c30006
+< #line 4622
+---
+> #line 4623
+30004c30008
+< #line 4622
+---
+> #line 4623
+30009c30013
+< #line 4623
+---
+> #line 4624
+30010a30015,30016
+> #line 4626
+>     ping_timeout_active = 1;
+30014c30020
+< #line 4629
+---
+> #line 4631
+30016c30022
+< #line 4629
+---
+> #line 4631
+30018,30019d30023
+< #line 4629
+<     if (tmp___5 > 3) {
+30020a30025,30026
+>     if (tmp___5 > 3) {
+> #line 4633
+30028,30029c30034,30035
+<   ldv_49602: 
+< #line 4633
+---
+>   ldv_49603: 
+> #line 4635
+30031c30037
+< #line 4634
+---
+> #line 4636
+30033c30039
+< #line 4634
+---
+> #line 4636
+30035c30041
+< #line 4635
+---
+> #line 4637
+30037c30043
+< #line 4635
+---
+> #line 4637
+30039c30045
+< #line 4636
+---
+> #line 4638
+30044c30050
+< #line 4638
+---
+> #line 4640
+30046c30052
+< #line 4639
+---
+> #line 4641
+30048c30054
+< #line 4640
+---
+> #line 4642
+30050c30056
+< #line 4641
+---
+> #line 4643
+30052c30058
+< #line 4645
+---
+> #line 4647
+30054,30055c30060,30061
+< #line 4646
+<     goto ldv_49601;
+---
+> #line 4648
+>     goto ldv_49602;
+30059,30061d30064
+< #line 4647
+<   goto ldv_49602;
+<   ldv_49601: ;
+30062a30066,30068
+>   goto ldv_49603;
+>   ldv_49602: ;
+> #line 4651
+30064c30070
+< #line 4650
+---
+> #line 4652
+30069c30075
+< #line 4653
+---
+> #line 4655
+30071c30077
+< #line 4653
+---
+> #line 4655
+30073c30079
+< #line 4653
+---
+> #line 4655
+30075,30076c30081,30082
+< #line 4654
+<     goto ldv_49603;
+---
+> #line 4656
+>     goto ldv_49604;
+30080c30086
+< #line 4656
+---
+> #line 4658
+30083,30084d30088
+< #line 4658
+<   clear_bit(1, (unsigned long volatile   *)(& mdev->flags));
+30085a30090,30091
+>   clear_bit(1, (unsigned long volatile   *)(& mdev->flags));
+> #line 4662
+30087c30093
+< #line 4660
+---
+> #line 4662
+30089c30095
+< #line 4672
+---
+> #line 4674
+30091c30097
+< #line 4672
+---
+> #line 4674
+30093c30099
+< #line 4673
+---
+> #line 4675
+30095c30101
+< #line 4674
+---
+> #line 4676
+30098c30104
+< #line 4675
+---
+> #line 4677
+30100c30106
+< #line 4676
+---
+> #line 4678
+30102c30108
+< #line 4677
+---
+> #line 4679
+30105c30111
+< #line 4678
+---
+> #line 4680
+30107,30108d30112
+< #line 4679
+<     if (((mdev->meta.socket)->sk)->sk_rcvtimeo == (long )(((mdev->net_conf)->ping_timeo * 250) / 10)) {
+30110c30114
+<       dev_err((struct device  const  *)(& (mdev->vdisk)->part0.__dev), "PingAck did not arrive in time.\n");
+---
+>     if (ping_timeout_active != 0) {
+30111a30116,30117
+>       dev_err((struct device  const  *)(& (mdev->vdisk)->part0.__dev), "PingAck did not arrive in time.\n");
+> #line 4683
+30116,30117d30121
+< #line 4684
+<     set_bit(2U, (unsigned long volatile   *)(& mdev->flags));
+30119,30120c30123
+<     goto ldv_49603;
+<   } else
+---
+>     set_bit(2U, (unsigned long volatile   *)(& mdev->flags));
+30122c30125,30126
+<   if (rv == -4) {
+---
+>     goto ldv_49604;
+>   } else
+30124c30128,30130
+<     goto ldv_49603;
+---
+>   if (rv == -4) {
+> #line 4688
+>     goto ldv_49604;
+30126c30132
+< #line 4689
+---
+> #line 4690
+30129c30135
+< #line 4690
+---
+> #line 4691
+30132,30133d30137
+< #line 4693
+<   if (received == expect && (unsigned long )cmd == (unsigned long )((struct asender_cmd *)0)) {
+30134a30139,30140
+>   if (received == expect && (unsigned long )cmd == (unsigned long )((struct asender_cmd *)0)) {
+> #line 4695
+30136,30137d30141
+< #line 4694
+<     if (tmp___15 != 0L) {
+30138a30143,30144
+>     if (tmp___15 != 0L) {
+> #line 4696
+30140c30146
+< #line 4695
+---
+> #line 4696
+30142c30148
+< #line 4695
+---
+> #line 4696
+30144c30150
+< #line 4695
+---
+> #line 4696
+30147c30153
+< #line 4699
+---
+> #line 4700
+30152c30158
+< #line 4701
+---
+> #line 4702
+30154,30155d30159
+< #line 4701
+<     cmd = get_asender_cmd((int )tmp___16);
+30156a30161,30162
+>     cmd = get_asender_cmd((int )tmp___16);
+> #line 4703
+30158,30159d30163
+< #line 4702
+<     len = (int )tmp___17;
+30160a30165,30166
+>     len = (int )tmp___17;
+> #line 4704
+30163,30164d30168
+< #line 4703
+<     if (tmp___21 != 0L) {
+30165a30170,30171
+>     if (tmp___21 != 0L) {
+> #line 4705
+30167c30173
+< #line 4704
+---
+> #line 4705
+30169c30175
+< #line 4704
+---
+> #line 4705
+30171c30177
+< #line 4704
+---
+> #line 4705
+30174c30180
+< #line 4708
+---
+> #line 4709
+30179,30180d30184
+< #line 4710
+<     expect = (int )cmd->pkt_size;
+30181a30186,30187
+>     expect = (int )cmd->pkt_size;
+> #line 4712
+30183c30189
+< #line 4711
+---
+> #line 4712
+30185c30191
+< #line 4711
+---
+> #line 4712
+30188c30194
+<               4711);
+---
+>               4712);
+30192,30193d30197
+< #line 4711
+<     if (_b___0 != 0) {
+30194a30199,30200
+>     if (_b___0 != 0) {
+> #line 4713
+30202,30203d30207
+< #line 4714
+<   if (received == expect) {
+30204a30209,30210
+>   if (received == expect) {
+> #line 4716
+30206c30212
+< #line 4715
+---
+> #line 4716
+30209c30215
+<               4715);
+---
+>               4716);
+30213c30219
+< #line 4716
+---
+> #line 4717
+30215,30216d30220
+< #line 4716
+<     if (tmp___22 == 0) {
+30217a30222,30223
+>     if (tmp___22 == 0) {
+> #line 4718
+30222c30228,30237
+< #line 4719
+---
+> #line 4722
+>     tmp___23 = get_asender_cmd(20);
+> #line 4722
+>     if ((unsigned long )tmp___23 == (unsigned long )cmd) {
+> #line 4723
+>       ping_timeout_active = 0;
+>     } else {
+> 
+>     }
+> #line 4725
+30224c30239
+< #line 4720
+---
+> #line 4726
+30226c30241
+< #line 4721
+---
+> #line 4727
+30228c30243
+< #line 4722
+---
+> #line 4728
+30233,30237c30248
+<   ldv_49603: 
+< #line 4619
+<   tmp___23 = get_t_state(thi);
+< #line 4619
+<   if ((unsigned int )tmp___23 == 1U) {
+---
+>   ldv_49604: 
+30239c30250,30254
+<     goto ldv_49607;
+---
+>   tmp___24 = get_t_state(thi);
+> #line 4620
+>   if ((unsigned int )tmp___24 == 1U) {
+> #line 4621
+>     goto ldv_49608;
+30244c30259
+< #line 4726
+---
+> #line 4732
+30247c30262
+< #line 4728
+---
+> #line 4734
+30249c30264
+< #line 4728
+---
+> #line 4734
+30251c30266
+< #line 4728
+---
+> #line 4734
+30253c30268
+< #line 4728
+---
+> #line 4734
+30255c30270
+< #line 4728
+---
+> #line 4734
+30257c30272
+< #line 4729
+---
+> #line 4735
+30262c30277
+< #line 4731
+---
+> #line 4737
+30265c30280
+< #line 4733
+---
+> #line 4739
+30267c30282
+< #line 4733
+---
+> #line 4739
+30269c30284
+< #line 4733
+---
+> #line 4739
+30271c30286
+< #line 4733
+---
+> #line 4739
+30273c30288
+< #line 4733
+---
+> #line 4739
+30275c30290
+< #line 4734
+---
+> #line 4740
+30280c30295
+< #line 4736
+---
+> #line 4742
+30282c30297
+< #line 4738
+---
+> #line 4744
+30284c30299
+< #line 4738
+---
+> #line 4744
+30287c30302
+<             4738);
+---
+>             4744);
+30291c30306
+< #line 4739
+---
+> #line 4745
+30293c30308
+< #line 4741
+---
+> #line 4747
+30297c30312
+< #line 4781 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4787 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30304c30319
+< #line 4793
+---
+> #line 4799
+30306c30321
+< #line 4802
+---
+> #line 4808
+30308,30311c30323,30326
+< #line 4804
+<   goto ldv_49636;
+<   ldv_49635: 
+< #line 4807
+---
+> #line 4810
+>   goto ldv_49637;
+>   ldv_49636: 
+> #line 4813
+30313c30328
+< #line 4807
+---
+> #line 4813
+30316,30317c30331,30332
+< #line 4809
+<   goto ldv_49634;
+---
+> #line 4815
+>   goto ldv_49635;
+30319,30321c30334,30336
+<   ldv_49634: ;
+<   ldv_49636: 
+< #line 4804
+---
+>   ldv_49635: ;
+>   ldv_49637: 
+> #line 4810
+30323c30338
+< #line 4804
+---
+> #line 4810
+30325,30326c30340,30341
+< #line 4805
+<     goto ldv_49635;
+---
+> #line 4811
+>     goto ldv_49636;
+30332c30347
+< #line 4818
+---
+> #line 4824
+30334c30349
+< #line 4821
+---
+> #line 4827
+30338c30353
+< #line 4825 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4831 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30344c30359
+< #line 4830
+---
+> #line 4836
+30346c30361
+< #line 4832
+---
+> #line 4838
+30348c30363
+< #line 4833
+---
+> #line 4839
+30352c30367
+< #line 4835 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4841 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30360c30375
+< #line 4840
+---
+> #line 4846
+30362c30377
+< #line 4840
+---
+> #line 4846
+30364c30379
+< #line 4842
+---
+> #line 4848
+30366c30381
+< #line 4842
+---
+> #line 4848
+30368c30383
+< #line 4844
+---
+> #line 4850
+30372c30387
+< #line 4847 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4853 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30378c30393
+< #line 4852
+---
+> #line 4858
+30380c30395
+< #line 4854
+---
+> #line 4860
+30382c30397
+< #line 4855
+---
+> #line 4861
+30386c30401
+< #line 4857 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4863 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30392c30407
+< #line 4862
+---
+> #line 4868
+30394c30409
+< #line 4864
+---
+> #line 4870
+30396c30411
+< #line 4865
+---
+> #line 4871
+30400c30415
+< #line 4867 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4873 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30406c30421
+< #line 4872
+---
+> #line 4878
+30408c30423
+< #line 4874
+---
+> #line 4880
+30410c30425
+< #line 4875
+---
+> #line 4881
+30414c30429
+< #line 4877 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4883 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30420c30435
+< #line 4882
+---
+> #line 4888
+30422c30437
+< #line 4884
+---
+> #line 4890
+30424c30439
+< #line 4885
+---
+> #line 4891
+30428c30443
+< #line 4887 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4893 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30436c30451
+< #line 4892
+---
+> #line 4898
+30438c30453
+< #line 4892
+---
+> #line 4898
+30440c30455
+< #line 4894
+---
+> #line 4900
+30442c30457
+< #line 4894
+---
+> #line 4900
+30444c30459
+< #line 4896
+---
+> #line 4902
+30448c30463
+< #line 4899 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4905 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30454c30469
+< #line 4904
+---
+> #line 4910
+30456c30471
+< #line 4906
+---
+> #line 4912
+30458c30473
+< #line 4907
+---
+> #line 4913
+30462c30477
+< #line 4909 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+---
+> #line 4915 "/work/ldvuser/novikov/work/current--X--drivers/block/drbd/drbd.ko--X--defaultlinux--X--32_7a--X--cpachecker/linux/csd_deg_dscv/19/dscv_tempdir/dscv/ri/32_7a/drivers/block/drbd/drbd_receiver.c.prepared"
+30468c30483
+< #line 4914
+---
+> #line 4920
+30470c30485
+< #line 4916
+---
+> #line 4922
+30472c30487
+< #line 4917
+---
+> #line 4923

@@ -1,0 +1,1233 @@
+481,546c481,484
+< #line 171 "include/linux/mutex.h"
+< struct resource {
+<    resource_size_t start ;
+<    resource_size_t end ;
+<    char const   *name ;
+<    unsigned long flags ;
+<    struct resource *parent ;
+<    struct resource *sibling ;
+<    struct resource *child ;
+< };
+< #line 206 "include/linux/ioport.h"
+< struct device;
+< #line 230
+< struct sock;
+< #line 231
+< struct kobject;
+< #line 232
+< enum kobj_ns_type {
+<     KOBJ_NS_TYPE_NONE = 0,
+<     KOBJ_NS_TYPE_NET = 1,
+<     KOBJ_NS_TYPES = 2
+< } ;
+< #line 238 "include/linux/ioport.h"
+< struct kobj_ns_type_operations {
+<    enum kobj_ns_type type ;
+<    void *(*grab_current_ns)(void) ;
+<    void const   *(*netlink_ns)(struct sock * ) ;
+<    void const   *(*initial_ns)(void) ;
+<    void (*drop_ns)(void * ) ;
+< };
+< #line 57 "include/linux/kobject_ns.h"
+< struct attribute {
+<    char const   *name ;
+<    mode_t mode ;
+<    struct lock_class_key *key ;
+<    struct lock_class_key skey ;
+< };
+< #line 33 "include/linux/sysfs.h"
+< struct attribute_group {
+<    char const   *name ;
+<    mode_t (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+<    struct attribute **attrs ;
+< };
+< #line 62
+< struct vm_area_struct;
+< #line 63 "include/linux/sysfs.h"
+< struct bin_attribute {
+<    struct attribute attr ;
+<    size_t size ;
+<    void *private ;
+<    ssize_t (*read)(struct file * , struct kobject * , struct bin_attribute * , char * ,
+<                    loff_t  , size_t  ) ;
+<    ssize_t (*write)(struct file * , struct kobject * , struct bin_attribute * , char * ,
+<                     loff_t  , size_t  ) ;
+<    int (*mmap)(struct file * , struct kobject * , struct bin_attribute * , struct vm_area_struct * ) ;
+< };
+< #line 98 "include/linux/sysfs.h"
+< struct sysfs_ops {
+<    ssize_t (*show)(struct kobject * , struct attribute * , char * ) ;
+<    ssize_t (*store)(struct kobject * , struct attribute * , char const   * , size_t  ) ;
+< };
+< #line 116
+< struct sysfs_dirent;
+< #line 181 "include/linux/sysfs.h"
+< struct kref {
+<    atomic_t refcount ;
+---
+> #line 233 "include/linux/seqlock.h"
+> struct timespec {
+>    __kernel_time_t tv_sec ;
+>    long tv_nsec ;
+555,614d492
+< #line 49 "include/linux/kobject.h"
+< struct kset;
+< #line 49
+< struct kobj_type;
+< #line 49 "include/linux/kobject.h"
+< struct kobject {
+<    char const   *name ;
+<    struct list_head entry ;
+<    struct kobject *parent ;
+<    struct kset *kset ;
+<    struct kobj_type *ktype ;
+<    struct sysfs_dirent *sd ;
+<    struct kref kref ;
+<    unsigned char state_initialized : 1 ;
+<    unsigned char state_in_sysfs : 1 ;
+<    unsigned char state_add_uevent_sent : 1 ;
+<    unsigned char state_remove_uevent_sent : 1 ;
+<    unsigned char uevent_suppress : 1 ;
+< };
+< #line 109 "include/linux/kobject.h"
+< struct kobj_type {
+<    void (*release)(struct kobject * ) ;
+<    struct sysfs_ops  const  *sysfs_ops ;
+<    struct attribute **default_attrs ;
+<    struct kobj_ns_type_operations  const  *(*child_ns_type)(struct kobject * ) ;
+<    void const   *(*namespace)(struct kobject * ) ;
+< };
+< #line 117 "include/linux/kobject.h"
+< struct kobj_uevent_env {
+<    char *envp[32U] ;
+<    int envp_idx ;
+<    char buf[2048U] ;
+<    int buflen ;
+< };
+< #line 124 "include/linux/kobject.h"
+< struct kset_uevent_ops {
+<    int (* const  filter)(struct kset * , struct kobject * ) ;
+<    char const   *(* const  name)(struct kset * , struct kobject * ) ;
+<    int (* const  uevent)(struct kset * , struct kobject * , struct kobj_uevent_env * ) ;
+< };
+< #line 141 "include/linux/kobject.h"
+< struct kset {
+<    struct list_head list ;
+<    spinlock_t list_lock ;
+<    struct kobject kobj ;
+<    struct kset_uevent_ops  const  *uevent_ops ;
+< };
+< #line 219
+< struct klist_node;
+< #line 37 "include/linux/klist.h"
+< struct klist_node {
+<    void *n_klist ;
+<    struct list_head n_node ;
+<    struct kref n_ref ;
+< };
+< #line 233 "include/linux/seqlock.h"
+< struct timespec {
+<    __kernel_time_t tv_sec ;
+<    long tv_nsec ;
+< };
+640a519,530
+> #line 139 "/work/ldvuser/novikov/inst/current/envs/linux/linux/arch/x86/include/asm/e820.h"
+> struct resource {
+>    resource_size_t start ;
+>    resource_size_t end ;
+>    char const   *name ;
+>    unsigned long flags ;
+>    struct resource *parent ;
+>    struct resource *sibling ;
+>    struct resource *child ;
+> };
+> #line 206 "include/linux/ioport.h"
+> struct device;
+774a665,666
+> #line 74 "include/asm-generic/iomap.h"
+> struct vm_area_struct;
+803a696,795
+> struct sock;
+> #line 445
+> struct kobject;
+> #line 446
+> enum kobj_ns_type {
+>     KOBJ_NS_TYPE_NONE = 0,
+>     KOBJ_NS_TYPE_NET = 1,
+>     KOBJ_NS_TYPES = 2
+> } ;
+> #line 452 "include/linux/elf.h"
+> struct kobj_ns_type_operations {
+>    enum kobj_ns_type type ;
+>    void *(*grab_current_ns)(void) ;
+>    void const   *(*netlink_ns)(struct sock * ) ;
+>    void const   *(*initial_ns)(void) ;
+>    void (*drop_ns)(void * ) ;
+> };
+> #line 57 "include/linux/kobject_ns.h"
+> struct attribute {
+>    char const   *name ;
+>    mode_t mode ;
+>    struct lock_class_key *key ;
+>    struct lock_class_key skey ;
+> };
+> #line 33 "include/linux/sysfs.h"
+> struct attribute_group {
+>    char const   *name ;
+>    mode_t (*is_visible)(struct kobject * , struct attribute * , int  ) ;
+>    struct attribute **attrs ;
+> };
+> #line 62 "include/linux/sysfs.h"
+> struct bin_attribute {
+>    struct attribute attr ;
+>    size_t size ;
+>    void *private ;
+>    ssize_t (*read)(struct file * , struct kobject * , struct bin_attribute * , char * ,
+>                    loff_t  , size_t  ) ;
+>    ssize_t (*write)(struct file * , struct kobject * , struct bin_attribute * , char * ,
+>                     loff_t  , size_t  ) ;
+>    int (*mmap)(struct file * , struct kobject * , struct bin_attribute * , struct vm_area_struct * ) ;
+> };
+> #line 98 "include/linux/sysfs.h"
+> struct sysfs_ops {
+>    ssize_t (*show)(struct kobject * , struct attribute * , char * ) ;
+>    ssize_t (*store)(struct kobject * , struct attribute * , char const   * , size_t  ) ;
+> };
+> #line 116
+> struct sysfs_dirent;
+> #line 181 "include/linux/sysfs.h"
+> struct kref {
+>    atomic_t refcount ;
+> };
+> #line 49 "include/linux/kobject.h"
+> struct kset;
+> #line 49
+> struct kobj_type;
+> #line 49 "include/linux/kobject.h"
+> struct kobject {
+>    char const   *name ;
+>    struct list_head entry ;
+>    struct kobject *parent ;
+>    struct kset *kset ;
+>    struct kobj_type *ktype ;
+>    struct sysfs_dirent *sd ;
+>    struct kref kref ;
+>    unsigned char state_initialized : 1 ;
+>    unsigned char state_in_sysfs : 1 ;
+>    unsigned char state_add_uevent_sent : 1 ;
+>    unsigned char state_remove_uevent_sent : 1 ;
+>    unsigned char uevent_suppress : 1 ;
+> };
+> #line 109 "include/linux/kobject.h"
+> struct kobj_type {
+>    void (*release)(struct kobject * ) ;
+>    struct sysfs_ops  const  *sysfs_ops ;
+>    struct attribute **default_attrs ;
+>    struct kobj_ns_type_operations  const  *(*child_ns_type)(struct kobject * ) ;
+>    void const   *(*namespace)(struct kobject * ) ;
+> };
+> #line 117 "include/linux/kobject.h"
+> struct kobj_uevent_env {
+>    char *envp[32U] ;
+>    int envp_idx ;
+>    char buf[2048U] ;
+>    int buflen ;
+> };
+> #line 124 "include/linux/kobject.h"
+> struct kset_uevent_ops {
+>    int (* const  filter)(struct kset * , struct kobject * ) ;
+>    char const   *(* const  name)(struct kset * , struct kobject * ) ;
+>    int (* const  uevent)(struct kset * , struct kobject * , struct kobj_uevent_env * ) ;
+> };
+> #line 141 "include/linux/kobject.h"
+> struct kset {
+>    struct list_head list ;
+>    spinlock_t list_lock ;
+>    struct kobject kobj ;
+>    struct kset_uevent_ops  const  *uevent_ops ;
+> };
+> #line 219
+805c797
+< #line 445 "include/linux/elf.h"
+---
+> #line 220 "include/linux/kobject.h"
+816c808
+< union __anonunion_ldv_13207_133 {
+---
+> union __anonunion_ldv_13158_133 {
+827c819
+<    union __anonunion_ldv_13207_133 ldv_13207 ;
+---
+>    union __anonunion_ldv_13158_133 ldv_13158 ;
+976a969,976
+> struct klist_node;
+> #line 37 "include/linux/klist.h"
+> struct klist_node {
+>    void *n_klist ;
+>    struct list_head n_node ;
+>    struct kref n_ref ;
+> };
+> #line 67
+978c978
+< #line 736 "include/linux/module.h"
+---
+> #line 67 "include/linux/klist.h"
+2608c2608
+< #line 97 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 98 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2615c2615
+< #line 99
+---
+> #line 100
+2617c2617
+< #line 99
+---
+> #line 100
+2619c2619
+< #line 101
+---
+> #line 102
+2623c2623
+< #line 104 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 105 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2631c2631
+< #line 106
+---
+> #line 107
+2633c2633
+< #line 106
+---
+> #line 107
+2635c2635
+< #line 108
+---
+> #line 109
+2637,2638d2636
+< #line 108
+<   if ((int )tmp___0) {
+2640c2638
+<     gpio_set_value_cansleep((unsigned int )data->enable_gpio, (int )data->enable_high);
+---
+>   if ((int )tmp___0) {
+2641a2640,2641
+>     gpio_set_value_cansleep((unsigned int )data->enable_gpio, (int )data->enable_high);
+> #line 111
+2646c2646
+< #line 113
+---
+> #line 114
+2650c2650
+< #line 116 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 117 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2658c2658
+< #line 118
+---
+> #line 119
+2660c2660
+< #line 118
+---
+> #line 119
+2662c2662
+< #line 120
+---
+> #line 121
+2664,2665d2663
+< #line 120
+<   if ((int )tmp___0) {
+2667c2665
+<     gpio_set_value_cansleep((unsigned int )data->enable_gpio, ! data->enable_high);
+---
+>   if ((int )tmp___0) {
+2668a2667,2668
+>     gpio_set_value_cansleep((unsigned int )data->enable_gpio, ! data->enable_high);
+> #line 123
+2673c2673
+< #line 125
+---
+> #line 126
+2677c2677
+< #line 128 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 129 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2684c2684
+< #line 130
+---
+> #line 131
+2686c2686
+< #line 130
+---
+> #line 131
+2688c2688
+< #line 132
+---
+> #line 133
+2692c2692
+< #line 135 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 136 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2700c2700
+< #line 137
+---
+> #line 138
+2702c2702
+< #line 137
+---
+> #line 138
+2704c2704
+< #line 140
+---
+> #line 141
+2706c2706
+< #line 140
+---
+> #line 141
+2709,2710d2708
+< #line 141
+<   if ((data->states + (unsigned long )ptr)->gpios == data->state) {
+2711a2710,2711
+>   if ((data->states + (unsigned long )ptr)->gpios == data->state) {
+> #line 143
+2716c2716
+< #line 140
+---
+> #line 141
+2719,2720d2718
+< #line 140
+<   if (data->nr_states > ptr) {
+2721a2720,2721
+>   if (data->nr_states > ptr) {
+> #line 142
+2727c2727
+< #line 144
+---
+> #line 145
+2731c2731
+< #line 147 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 148 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2741c2741
+< #line 150
+---
+> #line 151
+2743c2743
+< #line 150
+---
+> #line 151
+2745,2746d2744
+< #line 153
+<   target = -1;
+2747a2746,2747
+>   target = -1;
+> #line 155
+2749c2749
+< #line 154
+---
+> #line 155
+2752c2752
+< #line 155
+---
+> #line 156
+2754c2754
+< #line 157
+---
+> #line 158
+2759c2759
+< #line 154
+---
+> #line 155
+2762,2763d2761
+< #line 154
+<   if (data->nr_states > ptr) {
+2764a2763,2764
+>   if (data->nr_states > ptr) {
+> #line 156
+2770,2771d2769
+< #line 159
+<   if (target < 0) {
+2772a2771,2772
+>   if (target < 0) {
+> #line 161
+2777c2777
+< #line 162
+---
+> #line 163
+2779c2779
+< #line 162
+---
+> #line 163
+2782,2783d2781
+< #line 163
+<   state = ((1 << ptr) & target) >> ptr;
+2784a2783,2784
+>   state = ((1 << ptr) & target) >> ptr;
+> #line 165
+2786c2786
+< #line 162
+---
+> #line 163
+2789,2790d2788
+< #line 162
+<   if (data->nr_gpios > ptr) {
+2791a2790,2791
+>   if (data->nr_gpios > ptr) {
+> #line 164
+2796c2796
+< #line 166
+---
+> #line 167
+2798c2798
+< #line 168
+---
+> #line 169
+2802c2802
+< #line 171 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 172 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2809c2809
+< #line 175
+---
+> #line 176
+2811c2811
+< #line 175
+---
+> #line 176
+2815c2815
+< #line 178 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 179 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2822c2822
+< #line 181
+---
+> #line 182
+2824c2824
+< #line 181
+---
+> #line 182
+2826,2827d2825
+< #line 183
+<   if ((unsigned int )data->nr_states <= selector) {
+2828a2827,2828
+>   if ((unsigned int )data->nr_states <= selector) {
+> #line 185
+2833c2833
+< #line 186
+---
+> #line 187
+2837c2837
+< #line 189 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 190 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2844c2844
+< #line 192
+---
+> #line 193
+2846c2846
+< #line 192
+---
+> #line 193
+2850c2850
+< #line 195 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 196 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2852c2852
+< #line 195
+---
+> #line 196
+2856c2856
+< #line 205 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 206 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2858c2858
+< #line 205
+---
+> #line 206
+2862c2862
+< #line 214 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 215 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+2880c2880
+< #line 216
+---
+> #line 217
+2882c2882
+< #line 220
+---
+> #line 221
+2884,2885d2883
+< #line 220
+<   drvdata = (struct gpio_regulator_data *)tmp;
+2887c2885
+<   if ((unsigned long )drvdata == (unsigned long )((struct gpio_regulator_data *)0)) {
+---
+>   drvdata = (struct gpio_regulator_data *)tmp;
+2889c2887
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate device data\n");
+---
+>   if ((unsigned long )drvdata == (unsigned long )((struct gpio_regulator_data *)0)) {
+2890a2889,2890
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate device data\n");
+> #line 224
+2895c2895
+< #line 226
+---
+> #line 227
+2897,2898d2896
+< #line 226
+<   drvdata->desc.name = (char const   *)tmp___0;
+2900c2898
+<   if ((unsigned long )drvdata->desc.name == (unsigned long )((char const   *)0)) {
+---
+>   drvdata->desc.name = (char const   *)tmp___0;
+2902c2900
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate supply name\n");
+---
+>   if ((unsigned long )drvdata->desc.name == (unsigned long )((char const   *)0)) {
+2904c2902
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate supply name\n");
+2905a2904,2905
+>     ret = -12;
+> #line 231
+2910c2910
+< #line 233
+---
+> #line 234
+2913c2913
+< #line 233
+---
+> #line 234
+2915,2916d2914
+< #line 236
+<   if ((unsigned long )drvdata->gpios == (unsigned long )((struct gpio *)0)) {
+2918c2916
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate gpio data\n");
+---
+>   if ((unsigned long )drvdata->gpios == (unsigned long )((struct gpio *)0)) {
+2920c2918
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate gpio data\n");
+2921a2920,2921
+>     ret = -12;
+> #line 240
+2926c2926
+< #line 242
+---
+> #line 243
+2929c2929
+< #line 242
+---
+> #line 243
+2931,2932d2930
+< #line 246
+<   if ((unsigned long )drvdata->states == (unsigned long )((struct gpio_regulator_state *)0)) {
+2934c2932
+<     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate state data\n");
+---
+>   if ((unsigned long )drvdata->states == (unsigned long )((struct gpio_regulator_state *)0)) {
+2936c2934
+<     ret = -12;
+---
+>     dev_err((struct device  const  *)(& pdev->dev), "Failed to allocate state data\n");
+2937a2936,2937
+>     ret = -12;
+> #line 250
+2942c2942
+< #line 251
+---
+> #line 252
+2944c2944
+< #line 253
+---
+> #line 254
+2946c2946
+< #line 256
+---
+> #line 257
+2949,2950d2948
+< #line 258
+<   drvdata->desc.type = REGULATOR_VOLTAGE;
+2952c2950
+<   drvdata->desc.ops = & gpio_regulator_voltage_ops;
+---
+>   drvdata->desc.type = REGULATOR_VOLTAGE;
+2954c2952
+<   drvdata->desc.n_voltages = (unsigned int )config->nr_states;
+---
+>   drvdata->desc.ops = & gpio_regulator_voltage_ops;
+2955a2954,2955
+>   drvdata->desc.n_voltages = (unsigned int )config->nr_states;
+> #line 262
+2958,2959d2957
+< #line 263
+<   drvdata->desc.type = REGULATOR_CURRENT;
+2961c2959
+<   drvdata->desc.ops = & gpio_regulator_current_ops;
+---
+>   drvdata->desc.type = REGULATOR_CURRENT;
+2962a2961,2962
+>   drvdata->desc.ops = & gpio_regulator_current_ops;
+> #line 266
+2965,2966d2964
+< #line 267
+<   dev_err((struct device  const  *)(& pdev->dev), "No regulator type set\n");
+2968c2966
+<   ret = -22;
+---
+>   dev_err((struct device  const  *)(& pdev->dev), "No regulator type set\n");
+2969a2968,2969
+>   ret = -22;
+> #line 270
+2973,2974d2972
+< #line 273
+<   drvdata->enable_gpio = config->enable_gpio;
+2975a2974,2975
+>   drvdata->enable_gpio = config->enable_gpio;
+> #line 275
+2977c2977
+< #line 276
+---
+> #line 277
+2979,2980d2978
+< #line 276
+<   if ((int )tmp___3) {
+2981a2980,2981
+>   if ((int )tmp___3) {
+> #line 278
+2983,2984d2982
+< #line 279
+<     ret = gpio_request((unsigned int )config->enable_gpio, config->supply_name);
+2986c2984
+<     if (ret != 0) {
+---
+>     ret = gpio_request((unsigned int )config->enable_gpio, config->supply_name);
+2987a2986,2987
+>     if (ret != 0) {
+> #line 282
+2990c2990
+< #line 284
+---
+> #line 285
+2995,2996d2994
+< #line 290
+<     if ((unsigned int )*((unsigned char *)config + 12UL) != 0U) {
+2998c2996
+<       drvdata->is_enabled = 1;
+---
+>     if ((unsigned int )*((unsigned char *)config + 12UL) != 0U) {
+2999a2998,2999
+>       drvdata->is_enabled = 1;
+> #line 293
+3002,3003d3001
+< #line 295
+<       drvdata->is_enabled = 0;
+3004a3003,3004
+>       drvdata->is_enabled = 0;
+> #line 297
+3007,3008d3006
+< #line 300
+<     if (ret != 0) {
+3009a3008,3009
+>     if (ret != 0) {
+> #line 302
+3012c3012
+< #line 304
+---
+> #line 305
+3018c3018
+< #line 310
+---
+> #line 311
+3021,3022d3020
+< #line 313
+<   drvdata->nr_gpios = config->nr_gpios;
+3024c3022
+<   ret = gpio_request_array((struct gpio  const  *)drvdata->gpios, (size_t )drvdata->nr_gpios);
+---
+>   drvdata->nr_gpios = config->nr_gpios;
+3026c3024
+<   if (ret != 0) {
+---
+>   ret = gpio_request_array((struct gpio  const  *)drvdata->gpios, (size_t )drvdata->nr_gpios);
+3027a3026,3027
+>   if (ret != 0) {
+> #line 317
+3030c3030
+< #line 318
+---
+> #line 319
+3035,3036d3034
+< #line 322
+<   state = 0;
+3037a3036,3037
+>   state = 0;
+> #line 324
+3039c3039
+< #line 323
+---
+> #line 324
+3042,3043d3041
+< #line 324
+<   if (((config->gpios + (unsigned long )ptr)->flags & 2UL) != 0UL) {
+3044a3043,3044
+>   if (((config->gpios + (unsigned long )ptr)->flags & 2UL) != 0UL) {
+> #line 326
+3049c3049
+< #line 323
+---
+> #line 324
+3052,3053d3051
+< #line 323
+<   if (drvdata->nr_gpios > ptr) {
+3054a3053,3054
+>   if (drvdata->nr_gpios > ptr) {
+> #line 325
+3059c3059
+< #line 327
+---
+> #line 328
+3061c3061
+< #line 329
+---
+> #line 330
+3064c3064
+< #line 331
+---
+> #line 332
+3066,3067d3065
+< #line 331
+<   if (tmp___5 != 0L) {
+3068a3067,3068
+>   if (tmp___5 != 0L) {
+> #line 333
+3070,3071d3069
+< #line 332
+<     ret = (int )tmp___4;
+3072a3071,3072
+>     ret = (int )tmp___4;
+> #line 334
+3075c3075
+< #line 334
+---
+> #line 335
+3080c3080
+< #line 337
+---
+> #line 338
+3082c3082
+< #line 339
+---
+> #line 340
+3085c3085
+< #line 342
+---
+> #line 343
+3088c3088
+< #line 344
+---
+> #line 345
+3090,3091d3089
+< #line 344
+<   if ((int )tmp___6) {
+3092a3091,3092
+>   if ((int )tmp___6) {
+> #line 346
+3098c3098
+< #line 347
+---
+> #line 348
+3101c3101
+< #line 349
+---
+> #line 350
+3104c3104
+< #line 351
+---
+> #line 352
+3107,3108d3106
+< #line 353
+<   kfree((void const   *)drvdata);
+3109a3108,3109
+>   kfree((void const   *)drvdata);
+> #line 355
+3113c3113
+< #line 357 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 358 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3121c3121
+< #line 359
+---
+> #line 360
+3123c3123
+< #line 359
+---
+> #line 360
+3125c3125
+< #line 361
+---
+> #line 362
+3127c3127
+< #line 363
+---
+> #line 364
+3129,3130d3128
+< #line 365
+<   kfree((void const   *)drvdata->states);
+3131a3130,3131
+>   kfree((void const   *)drvdata->states);
+> #line 367
+3133c3133
+< #line 368
+---
+> #line 369
+3135,3136d3134
+< #line 368
+<   if ((int )tmp___0) {
+3137a3136,3137
+>   if ((int )tmp___0) {
+> #line 370
+3142,3143d3141
+< #line 371
+<   kfree((void const   *)drvdata->desc.name);
+3144a3143,3144
+>   kfree((void const   *)drvdata->desc.name);
+> #line 373
+3146c3146
+< #line 374
+---
+> #line 375
+3150c3150
+< #line 377 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 378 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3156c3156
+< #line 386 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 387 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3162c3162
+< #line 388
+---
+> #line 389
+3164c3164
+< #line 388
+---
+> #line 389
+3168c3168
+< #line 392 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 393 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3174,3175d3173
+< #line 394
+<   platform_driver_unregister(& gpio_regulator_driver);
+3176a3175,3176
+>   platform_driver_unregister(& gpio_regulator_driver);
+> #line 396
+3180c3180
+< #line 419
+---
+> #line 420
+3182c3182
+< #line 422
+---
+> #line 423
+3184c3184
+< #line 425
+---
+> #line 426
+3186c3186
+< #line 428
+---
+> #line 429
+3188c3188
+< #line 431
+---
+> #line 432
+3190c3190
+< #line 434
+---
+> #line 435
+3192c3192
+< #line 437 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 438 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3194c3194
+< #line 440 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 441 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3212c3212
+< #line 528
+---
+> #line 529
+3214c3214
+< #line 506
+---
+> #line 507
+3216c3216
+< #line 515
+---
+> #line 516
+3218,3219d3217
+< #line 521
+<   ldv_handler_precall();
+3220a3219,3220
+>   ldv_handler_precall();
+> #line 523
+3222,3223d3221
+< #line 522
+<   if (tmp != 0) {
+3224a3223,3224
+>   if (tmp != 0) {
+> #line 524
+3229c3229
+< #line 531
+---
+> #line 532
+3232c3232
+< #line 535
+---
+> #line 536
+3234c3234
+< #line 535
+---
+> #line 536
+3237,3238d3236
+< #line 545
+<   ldv_handler_precall();
+3239a3238,3239
+>   ldv_handler_precall();
+> #line 547
+3241c3241
+< #line 553
+---
+> #line 554
+3244,3245d3243
+< #line 562
+<   ldv_handler_precall();
+3246a3245,3246
+>   ldv_handler_precall();
+> #line 564
+3248c3248
+< #line 570
+---
+> #line 571
+3251,3252d3250
+< #line 579
+<   ldv_handler_precall();
+3253a3252,3253
+>   ldv_handler_precall();
+> #line 581
+3255c3255
+< #line 587
+---
+> #line 588
+3258,3259d3257
+< #line 596
+<   ldv_handler_precall();
+3260a3259,3260
+>   ldv_handler_precall();
+> #line 598
+3262c3262
+< #line 604
+---
+> #line 605
+3265,3266d3264
+< #line 613
+<   ldv_handler_precall();
+3267a3266,3267
+>   ldv_handler_precall();
+> #line 615
+3269c3269
+< #line 621
+---
+> #line 622
+3272,3273d3271
+< #line 630
+<   ldv_handler_precall();
+3274a3273,3274
+>   ldv_handler_precall();
+> #line 632
+3277c3277
+< #line 638
+---
+> #line 639
+3280,3281d3279
+< #line 647
+<   ldv_handler_precall();
+3282a3281,3282
+>   ldv_handler_precall();
+> #line 649
+3284c3284
+< #line 655
+---
+> #line 656
+3287,3288d3286
+< #line 664
+<   ldv_handler_precall();
+3289a3288,3289
+>   ldv_handler_precall();
+> #line 666
+3291c3291
+< #line 672
+---
+> #line 673
+3294,3295d3293
+< #line 681
+<   ldv_handler_precall();
+3296a3295,3296
+>   ldv_handler_precall();
+> #line 683
+3298c3298
+< #line 689
+---
+> #line 690
+3301,3302d3300
+< #line 698
+<   ldv_handler_precall();
+3303a3302,3303
+>   ldv_handler_precall();
+> #line 700
+3305c3305
+< #line 706
+---
+> #line 707
+3308,3309d3307
+< #line 715
+<   ldv_handler_precall();
+3310a3309,3310
+>   ldv_handler_precall();
+> #line 717
+3312c3312
+< #line 723
+---
+> #line 724
+3315,3316d3314
+< #line 732
+<   ldv_handler_precall();
+3317a3316,3317
+>   ldv_handler_precall();
+> #line 734
+3319c3319
+< #line 740
+---
+> #line 741
+3322,3323d3321
+< #line 749
+<   ldv_handler_precall();
+3324a3323,3324
+>   ldv_handler_precall();
+> #line 751
+3327c3327
+< #line 757
+---
+> #line 758
+3330c3330
+< #line 761
+---
+> #line 762
+3332,3333d3331
+< #line 766
+<     res_gpio_regulator_probe_9 = gpio_regulator_probe(var_group2);
+3335c3333
+<     ldv_check_return_value(res_gpio_regulator_probe_9);
+---
+>     res_gpio_regulator_probe_9 = gpio_regulator_probe(var_group2);
+3337c3335
+<     ldv_check_return_value_probe(res_gpio_regulator_probe_9);
+---
+>     ldv_check_return_value(res_gpio_regulator_probe_9);
+3339c3337
+<     if (res_gpio_regulator_probe_9 != 0) {
+---
+>     ldv_check_return_value_probe(res_gpio_regulator_probe_9);
+3340a3339,3340
+>     if (res_gpio_regulator_probe_9 != 0) {
+> #line 771
+3345c3345
+< #line 771
+---
+> #line 772
+3350c3350
+< #line 777
+---
+> #line 778
+3353c3353
+< #line 781
+---
+> #line 782
+3355,3356d3354
+< #line 786
+<     ldv_handler_precall();
+3358c3356
+<     gpio_regulator_remove(var_group2);
+---
+>     ldv_handler_precall();
+3359a3358,3359
+>     gpio_regulator_remove(var_group2);
+> #line 789
+3364c3364
+< #line 794
+---
+> #line 795
+3367c3367
+< #line 795
+---
+> #line 796
+3372c3372
+< #line 531
+---
+> #line 532
+3374c3374
+< #line 531
+---
+> #line 532
+3376c3376
+< #line 533
+---
+> #line 534
+3383,3384d3382
+< #line 807
+<   ldv_handler_precall();
+3385a3384,3385
+>   ldv_handler_precall();
+> #line 809
+3388c3388
+< #line 811
+---
+> #line 812
+3390c3390
+< #line 814
+---
+> #line 815
+3394c3394
+< #line 850 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 851 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3400c3400
+< #line 855
+---
+> #line 856
+3402,3403d3401
+< #line 857
+<   __ldv_spin_lock(ldv_func_arg1);
+3404a3403,3404
+>   __ldv_spin_lock(ldv_func_arg1);
+> #line 859
+3408c3408
+< #line 871 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+---
+> #line 872 "/work/ldvuser/novikov/work/current--X--drivers/regulator/gpio-regulator.ko--X--defaultlinux--X--39_7a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/39_7a/drivers/regulator/gpio-regulator.c.prepared"
+3414c3414
+< #line 876
+---
+> #line 877
+3416,3417d3415
+< #line 878
+<   __ldv_spin_lock(ldv_func_arg1);
+3418a3417,3418
+>   __ldv_spin_lock(ldv_func_arg1);
+> #line 880

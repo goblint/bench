@@ -1,0 +1,916 @@
+1194,1205d1193
+< #line 183
+< enum fe_bandwidth {
+<     BANDWIDTH_8_MHZ = 0,
+<     BANDWIDTH_7_MHZ = 1,
+<     BANDWIDTH_6_MHZ = 2,
+<     BANDWIDTH_AUTO = 3,
+<     BANDWIDTH_5_MHZ = 4,
+<     BANDWIDTH_10_MHZ = 5,
+<     BANDWIDTH_1_712_MHZ = 6
+< } ;
+< #line 192 "include/linux/dvb/frontend.h"
+< typedef enum fe_bandwidth fe_bandwidth_t;
+1229,1266d1216
+< #line 214 "include/linux/dvb/frontend.h"
+< struct dvb_qpsk_parameters {
+<    __u32 symbol_rate ;
+<    fe_code_rate_t fec_inner ;
+< };
+< #line 220 "include/linux/dvb/frontend.h"
+< struct dvb_qam_parameters {
+<    __u32 symbol_rate ;
+<    fe_code_rate_t fec_inner ;
+<    fe_modulation_t modulation ;
+< };
+< #line 226 "include/linux/dvb/frontend.h"
+< struct dvb_vsb_parameters {
+<    fe_modulation_t modulation ;
+< };
+< #line 230 "include/linux/dvb/frontend.h"
+< struct dvb_ofdm_parameters {
+<    fe_bandwidth_t bandwidth ;
+<    fe_code_rate_t code_rate_HP ;
+<    fe_code_rate_t code_rate_LP ;
+<    fe_modulation_t constellation ;
+<    fe_transmit_mode_t transmission_mode ;
+<    fe_guard_interval_t guard_interval ;
+<    fe_hierarchy_t hierarchy_information ;
+< };
+< #line 240 "include/linux/dvb/frontend.h"
+< union __anonunion_u_135 {
+<    struct dvb_qpsk_parameters qpsk ;
+<    struct dvb_qam_parameters qam ;
+<    struct dvb_ofdm_parameters ofdm ;
+<    struct dvb_vsb_parameters vsb ;
+< };
+< #line 240 "include/linux/dvb/frontend.h"
+< struct dvb_frontend_parameters {
+<    __u32 frequency ;
+<    fe_spectral_inversion_t inversion ;
+<    union __anonunion_u_135 u ;
+< };
+3492d3441
+<    struct dvb_frontend_parameters parameters ;
+3494c3443
+< #line 51 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 56 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3504c3453
+< #line 65 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 70 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3511c3460
+< #line 108
+---
+> #line 113
+3521c3470
+< #line 118
+---
+> #line 123
+3528c3477
+< #line 125 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 130 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3537c3486
+< #line 159
+---
+> #line 164
+3546c3495
+< #line 168 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 173 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3566c3515
+< #line 231 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 236 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3570c3519
+< #line 235 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 240 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3582c3531,3533
+< #line 252 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 257
+> struct dtv_frontend_properties;
+> #line 258 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3584a3536
+>    u8 delsys[8U] ;
+3590,3591c3542
+<    int (*tune)(struct dvb_frontend * , struct dvb_frontend_parameters * , unsigned int  ,
+<                unsigned int * , fe_status_t * ) ;
+---
+>    int (*tune)(struct dvb_frontend * , bool  , unsigned int  , unsigned int * , fe_status_t * ) ;
+3593c3544
+<    int (*set_frontend)(struct dvb_frontend * , struct dvb_frontend_parameters * ) ;
+---
+>    int (*set_frontend)(struct dvb_frontend * ) ;
+3595c3546
+<    int (*get_frontend)(struct dvb_frontend * , struct dvb_frontend_parameters * ) ;
+---
+>    int (*get_frontend)(struct dvb_frontend * , struct dtv_frontend_properties * ) ;
+3611,3612c3562
+<    enum dvbfe_search (*search)(struct dvb_frontend * , struct dvb_frontend_parameters * ) ;
+<    int (*track)(struct dvb_frontend * , struct dvb_frontend_parameters * ) ;
+---
+>    enum dvbfe_search (*search)(struct dvb_frontend * ) ;
+3618c3568
+< #line 320 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 328 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3625c3575
+< #line 320 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 328 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3654c3604
+< #line 366 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 374 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3667c3617
+< #line 392 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+---
+> #line 400 "drivers/media/dvb/dvb-core/dvb_frontend.h"
+3923,3925c3873
+<   priv->bandwidth = 2U;
+< #line 162
+<   goto ldv_22877;
+---
+>   goto ldv_22872;
+3927c3875
+< #line 164
+---
+> #line 163
+3929,3932c3877,3878
+< #line 166
+<   priv->bandwidth = 0U;
+< #line 167
+<   goto ldv_22877;
+---
+> #line 165
+>   goto ldv_22872;
+3935c3881
+< #line 170
+---
+> #line 168
+3937,3940c3883,3884
+< #line 172
+<   priv->bandwidth = 1U;
+< #line 173
+<   goto ldv_22877;
+---
+> #line 170
+>   goto ldv_22872;
+3942,3943c3886,3889
+<   ldv_22877: ;
+< #line 176
+---
+>   ldv_22872: 
+> #line 172
+>   priv->bandwidth = c->bandwidth_hz;
+> #line 174
+3945c3891
+< #line 177
+---
+> #line 175
+3947c3893
+< #line 177
+---
+> #line 175
+3949c3895
+< #line 177
+---
+> #line 175
+3954c3900
+< #line 178
+---
+> #line 176
+3956c3902
+< #line 179
+---
+> #line 177
+3958c3904
+< #line 180
+---
+> #line 178
+3961c3907
+< #line 181
+---
+> #line 179
+3963c3909
+< #line 182
+---
+> #line 180
+3965c3911
+< #line 182
+---
+> #line 180
+3967c3913
+< #line 182
+---
+> #line 180
+3972c3918
+< #line 183
+---
+> #line 181
+3974c3920
+< #line 184
+---
+> #line 182
+3976c3922
+< #line 185
+---
+> #line 183
+3981c3927
+< #line 187
+---
+> #line 185
+3983c3929
+< #line 189
+---
+> #line 187
+3985c3931
+< #line 190
+---
+> #line 188
+3988c3934
+< #line 191
+---
+> #line 189
+3990c3936
+< #line 192
+---
+> #line 190
+3993c3939
+< #line 193
+---
+> #line 191
+3995c3941
+< #line 194
+---
+> #line 192
+3998c3944
+< #line 195
+---
+> #line 193
+4000c3946
+< #line 196
+---
+> #line 194
+4003c3949
+< #line 197
+---
+> #line 195
+4005c3951
+< #line 198
+---
+> #line 196
+4008c3954
+< #line 199
+---
+> #line 197
+4010c3956
+< #line 200
+---
+> #line 198
+4013c3959
+< #line 201
+---
+> #line 199
+4015c3961
+< #line 202
+---
+> #line 200
+4018c3964
+< #line 203
+---
+> #line 201
+4020c3966
+< #line 204
+---
+> #line 202
+4023c3969
+< #line 205
+---
+> #line 203
+4025c3971
+< #line 206
+---
+> #line 204
+4028c3974
+< #line 207
+---
+> #line 205
+4030c3976
+< #line 208
+---
+> #line 206
+4033c3979
+< #line 209
+---
+> #line 207
+4035c3981
+< #line 210
+---
+> #line 208
+4038c3984
+< #line 211
+---
+> #line 209
+4040c3986
+< #line 212
+---
+> #line 210
+4043c3989
+< #line 213
+---
+> #line 211
+4045c3991
+< #line 214
+---
+> #line 212
+4048c3994
+< #line 216
+---
+> #line 214
+4051c3997
+< #line 218
+---
+> #line 216
+4053c3999
+< #line 219
+---
+> #line 217
+4055c4001
+< #line 220
+---
+> #line 218
+4057c4003
+< #line 221
+---
+> #line 219
+4059c4005
+< #line 222
+---
+> #line 220
+4061c4007
+< #line 224
+---
+> #line 222
+4063c4009
+< #line 224
+---
+> #line 222
+4066c4012
+< #line 224
+---
+> #line 222
+4071c4017
+< #line 227
+---
+> #line 225
+4073c4019
+< #line 227
+---
+> #line 225
+4075c4021
+< #line 227
+---
+> #line 225
+4080c4026
+< #line 230
+---
+> #line 228
+4082c4028
+< #line 231
+---
+> #line 229
+4084c4030
+< #line 232
+---
+> #line 230
+4086c4032
+< #line 233
+---
+> #line 231
+4088c4034
+< #line 234
+---
+> #line 232
+4093c4039
+< #line 238
+---
+> #line 236
+4095,4096c4041,4042
+<   ldv_22882: 
+< #line 240
+---
+>   ldv_22877: 
+> #line 238
+4098c4044
+< #line 241
+---
+> #line 239
+4100,4101c4046,4047
+< #line 242
+<     goto ldv_22881;
+---
+> #line 240
+>     goto ldv_22876;
+4105c4051
+< #line 243
+---
+> #line 241
+4107c4053
+< #line 244
+---
+> #line 242
+4109c4055
+< #line 245
+---
+> #line 243
+4111,4112c4057,4058
+< #line 246
+<     goto ldv_22882;
+---
+> #line 244
+>     goto ldv_22877;
+4116,4117c4062,4063
+<   ldv_22881: ;
+< #line 246
+---
+>   ldv_22876: ;
+> #line 244
+4119c4065
+< #line 246
+---
+> #line 244
+4121c4067
+< #line 246
+---
+> #line 244
+4126c4072
+< #line 248
+---
+> #line 246
+4128c4074
+< #line 249
+---
+> #line 247
+4133c4079
+< #line 251
+---
+> #line 249
+4135c4081
+< #line 253
+---
+> #line 251
+4139c4085
+< #line 256 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 254 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4145c4091
+< #line 258
+---
+> #line 256
+4147c4093
+< #line 259
+---
+> #line 257
+4149c4095
+< #line 260
+---
+> #line 258
+4151c4097
+< #line 261
+---
+> #line 259
+4153c4099
+< #line 262
+---
+> #line 260
+4155c4101
+< #line 263
+---
+> #line 261
+4157c4103
+< #line 264
+---
+> #line 262
+4159c4105
+< #line 265
+---
+> #line 263
+4161c4107
+< #line 266
+---
+> #line 264
+4163c4109
+< #line 267
+---
+> #line 265
+4165c4111
+< #line 268
+---
+> #line 266
+4167c4113
+< #line 269
+---
+> #line 267
+4169c4115
+< #line 270
+---
+> #line 268
+4171c4117
+< #line 271
+---
+> #line 269
+4173c4119
+< #line 272
+---
+> #line 270
+4177c4123
+< #line 274 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 272 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4183c4129
+< #line 276
+---
+> #line 274
+4185c4131
+< #line 277
+---
+> #line 275
+4187c4133
+< #line 278
+---
+> #line 276
+4191c4137
+< #line 281 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 279 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4197c4143
+< #line 283
+---
+> #line 281
+4199c4145
+< #line 284
+---
+> #line 282
+4201c4147
+< #line 285
+---
+> #line 283
+4205c4151
+< #line 288 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 286 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4212c4158
+< #line 291
+---
+> #line 289
+4214c4160
+< #line 292
+---
+> #line 290
+4216c4162
+< #line 293
+---
+> #line 291
+4218c4164
+< #line 294
+---
+> #line 292
+4223c4169
+< #line 295
+---
+> #line 293
+4225c4171
+< #line 296
+---
+> #line 294
+4227c4173
+< #line 297
+---
+> #line 295
+4232c4178
+< #line 298
+---
+> #line 296
+4236c4182
+< #line 301 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 299 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4242c4188
+< #line 303
+---
+> #line 301
+4244c4190
+< #line 304
+---
+> #line 302
+4246c4192
+< #line 305
+---
+> #line 303
+4248c4194
+< #line 306
+---
+> #line 304
+4252c4198
+< #line 309 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 307 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4258c4204
+< #line 311
+---
+> #line 309
+4260c4206
+< #line 312
+---
+> #line 310
+4262c4208
+< #line 313
+---
+> #line 311
+4266c4212
+< #line 316 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 314 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4268c4214
+< #line 316
+---
+> #line 314
+4273c4219
+< #line 331 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 329 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4285c4231
+< #line 333
+---
+> #line 331
+4287c4233
+< #line 334
+---
+> #line 332
+4289c4235
+< #line 336
+---
+> #line 334
+4291c4237
+< #line 336
+---
+> #line 334
+4293c4239
+< #line 337
+---
+> #line 335
+4295c4241
+< #line 338
+---
+> #line 336
+4300c4246
+< #line 340
+---
+> #line 338
+4302c4248
+< #line 341
+---
+> #line 339
+4304c4250
+< #line 342
+---
+> #line 340
+4306c4252
+< #line 344
+---
+> #line 342
+4308c4254
+< #line 344
+---
+> #line 342
+4310c4256
+< #line 345
+---
+> #line 343
+4312c4258
+< #line 346
+---
+> #line 344
+4317c4263
+< #line 348
+---
+> #line 346
+4319c4265
+< #line 349
+---
+> #line 347
+4321c4267
+< #line 350
+---
+> #line 348
+4326c4272
+< #line 352
+---
+> #line 350
+4328c4274
+< #line 353
+---
+> #line 351
+4330c4276
+< #line 353
+---
+> #line 351
+4332c4278
+< #line 353
+---
+> #line 351
+4336c4282
+< #line 353
+---
+> #line 351
+4340c4286
+< #line 355
+---
+> #line 353
+4342c4288
+< #line 356
+---
+> #line 354
+4344c4290
+< #line 357
+---
+> #line 355
+4348c4294
+< #line 381
+---
+> #line 379
+4350c4296
+< #line 390
+---
+> #line 388
+4352c4298
+< #line 393
+---
+> #line 391
+4354c4300
+< #line 396
+---
+> #line 394
+4356c4302
+< #line 399 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 397 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4358c4304
+< #line 402 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+---
+> #line 400 "/work/ldvuser/novikov/work/current--X--drivers/media/common/tuners/mt2266.ko--X--defaultlinux--X--08_1a--X--cpachecker/linux/csd_deg_dscv/11/dscv_tempdir/dscv/ri/08_1a/drivers/media/common/tuners/mt2266.c.prepared"
+4369c4315
+< #line 516
+---
+> #line 514
+4371c4317
+< #line 506
+---
+> #line 504
+4373c4319
+< #line 515
+---
+> #line 513
+4375,4378c4321,4324
+< #line 520
+<   goto ldv_22959;
+<   ldv_22958: 
+< #line 524
+---
+> #line 518
+>   goto ldv_22954;
+>   ldv_22953: 
+> #line 522
+4380c4326
+< #line 524
+---
+> #line 522
+4383c4329
+< #line 529
+---
+> #line 527
+4385c4331
+< #line 546
+---
+> #line 544
+4387c4333
+< #line 547
+---
+> #line 545
+4389c4335
+< #line 548
+---
+> #line 546
+4394,4395c4340,4341
+< #line 554
+<   goto ldv_22951;
+---
+> #line 552
+>   goto ldv_22946;
+4397c4343
+< #line 575
+---
+> #line 573
+4399c4345
+< #line 576
+---
+> #line 574
+4401,4402c4347,4348
+< #line 583
+<   goto ldv_22951;
+---
+> #line 581
+>   goto ldv_22946;
+4404c4350
+< #line 604
+---
+> #line 602
+4406c4352
+< #line 605
+---
+> #line 603
+4408,4409c4354,4355
+< #line 612
+<   goto ldv_22951;
+---
+> #line 610
+>   goto ldv_22946;
+4411c4357
+< #line 633
+---
+> #line 631
+4413c4359
+< #line 634
+---
+> #line 632
+4415,4416c4361,4362
+< #line 641
+<   goto ldv_22951;
+---
+> #line 639
+>   goto ldv_22946;
+4418c4364
+< #line 662
+---
+> #line 660
+4420c4366
+< #line 663
+---
+> #line 661
+4422,4423c4368,4369
+< #line 670
+<   goto ldv_22951;
+---
+> #line 668
+>   goto ldv_22946;
+4425c4371
+< #line 691
+---
+> #line 689
+4427c4373
+< #line 692
+---
+> #line 690
+4429,4430c4375,4376
+< #line 699
+<   goto ldv_22951;
+---
+> #line 697
+>   goto ldv_22946;
+4432,4433c4378,4379
+< #line 700
+<   goto ldv_22951;
+---
+> #line 698
+>   goto ldv_22946;
+4435,4437c4381,4383
+<   ldv_22951: ;
+<   ldv_22959: 
+< #line 520
+---
+>   ldv_22946: ;
+>   ldv_22954: 
+> #line 518
+4439c4385
+< #line 520
+---
+> #line 518
+4441,4442c4387,4388
+< #line 522
+<     goto ldv_22958;
+---
+> #line 520
+>     goto ldv_22953;
+4448c4394
+< #line 709
+---
+> #line 707
+4450c4396
+< #line 712
+---
+> #line 710
