@@ -2,8 +2,8 @@
 require 'fileutils'
 Dir.chdir(File.dirname(__FILE__))
 goblint = File.expand_path("../analyzer/goblint")
-goblint_conf = File.expand_path("../analyzer/conf/traces.json")
-compare = File.expand_path("../analyzer/privPrecCompare")
+goblint_conf = File.expand_path("../analyzer/conf/traces-rel.json")
+compare = File.expand_path("../analyzer/apronPrecCompare")
 fail "Please run script from goblint dir!" unless File.exist?(goblint)
 $vrsn = `#{goblint} --version`
 results = "bench_result"
@@ -63,6 +63,11 @@ $header = <<END
 END
 $theresultfile = File.join($testresults, "index.html")
 
+
+def outfile_name (p,aname)
+  File.basename(File.dirname(p)) + "_" + File.basename(p,".c") + ".#{aname}.txt"
+end
+
 def print_res (i)
   File.open($theresultfile, "w") do |f|
     f.puts "<html>"
@@ -71,6 +76,7 @@ def print_res (i)
     f.puts "<p>Benchmarking in progress: #{i}/#{$projects.length} <progress value=\"#{i}\" max=\"#{$projects.length}\" /></p>" unless i.nil?
     f.puts "<table border=2 cellpadding=4 style=\"font-size: 90%\">"
     gname = ""
+    total_assert_count = 0
     $projects.each do |p|
       if p.group != gname then
         gname = p.group
@@ -90,7 +96,7 @@ def print_res (i)
       f.puts p.to_html
       $analyses.each do |a|
         aname = a[0]
-        outfile = File.basename(p.path,".c") + ".#{aname}.txt"
+        outfile = outfile_name(p.path,aname)
         if File.exists?($testresults + outfile) then
           File.open($testresults + outfile, "r") do |g|
             lines = g.readlines
@@ -101,19 +107,52 @@ def print_res (i)
             live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
             dead = lines.grep(/Found dead code on ([0-9]*) line/) { |x| $1.to_i } .first
             total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
-            res = lines.grep(/^TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
+            threads = lines.grep(/Encountered number of thread IDs \(unique\): ([0-9]*) /) { |x| $1.to_i } .first
+            uniques =  lines.grep(/Encountered number of thread IDs \(unique\): [0-9]* \(([0-9]*)\)/) { |x| $1.to_i } .first
+            mpr_r = lines.grep(/Max number of protected: ([0-9]*)/) { |x| $1.to_i }
+            if mpr_r.length == 0 then
+              max_protected = 0
+            else
+              max_protected = mpr_r.first
+            end
+            spr_r = lines.grep(/Sum protected: ([0-9]*)/) { |x| $1.to_i }
+            if spr_r.length == 0 then
+              sum_protected = 0
+            else
+              sum_protected = spr_r.first
+            end
+            mtx_r = lines.grep(/Num mutexes: ([0-9]*)/) { |x| $1.to_i }
+            if mtx_r.length == 0 then
+              mutexes = 0
+              avg_protected = 0
+            else
+              mutexes = mtx_r.first
+              if mutexes > 0 then
+                avg_protected = sum_protected / mutexes
+              else
+                avg_protected = 0
+              end
+            end
+            success = lines.grep(/\[Success\]\[Assert\]/).size
+            unknown = lines.grep(/\[Warning\]\[Assert\]/).size
+            error = lines.grep(/\[Error\]\[Assert\]/).size
+
+            res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
-              cod = lines.grep(/^EXITCODE\s*(.*)$/) { |x| $1 }
+              cod = lines.grep(/EXITCODE\s*(.*)$/) { |x| $1 }
               if cod == [] and not dur == [] then
                 # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
                 thenumbers = ""
-                thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
-                thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
-                thenumbers << "<b title=\"live lines\">#{live}</b>="
-                thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
+                # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
+                # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
+                # thenumbers << "<b title=\"live lines\">#{live}</b>="
+                thenumbers << "<span title=\"total (logical) lines\">#{total}</span>;"
+                thenumbers << "<font color=\"green\" title=\"success\">#{success}</font>;"
+                thenumbers << "<font color=\"orange\" title=\"unknown\">#{unknown}</font>;"
+                thenumbers << "<font color=\"red\" title=\"error\">#{error}</font>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
@@ -128,12 +167,15 @@ def print_res (i)
       end
       comparefile = File.basename(p.path,".c") + ".compare.txt"
       f.puts "<td><a href=\"#{comparefile}\">compare</a></td>"
+      gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
+      f.puts "</tr>"
       f.puts "</tr>"
     end
     f.puts "</table>"
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
     f.puts "#{$vrsn}"
+    f.puts "Total number of asserts in benchmark files: #{total_assert_count}"
     f.puts "</p>"
     f.puts "</body>"
     f.puts "</html>"
@@ -155,9 +197,19 @@ end
 skipgrp = []
 file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-File.symlink("index/traces.txt",file) unless FileTest.exists? file
+if FileTest.exists? file then
+  File.delete(file)
+end
+File.symlink("index/traces-rel-ratcop.txt",file)
 
-FileUtils.cp(file,File.join($testresults, "bench.txt"))
+# FileUtils.cp(file,File.join($testresults, "bench.txt"))
+# File.open(file, "r") do |f|
+#   id = 0
+#   while line = f.gets
+#       print line
+#   end
+# end
+
 
 $analyses = []
 File.open(file, "r") do |f|
@@ -239,7 +291,7 @@ $projects.each do |p|
   dirname = File.dirname(filepath)
   filename = File.basename(filepath)
   Dir.chdir(dirname)
-  outfiles = $testresults + File.basename(filename,".c") + ".*"
+  outfiles = $testresults + File.basename(dirname) + ".*"
   `rm -f #{outfiles}`
   if p.url == "generate!" then
     system(highlighter.call(p.path, $testresults + p.name + ".html"))
@@ -252,11 +304,11 @@ $projects.each do |p|
     aparam = a[1]
     print "  #{format("%*s", -maxlen, aname)}"
     STDOUT.flush
-    outfile = $testresults + File.basename(filename,".c") + ".#{aname}.txt"
-    precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
+    outfile = $testresults + outfile_name(p.path, aname)
+    precfile = $testresults + outfile_name(p.path, aname) + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -277,6 +329,9 @@ $projects.each do |p|
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
+      # Run again to get precision dump
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
+      system(cmd)
       puts "-- Done!"
       precfiles << precfile
     end

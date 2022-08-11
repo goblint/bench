@@ -293,7 +293,7 @@ $projects.each do |p|
     yamlfile = File.join(File.dirname(filename), File.basename(filename, File.extname(filename))) + "_traces_rel.yml"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --set witness.yaml.validate #{yamlfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v --set witness.yaml.validate #{yamlfile} 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -315,7 +315,7 @@ $projects.each do |p|
       end
     else
       # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
       # system(cmd)
       puts "-- Done!"
       precfiles << precfile

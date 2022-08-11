@@ -242,7 +242,7 @@ $projects.each do |p|
     outfile = $testresults + File.basename(filename,".c") + ".#{aname}.txt"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
