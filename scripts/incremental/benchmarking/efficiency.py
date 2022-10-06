@@ -26,8 +26,8 @@ maxCLOC       = 50 # can be deactivated with None
 url           = "https://github.com/sqlite/sqlite"
 repo_name     = "sqlite"
 build_compdb  = "../build/build_compdb_sqlite.sh"
-conf_base     = os.path.join("examples", "large-program") # very minimal: "zstd-minimal"
-conf_incrpost = os.path.join("examples", "large-program") #TODO: Use incremental postprocessing
+conf_base     = os.path.join("custom", "sqlite-minimal") # very minimal: "zstd-minimal"
+conf_incrpost = os.path.join("custom", "sqlite-minimal") #TODO: Use incremental postprocessing
 begin         = datetime(2021,8,1)
 to            = datetime(2021,8,10) # minimal subset: datetime(2021,8,4)
 diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"]
@@ -102,7 +102,7 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
 
             pseudo_repo_path = ""
 
-            options = sqlite_files + ['-v', '--set', 'pre.cppflags[+]', '-DSQLITE_DEBUG', '--disable', 'ana.base.context.non-ptr', '--disable', 'ana.int.def_exc', '--disable', 'sem.unknown_function.spawn', '--set', 'ana.thread.domain', 'plain', '--enable', 'exp.earlyglobs', '--set', 'ana.base.privatization', 'none', '--set', 'pre.cppflags[+]', '-DGOBLINT_NO_BSEARCH', '--set', 'pre.cppflags[+]', '-DGOBLINT_NO_ASSERT', '--set', 'result', 'json-messages', '--set', 'ana.activated', '[\"base\",\"mallocWrapper\"]', '--set', 'ana.ctx_insens[+]', 'base', '--set', 'ana.ctx_insens[+]', 'mallocWrapper']
+            options = sqlite_files + ['-v']
             add_options = options + ['--disable', 'incremental.load', '--enable', 'incremental.save']
             utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, parent.hash, outparent, conf_base, add_options)
 
