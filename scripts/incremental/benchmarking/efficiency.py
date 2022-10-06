@@ -29,7 +29,7 @@ if len(sys.argv) != 4:
 # Load some project dependent settings:
 project = projects.projects.get(sys.argv[2])
 if project == None:
-    print("Given Project " + project + " is not one of the supported projects. Add a new project by modifying projects.py.")
+    print("Given Project  \"" + sys.argv[2] + "\" is not one of the supported projects. Add a new project by modifying projects.py.\n" + usage)
     exit()
 
 url = project.url
