@@ -9,9 +9,9 @@ class ProjectConfig:
     conf_incrpost: str
     begin: datetime.datetime
     to: datetime.datetime
-    diff_exclude: list[str]
+    diff_exclude: list # list[str]
     '''Files to analyze. If this list is not empty, the given files will be analyzed (not those in the compiledb)'''
-    files: list[str]
+    files: list # list[str]
 
     def __init__(self, url, repo_name, build_compdb, conf_base, conf_incrpost, begin, to, diff_exclude, files):
         self.url = url
