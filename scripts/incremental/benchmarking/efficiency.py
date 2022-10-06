@@ -11,6 +11,9 @@ from datetime import datetime
 import sys
 import pandas as pd
 
+# Some basic settings for the different projects (currently zstd, sqlite)
+import projects
+
 ################################################################################
 # Usage: python3 incremental_smallcommits.py <full_path_analyzer_dir> <number_of_cores>
 # Executing the script will overwrite the directory 'result_efficiency' in the cwd.
@@ -18,26 +21,37 @@ import pandas as pd
 # config file is assumed to be found in the conf directory of the analyzers repository.
 # The single test runs are mapped to processors according to the coremapping. The one specified in the section below
 # should work for Intel machines, otherwise you might need to adapt it according to the description.
-if len(sys.argv) != 3:
-      print("Wrong number of parameters.\nUse script like this: python3 parallel_benchmarking.py <path to goblint directory> <number of processes>")
-      exit()
+usage = "Use script like this: python3 parallel_benchmarking.py <path to goblint directory> <project-name> <number of processes>"
+if len(sys.argv) != 4:
+    print("Wrong number of parameters.\n" + usage)
+    exit()
+
+# Load some project dependent settings:
+project = projects.projects.get(sys.argv[2])
+if project == None:
+    print("Given Project " + project + " is not one of the supported projects. Add a new project by modifying projects.py.")
+    exit()
+
+url = project.url
+repo_name = project.repo_name
+build_compdb = project.build_compdb
+conf_base = project.conf_base
+conf_incrpost = project.conf_incrpost
+begin = project.begin
+to = project.to
+files = project.files
+
+# Project independent settings
+diff_exclude = project.diff_exclude
 result_dir    = os.path.join(os.getcwd(), 'result_efficiency')
 maxCLOC       = 50 # can be deactivated with None
-url           = "https://github.com/sqlite/sqlite"
-repo_name     = "sqlite"
-build_compdb  = "../build/build_compdb_sqlite.sh"
-conf_base     = os.path.join("custom", "sqlite-minimal") # very minimal: "zstd-minimal"
-conf_incrpost = os.path.join("custom", "sqlite-minimal") #TODO: Use incremental postprocessing
-begin         = datetime(2021,8,1)
-to            = datetime(2021,8,10) # minimal subset: datetime(2021,8,4)
-diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"]
 analyzer_dir  = sys.argv[1]
 only_collect_results = False # can be turned on to collect results, if data collection was aborted before the creation of result tables
 ################################################################################
 try:
-    numcores = int(sys.argv[2])
+    numcores = int(sys.argv[3])
 except ValueError:
-    print("Parameter should be a number.\nUse script like this: python3 parallel_benchmarking.py <absolute path to goblint directory> <number of processes>")
+    print("Parameter should be a number.\nUse script like this:" + usage)
     exit()
 avail_phys_cores = psutil.cpu_count(logical=False)
 allowedcores = avail_phys_cores - 1
@@ -65,6 +79,17 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
     count_failed = 0
     analyzed_commits = {}
     repo_path = os.path.join(cwd, repo_name)
+
+    options = []
+    if files == [] or files == None:
+        # If no list of files is given for the project, we analyze the repo using compiledb. For that, we pass the repo_path to goblint.
+        repo_path_goblint = repo_path
+    else:
+        def append_to_repo_path(file):
+            return os.path.join(repo_path, file)
+        # A list of files is given for the project. Pass these to goblint, but not the repo_path.
+        repo_path_goblint = ""
+        options = list(map(append_to_repo_path, files))
 
     for commit in itertools.islice(itertools.filterfalse(filter_commits_false_pred(repo_path), Repository(url, since=begin, to=to, only_no_merge=True, clone_repo_to=cwd).traverse_commits()), from_c, to_c):
         gr = Git(repo_path)
@@ -94,35 +119,26 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
             outparent = os.path.join(outtry, 'parent')
             os.makedirs(outparent)
 
-            def append_to_repo_path(file):
-                return os.path.join(repo_path, file)
-
-            sqlite_files = ['sqlite3.c', 'sqlite3.h', 'sqlite3ext.h', 'shell.c']
-            sqlite_files = list(map(append_to_repo_path, sqlite_files))
-
-            pseudo_repo_path = ""
-
-            options = sqlite_files + ['-v']
             add_options = options + ['--disable', 'incremental.load', '--enable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, parent.hash, outparent, conf_base, add_options)
+            utils.analyze_commit(analyzer_dir, gr, repo_path_goblint, build_compdb, parent.hash, outparent, conf_base, add_options)
 
             #print('And now analyze', str(commit.hash), 'incrementally.')
             outchild = os.path.join(outtry, 'child')
             os.makedirs(outchild)
             add_options = options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchild, conf_base, add_options)
+            utils.analyze_commit(analyzer_dir, gr, repo_path_goblint, build_compdb, commit.hash, outchild, conf_base, add_options)
 
             #print('And again incremental, this time with incremental postsolver')
             outchildincrpost = os.path.join(outtry, 'child-incr-post')
             os.makedirs(outchildincrpost)
             add_options = options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options)
+            utils.analyze_commit(analyzer_dir, gr, repo_path_goblint, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options)
 
             #print('And again incremental, this time with incremental postsolver and reluctant')
             outchildrel = os.path.join(outtry, 'child-rel')
             os.makedirs(outchildrel)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
-            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options)
+            add_options = options + ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
+            utils.analyze_commit(analyzer_dir, gr, repo_path_goblint, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options)
 
             count_analyzed+=1
             failed = False
