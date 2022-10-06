@@ -62,13 +62,13 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
         subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
 
-    files = []
-    if files != [] and files != None:
+    file_list = []
+    if files:
         def append_to_repo_path(file):
             return os.path.join(repo_path, file)
-        files = list(map(append_to_repo_path, files))
+        file_list = list(map(append_to_repo_path, files))
 
-    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *files, *extra_options]
+    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *file_list, *extra_options]
 
     # If the list of files was empty, we pass the repo_path to goblint
     if not files:
