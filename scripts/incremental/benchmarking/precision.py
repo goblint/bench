@@ -9,30 +9,44 @@ import shutil
 import pytz
 import multiprocessing as mp
 
+# Some basic settings for the different projects (currently zstd, sqlite)
+import projects
 
 ################################################################################
 # Usage: python3 incremental_smallcommits.py <full_path_analyzer_dir> <number_of_cores>
 # Executing the script will overwrite the directory 'result_precision' in the cwd.
 # The script for building the compilation database is assumed to be found in the analyzers script directory and the
 # config file is assumed to be found in the conf directory of the analyzers repository.
-if len(sys.argv) != 3:
-      print("Wrong number of parameters.\nUse script like this: python3 parallel_benchmarking.py <absolute path to goblint directory> <number of processes>")
+usage = "Use script like this: python3 precision.py <absolute path to goblint directory> <project> <number of processes>"
+if len(sys.argv) != 4:
+      print("Wrong number of parameters.\n" + usage)
       exit()
-res_dir = os.path.abspath('result_precision')
-maxCLOC       = None
-url           = "https://github.com/facebook/zstd"
-repo_name     = "zstd"
-build_compdb  = "build_compdb_zstd.sh"
-conf          = "zstd-race-incrpostsolver"
-begin         = datetime(2021,8,1)
-to            = datetime(2022,2,1)
-diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"]
-analyzer_dir  = sys.argv[1]
-try:
-    numcores = int(sys.argv[2])
-except ValueError:
-    print("Parameter should be a number.\nUse script like this: python3 parallel_benchmarking.py <path to goblint directory> <number of processes>")
+
+# Load some project dependent settings:
+project = projects.projects.get(sys.argv[2])
+if project == None:
+    print("Given Project " + project + " is not one of the supported projects. Add a new project by modifying projects.py.")
     exit()
+
+url = project.url
+repo_name = project.repo_name
+build_compdb = project.build_compdb
+conf = project.conf_base
+begin = project.begin
+to = project.to
+diff_exclude = project.diff_exclude
+files = project.files
+
+try:
+    numcores = int(sys.argv[3])
+except ValueError:
+    print("Parameter should be a number.\n" + usage)
+    exit()
+
+# Project independent settings
+analyzer_dir = sys.argv[1]
+res_dir = os.path.abspath('result_precision')
+maxCLOC = None
 only_collect_results = False # can be turned on to collect results, if data collection was aborted before the creation of result tables
 ################################################################################
 
@@ -127,7 +141,7 @@ def analyze_series_in_repo(series):
             try:
                 # print('Analyze ', str(commit.hash), ' as initial commit.')
                 add_options = ['--disable', 'incremental.load', '--enable', 'incremental.save']
-                utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_commit, conf, add_options)
+                utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_commit, conf, add_options, files)
                 prev_commit = commit.hash
             except utils.subprocess.CalledProcessError as e:
                 print('Aborted initial because command ', e.cmd, 'failed.')
@@ -148,7 +162,7 @@ def analyze_series_in_repo(series):
                     os.makedirs(out_nonincr)
                     file_original_run = os.path.join(out_nonincr, "compare-data-nonincr")
                     add_options = ['--enable', 'incremental.only-rename', '--set', 'save_run', file_original_run]
-                    utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_nonincr, conf, add_options)
+                    utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_nonincr, conf, add_options, files)
 
                 # analyze commit incrementally based on the previous commit and save run for comparison
                 # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
@@ -156,7 +170,7 @@ def analyze_series_in_repo(series):
                 os.makedirs(out_incr)
                 file_incremental_run = os.path.join(out_incr, "compare-data-incr")
                 add_options = ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', 'incremental.reluctant.enabled', '--set', 'save_run', file_incremental_run]
-                utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options)
+                utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
 
                 if commit_num in compare_commits or commit_num == len(series) - 1:
                     # compare stored data of original and incremental run

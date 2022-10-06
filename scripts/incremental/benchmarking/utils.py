@@ -40,7 +40,8 @@ def reset_incremental_data(incr_data_dir):
     if os.path.exists(incr_data_dir) and os.path.isdir(incr_data_dir):
         shutil.rmtree(incr_data_dir)
 
-def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash, outdir, conf, extra_options):
+def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash, outdir, conf, extra_options, files):
+
     gr.checkout(commit_hash)
     conf_path = os.path.join(analyzer_dir, 'conf', conf + '.json')
 
@@ -61,9 +62,16 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
         subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
 
-    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *extra_options]
+    files = []
+    if files != [] and files != None:
+        def append_to_repo_path(file):
+            return os.path.join(repo_path, file)
+        files = list(map(append_to_repo_path, files))
 
-    if (repo_path != ""):
+    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *files, *extra_options]
+
+    # If the list of files was empty, we pass the repo_path to goblint
+    if not files:
         analyze_command.append(repo_path)
 
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:

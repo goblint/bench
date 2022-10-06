@@ -35,7 +35,7 @@ zstd = ProjectConfig(
     conf_base     = os.path.join("custom", "zstd-race-baseline"), # very minimal: "zstd-minimal"
     conf_incrpost = os.path.join("custom", "zstd-race-incrpostsolver"),
     begin         = datetime.datetime(2021,8,1), # very minimal: "zstd-minimal"
-    to            = datetime.datetime(2021,8,10), # minimal subset: datetime(2021,8,4)
+    to            = datetime.datetime(2021,10,10), # minimal subset: datetime(2021,8,4)
     diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"],
     files = None
 )
