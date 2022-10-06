@@ -1,9 +1,6 @@
 import os
 import datetime
 
-from dataclasses import dataclass
-
-@dataclass
 class ProjectConfig:
     url: str
     repo_name: str
@@ -15,6 +12,17 @@ class ProjectConfig:
     diff_exclude: list[str]
     '''Files to analyze. If this list is not empty, the given files will be analyzed (not those in the compiledb)'''
     files: list[str]
+
+    def __init__(self, url, repo_name, build_compdb, conf_base, conf_incrpost, begin, to, diff_exclude, files):
+        self.url = url
+        self.repo_name = repo_name
+        self.build_compdb = build_compdb
+        self.conf_base = conf_base
+        self.conf_incrpost = conf_incrpost
+        self.begin = begin
+        self.to = to
+        self.diff_exclude = diff_exclude
+        self.files = files
 
 sqlite = ProjectConfig(
     url           = "https://github.com/sqlite/sqlite",
