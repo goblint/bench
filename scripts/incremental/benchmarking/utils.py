@@ -54,12 +54,18 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
                 file.write(o + " ")
             file.close()
 
-    prepare_command = ['sh', os.path.join(analyzer_dir, 'scripts', build_compdb)]
+    script_path = os.path.abspath(os.path.dirname(__file__))
+
+    prepare_command = ['sh', os.path.join(script_path, build_compdb)]
     with open(os.path.join(outdir, preparelog), "w+") as outfile:
         subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
 
-    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *extra_options, repo_path]
+    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *extra_options]
+
+    if (repo_path != ""):
+        analyze_command.append(repo_path)
+
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()

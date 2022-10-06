@@ -23,13 +23,13 @@ if len(sys.argv) != 3:
       exit()
 result_dir    = os.path.join(os.getcwd(), 'result_efficiency')
 maxCLOC       = 50 # can be deactivated with None
-url           = "https://github.com/facebook/zstd"
-repo_name     = "zstd"
-build_compdb  = "build_compdb_zstd.sh"
-conf_base     = "zstd-race-baseline" # very minimal: "zstd-minimal"
-conf_incrpost = "zstd-race-incrpostsolver"
+url           = "https://github.com/sqlite/sqlite"
+repo_name     = "sqlite"
+build_compdb  = "../build/build_compdb_sqlite.sh"
+conf_base     = "large-program" # very minimal: "zstd-minimal"
+conf_incrpost = "large-program" #TODO: Use incremental postprocessing
 begin         = datetime(2021,8,1)
-to            = datetime(2022,2,1) # minimal subset: datetime(2021,8,4)
+to            = datetime(2021,8,10) # minimal subset: datetime(2021,8,4)
 diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"]
 analyzer_dir  = sys.argv[1]
 only_collect_results = False # can be turned on to collect results, if data collection was aborted before the creation of result tables
@@ -93,26 +93,36 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
             #print('Starting from parent', str(parent.hash), ".")
             outparent = os.path.join(outtry, 'parent')
             os.makedirs(outparent)
-            add_options = ['--disable', 'incremental.load', '--enable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, parent.hash, outparent, conf_base, add_options)
+
+            def append_to_repo_path(file):
+                return os.path.join(repo_path, file)
+
+            sqlite_files = ['sqlite3.c', 'sqlite3.h', 'sqlite3ext.h', 'shell.c']
+            sqlite_files = list(map(append_to_repo_path, sqlite_files))
+
+            pseudo_repo_path = ""
+
+            options = sqlite_files + ['-v', '--set', 'pre.cppflags[+]', '-DSQLITE_DEBUG', '--disable', 'ana.base.context.non-ptr', '--disable', 'ana.int.def_exc', '--disable', 'sem.unknown_function.spawn', '--set', 'ana.thread.domain', 'plain', '--enable', 'exp.earlyglobs', '--set', 'ana.base.privatization', 'none', '--set', 'pre.cppflags[+]', '-DGOBLINT_NO_BSEARCH', '--set', 'pre.cppflags[+]', '-DGOBLINT_NO_ASSERT', '--set', 'result', 'json-messages', '--set', 'ana.activated', '[\"base\",\"mallocWrapper\"]', '--set', 'ana.ctx_insens[+]', 'base', '--set', 'ana.ctx_insens[+]', 'mallocWrapper']
+            add_options = options + ['--disable', 'incremental.load', '--enable', 'incremental.save']
+            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, parent.hash, outparent, conf_base, add_options)
 
             #print('And now analyze', str(commit.hash), 'incrementally.')
             outchild = os.path.join(outtry, 'child')
             os.makedirs(outchild)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild, conf_base, add_options)
+            add_options = options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
+            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchild, conf_base, add_options)
 
             #print('And again incremental, this time with incremental postsolver')
             outchildincrpost = os.path.join(outtry, 'child-incr-post')
             os.makedirs(outchildincrpost)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options)
+            add_options = options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
+            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options)
 
             #print('And again incremental, this time with incremental postsolver and reluctant')
             outchildrel = os.path.join(outtry, 'child-rel')
             os.makedirs(outchildrel)
             add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options)
+            utils.analyze_commit(analyzer_dir, gr, pseudo_repo_path, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options)
 
             count_analyzed+=1
             failed = False
