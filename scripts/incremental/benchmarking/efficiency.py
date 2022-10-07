@@ -108,25 +108,27 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
             outparent = os.path.join(outtry, 'parent')
             os.makedirs(outparent)
 
-            add_options = ['--disable', 'incremental.load', '--enable', 'incremental.save']
+            default_options = ['-v']
+
+            add_options = default_options + ['--disable', 'incremental.load', '--enable', 'incremental.save']
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, parent.hash, outparent, conf_base, add_options, files)
 
             #print('And now analyze', str(commit.hash), 'incrementally.')
             outchild = os.path.join(outtry, 'child')
             os.makedirs(outchild)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save']
+            add_options = default_options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild, conf_base, add_options, files)
 
             #print('And again incremental, this time with incremental postsolver')
             outchildincrpost = os.path.join(outtry, 'child-incr-post')
             os.makedirs(outchildincrpost)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save']
+            add_options = default_options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options, files)
 
             #print('And again incremental, this time with incremental postsolver and reluctant')
             outchildrel = os.path.join(outtry, 'child-rel')
             os.makedirs(outchildrel)
-            add_options = ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
+            add_options = default_options + ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options, files)
 
             count_analyzed+=1
