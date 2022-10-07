@@ -45,23 +45,7 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
     gr.checkout(commit_hash)
     conf_path = os.path.join(analyzer_dir, 'conf', conf + '.json')
 
-    # print configuration
-    with open(outdir+'/config.out', "a+") as file:
-        with open(conf_path, "r") as c:
-            file.write("config: " + c.read())
-            file.write("\n")
-            file.write("added options:\n")
-            for o in extra_options:
-                file.write(o + " ")
-            file.close()
-
-    script_path = os.path.abspath(os.path.dirname(__file__))
-
-    prepare_command = ['sh', os.path.join(script_path, build_compdb)]
-    with open(os.path.join(outdir, preparelog), "w+") as outfile:
-        subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
-        outfile.close()
-
+    # Creat the analyze command
     file_list = []
     if files:
         def append_to_repo_path(file):
@@ -69,11 +53,37 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
         file_list = list(map(append_to_repo_path, files))
 
     analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *file_list, *extra_options]
-
     # If the list of files was empty, we pass the repo_path to goblint
     if not files:
         analyze_command.append(repo_path)
 
+    # print configuration and analyze command
+    with open(outdir+'/config.out', "a+") as file:
+        with open(conf_path, "r") as c:
+            file.write("config: " + c.read())
+            file.write("\n")
+            file.write("added options:\n")
+            for o in extra_options:
+                file.write(o + " ")
+            file.write("\n\n")
+
+            file.write("analyze command:\n")
+            for c in analyze_command:
+                file.write(c + " ")
+            file.write("\n\n")
+
+            file.write("Commit hash:\n" + commit_hash + "\n")
+            file.close()
+
+    script_path = os.path.abspath(os.path.dirname(__file__))
+
+    # Prepare the repo
+    prepare_command = ['sh', os.path.join(script_path, build_compdb)]
+    with open(os.path.join(outdir, preparelog), "w+") as outfile:
+        subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
+        outfile.close()
+
+    # Run the analysis
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
