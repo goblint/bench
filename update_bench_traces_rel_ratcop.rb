@@ -103,25 +103,25 @@ def print_res (i)
             # safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             # vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             # unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-            uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-            live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
-            dead = lines.grep(/Found dead code on ([0-9]*) line/) { |x| $1.to_i } .first
-            total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
+            uncalled = lines.grep(/is uncalled/).reject {|x| x =~ /__check/}.size
+            live = lines.grep(/live:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            dead = lines.grep(/dead:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            total = live.nil? || dead.nil? ? nil : live + dead
             threads = lines.grep(/Encountered number of thread IDs \(unique\): ([0-9]*) /) { |x| $1.to_i } .first
             uniques =  lines.grep(/Encountered number of thread IDs \(unique\): [0-9]* \(([0-9]*)\)/) { |x| $1.to_i } .first
-            mpr_r = lines.grep(/Max number of protected: ([0-9]*)/) { |x| $1.to_i }
+            mpr_r = lines.grep(/Max number variables of protected by a mutex: ([0-9]*)/) { |x| $1.to_i }
             if mpr_r.length == 0 then
               max_protected = 0
             else
               max_protected = mpr_r.first
             end
-            spr_r = lines.grep(/Sum protected: ([0-9]*)/) { |x| $1.to_i }
+            spr_r = lines.grep(/Total number of protected variables \(including duplicates\): ([0-9]*)/) { |x| $1.to_i }
             if spr_r.length == 0 then
               sum_protected = 0
             else
               sum_protected = spr_r.first
             end
-            mtx_r = lines.grep(/Num mutexes: ([0-9]*)/) { |x| $1.to_i }
+            mtx_r = lines.grep(/Number of mutexes: ([0-9]*)/) { |x| $1.to_i }
             if mtx_r.length == 0 then
               mutexes = 0
               avg_protected = 0
