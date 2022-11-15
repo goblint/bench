@@ -6,10 +6,25 @@ This contains the suite of benchmarks we currently use to evaluate Goblint. To r
 
 Execute the script `./update_bench.rb` and view the results in bench_result/index.html. The kernel benchmarks rely on linux headers in the analyzer's directory (installed by executing `make headers`). 
 
-The benchmarks descriptions are assumed to be in a file called `bench.txt`. If this is absent it is symlinked to `index/dd.txt`. The idea was that one should locally replace with a hard copy without modifying the default descriptions. 
+The benchmarks descriptions are assumed to be in a file called `bench.txt`. If this is absent it is symlinked to `index/dd.txt`. The idea was that one should locally replace with a hard copy without modifying the default descriptions.
 
+### traces
+Beforehand run in Goblint directory:
+```console
+make privPrecCompare
+```
+
+### traces_rel
+Beforehand run in Goblint directory:
+```console
+make apronPrecCompare
+```
 
 ## Incremental Benchmarks
+Beforehand run in Goblint directory:
+```console
+make messagesCompare
+```
 
 1. Create a setup definition, such as `index/defs/incremental.yaml`, to specify the different analyses and parameters to run. Do not add the incremental save and load commands since these are added by some ugly mechanisms.
 2. If necessary, edit the benchmark sets, such as `index/sets/posix.yaml`. 
