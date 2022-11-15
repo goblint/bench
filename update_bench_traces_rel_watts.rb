@@ -341,7 +341,7 @@ $projects.each do |p|
     else
       # Run again to get precision dump
       cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
-      system(cmd)
+      # system(cmd)
       puts "-- Done!"
       precfiles << precfile
     end
@@ -349,9 +349,9 @@ $projects.each do |p|
     proc_linux_res(outfile, p.url, filename)
   end
 
-  puts "Comparing..."
-  comparefile = $testresults + File.basename(filename,".c") + ".compare.txt"
-  system("#{compare} #{precfiles.join(" ")} 2>&1 1> #{comparefile}")
+  # puts "Comparing..."
+  # comparefile = $testresults + File.basename(filename,".c") + ".compare.txt"
+  # system("#{compare} #{precfiles.join(" ")} 2>&1 1> #{comparefile}")
 end
 print_res nil
 puts ("Results: " + $theresultfile)

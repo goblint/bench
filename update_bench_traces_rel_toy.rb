@@ -322,9 +322,9 @@ $projects.each do |p|
     proc_linux_res(outfile, p.url, filename)
   end
 
-  puts "Comparing..."
-  comparefile = $testresults + File.basename(filename,".c") + ".compare.txt"
-  system("#{compare} #{precfiles.join(" ")} 2>&1 1> #{comparefile}")
+  # puts "Comparing..."
+  # comparefile = $testresults + File.basename(filename,".c") + ".compare.txt"
+  # system("#{compare} #{precfiles.join(" ")} 2>&1 1> #{comparefile}")
 end
 print_res nil
 puts ("Results: " + $theresultfile)
