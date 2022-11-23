@@ -97,10 +97,10 @@ def print_res (i)
             # safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             # vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
             # unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-            uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
-            live = lines.grep(/Live lines: ([0-9]*)/) { |x| $1.to_i } .first
-            dead = lines.grep(/Found dead code on ([0-9]*) line/) { |x| $1.to_i } .first
-            total = lines.grep(/Total lines \(logical LoC\): ([0-9]*)/) { |x| $1.to_i } .first
+            uncalled = lines.grep(/is uncalled/).reject {|x| x =~ /__check/}.size
+            live = lines.grep(/live:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            dead = lines.grep(/dead:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+            total = live.nil? || dead.nil? ? nil : live + dead
             res = lines.grep(/^TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
               dur = lines.grep(/^Duration: (.*) s/) { |x| $1 }
@@ -256,7 +256,7 @@ $projects.each do |p|
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable printstats --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v --sets exp.priv-prec-dump #{precfile} 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
