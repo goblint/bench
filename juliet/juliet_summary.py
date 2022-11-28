@@ -6,7 +6,7 @@ import urllib.request
 import zipfile
 
 # Used to access Juliet Suite or to confirm its existence in the current dir
-juliet_url = 'https://samate.nist.gov/SRD/testsuites/juliet/Juliet_Test_Suite_v1.3_for_C_Cpp.zip'
+juliet_url = 'https://samate.nist.gov/SARD/downloads/test-suites/2017-10-01-juliet-test-suite-for-c-cplusplus-v1-3.zip'
 juliet_path = 'C/testcases'
 
 # Checking if the testcases path exists, if not the script will download the Juliet Suite
@@ -135,7 +135,7 @@ def files_output_to_HTML(testcases, filepath, html_table):
 # # # MAIN PROCEDURES # # #
 
 # Regex string that is used to confirm that vulnerabilities were detected
-v_detection = 'is dead!|Summary for all memory locations:'
+v_detection = 'is dead!|\[Warning\]\[Race\]'
 
 # Blanks for HTML content
 # '' - empty string for HTML table that will contain results from Goblint
