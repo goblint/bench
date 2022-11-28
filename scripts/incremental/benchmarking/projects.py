@@ -40,7 +40,7 @@ zstd = ProjectConfig(
     url           = "https://github.com/facebook/zstd",
     repo_name     = "zstd",
     build_compdb  = "../build/build_compdb_zstd.sh",
-    conf_base     = os.path.join("custom", "zstd-race-baseline"), # very minimal: "zstd-minimal"
+    conf_base     = os.path.join("custom", "zstd-race"), # very minimal: "zstd-minimal"
     conf_incrpost = os.path.join("custom", "zstd-race-incrpostsolver"),
     begin         = datetime.datetime(2021,8,1), # very minimal: "zstd-minimal"
     to            = datetime.datetime(2021,10,10), # minimal subset: datetime(2021,8,4)
@@ -48,4 +48,16 @@ zstd = ProjectConfig(
     files = None
 )
 
-projects = {"sqlite": sqlite, "zstd": zstd}
+figlet = ProjectConfig(
+    url           = "https://github.com/cmatsuoka/figlet",
+    repo_name     = "figlet",
+    build_compdb  = "../build/build_compdb_figlet.sh",
+    conf_base     = os.path.join("custom", "figlet"),
+    conf_incrpost = os.path.join("custom", "figlet-incrpostsolver"),
+    begin         = datetime.datetime(2010,1,1),
+    to            = datetime.datetime(2022,10,10),
+    diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"],
+    files = None
+)
+
+projects = {"sqlite": sqlite, "zstd": zstd, "figlet": figlet}
