@@ -61,15 +61,15 @@ figlet = ProjectConfig(
 )
 
 chrony = ProjectConfig(
-    url           = "https://git.tuxfamily.org/chrony/chrony.git",
-    repo_name     = "chrony",
-    build_compdb  = "../build/build_compdb_chrony.sh",
-    conf_base     = os.path.join("custom", "figlet"),
-    conf_incrpost = os.path.join("custom", "figlet-incrpostsolver"),
-    begin         = datetime.datetime(2010,1,1),
-    to            = datetime.datetime(2022,10,10),
-    diff_exclude  = [],
-    files = ['Makefile']
+    url="https://git.tuxfamily.org/chrony/chrony.git",
+    repo_name="chrony",
+    build_compdb="../build/build_compdb_chrony.sh",
+    conf_base=os.path.join("custom", "figlet"),
+    conf_incrpost=os.path.join("custom", "figlet-incrpostsolver"),
+    begin=datetime.datetime(2020, 1, 1),
+    to=datetime.datetime(2022, 10, 10),
+    diff_exclude=[],
+    files=None
 )
 
 projects = {"sqlite": sqlite, "chrony": chrony, "figlet": figlet, "zstd": zstd}
