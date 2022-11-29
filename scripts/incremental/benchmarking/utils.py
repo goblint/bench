@@ -78,10 +78,11 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
     script_path = os.path.abspath(os.path.dirname(__file__))
 
     # Prepare the repo
-    prepare_command = ['sh', os.path.join(script_path, build_compdb)]
-    with open(os.path.join(outdir, preparelog), "w+") as outfile:
-        subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
-        outfile.close()
+    if build_compdb != None:
+        prepare_command = ['sh', os.path.join(script_path, build_compdb)]
+        with open(os.path.join(outdir, preparelog), "w+") as outfile:
+            subprocess.run(prepare_command, cwd = gr.path, check=True, stdout=outfile, stderr=subprocess.STDOUT)
+            outfile.close()
 
     # Run the analysis
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:

@@ -51,13 +51,13 @@ zstd = ProjectConfig(
 figlet = ProjectConfig(
     url           = "https://github.com/cmatsuoka/figlet",
     repo_name     = "figlet",
-    build_compdb  = "../build/build_compdb_figlet.sh",
+    build_compdb  = None,
     conf_base     = os.path.join("custom", "figlet"),
     conf_incrpost = os.path.join("custom", "figlet-incrpostsolver"),
     begin         = datetime.datetime(2010,1,1),
     to            = datetime.datetime(2022,10,10),
-    diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"],
-    files = None
+    diff_exclude  = [],
+    files = ['Makefile']
 )
 
 projects = {"sqlite": sqlite, "zstd": zstd, "figlet": figlet}
