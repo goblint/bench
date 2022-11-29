@@ -122,7 +122,7 @@ def find_line(pattern, log):
         return None
 
 def extract_from_analyzer_log(log):
-    runtime_pattern = 'TOTAL[ ]+(?P<runtime>[0-9\.]+) s'
+    runtime_pattern = 'Default[ ]+(?P<runtime>[0-9\.]+)s'
     change_info_pattern = 'change_info = { unchanged = (?P<unchanged>[0-9]*); changed = (?P<changed>[0-9]*); added = (?P<added>[0-9]*); removed = (?P<removed>[0-9]*) }'
     r = find_line(runtime_pattern, log)
     ch = find_line(change_info_pattern, log) or {"unchanged": 0, "changed": 0, "added": 0, "removed": 0}
