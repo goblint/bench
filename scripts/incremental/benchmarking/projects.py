@@ -61,7 +61,9 @@ figlet = ProjectConfig(
 )
 
 chrony = ProjectConfig(
-    url="https://git.tuxfamily.org/chrony/chrony.git",
+    # Official repo is at https://git.tuxfamily.org/chrony/chrony.git,
+    # but does not allow multiple parallel clones. So use mirror on GitHub.
+    url="https://github.com/mlichvar/chrony.git",
     repo_name="chrony",
     build_compdb="../build/build_compdb_chrony.sh",
     conf_base=os.path.join("custom", "figlet"),
