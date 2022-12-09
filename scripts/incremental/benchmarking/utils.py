@@ -184,7 +184,7 @@ def create_cum_data(dataFrame, num_bins, relColumns):
         data = data + [cum]
     return data, base[:-1]
 
-def cummulative_distr_plot(data_sets, base, outfile, figsize=None, title=None, logscale=False):
+def cummulative_distr_plot(data_sets, base, figure_dir, outfile, figsize=None, title=None, logscale=False):
     if figsize:
         plt.figure(figsize=figsize)
     else:
@@ -204,6 +204,8 @@ def cummulative_distr_plot(data_sets, base, outfile, figsize=None, title=None, l
     plt.tight_layout()
     plt.legend()
     plt.title(title)
+
+    outfile = os.path.join(figure_dir, outfile)
     plt.savefig(outfile)
 
 def hist_plot(data, step, title, xlabel, ylabel, outfile, size, xlim_left=None, xlim_right=None, cutoffs=None):
