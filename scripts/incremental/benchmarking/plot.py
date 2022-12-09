@@ -30,7 +30,7 @@ def cummulative_distr_all3(results_dir, result_csv_filename, figure_dir):
     datanonincr = {"values": data[0], "label": "Non-incremental analysis of parent commit"}
     dataincr = {"values": data[1], "label": "Incremental analysis of commit"}
     datarelincr = {"values": data[2], "label": "Reluctant incremental analysis of commit"}
-    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
+    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=False)
 
 def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
@@ -132,19 +132,35 @@ def paper_precision_graph(results_precision, filename, outdir):
 
 
 # efficiency plots
-results_efficiency = "result_efficiency"
-outdir = "figures"
-if os.path.exists(outdir):
-    shutil.rmtree(outdir)
-os.mkdir(outdir)
-filename = "total_results.csv"
 
-# paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
+def main():
+    projects = ["figlet", "chrony", "zstd"]
+    results_efficiency = "result_efficiency_"
 
-cummulative_distr_compare2(results_efficiency, filename, outdir)
-cummulative_distr_all3(results_efficiency, filename, outdir)
+    for project in projects:
+        project_efficiency_results = results_efficiency + project
 
-# precision plot
-# results_precision = "result_precision"
-# filename = "results.json"
-# paper_precision_graph(results_precision, filename, outdir)
+        if not os.path.exists(project_efficiency_results):
+            print("Results for project " + project + " do not exist. Skipping.")
+            continue
+        else:
+            print("Creating plots for project " + project + ".")
+
+        outdir = os.path.join("figures", project)
+        if os.path.exists(outdir):
+            shutil.rmtree(outdir)
+        os.makedirs(outdir)
+        filename = "total_results.csv"
+
+        cummulative_distr_compare2(project_efficiency_results, filename, outdir)
+        cummulative_distr_all3(project_efficiency_results, filename, outdir)
+
+        # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
+
+
+        # precision plot
+        # results_precision = "result_precision"
+        # filename = "results.json"
+        # paper_precision_graph(results_precision, filename, outdir)
+
+main()
