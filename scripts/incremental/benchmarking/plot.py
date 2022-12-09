@@ -11,9 +11,8 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
     datanonincr = {"values": data[0], "label": "Non-incremental analysis of parent commit"}
     dataincr = {"values": data[1], "label": "Incremental analysis of commit"}
-    datarelincr = {"values": data[2], "label": "Reluctant incremental analysis of commit"}
 
-    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr)
+    utils.cummulative_distr_plot([datanonincr, dataincr], base, figure_dir, outfile_nonincr_vs_incr)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
     dataincr = {"values": data[0], "label": "Incremental analysis of commit"}
@@ -156,7 +155,6 @@ def main():
         cummulative_distr_all3(project_efficiency_results, filename, outdir)
 
         # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
-
 
         # precision plot
         # results_precision = "result_precision"
