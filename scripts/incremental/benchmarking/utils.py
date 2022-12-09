@@ -1,4 +1,6 @@
 import os
+import sys
+import math
 import shutil
 from pathlib import Path
 import subprocess
@@ -184,12 +186,21 @@ def create_cum_data(dataFrame, num_bins, relColumns):
         data = data + [cum]
     return data, base[:-1]
 
+def largest_power_of_two_smaller(x):
+    p = math.floor(math.log2(x)) - 1
+    p = max(1, p)
+    2 ** p
+
 def cummulative_distr_plot(data_sets, base, figure_dir, outfile, figsize=None, title=None, logscale=False):
     if figsize:
         plt.figure(figsize=figsize)
     else:
         plt.figure()
+    min = sys.maxsize
     for d in data_sets:
+        min_d = d["values"].min()
+        if min_d < min:
+            min = min_d
         plt.plot(d["values"], base, label=d["label"])
     plt.xlabel('Number of Commits')
     if logscale:
@@ -197,7 +208,7 @@ def cummulative_distr_plot(data_sets, base, figure_dir, outfile, figsize=None, t
         plt.yscale('log', base=2)
         plt.gca().yaxis.set_major_formatter(ScalarFormatter())
         plt.xlim(left=0)
-        plt.ylim(bottom=95)
+        plt.ylim(bottom=largest_power_of_two_smaller(min))
         #plt.yticks(np.arange(100,1500,100))
     else:
         plt.ylabel('Runtime in s')
