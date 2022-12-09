@@ -29,7 +29,7 @@ def cummulative_distr_all3(results_dir, result_csv_filename, figure_dir):
     datanonincr = {"values": data[0], "label": "Non-incremental analysis of parent commit"}
     dataincr = {"values": data[1], "label": "Incremental analysis of commit"}
     datarelincr = {"values": data[2], "label": "Reluctant incremental analysis of commit"}
-    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=False)
+    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
 
 def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
