@@ -25,7 +25,7 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
 
     utils.cummulative_distr_plot([dataincr, datarelincr], base, figure_dir, outfile_incr_vs_incrrel, logscale=True)
 
-def cummulative_distr_all3(results_dir, result_csv_filename, figure_dir):
+def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
     outfile_nonincr_vs_incr = "figure_cum_distr_all3.pdf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
@@ -158,7 +158,7 @@ def main():
         filename = "total_results.csv"
 
         cummulative_distr_compare2(project_efficiency_results, filename, outdir)
-        cummulative_distr_all3(project_efficiency_results, filename, outdir)
+        cummulative_distr_all4(project_efficiency_results, filename, outdir)
 
         # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
 
