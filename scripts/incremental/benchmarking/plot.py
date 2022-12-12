@@ -2,6 +2,11 @@ import utils
 import os
 import shutil
 
+description_non_incr = "Non-incremental analysis"
+description_incr = "Incremental analysis"
+description_incr_post = "Incremental analysis with incremental postsolver"
+description_incr_rel ="Reluctant incremental analysis with incremental postsolver"
+
 def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
     outfile_nonincr_vs_incr = "figure_cum_distr_incr.pdf"
@@ -9,14 +14,14 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
-    datanonincr = {"values": data[0], "label": "Non-incremental analysis of parent commit"}
-    dataincr = {"values": data[1], "label": "Incremental analysis of commit"}
+    datanonincr = {"values": data[0], "label": description_non_incr}
+    dataincr = {"values": data[1], "label": description_incr}
 
     utils.cummulative_distr_plot([datanonincr, dataincr], base, figure_dir, outfile_nonincr_vs_incr)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
-    dataincr = {"values": data[0], "label": "Incremental analysis of commit"}
-    datarelincr = {"values": data[1], "label": "Reluctant incremental analysis of commit"}
+    dataincr = {"values": data[0], "label": description_incr}
+    datarelincr = {"values": data[1], "label": description_incr_rel}
 
     utils.cummulative_distr_plot([dataincr, datarelincr], base, figure_dir, outfile_incr_vs_incrrel, logscale=True)
 
@@ -25,11 +30,12 @@ def cummulative_distr_all3(results_dir, result_csv_filename, figure_dir):
     outfile_nonincr_vs_incr = "figure_cum_distr_all3.pdf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
-    data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
-    datanonincr = {"values": data[0], "label": "Non-incremental analysis of parent commit"}
-    dataincr = {"values": data[1], "label": "Incremental analysis of commit"}
-    datarelincr = {"values": data[2], "label": "Reluctant incremental analysis of commit"}
-    utils.cummulative_distr_plot([datanonincr, dataincr, datarelincr], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
+    data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_child, utils.header_runtime_incr_posts_rel_child])
+    data_non_incr = {"values": data[0], "label": description_non_incr}
+    data_incr = {"values": data[1], "label": description_incr}
+    data_incr_post = {"values": data[2], "label": description_incr_post}
+    data_incr_rel = {"values": data[3], "label": description_incr_rel}
+    utils.cummulative_distr_plot([data_non_incr, data_incr, data_incr_post, data_incr_rel], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
 
 def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
