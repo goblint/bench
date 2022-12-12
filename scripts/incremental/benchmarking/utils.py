@@ -183,6 +183,17 @@ def create_cum_data(dataFrame, num_bins, relColumns):
         base = basec
         cum = np.cumsum(valuesc, dtype=np.float)
         cum[cum==0] = np.nan
+
+        # If there is a tail of values that are the same, set the ones after its first occurrence to NaN.
+        # In the resulting graph, this avoids the artefact that all the lines go up to the largest y-value of any line.
+        last = len(cum) - 1
+        last_value = cum[last]
+        for i in range(last - 1 , 0, -1):
+            if cum[i] == last_value:
+                cum[i + 1] = np.nan
+            else:
+                break
+
         data = data + [cum]
     return data, base[:-1]
 
