@@ -9,8 +9,8 @@ description_incr_rel ="Reluctant incremental analysis with incremental postsolve
 
 def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
-    outfile_nonincr_vs_incr = "figure_cum_distr_incr.pdf"
-    outfile_incr_vs_incrrel = "figure_cum_distr_rel.pdf"
+    outfile_nonincr_vs_incr = "figure_cum_distr_incr.pgf"
+    outfile_incr_vs_incrrel = "figure_cum_distr_rel.pgf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
@@ -27,7 +27,7 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
 
 def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
-    outfile_nonincr_vs_incr = "figure_cum_distr_all3.pdf"
+    outfile_nonincr_vs_incr = "figure_cum_distr_all3.pgf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_parent, utils.header_runtime_incr_child, utils.header_runtime_incr_posts_child, utils.header_runtime_incr_posts_rel_child])
@@ -42,11 +42,11 @@ def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
 
     # plot incremental vs non-incremental
     diff = df.loc[:,utils.header_runtime_parent] - df.loc[:,utils.header_runtime_incr_child]
-    utils.hist_plot(diff, 20, title, 'Improvement in s (incremental compared to non-incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_incr.pdf"), cutoffs_incr)
+    utils.hist_plot(diff, 20, title, 'Improvement in s (incremental compared to non-incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_incr.pgf"), cutoffs_incr)
 
     # plot reluctant vs. basic incremental
     diff = df.loc[:,utils.header_runtime_incr_child] - df.loc[:,utils.header_runtime_incr_posts_rel_child]
-    utils.hist_plot(diff, 2, title, 'Improvement in s (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_rel.pdf"), cutoffs_rel)
+    utils.hist_plot(diff, 2, title, 'Improvement in s (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_rel.pgf"), cutoffs_rel)
 
 def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
@@ -54,11 +54,11 @@ def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
     # plot incremental vs non-incremental
     print(df[utils.header_runtime_incr_child].astype('float'))
     diff = 1 - df[utils.header_runtime_incr_child].astype('float') / df[utils.header_runtime_parent].astype('float')
-    utils.hist_plot(diff, 0.01, title, "Relative Improvement in s (incremental compared to non-incremental)", 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_incr.pdf"), cutoffs_incr)
+    utils.hist_plot(diff, 0.01, title, "Relative Improvement in s (incremental compared to non-incremental)", 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_incr.pgf"), cutoffs_incr)
 
     # plot reluctant vs. basic incremental
     diff = 1 - df.loc[:,utils.header_runtime_incr_posts_rel_child] / df.loc[:,utils.header_runtime_incr_child]
-    utils.hist_plot(diff, 0.005, title, 'Relative Improvement (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_rel.pdf"), cutoffs_rel)
+    utils.hist_plot(diff, 0.005, title, 'Relative Improvement (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_rel.pgf"), cutoffs_rel)
 
 def paper_efficiency_graphs(dir_results, csv_filename, outdir, filterRelCLOC=False, filterDetectedChanges=False):
     df = utils.get_cleaned_filtered_data(os.path.join(dir_results,csv_filename), filterRelCLOC=filterRelCLOC, filterDetectedChanges=filterDetectedChanges)
