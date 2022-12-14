@@ -2,14 +2,10 @@ import utils
 import os
 import shutil
 
-description_non_incr = "Non-Inc"
-description_incr = "Inc"
-description_incr_post = "Inc-Post"
-description_incr_rel ="Rel"
-
-# measures in inches
-textwidth = 7
-figsize = (textwidth / 2.5, textwidth / 3)
+description_non_incr = "Non-incremental analysis"
+description_incr = "Incremental analysis"
+description_incr_post = "Incremental analysis with incremental postsolver"
+description_incr_rel ="Reluctant incremental analysis with incremental postsolver"
 
 def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
@@ -21,13 +17,13 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     datanonincr = {"values": data[0], "label": description_non_incr}
     dataincr = {"values": data[1], "label": description_incr}
 
-    utils.cummulative_distr_plot([datanonincr, dataincr], base, figure_dir, outfile_nonincr_vs_incr, figsize = figsize)
+    utils.cummulative_distr_plot([datanonincr, dataincr], base, figure_dir, outfile_nonincr_vs_incr)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.header_runtime_incr_child, utils.header_runtime_incr_posts_rel_child])
     dataincr = {"values": data[0], "label": description_incr}
     datarelincr = {"values": data[1], "label": description_incr_rel}
 
-    utils.cummulative_distr_plot([dataincr, datarelincr], base, figure_dir, outfile_incr_vs_incrrel, logscale=True, figsize = figsize)
+    utils.cummulative_distr_plot([dataincr, datarelincr], base, figure_dir, outfile_incr_vs_incrrel, logscale=True)
 
 def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
@@ -39,7 +35,7 @@ def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     data_incr = {"values": data[1], "label": description_incr}
     data_incr_post = {"values": data[2], "label": description_incr_post}
     data_incr_rel = {"values": data[3], "label": description_incr_rel}
-    utils.cummulative_distr_plot([data_non_incr, data_incr, data_incr_post, data_incr_rel], base, figure_dir, outfile_nonincr_vs_incr, figsize = figsize, logscale=True)
+    utils.cummulative_distr_plot([data_non_incr, data_incr, data_incr_post, data_incr_rel], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
 
 def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
