@@ -149,8 +149,12 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
 
 def collect_data(outdir):
     data = {"Commit": [], "Failed?": [], "Changed LOC": [], "Relevant changed LOC": [], "Changed/Added/Removed functions": [],
-      utils.header_runtime_parent: [], utils.header_runtime_incr_child: [],
-      utils.header_runtime_incr_posts_child: [], utils.header_runtime_incr_posts_rel_child: [],
+      utils.runtime_header_parent: [], utils.runtime_header_incr_child: [],
+      utils.runtime_header_incr_posts_child: [], utils.runtime_header_incr_posts_rel_child: [],
+      utils.analysis_header_parent: [], utils.analysis_header_incr_child: [],
+      utils.analysis_header_incr_posts_child: [], utils.analysis_header_incr_posts_rel_child: [],
+      utils.solving_header_parent: [], utils.solving_header_incr_child: [],
+      utils.solving_header_incr_posts_child: [], utils.solving_header_incr_posts_rel_child: [],
       "Change in number of race warnings": []}
     for t in os.listdir(outdir):
         parentlog = os.path.join(outdir, t, 'parent', utils.analyzerlog)
@@ -165,10 +169,19 @@ def collect_data(outdir):
         data["Failed?"].append(commit_prop["failed"])
         data["Commit"].append(commit_prop["hash"][:7])
         if commit_prop["failed"] == True:
-            data[utils.header_runtime_parent].append(0)
-            data[utils.header_runtime_incr_child].append(0)
-            data[utils.header_runtime_incr_posts_child].append(0)
-            data[utils.header_runtime_incr_posts_rel_child].append(0)
+            data[utils.runtime_header_parent].append(0)
+            data[utils.runtime_header_incr_child].append(0)
+            data[utils.runtime_header_incr_posts_child].append(0)
+            data[utils.runtime_header_incr_posts_rel_child].append(0)
+            data[utils.analysis_header_parent].append(0)
+            data[utils.analysis_header_incr_child].append(0)
+            data[utils.analysis_header_incr_posts_child].append(0)
+            data[utils.analysis_header_incr_posts_rel_child].append(0)
+            data[utils.solving_header_parent].append(0)
+            data[utils.solving_header_incr_child].append(0)
+            data[utils.solving_header_incr_posts_child].append(0)
+            data[utils.solving_header_incr_posts_rel_child].append(0)
+
             data["Changed/Added/Removed functions"].append(0)
             data["Change in number of race warnings"].append(0)
             continue
@@ -177,10 +190,22 @@ def collect_data(outdir):
         child_posts_info = utils.extract_from_analyzer_log(childpostslog)
         child_posts_rel_info = utils.extract_from_analyzer_log(childpostsrellog)
         data["Changed/Added/Removed functions"].append(int(child_info["changed"]) + int(child_info["added"]) + int(child_info["removed"]))
-        data[utils.header_runtime_parent].append(float(parent_info["runtime"]))
-        data[utils.header_runtime_incr_child].append(float(child_info["runtime"]))
-        data[utils.header_runtime_incr_posts_child].append(float(child_posts_info["runtime"]))
-        data[utils.header_runtime_incr_posts_rel_child].append(float(child_posts_rel_info["runtime"]))
+        data[utils.runtime_header_parent].append(float(parent_info["runtime"]))
+        data[utils.runtime_header_incr_child].append(float(child_info["runtime"]))
+        data[utils.runtime_header_incr_posts_child].append(float(child_posts_info["runtime"]))
+        data[utils.runtime_header_incr_posts_rel_child].append(float(child_posts_rel_info["runtime"]))
+
+
+        data[utils.analysis_header_parent].append(float(parent_info["analysis_time"]))
+        data[utils.analysis_header_incr_child].append(float(child_info["analysis_time"]))
+        data[utils.analysis_header_incr_posts_child].append(float(child_posts_info["analysis_time"]))
+        data[utils.analysis_header_incr_posts_rel_child].append(float(child_posts_rel_info["analysis_time"]))
+
+        data[utils.solving_header_parent].append(float(parent_info["solving_time"]))
+        data[utils.solving_header_incr_child].append(float(child_info["solving_time"]))
+        data[utils.solving_header_incr_posts_child].append(float(child_posts_info["solving_time"]))
+        data[utils.solving_header_incr_posts_rel_child].append(float(child_posts_rel_info["solving_time"]))
+
         data["Change in number of race warnings"].append(int(child_info["race_warnings"] - int(parent_info["race_warnings"])))
     return data
 

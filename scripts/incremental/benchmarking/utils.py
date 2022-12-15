@@ -29,10 +29,29 @@ mpl.rcParams.update({
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 
-header_runtime_parent = "Runtime for parent commit (non-incremental)"
-header_runtime_incr_child = "Runtime for commit (incremental)"
-header_runtime_incr_posts_child = "Runtime for commit (incremental + incr postsolver)"
-header_runtime_incr_posts_rel_child = "Runtime for commit (incremental + incr postsolver + reluctant)"
+runtime_prefix = "Runtime"
+analysis_prefix = "Analysis"
+solving_prefix = "Solving"
+
+header_parent = " for parent commit (non-incremental)"
+header_incr_child = " for commit (incremental)"
+header_incr_posts_child = " for commit (incremental + incr postsolver)"
+header_incr_posts_rel_child = " for commit (incremental + incr postsolver + reluctant)"
+
+runtime_header_parent = runtime_prefix + header_parent
+runtime_header_incr_child = runtime_prefix + header_incr_child
+runtime_header_incr_posts_child = runtime_prefix + header_incr_posts_child
+runtime_header_incr_posts_rel_child = runtime_prefix + header_incr_posts_rel_child
+
+analysis_header_parent = analysis_prefix + header_parent
+analysis_header_incr_child = analysis_prefix + header_incr_child
+analysis_header_incr_posts_child = analysis_prefix + header_incr_posts_child
+analysis_header_incr_posts_rel_child = analysis_prefix + header_incr_posts_rel_child
+
+solving_header_parent = solving_prefix + header_parent
+solving_header_incr_child = solving_prefix + header_incr_child
+solving_header_incr_posts_child = solving_prefix + header_incr_posts_child
+solving_header_incr_posts_rel_child = solving_prefix + header_incr_posts_rel_child
 
 preparelog = "prepare.log"
 analyzerlog = "analyzer.log"
@@ -126,10 +145,14 @@ def find_line(pattern, log):
 
 def extract_from_analyzer_log(log):
     runtime_pattern = 'Default[ ]+(?P<runtime>[0-9\.]+)s'
+    analysis_time_pattern = 'analysis[ ]+(?P<analysis_time>[0-9\.]+)s'
+    solving_time_pattern = 'solving[ ]+(?P<solving_time>[0-9\.]+)s'
     change_info_pattern = 'change_info = { unchanged = (?P<unchanged>[0-9]*); changed = (?P<changed>[0-9]*); added = (?P<added>[0-9]*); removed = (?P<removed>[0-9]*) }'
-    r = find_line(runtime_pattern, log)
+    runtime = find_line(runtime_pattern, log)
+    analysis_time = find_line(analysis_time_pattern, log)
+    solving_time = find_line(solving_time_pattern, log)
     ch = find_line(change_info_pattern, log) or {"unchanged": 0, "changed": 0, "added": 0, "removed": 0}
-    d = dict(list(r.items()) + list(ch.items()))
+    d = dict(list(runtime.items()) + list(analysis_time.items()) + list(solving_time.items()) + list(ch.items()))
     with open(log, "r") as file:
         num_racewarnings = file.read().count('[Warning][Race]')
         d["race_warnings"] = num_racewarnings
@@ -159,7 +182,7 @@ def get_cleaned_filtered_data(result_csv_file, filterRelCLOC=False, filterDetect
 
     # clean dataset (remove all rows for which any of the runtime entries is 0 which means that the respective analysis
     # run failed)
-    df = df[(df[header_runtime_parent] != 0)]
+    df = df[(df[header_parent] != 0)]
     if filterRelCLOC:
         df = df[df["Relevant changed LOC"] > 0]
     if filterDetectedChanges:
