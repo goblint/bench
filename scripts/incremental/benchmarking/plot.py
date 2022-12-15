@@ -141,30 +141,39 @@ def paper_precision_graph(results_precision, filename, outdir):
 def main():
     projects = ["figlet", "chrony", "zstd"]
     results_efficiency = "result_efficiency_"
+    results_precision = "result_precision_"
 
     for project in projects:
-        project_efficiency_results = results_efficiency + project
+        efficiency_results = results_efficiency + project
+        precision_results = results_precision + project
 
-        if not os.path.exists(project_efficiency_results):
+
+        if not (os.path.exists(efficiency_results) or os.path.exists(precision_results)):
             print("Results for project " + project + " do not exist. Skipping.")
             continue
         else:
             print("Creating plots for project " + project + ".")
 
-        outdir = os.path.join("figures", project)
-        if os.path.exists(outdir):
-            shutil.rmtree(outdir)
-        os.makedirs(outdir)
-        filename = "total_results.csv"
+        figures_dir = os.path.join("figures", project)
+        if os.path.exists(figures_dir):
+            shutil.rmtree(figures_dir)
+        os.makedirs(figures_dir)
 
-        cummulative_distr_compare2(project_efficiency_results, filename, outdir)
-        cummulative_distr_all4(project_efficiency_results, filename, outdir)
-
-        # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
+        if os.path.exists(efficiency_results):
+            efficieny_filename = "total_results.csv"
+            print("Creating efficiency plots.")
+            cummulative_distr_compare2(efficiency_results, efficieny_filename, figures_dir)
+            cummulative_distr_all4(efficiency_results, efficieny_filename, figures_dir)
+            # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
+        else:
+            print("No efficiency results available.")
 
         # precision plot
-        # results_precision = "result_precision"
-        # filename = "results.json"
-        # paper_precision_graph(results_precision, filename, outdir)
+        if os.path.exists(precision_results):
+            precision_filename = "results.json"
+            print("Creating precision plots.")
+            paper_precision_graph(precision_results, precision_filename, figures_dir)
+        else:
+            print("No precision results available.")
 
 main()
