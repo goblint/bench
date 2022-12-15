@@ -12,8 +12,9 @@ class ProjectConfig:
     diff_exclude: list # list[str]
     '''Files to analyze. If this list is not empty, the given files will be analyzed (not those in the compiledb)'''
     files: list # list[str]
+    branch: str
 
-    def __init__(self, url, repo_name, build_compdb, conf_base, conf_incrpost, begin, to, diff_exclude, files):
+    def __init__(self, url, repo_name, build_compdb, conf_base, conf_incrpost, begin, to, diff_exclude, files, branch):
         self.url = url
         self.repo_name = repo_name
         self.build_compdb = build_compdb
@@ -23,6 +24,7 @@ class ProjectConfig:
         self.to = to
         self.diff_exclude = diff_exclude
         self.files = files
+        self.branch = branch
 
 sqlite = ProjectConfig(
     url           = "https://github.com/sqlite/sqlite",
@@ -33,7 +35,8 @@ sqlite = ProjectConfig(
     begin         = datetime.datetime(2021,8,1),
     to            = datetime.datetime(2021,8,10), # minimal subset: datetime(2021,8,4)
     diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"],
-    files = ['sqlite3.c', 'sqlite3.h', 'sqlite3ext.h', 'shell.c']
+    files = ['sqlite3.c', 'sqlite3.h', 'sqlite3ext.h', 'shell.c'],
+    branch = "master"
 )
 
 zstd = ProjectConfig(
@@ -45,7 +48,8 @@ zstd = ProjectConfig(
     begin         = datetime.datetime(2021,8,1), # very minimal: "zstd-minimal"
     to            = datetime.datetime(2022,2,1), # minimal subset: datetime(2021,8,4)
     diff_exclude  = ["build", "doc", "examples", "tests", "zlibWrapper", "contrib"],
-    files = None
+    files = None,
+    branch = "dev"
 )
 
 figlet = ProjectConfig(
@@ -57,7 +61,8 @@ figlet = ProjectConfig(
     begin         = datetime.datetime(2010,1,1),
     to            = datetime.datetime(2022,10,10),
     diff_exclude  = [],
-    files = ['Makefile']
+    files = ['Makefile'],
+    branch = "master"
 )
 
 chrony = ProjectConfig(
@@ -71,7 +76,8 @@ chrony = ProjectConfig(
     begin=datetime.datetime(2020, 1, 1),
     to=datetime.datetime(2022, 10, 10),
     diff_exclude=[],
-    files=None
+    files=None,
+    branch = "master"
 )
 
 projects = {"sqlite": sqlite, "chrony": chrony, "figlet": figlet, "zstd": zstd}

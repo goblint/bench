@@ -36,6 +36,7 @@ begin = project.begin
 to = project.to
 diff_exclude = project.diff_exclude
 files = project.files
+branch = project.branch
 
 try:
     numcores = int(sys.argv[3])
@@ -56,7 +57,7 @@ skipSeqShorterEq = 5 # minimum number of incremental commits in chain
 
 def start_commit_for_sequence_search():
     current_commit = ""
-    for commit in Repository(url, to=to, only_in_branch='dev', order='reverse', clone_repo_to=res_dir).traverse_commits():
+    for commit in Repository(url, to=to, only_in_branch=branch, order='reverse', clone_repo_to=res_dir).traverse_commits():
         current_commit = commit
         break
     gr = Git(os.path.join(res_dir, repo_name))
