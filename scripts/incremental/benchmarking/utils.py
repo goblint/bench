@@ -324,7 +324,6 @@ def box_plot(data, x, xlabel, ylabel, outfile, size):
     plt.boxplot(data, flierprops=dict(markersize=3), positions=x)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    plt.ylim(bottom=-0.005, top=0.19)
     plt.tight_layout(pad=0.4)
     plt.savefig(outfile)
     print(outfile)
