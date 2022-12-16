@@ -104,6 +104,33 @@ def paper_efficiency_graphs(dir_results, csv_filename, outdir, filterRelCLOC=Fal
         print("80% quantile for", n, "compared to from-scratch analysis:", diff.quantile(q=0.8) * 100, "%")
         print("75% quantile for", n, "compared to from-scratch analysis:", diff.quantile(q=0.75) * 100, "%")
 
+def paper_precision_graph_box(results_precision, filename, outdir):
+    df = utils.get_data_from_json(os.path.join(results_precision, filename))
+
+    # Plot precision loss after x commits, where x is in {1, 2, 5, 10, 15}
+    lessprec1 = 'intermediate precision.1.precision.lessprec'
+    lessprec2 = 'intermediate precision.2.precision.lessprec'
+    lessprec5 = 'intermediate precision.5.precision.lessprec'
+    lessprec10 = 'intermediate precision.10.precision.lessprec'
+    lessprec15 = 'intermediate precision.15.precision.lessprec'
+    total1 = 'intermediate precision.1.precision.total'
+    total2 = 'intermediate precision.2.precision.total'
+    total5 = 'intermediate precision.5.precision.total'
+    total10 = 'intermediate precision.10.precision.total'
+    total15 = 'intermediate precision.15.precision.total'
+
+    x = [1,2,5,10,15]
+    data = []
+    lessprec = [lessprec1, lessprec2, lessprec5, lessprec10, lessprec15]
+    total = [total1, total2, total5, total10, total15]
+    for l, t in zip(lessprec, total):
+        ratio = df[l] / df[t]
+        data.append(ratio.dropna())
+
+    halftextwidth = 3.3
+    size=(halftextwidth,halftextwidth*2/3)
+    utils.quantile_plot(data, x, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
+
 
 def paper_precision_graph(results_precision, filename, outdir):
     df = utils.get_data_from_json(os.path.join(results_precision, filename))

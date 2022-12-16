@@ -307,7 +307,7 @@ def scatter_plot(data, xlabel, ylabel, outfile, size):
     width, height = size
     fig.set_size_inches(w=width, h=height)
     colors=['red','azure','blue','brown','chartreuse','chocolate','darkblue','darkgreen','seagreen','green','indigo','orangered','orange','coral','olive','mediumseagreen','grey','teal']
-    markers = ['x','+','o','s','p','*','D','d','v','^','<','>','1','2','3','4','H','P']
+    #markers = ['x','+','o','s','p','*','D','d','v','^','<','>','1','2','3','4','H','P']
     linestyles = ['dashed']
     for i, (x, y) in enumerate(data):
         plt.plot(x,y, marker='x', linewidth=0.4, markersize=1, alpha=0.85, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)])
@@ -316,3 +316,15 @@ def scatter_plot(data, xlabel, ylabel, outfile, size):
     plt.ylim(bottom=-0.005, top=0.19)
     plt.tight_layout(pad=0.4)
     plt.savefig(outfile)
+
+def quantile_plot(data, x, xlabel, ylabel, outfile, size):
+    fig = plt.figure()
+    width, height = size
+    fig.set_size_inches(w=width, h=height)
+    plt.boxplot(data, flierprops=dict(markersize=3), positions=x)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.ylim(bottom=-0.005, top=0.19)
+    plt.tight_layout(pad=0.4)
+    plt.savefig(outfile)
+    print(outfile)
