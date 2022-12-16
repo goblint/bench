@@ -182,7 +182,7 @@ def get_cleaned_filtered_data(result_csv_file, filterRelCLOC=False, filterDetect
 
     # clean dataset (remove all rows for which any of the runtime entries is 0 which means that the respective analysis
     # run failed)
-    df = df[(df[header_parent] != 0)]
+    df = df[(df[runtime_header_parent] != 0)]
     if filterRelCLOC:
         df = df[df["Relevant changed LOC"] > 0]
     if filterDetectedChanges:
