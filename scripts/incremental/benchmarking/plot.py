@@ -129,7 +129,7 @@ def paper_precision_graph_box(results_precision, filename, outdir):
 
     halftextwidth = 3.3
     size=(halftextwidth,halftextwidth*2/3)
-    utils.quantile_plot(data, x, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
+    utils.box_plot(data, x, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
 
 
 def paper_precision_graph(results_precision, filename, outdir):

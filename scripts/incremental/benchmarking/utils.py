@@ -317,7 +317,7 @@ def scatter_plot(data, xlabel, ylabel, outfile, size):
     plt.tight_layout(pad=0.4)
     plt.savefig(outfile)
 
-def quantile_plot(data, x, xlabel, ylabel, outfile, size):
+def box_plot(data, x, xlabel, ylabel, outfile, size):
     fig = plt.figure()
     width, height = size
     fig.set_size_inches(w=width, h=height)
