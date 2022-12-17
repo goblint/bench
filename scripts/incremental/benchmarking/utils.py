@@ -34,21 +34,25 @@ analysis_prefix = "Analysis"
 solving_prefix = "Solving"
 
 header_parent = " for parent commit (non-incremental)"
+header_non_incr_child = " for commit (non-incremental)"
 header_incr_child = " for commit (incremental)"
 header_incr_posts_child = " for commit (incremental + incr postsolver)"
 header_incr_posts_rel_child = " for commit (incremental + incr postsolver + reluctant)"
 
 runtime_header_parent = runtime_prefix + header_parent
+runtime_header_non_incr_child = runtime_prefix + header_non_incr_child
 runtime_header_incr_child = runtime_prefix + header_incr_child
 runtime_header_incr_posts_child = runtime_prefix + header_incr_posts_child
 runtime_header_incr_posts_rel_child = runtime_prefix + header_incr_posts_rel_child
 
 analysis_header_parent = analysis_prefix + header_parent
+analysis_header_non_incr_child = analysis_prefix + header_non_incr_child
 analysis_header_incr_child = analysis_prefix + header_incr_child
 analysis_header_incr_posts_child = analysis_prefix + header_incr_posts_child
 analysis_header_incr_posts_rel_child = analysis_prefix + header_incr_posts_rel_child
 
 solving_header_parent = solving_prefix + header_parent
+solving_header_non_incr_child = solving_prefix + header_non_incr_child
 solving_header_incr_child = solving_prefix + header_incr_child
 solving_header_incr_posts_child = solving_prefix + header_incr_posts_child
 solving_header_incr_posts_rel_child = solving_prefix + header_incr_posts_rel_child

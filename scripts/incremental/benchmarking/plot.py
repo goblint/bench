@@ -13,7 +13,7 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     outfile_incr_vs_incrrel = "figure_cum_distr_rel.pdf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
-    data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_parent, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_rel_child])
+    data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_rel_child])
     datanonincr = {"values": data[0], "label": description_non_incr}
     dataincr = {"values": data[1], "label": description_incr}
 
@@ -30,7 +30,7 @@ def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     outfile_nonincr_vs_incr = "figure_cum_distr_all3.pdf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
 
-    data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_parent, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child])
+    data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child])
     data_non_incr = {"values": data[0], "label": description_non_incr}
     data_incr = {"values": data[1], "label": description_incr}
     data_incr_post = {"values": data[2], "label": description_incr_post}
@@ -41,7 +41,7 @@ def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
     df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
 
     # plot incremental vs non-incremental
-    diff = df.loc[:,utils.runtime_header_parent] - df.loc[:,utils.runtime_header_incr_child]
+    diff = df.loc[:,utils.runtime_header_non_incr_child] - df.loc[:,utils.runtime_header_incr_child]
     utils.hist_plot(diff, 20, title, 'Improvement in s (incremental compared to non-incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_incr.pdf"), cutoffs_incr)
 
     # plot reluctant vs. basic incremental
@@ -53,7 +53,7 @@ def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
 
     # plot incremental vs non-incremental
     print(df[utils.runtime_header_incr_child].astype('float'))
-    diff = 1 - df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_parent].astype('float')
+    diff = 1 - df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
     utils.hist_plot(diff, 0.01, title, "Relative Improvement in s (incremental compared to non-incremental)", 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_incr.pdf"), cutoffs_incr)
 
     # plot reluctant vs. basic incremental
@@ -62,10 +62,10 @@ def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
 
 def paper_efficiency_graphs(dir_results, csv_filename, outdir, filterRelCLOC=False, filterDetectedChanges=False):
     df = utils.get_cleaned_filtered_data(os.path.join(dir_results,csv_filename), filterRelCLOC=filterRelCLOC, filterDetectedChanges=filterDetectedChanges)
-    diff1 = 1 - df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_parent].astype('float')
+    diff1 = 1 - df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
     diff2 = 1 - df[utils.runtime_header_incr_posts_child].astype('float') / df[utils.runtime_header_incr_child].astype('float')
     diff3 = 1 - df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_incr_posts_child].astype('float')
-    diff4 = 1 - df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_parent].astype('float')
+    diff4 = 1 - df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
     step = 0.01
     for i, diff in enumerate([diff1,diff2,diff3,diff4]):
         # output textwidth in latex with
@@ -97,9 +97,9 @@ def paper_efficiency_graphs(dir_results, csv_filename, outdir, filterRelCLOC=Fal
         for e in diff:
             if (xlimleft and e < xlimleft) or (xlimright and e > xlimright):
                 print("excluded", e, "from efficiency figure", i)
-    diff1 = df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_parent].astype('float')
-    diff2 = df[utils.runtime_header_incr_posts_child].astype('float') / df[utils.runtime_header_parent].astype('float')
-    diff3 = df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_parent].astype('float')
+    diff1 = df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
+    diff2 = df[utils.runtime_header_incr_posts_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
+    diff3 = df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
     for n, diff in [("incr", diff1), ("+ incr postsolver", diff2), ("+ reluctant", diff3)]:
         print("80% quantile for", n, "compared to from-scratch analysis:", diff.quantile(q=0.8) * 100, "%")
         print("75% quantile for", n, "compared to from-scratch analysis:", diff.quantile(q=0.75) * 100, "%")

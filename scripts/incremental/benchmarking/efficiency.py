@@ -113,6 +113,13 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
             add_options = default_options + ['--disable', 'incremental.load', '--enable', 'incremental.save']
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, parent.hash, outparent, conf_base, add_options, files)
 
+            #print('And now analyze', str(commit.hash), 'from scratch.')
+            outchild_non_incr = os.path.join(outtry, 'child-non-incr')
+            os.makedirs(outchild_non_incr)
+            # Do not save in this run to not pollute results
+            add_options = default_options + ['--disable', 'incremental.load', '--disable', 'incremental.save']
+            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild_non_incr, conf_base, add_options, files)
+
             #print('And now analyze', str(commit.hash), 'incrementally.')
             outchild = os.path.join(outtry, 'child')
             os.makedirs(outchild)
@@ -120,16 +127,16 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
             utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild, conf_base, add_options, files)
 
             #print('And again incremental, this time with incremental postsolver')
-            outchildincrpost = os.path.join(outtry, 'child-incr-post')
-            os.makedirs(outchildincrpost)
+            outchild_incr_post = os.path.join(outtry, 'child-incr-post')
+            os.makedirs(outchild_incr_post)
             add_options = default_options + ['--enable', 'incremental.load', '--disable', 'incremental.save']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildincrpost, conf_incrpost, add_options, files)
+            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild_incr_post, conf_incrpost, add_options, files)
 
             #print('And again incremental, this time with incremental postsolver and reluctant')
-            outchildrel = os.path.join(outtry, 'child-rel')
-            os.makedirs(outchildrel)
+            outchild_rel = os.path.join(outtry, 'child-rel')
+            os.makedirs(outchild_rel)
             add_options = default_options + ['--enable', 'incremental.load', '--disable', 'incremental.save', '--enable', 'incremental.reluctant.enabled']
-            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchildrel, conf_incrpost, add_options, files)
+            utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, outchild_rel, conf_incrpost, add_options, files)
 
             count_analyzed+=1
             failed = False
@@ -149,18 +156,19 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
 
 def collect_data(outdir):
     data = {"Commit": [], "Failed?": [], "Changed LOC": [], "Relevant changed LOC": [], "Changed/Added/Removed functions": [],
-      utils.runtime_header_parent: [], utils.runtime_header_incr_child: [],
+      utils.runtime_header_parent: [], utils.runtime_header_non_incr_child: [], utils.runtime_header_incr_child: [],
       utils.runtime_header_incr_posts_child: [], utils.runtime_header_incr_posts_rel_child: [],
-      utils.analysis_header_parent: [], utils.analysis_header_incr_child: [],
+      utils.analysis_header_parent: [], utils.analysis_header_non_incr_child: [], utils.analysis_header_incr_child: [],
       utils.analysis_header_incr_posts_child: [], utils.analysis_header_incr_posts_rel_child: [],
-      utils.solving_header_parent: [], utils.solving_header_incr_child: [],
+      utils.solving_header_parent: [], utils.solving_header_non_incr_child: [], utils.solving_header_incr_child: [],
       utils.solving_header_incr_posts_child: [], utils.solving_header_incr_posts_rel_child: [],
       "Change in number of race warnings": []}
     for t in os.listdir(outdir):
-        parentlog = os.path.join(outdir, t, 'parent', utils.analyzerlog)
-        childlog = os.path.join(outdir, t, 'child', utils.analyzerlog)
-        childpostslog = os.path.join(outdir, t, 'child-incr-post', utils.analyzerlog)
-        childpostsrellog = os.path.join(outdir, t, 'child-rel', utils.analyzerlog)
+        parent_log = os.path.join(outdir, t, 'parent', utils.analyzerlog)
+        child_non_incr_log = os.path.join(outdir, t, 'child-non-incr', utils.analyzerlog)
+        child_log = os.path.join(outdir, t, 'child', utils.analyzerlog)
+        child_posts_log = os.path.join(outdir, t, 'child-incr-post', utils.analyzerlog)
+        child_posts_rel_log = os.path.join(outdir, t, 'child-rel', utils.analyzerlog)
         commit_prop_log = os.path.join(outdir, t, 'commit_properties.log')
         t = int(t)
         commit_prop = json.load(open(commit_prop_log, "r"))
@@ -170,14 +178,17 @@ def collect_data(outdir):
         data["Commit"].append(commit_prop["hash"][:7])
         if commit_prop["failed"] == True:
             data[utils.runtime_header_parent].append(0)
+            data[utils.runtime_header_non_incr_child].append(0)
             data[utils.runtime_header_incr_child].append(0)
             data[utils.runtime_header_incr_posts_child].append(0)
             data[utils.runtime_header_incr_posts_rel_child].append(0)
             data[utils.analysis_header_parent].append(0)
+            data[utils.analysis_header_non_incr_child].append(0)
             data[utils.analysis_header_incr_child].append(0)
             data[utils.analysis_header_incr_posts_child].append(0)
             data[utils.analysis_header_incr_posts_rel_child].append(0)
             data[utils.solving_header_parent].append(0)
+            data[utils.solving_header_non_incr_child].append(0)
             data[utils.solving_header_incr_child].append(0)
             data[utils.solving_header_incr_posts_child].append(0)
             data[utils.solving_header_incr_posts_rel_child].append(0)
@@ -185,23 +196,27 @@ def collect_data(outdir):
             data["Changed/Added/Removed functions"].append(0)
             data["Change in number of race warnings"].append(0)
             continue
-        parent_info = utils.extract_from_analyzer_log(parentlog)
-        child_info = utils.extract_from_analyzer_log(childlog)
-        child_posts_info = utils.extract_from_analyzer_log(childpostslog)
-        child_posts_rel_info = utils.extract_from_analyzer_log(childpostsrellog)
+
+        parent_info = utils.extract_from_analyzer_log(parent_log)
+        child_non_incr_info = utils.extract_from_analyzer_log(child_non_incr_log)
+        child_info = utils.extract_from_analyzer_log(child_log)
+        child_posts_info = utils.extract_from_analyzer_log(child_posts_log)
+        child_posts_rel_info = utils.extract_from_analyzer_log(child_posts_rel_log)
         data["Changed/Added/Removed functions"].append(int(child_info["changed"]) + int(child_info["added"]) + int(child_info["removed"]))
         data[utils.runtime_header_parent].append(float(parent_info["runtime"]))
+        data[utils.runtime_header_non_incr_child].append(float(child_non_incr_info["runtime"]))
         data[utils.runtime_header_incr_child].append(float(child_info["runtime"]))
         data[utils.runtime_header_incr_posts_child].append(float(child_posts_info["runtime"]))
         data[utils.runtime_header_incr_posts_rel_child].append(float(child_posts_rel_info["runtime"]))
 
-
         data[utils.analysis_header_parent].append(float(parent_info["analysis_time"]))
+        data[utils.analysis_header_non_incr_child].append(float(child_non_incr_info["analysis_time"]))
         data[utils.analysis_header_incr_child].append(float(child_info["analysis_time"]))
         data[utils.analysis_header_incr_posts_child].append(float(child_posts_info["analysis_time"]))
         data[utils.analysis_header_incr_posts_rel_child].append(float(child_posts_rel_info["analysis_time"]))
 
         data[utils.solving_header_parent].append(float(parent_info["solving_time"]))
+        data[utils.solving_header_non_incr_child].append(float(child_non_incr_info["solving_time"]))
         data[utils.solving_header_incr_child].append(float(child_info["solving_time"]))
         data[utils.solving_header_incr_posts_child].append(float(child_posts_info["solving_time"]))
         data[utils.solving_header_incr_posts_rel_child].append(float(child_posts_rel_info["solving_time"]))
