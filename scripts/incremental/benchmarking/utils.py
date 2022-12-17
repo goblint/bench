@@ -144,9 +144,10 @@ def find_line(pattern, log):
         return None
 
 def extract_from_analyzer_log(log):
-    runtime_pattern = 'Default[ ]+(?P<runtime>[0-9\.]+)s'
-    analysis_time_pattern = 'analysis[ ]+(?P<analysis_time>[0-9\.]+)s'
-    solving_time_pattern = 'solving[ ]+(?P<solving_time>[0-9\.]+)s'
+    # First comes the cpu time (which is ignored); we look at the walltime.
+    runtime_pattern = 'Default[ ]+[0-9\.]+s[ ]+(?P<runtime>[0-9\.]+)s'
+    analysis_time_pattern = 'analysis[ ]+[0-9\.]+s[ ]+(?P<analysis_time>[0-9\.]+)s'
+    solving_time_pattern = 'solving[ ]+[0-9\.]+s[ ]+(?P<solving_time>[0-9\.]+)s'
     change_info_pattern = 'change_info = { unchanged = (?P<unchanged>[0-9]*); changed = (?P<changed>[0-9]*); added = (?P<added>[0-9]*); removed = (?P<removed>[0-9]*) }'
     runtime = find_line(runtime_pattern, log)
     analysis_time = find_line(analysis_time_pattern, log)
