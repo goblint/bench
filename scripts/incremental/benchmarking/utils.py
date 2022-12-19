@@ -236,11 +236,18 @@ def cummulative_distr_plot(data_sets, base, figure_dir, outfile, figsize=None, t
     else:
         plt.figure()
     min = sys.maxsize
+
+    linestyle_tuple = [
+        "solid",
+        "--",
+        (0, (10, 1)), # long dash
+        (0, (3, 1, 1, 1)) # dash dots
+    ]
     for d in data_sets:
         min_d = d["values"].min()
         if min_d < min:
             min = min_d
-        plt.plot(d["values"], base, label=d["label"])
+        plt.plot(d["values"], base, linestyle=linestyle_tuple.pop(0), label=d["label"])
     plt.xlabel('Number of Commits')
     if logscale:
         plt.ylabel('Runtime in s ($log_{2}$ scale)')
