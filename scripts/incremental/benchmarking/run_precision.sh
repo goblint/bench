@@ -11,7 +11,3 @@ mv result_precision result_precision_figlet
 echo "Starting run on zstd"
 python3 precision.py $ANALYZER_DIR zstd $NCORES
 mv result_precision result_precision_zstd
-
-echo "Starting run on chrony"
-python3 precision.py $ANALYZER_DIR chrony $NCORES
-mv result_precision result_precision_chrony
