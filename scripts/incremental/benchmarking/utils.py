@@ -325,7 +325,7 @@ def scatter_plot(data, xlabel, ylabel, outfile, size):
         plt.plot(x,y, marker='x', linewidth=0.4, markersize=1, alpha=0.85, color=colors[i % len(colors)], linestyle=linestyles[i % len(linestyles)])
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
-    plt.ylim(bottom=-0.005, top=0.19)
+    plt.ylim(bottom=-0.005, top=0.3)
     plt.tight_layout(pad=0.4)
     plt.savefig(outfile)
 
