@@ -2,10 +2,10 @@ import utils
 import os
 import shutil
 
-description_non_incr = "Non-incremental analysis"
-description_incr = "Incremental analysis"
-description_incr_post = "Incremental analysis with incremental postsolver"
-description_incr_rel ="Reluctant incremental analysis with incremental postsolver"
+description_non_incr = "(1)"
+description_incr = "(2)"
+description_incr_post = "(3)"
+description_incr_rel ="(4)"
 
 def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
