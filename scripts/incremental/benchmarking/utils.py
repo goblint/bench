@@ -17,13 +17,13 @@ mpl.rcParams.update({
     'pgf.rcfonts': False,
     'text.usetex': True,
     'font.family': 'serif',
-    'font.size': 9,
-    'axes.titlesize': 9,
-    'legend.fontsize': 9,
-    'figure.titlesize': 9,
+    'font.size': 6,
+    'axes.titlesize': 6,
+    'legend.fontsize': 6,
+    'figure.titlesize': 7,
     'figure.dpi': 300,
-    'xtick.labelsize': 9,
-    'ytick.labelsize': 9,
+    'xtick.labelsize': 6,
+    'ytick.labelsize': 6,
 
 })
 import matplotlib.pyplot as plt
