@@ -6,7 +6,7 @@ import urllib.request
 import zipfile
 
 # Used to access Juliet Suite or to confirm its existence in the current dir
-juliet_url = 'https://samate.nist.gov/SRD/testsuites/juliet/Juliet_Test_Suite_v1.3_for_C_Cpp.zip'
+juliet_url = 'https://samate.nist.gov/SARD/downloads/test-suites/2017-10-01-juliet-test-suite-for-c-cplusplus-v1-3.zip'
 juliet_path = 'C/testcases'
 
 # Checking if the testcases path exists, if not the script will download the Juliet Suite
@@ -74,7 +74,7 @@ def check_path(filepath):
 # '_good' or '_bad' determined by input parameter 'mode'
 def goblint_cmd(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
-	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --sets "mainfun[+]" ' + func + ' --enable dbg.debug --enable dbg.timing.enabled'
+	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --set "mainfun[+]" ' + func + ' --set ana.malloc.unique_address_count 1 --enable dbg.debug --enable dbg.timing.enabled'
 	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'
@@ -135,7 +135,7 @@ def files_output_to_HTML(testcases, filepath, html_table):
 # # # MAIN PROCEDURES # # #
 
 # Regex string that is used to confirm that vulnerabilities were detected
-v_detection = 'is dead!|Summary for all memory locations:'
+v_detection = 'is dead!|\[Warning\]\[Race\]'
 
 # Blanks for HTML content
 # '' - empty string for HTML table that will contain results from Goblint
