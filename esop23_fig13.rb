@@ -325,7 +325,8 @@ $projects.each do |p|
       end
     else
       # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>#{outfileprec} 2>&1"      system(cmd)
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>#{outfileprec} 2>&1"
+      system(cmd)
       puts "-- Done!"
       precfiles << precfile
     end
