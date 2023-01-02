@@ -84,7 +84,7 @@ def print_res (i)
           aname = a[0]
           f.puts "<th>#{aname}</th>"
         end
-        f.puts "<th>compare</th>"
+        f.puts "<th>TIDs ⊏ Octagon</th>"
       end
       f.puts "<tr>"
       f.puts p.to_html
