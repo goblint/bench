@@ -154,8 +154,25 @@ def print_res (i)
           f.puts "<td>N/A</a></td>"
         end
       end
-      comparefile = File.basename(p.path,".c") + ".compare.txt"
-      f.puts "<td><a href=\"#{comparefile}\">compare</a></td>"
+      comparefile = $testresults + File.basename(p.path,".c") + ".compare.txt"
+      if File.exists?(comparefile) then
+        File.open(comparefile, "r") do |g|
+          lines = g.readlines
+          prec_eq = lines.grep(/Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPrivTID\(no-clusters,join\)\) equal to Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPriv\)    \(equal: (.*), more precise: (.*), less precise: (.*), incomparable: (.*), total: (.*)\)/) { |x| $2.to_i } .first
+          more = lines.grep(/Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPrivTID\(no-clusters,join\)\) more precise than Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPriv\)    \(equal: (.*), more precise: (.*), less precise: (.*), incomparable: (.*), total: (.*)\)/) { |x| $2.to_i } .first
+          less = lines.grep(/Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPrivTID\(no-clusters,join\)\) more precise than Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPriv\)    \(equal: (.*), more precise: (.*), less precise: (.*), incomparable: (.*), total: (.*)\)/) { |x| $3.to_i } .first
+          incomp = lines.grep(/Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPrivTID\(no-clusters,join\)\) more precise than Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPriv\)    \(equal: (.*), more precise: (.*), less precise: (.*), incomparable: (.*), total: (.*)\)/) { |x| $4.to_i } .first
+          total = lines.grep(/Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPrivTID\(no-clusters,join\)\) more precise than Apron Octagon\(domain: Apron Octagon, privatization: PerMutexMeetPriv\)    \(equal: (.*), more precise: (.*), less precise: (.*), incomparable: (.*), total: (.*)\)/) { |x| $5.to_i } .first
+
+          if prec_eq then
+            f.puts "<td><a href=\"#{comparefile}\">0</a></td>"
+          else
+            f.puts "<td><a href=\"#{comparefile}\">#{more.to_f/total.to_f}</a></td>"
+          end
+        end
+      else
+        f.puts "<td></td>"
+      end
       gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
       f.puts "</tr>"
       f.puts "</tr>"
