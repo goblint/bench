@@ -283,6 +283,7 @@ $projects.each do |p|
     print "  #{format("%*s", -maxlen, aname)}"
     STDOUT.flush
     outfile = $testresults + File.basename(filename,".c") + ".#{aname}.txt"
+    outfileprec = $testresults + File.basename(filename,".c") + ".#{aname}-prec.txt"
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
@@ -308,7 +309,7 @@ $projects.each do |p|
       end
     else
       # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v --sets exp.relation.prec-dump #{precfile} 1>#{outfileprec} 2>&1"
       system(cmd)
       puts "-- Done!"
       precfiles << precfile
