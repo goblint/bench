@@ -1,3 +1,4 @@
+from subprocess import PIPE
 import subprocess
 import re
 import csv
@@ -15,12 +16,12 @@ with open("index/traces-rel-toy.txt") as f:
 
             print(line)
             start = timeit.default_timer()
-            p = subprocess.run(["/home/simmo/Desktop/duet/duet/duet.exe", "-coarsen", "-inline", "-domain", "oct", line], capture_output=True)
+            p = subprocess.run(["../duet/duet.exe", "-coarsen", "-inline", "-domain", "oct", line],stdout=PIPE, stderr=PIPE)
             # p = subprocess.run(["/home/simmo/Desktop/duet/duet/duet.exe", "-coarsen", "-inline", "-parameterized", "-domain", "polka", line], capture_output=True)
             # p = subprocess.run(["/home/simmo/Desktop/duet/duet/duet.exe", "-proofspace", "-inline", line], capture_output=True)
             end = timeit.default_timer()
             print(f"time: {end-start}s")
-            
+
             if p.returncode == 0:
                 out = p.stdout.decode("utf-8")
                 print(out)
