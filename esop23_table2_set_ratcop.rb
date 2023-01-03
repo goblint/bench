@@ -68,11 +68,6 @@ def outfile_name (p,aname)
   File.basename(File.dirname(p)) + "_" + File.basename(p,".c") + ".#{aname}.txt"
 end
 
-def count_asserts (file)
-  assert_fail_string = "__assert_fail"
-  (`gcc -E #{file} | grep #{assert_fail_string} | wc -l`.to_i) - 1
-end
-
 def print_res (i)
   File.open($theresultfile, "w") do |f|
     f.puts "<html>"
@@ -99,8 +94,6 @@ def print_res (i)
       f.puts "<tr>"
       f.puts p.to_html
       first_one = true
-      assert_count = count_asserts(p.path)
-      total_assert_count += assert_count
       $analyses.each do |a|
         aname = a[0]
         outfile = outfile_name(p.path,aname)
@@ -144,7 +137,7 @@ def print_res (i)
             unknown = lines.grep(/\[Warning\]\[Assert\]/).size
             error = lines.grep(/\[Error\]\[Assert\]/).size
 
-            unreachable = assert_count - success - unknown - error
+            assert_count = success + unknown + error
 
             res = lines.grep(/TIMEOUT\s*(\d*) s.*$/) { |x| $1 }
             if res == [] then
@@ -156,35 +149,23 @@ def print_res (i)
                   first_one = false
                 end
 
-                thenumbers = ""
-
-                if success + unreachable == assert_count then
-                  thenumbers << "<font color=\"green\" title=\"success\">✔️</font> "
-                elsif unknown + error == assert_count then
-                  thenumbers << "<font color=\"red\" title=\"unknown\">❌</font>"
-                else
-                  thenumbers << "<font color=\"green\" title=\"success\">✔️<b>#{success + unreachable}</b></font> "
-                  thenumbers << "<font color=\"red\" title=\"unknown\">❌<b>#{unknown + error }</b></font>"
-                end
-
-
-
-
                 # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
-                # thenumbers = ""
+                thenumbers = ""
                 # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
-                # thenumbers << "<span title=\"total (logical) lines\">#{total}</span>;"
-                # thenumbers << "<font color=\"blue\" title=\"unreachable asserts\">#{unreachable}</font>;"
-                # thenumbers << "<font color=\"green\" title=\"success\">#{success}</font>;"
-                # thenumbers << "<font color=\"orange\" title=\"unknown\">#{unknown}</font>;"
-                # thenumbers << "<font color=\"red\" title=\"error\">#{error}</font>"
+                if success == assert_count then
+                  thenumbers << "<font color=\"green\" title=\"success\">✔️</font> "
+                elsif unknown == assert_count then
+                  thenumbers << "<font color=\"red\" title=\"unknown\">❌</font>"
+                else
+                  thenumbers << "<font color=\"green\" title=\"success\">✔️<b>#{success}</b></font> "
+                  thenumbers << "<font color=\"red\" title=\"unknown\">❌<b>#{unknown}</b></font>"
+                end
 
-                # f.puts "<td> #{thenumbers}</td>"
-                f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
+                f.puts "<td> #{thenumbers}</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
               end
@@ -196,6 +177,8 @@ def print_res (i)
           f.puts "<td>N/A</a></td>"
         end
       end
+
+      gb_file = $testresults + File.basename(p.path,".c") + ".mutex.txt"
       f.puts "</tr>"
       f.puts "</tr>"
     end
@@ -223,7 +206,7 @@ end
 #processing the input file
 
 skipgrp = []
-file = "index/traces-relational-watts.txt"
+file = "index/traces-rel-ratcop.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
 
 # FileUtils.cp(file,File.join($testresults, "bench.txt"))
@@ -353,16 +336,12 @@ $projects.each do |p|
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>/dev/null 2>&1"
-      system(cmd)
       puts "-- Done!"
-      precfiles << precfile
+
     end
     print_res p.id
     proc_linux_res(outfile, p.url, filename)
   end
-
 end
 print_res nil
 puts ("Results: " + $theresultfile)
