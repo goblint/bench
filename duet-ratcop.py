@@ -3,15 +3,26 @@ import subprocess
 import re
 import csv
 import timeit
+import os
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 
 # with open("index/traces-relational.txt") as f:
-with open("index/traces-rel-toy.txt") as f:
-    with open("traces-relational-duet.csv", "w") as csvf:
+with open("index/traces-rel-ratcop.txt") as f:
+    with open("traces-relational-duet-ratcop.csv", "w") as csvf:
         c = csv.writer(csvf)
+        c.writerow(["Name", "#Successful", "#Failed"])
         for line in f:
             line = line.strip()
-            # if not (line.startswith("pthread/") or line.startswith("svcomp/")):
-            if not line.startswith("traces-rel-toy/"):
+
+            if line.startswith("Group: "):
+                c.writerow(["", "", ""])
+                c.writerow([line, "", ""])
+                continue
+
+            if not (line.startswith("ratcop/")):
                 continue
 
             print(line)
