@@ -14,10 +14,20 @@ with open("index/traces-rel-ratcop.txt") as f:
     with open("traces-relational-duet-ratcop.csv", "w") as csvf:
         c = csv.writer(csvf)
         c.writerow(["Name", "#Successful", "#Failed"])
+        first = True
+        success = 0
+        error = 0
         for line in f:
             line = line.strip()
 
             if line.startswith("Group: "):
+                if not first:
+                    c.writerow(["SUMMARY", success, error])
+                    success = 0
+                    error = 0
+                else:
+                    first = False
+
                 c.writerow(["", "", ""])
                 c.writerow([line, "", ""])
                 continue
@@ -38,6 +48,10 @@ with open("index/traces-rel-ratcop.txt") as f:
                 print(out)
                 errors = re.search(r"(\d+) errors total", out).group(1)
                 safe = re.search(r"(\d+) safe assertions", out).group(1)
+
+                success += int(safe)
+                error += int(errors)
+
                 print(f"{safe}; {errors}")
                 c.writerow([line, safe, errors])
             else:
@@ -45,3 +59,8 @@ with open("index/traces-rel-ratcop.txt") as f:
                 print(p.stdout)
                 print(p.stderr)
                 c.writerow([line])
+
+        c.writerow(["SUMMARY", success, error])
+        success = 0
+        error = 0
+
