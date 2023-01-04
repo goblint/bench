@@ -76,9 +76,38 @@ def print_res (i)
     f.puts "<p>Benchmarking in progress: #{i}/#{$projects.length} <progress value=\"#{i}\" max=\"#{$projects.length}\" /></p>" unless i.nil?
     f.puts "<table border=2 cellpadding=4 style=\"font-size: 90%\">"
     gname = ""
+    first_group = true
     total_assert_count = 0
     $projects.each do |p|
       if p.group != gname then
+        if first_group == false then
+          f.puts "<tr>"
+          f.puts "<td colspan=3> Summary </td>"
+          f.puts "<td>#{$analyses[0][4]}</td>"
+          $analyses.each do |a|
+            success = a[2]
+            unknown = a[3]
+            total = a[4]
+
+            thenumbers = ""
+            if success == total then
+              thenumbers << "<font color=\"green\" title=\"success\">✔️</font> "
+            elsif unknown == total then
+              thenumbers << "<font color=\"red\" title=\"unknown\">❌</font>"
+            else
+              thenumbers << "<font color=\"green\" title=\"success\">✔️<b>#{success}</b></font> "
+              thenumbers << "<font color=\"red\" title=\"unknown\">❌<b>#{unknown}</b></font>"
+            end
+
+            f.puts "<td> #{thenumbers}</td>"
+            a[2] = 0
+            a[3] = 0
+            a[4] = 0
+          end
+          f.puts "</tr>"
+        else
+          first_group = false
+        end
         gname = p.group
         f.puts "<tr><th colspan=#{4+$analyses.size+1}>#{gname}</th></tr>"
         if $print_desc then
@@ -153,6 +182,12 @@ def print_res (i)
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
                 thenumbers = ""
+
+                a[2] += success
+                a[3] += unknown
+                a[4] += assert_count
+
+
                 # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
@@ -182,6 +217,35 @@ def print_res (i)
       f.puts "</tr>"
       f.puts "</tr>"
     end
+
+    f.puts "<tr>"
+    f.puts "<td colspan=3> Summary </td>"
+    f.puts "<td>#{$analyses[0][4]}</td>"
+    $analyses.each do |a|
+      success = a[2]
+      unknown = a[3]
+      total = a[4]
+
+      thenumbers = ""
+      if success == total then
+        thenumbers << "<font color=\"green\" title=\"success\">✔️</font> "
+      elsif unknown == total then
+        thenumbers << "<font color=\"red\" title=\"unknown\">❌</font>"
+      else
+        thenumbers << "<font color=\"green\" title=\"success\">✔️<b>#{success}</b></font> "
+        thenumbers << "<font color=\"red\" title=\"unknown\">❌<b>#{unknown}</b></font>"
+      end
+
+      f.puts "<td> #{thenumbers}</td>"
+
+
+      a[2] = 0
+      a[3] = 0
+      a[4] = 0
+    end
+    f.puts "</tr>"
+
+
     f.puts "</table>"
     f.print "<p style=\"font-size: 80%; white-space: pre-line\">"
     f.puts "Last updated: #{Time.now.strftime("%Y-%m-%d %H:%M:%S %z")}"
@@ -227,7 +291,7 @@ File.open(file, "r") do |f|
       gname = $1.chomp
       skipgrp << gname if line =~ /SKIP/
     elsif line =~ /(.*): ?(.*)/
-      $analyses << [$1,$2]
+      $analyses << [$1,$2,0,0,0]
     else
       name = line.chomp
       url = f.gets.chomp
