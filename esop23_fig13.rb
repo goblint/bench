@@ -25,7 +25,7 @@ cmds.each do |name, cmd|
   end
 end
 if highlighter.nil? then
-  puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
+  # puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
   highlighter = lambda {|f,o| "cp #{f} #{o}"}
 end
 
@@ -78,7 +78,7 @@ def print_res (i)
         if $print_desc then
           f.puts "<tr><th>#</th><th>Name</th><th>Description</th><th>Size</th>"
         else
-          f.puts "<tr><th>#</th><th>Name</th>"
+          f.puts "<tr><th>#</th><th>Name</th><th>LLoc</th><th>Thread IDs (unique)</th>"
         end
         $analyses.each do |a|
           aname = a[0]
@@ -136,17 +136,17 @@ def print_res (i)
                 # thenumbers =  "<font color=\"green\" title=\"safe memory locations\">#{safely}</font>; "
                 # thenumbers << "<font color=\"orange\" title=\"vulnerable memory locations\">#{vulner}</font> + "
                 # thenumbers << "<font color=\"red\" title=\"unsafe memory locations\">#{unsafe}</font>; "
-                thenumbers = ""
+                # thenumbers = ""
                 # thenumbers << "<font color=\"magenta\" title=\"uncalled functions\">#{uncalled}</font>; " if uncalled > 0
                 # thenumbers << "<b><font color=\"red\" title=\"dead lines\">#{dead}</font></b>+"
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
                 if is_first then
-                  thenumbers << "<span title=\"total (logical) lines\">LLoC #{total}</span>"
-                  thenumbers << ";<b title=\"threads(unique)\">#TIDs (unique): #{threads} (#{uniques})</b>"
+                  f.puts "<td>#{total}</td>"
+                  f.puts "<td>#{threads} (#{uniques})</td>"
                   is_first = false
                 end
                 # thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
-                f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
+                f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a></td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
               end
@@ -328,11 +328,14 @@ $projects.each do |p|
         `echo "EXITCODE                   #{status}" >> #{outfile}`
       end
     else
-      # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>#{outfileprec} 2>&1"
-      system(cmd)
+      if aname == "oct" || aname == "tid" then
+        # Run again to get precision dump
+        cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params} --enable dbg.uncalled --enable allglobs --enable printstats --enable dbg.debug -v --enable dbg.print_dead_code --sets exp.apron.prec-dump #{precfile} 1>#{outfileprec} 2>&1"
+        system(cmd)
+
+        precfiles << precfile
+      end
       puts "-- Done!"
-      precfiles << precfile
     end
     print_res p.id
     proc_linux_res(outfile, p.url, filename)
