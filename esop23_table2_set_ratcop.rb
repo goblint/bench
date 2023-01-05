@@ -25,7 +25,7 @@ cmds.each do |name, cmd|
   end
 end
 if highlighter.nil? then
-  puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
+  # puts "Warning: No syntax highlighter installed (code2html, source-highlight, pygmentize)."
   highlighter = lambda {|f,o| "cp #{f} #{o}"}
 end
 
