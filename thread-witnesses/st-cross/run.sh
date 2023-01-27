@@ -13,15 +13,15 @@ mkdir $RESULTSDIR
 # Run verification
 cp $MYBENCHDIR/ourtool.xml $AUTOACTIVEDIR/generated_yaml/
 
-cd $MYBENCHDIR/../../../ourtool
+cd $AUTOACTIVEDIR/generated_yaml
 # read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $OURTOOLPARALLEL $AUTOACTIVEDIR/generated_yaml/ourtool.xml
+benchexec --tool-directory $MYBENCHDIR/../../../ourtool --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $OURTOOLPARALLEL ourtool.xml
 
 # Run validation
 cp $MYBENCHDIR/ourtool-validate.xml $AUTOACTIVEDIR/generated_yaml/
 
-cd $MYBENCHDIR/../../../ourtool
-benchexec --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL $AUTOACTIVEDIR/generated_yaml/ourtool-validate.xml
+cd $AUTOACTIVEDIR/generated_yaml
+benchexec --tool-directory $MYBENCHDIR/../../../ourtool --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL ourtool-validate.xml
 
 # Merge witness validation results
 cd $RESULTSDIR
