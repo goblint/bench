@@ -2,12 +2,10 @@
 <!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
 <benchmark tool="goblint" timelimit="60 s" hardtimelimit="64 s" memlimit="1 GB" cpuCores="1">
 
-  <resultfiles>messages.json</resultfiles>
+  <resultfiles></resultfiles>
 
   <option name="--conf">conf/bench-yaml-validate.json</option>
   <option name="--enable">dbg.timing.enabled</option>
-  <option name="--result">json-messages</option>
-  <option name="--outfile">messages.json</option>
 
   <!-- after-lock -->
   <option name="--enable">witness.invariant.loop-head</option>
@@ -15,12 +13,8 @@
   <option name="--disable">witness.invariant.other</option>
   <option name="--disable">witness.invariant.accessed</option>
 
-  <!-- validate1 -->
-  <option name="--ana.base.privatization">protection-read</option>
-
-  <columns>
-    <column title="evals">evals = (\d+)</column>
-  </columns>
+  <!-- validate2 -->
+  <option name="--ana.base.privatization">mine</option>
 
   <rundefinition name="protection-read">
   </rundefinition>
@@ -32,13 +26,13 @@
   </rundefinition>
 
   <requiredfiles>RESULTSDIR/LOGDIR/${rundefinition_name}/${taskdef_name}/witness.yml</requiredfiles>
-  <requiredfiles>RESULTSDIR/LOGDIR/protection-read/${taskdef_name}/witness.yml</requiredfiles>
+  <requiredfiles>RESULTSDIR/LOGDIR/mine/${taskdef_name}/witness.yml</requiredfiles>
   <option name="--witness.yaml.unassume">RESULTSDIR/LOGDIR/${rundefinition_name}/${taskdef_name}/witness.yml</option>
-  <option name="--witness.yaml.validate">RESULTSDIR/LOGDIR/protection-read/${taskdef_name}/witness.yml</option>
+  <option name="--witness.yaml.validate">RESULTSDIR/LOGDIR/mine/${taskdef_name}/witness.yml</option>
 
   <tasks name="Pthread">
-    <includesfile>/mnt/goblint-svcomp/goblint-bench/bench/Pthread.set</includesfile>
-    <includesfile>/mnt/goblint-svcomp/goblint-bench/bench/SvComp-Pthread.set</includesfile>
+    <includesfile>../../Pthread.set</includesfile>
+    <includesfile>../../SvComp-Pthread.set</includesfile>
   </tasks>
 
 </benchmark>
