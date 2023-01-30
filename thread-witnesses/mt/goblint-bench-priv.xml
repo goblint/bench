@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="goblint" timelimit="60 s" hardtimelimit="64 s" memlimit="1 GB" cpuCores="1">
+
+  <resultfiles>**.yml</resultfiles>
+  <resultfiles>messages.json</resultfiles>
+
+  <option name="--conf">conf/bench-yaml.json</option>
+  <option name="--enable">dbg.timing.enabled</option>
+  <option name="--result">json-messages</option>
+  <option name="--outfile">messages.json</option>
+
+  <!-- after-lock -->
+  <option name="--enable">witness.invariant.loop-head</option>
+  <option name="--enable">witness.invariant.after-lock</option>
+  <option name="--disable">witness.invariant.other</option>
+  <option name="--disable">witness.invariant.accessed</option>
+
+  <columns>
+    <column title="evals">evals = (\d+)</column>
+  </columns>
+
+  <rundefinition name="protection-read">
+    <option name="--ana.base.privatization">protection-read</option>
+  </rundefinition>
+
+  <rundefinition name="mine">
+    <option name="--ana.base.privatization">mine</option>
+  </rundefinition>
+
+  <rundefinition name="write+lock">
+    <option name="--ana.base.privatization">write+lock</option>
+  </rundefinition>
+
+  <tasks name="Pthread">
+    <includesfile>/mnt/goblint-svcomp/goblint-bench/bench/Pthread.set</includesfile>
+    <includesfile>/mnt/goblint-svcomp/goblint-bench/bench/SvComp-Pthread.set</includesfile>
+  </tasks>
+
+</benchmark>
