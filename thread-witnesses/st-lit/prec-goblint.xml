@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="goblint" timelimit="60 s" hardtimelimit="64 s" memlimit="1 GB" cpuCores="1">
+
+  <resultfiles>**.yml</resultfiles>
+
+  <option name="--conf">conf/svcomp-yaml.json</option>
+  <option name="--enable">dbg.timing.enabled</option>
+  <option name="--set">ana.activated[+]</option><option>apron</option>
+  <option name="--set">ana.apron.domain</option><option>polyhedra</option>
+
+  <columns>
+    <column title="evals">evals = (\d+)</column>
+  </columns>
+
+  <rundefinition name="prec-goblint">
+    <option name="--enable">witness.invariant.loop-head</option>
+    <option name="--disable">witness.invariant.other</option>
+    <option name="--disable">witness.invariant.accessed</option>
+  </rundefinition>
+
+  <tasks name="Prec">
+    <includesfile>/mnt/goblint-svcomp/sv-comp/goblint/sv-comp/my-bench-sv-comp/yaml/Prec.set</includesfile>
+    <propertyfile expectedverdict="true">/mnt/goblint-svcomp/sv-comp/goblint/sv-comp/my-bench-sv-comp/yaml/properties/unreach-call.prp</propertyfile>
+  </tasks>
+
+</benchmark>

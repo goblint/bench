@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="cpachecker" timelimit="900 s" hardtimelimit="960 s" memlimit="6 GB" cpuCores="1">
+
+  <option name="-heap">10000M</option>
+  <option name="-timelimit">900s</option>
+
+  <resultfiles>**/invariantWitnesses/*</resultfiles>
+  <!-- <resultfiles>**</resultfiles> -->
+  <option name="-witness2invariant"/>
+  <option name="-skipRecursion"/>
+  <!-- <option name="-spec">/mnt/goblint-svcomp/sv-comp/goblint/sv-comp/my-bench-sv-comp/yaml/properties/unreach-call.prp</option> -->
+
+  <rundefinition name="prec-cpachecker">
+    <requiredfiles>RESULTSDIR/LOGDIR2/${rundefinition_name}/${taskdef_name}/output/witness.graphml</requiredfiles>
+    <option name="-setprop">invariantStore.witness=RESULTSDIR/LOGDIR2/${rundefinition_name}/${taskdef_name}/output/witness.graphml</option>
+  </rundefinition>
+
+  <rundefinition name="prec-uautomizer">
+    <requiredfiles>RESULTSDIR/LOGDIR4/${rundefinition_name}/${taskdef_name}/witness.graphml</requiredfiles>
+    <option name="-setprop">invariantStore.witness=RESULTSDIR/LOGDIR4/${rundefinition_name}/${taskdef_name}/witness.graphml</option>
+  </rundefinition>
+
+  <tasks name="Prec">
+    <includesfile>/mnt/goblint-svcomp/sv-comp/goblint/sv-comp/my-bench-sv-comp/yaml/Prec.set</includesfile>
+    <propertyfile expectedverdict="true">/mnt/goblint-svcomp/sv-comp/goblint/sv-comp/my-bench-sv-comp/yaml/properties/unreach-call.prp</propertyfile>
+  </tasks>
+
+</benchmark>
