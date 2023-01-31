@@ -7,7 +7,7 @@
 * `bench` — this repository.
 * `benchexec` — BenchExec version.
 * `CPAchecker-2.2-unix` — CPAchecker from SV-COMP 2023 archives.
-* `ourtool` — our tool, including source code.
+* `ourtool` — our tool, including source code. **NB! Although git authorship has been stripped, the contents of this directory do reveal the unanonymized tool name.**
 * `results` — results directory for scripts.
 * `sv-benchmarks` — SV-COMP 2022 benchmarks, at least ReachSafety-Loops.
 * `UAutomizer-linux` — Ultimate Automizer from SV-COMP 2023 archives.
