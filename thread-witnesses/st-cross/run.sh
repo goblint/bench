@@ -6,6 +6,7 @@ MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 AUTOACTIVEDIR=$MYBENCHDIR/../../../autoactive
 RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self
 OURTOOLPARALLEL=14
+CPACHECKERPARALLEL=4
 VALIDATEPARALLEL=14
 
 mkdir $RESULTSDIR
@@ -22,9 +23,26 @@ cd $RESULTSDIR
 LOGDIR=`echo ourtool.*.files`
 echo $LOGDIR
 
+# Construct conversion XMLs
+cd $MYBENCHDIR
+sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR/$LOGDIR/" convert.xml > $AUTOACTIVEDIR/generated_yaml/convert.xml
+
+# Run conversion
+cd $AUTOACTIVEDIR/generated_yaml
+benchexec --tool-directory $MYBENCHDIR/../../../CPAchecker-2.2-unix --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL convert.xml
+
+cd $RESULTSDIR
+LOGDIR3=`echo convert.*.files`
+echo $LOGDIR3
+
+for dir in $LOGDIR3/cpachecker/* ; do
+    echo $dir
+    cat $dir/output/invariantWitnesses/*.yaml > $dir/witness.yml
+done
+
 # Construct validation XMLs
 cd $MYBENCHDIR
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR/$LOGDIR/" ourtool-validate-self.xml > $AUTOACTIVEDIR/generated_yaml/ourtool-validate-self.xml
+sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR3/$LOGDIR3/" -e "s/LOGDIR/$LOGDIR/" ourtool-validate-self.xml > $AUTOACTIVEDIR/generated_yaml/ourtool-validate-self.xml
 
 # Run validation
 cp $MYBENCHDIR/ourtool-validate.xml $AUTOACTIVEDIR/generated_yaml/
@@ -41,5 +59,6 @@ table-generator ourtool.*.xml.bz2 ourtool-validate-self.*.xml.bz2 ourtool-valida
 
 # Decompress all tool outputs for table HTML links
 unzip -o ourtool.*.logfiles.zip
+unzip -o convert.*.logfiles.zip
 unzip -o ourtool-validate-self.*.logfiles.zip
 unzip -o ourtool-validate.*.logfiles.zip
