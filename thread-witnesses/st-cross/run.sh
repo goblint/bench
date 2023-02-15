@@ -4,7 +4,7 @@ shopt -s extglob
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 AUTOACTIVEDIR=$MYBENCHDIR/../../../autoactive
-RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self
+RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self2
 OURTOOLPARALLEL=4
 CPACHECKERPARALLEL=4
 VALIDATEPARALLEL=4
@@ -35,7 +35,7 @@ cd $RESULTSDIR
 LOGDIR3=`echo convert.*.files`
 echo $LOGDIR3
 
-for dir in $LOGDIR3/cpachecker/* ; do
+for dir in $LOGDIR3/ourtool/* ; do
     echo $dir
     cat $dir/output/invariantWitnesses/*.yaml > $dir/witness.yml
 done
