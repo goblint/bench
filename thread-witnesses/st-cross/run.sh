@@ -4,7 +4,7 @@ shopt -s extglob
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 AUTOACTIVEDIR=$MYBENCHDIR/../../../autoactive
-RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self2
+RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self-location
 OURTOOLPARALLEL=4
 CPACHECKERPARALLEL=4
 VALIDATEPARALLEL=4
@@ -37,7 +37,7 @@ echo $LOGDIR3
 
 for dir in $LOGDIR3/ourtool/* ; do
     echo $dir
-    cat $dir/output/invariantWitnesses/*.yaml > $dir/witness.yml
+    cat $dir/output/invariantWitnesses/*.yaml | sed -e 's|loop_invariant|location_invariant|g' > $dir/witness.yml
 done
 
 # Construct validation XMLs
