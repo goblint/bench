@@ -241,14 +241,14 @@ extern exception ANY;
 
 #define try \
       { \
-          ExceptionContextBlock _ctx; \
-          int _es; \
+          ExceptionContextBlock *_ctx = (ExceptionContextBlock*) malloc(sizeof(ExceptionContextBlock)); \
+          volatile int _es; \
           _es = ES_BODY; \
-          _ctx.lock = NULL; \
+          _ctx->lock = NULL; \
           debugTry("try"); \
           debugTry("push exception stack [es = %d]"); \
-          pushExceptionStack(&_ctx); \
-          if (setjmp(_ctx.jmp) != 0) { \
+          pushExceptionStack(_ctx); \
+          if (setjmp(_ctx->jmp) != 0) { \
               _es = ES_CATCH; \
           } \
           debugTry("setjmp [es = %d]"); \
@@ -257,7 +257,7 @@ extern exception ANY;
 #define catch(e) \
           if (_es == ES_BODY || _es == ES_CAUGHT) _es = ES_FINALLY; \
           debugTry("catch (" #e ") [es = %d]"); \
-          if (_es == ES_CATCH && (_ctx.id == &e || &e == &ANY)) { \
+          if (_es == ES_CATCH && (_ctx->id == &e || &e == &ANY)) { \
               _es = ES_CAUGHT; \
           } if (_es == ES_CAUGHT)
 
@@ -274,12 +274,12 @@ extern exception ANY;
               popExceptionStack(); \
           } \
           if (_es == ES_RETRY) _es = ES_CATCH; \
-          if (_es == ES_CATCH) unwindException(&_ctx); \
+          if (_es == ES_CATCH) unwindException(_ctx); \
       }
 
-#define getExceptionName() _ctx.name
-#define getExceptionValue() _ctx.value
-#define getCurrentException() _ctx.id
+#define getExceptionName() _ctx->name
+#define getExceptionValue() _ctx->value
+#define getCurrentException() _ctx->id
 
 /* Internal entry points -- see implementation for details */
 
