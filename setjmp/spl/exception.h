@@ -275,6 +275,7 @@ extern exception ANY;
           } \
           if (_es == ES_RETRY) _es = ES_CATCH; \
           if (_es == ES_CATCH) unwindException(_ctx); \
+          free(_ctx); \
       }
 
 #define getExceptionName() _ctx->name
