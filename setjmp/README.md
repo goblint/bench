@@ -16,20 +16,14 @@ The set of 40-ish small examples is integrated into the set of regression tests 
 
 > make test
 
-To run only those tests that are associated with setjmp/longjmp, one can
-execute
-
-> ruby scripts/update_suite.rb group longjmp
-
 In order to run one specific example, one may run
 
 > ./regtest.sh 66 NN
 
-where NN is the number at the beginning of the testcase in folder 6.
+where `NN` is the number at the beginning of the testcase in folder `tests/regression/66-longjmp/NN-one.c`.
 One may then inspect a visual representation of the results by serving the
-`result` directory and accessing it via a browser. For details, one can refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/
+`result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/
 
-All these examples have a very short runtime.
 
 # `Libpng` example
 
