@@ -60081,7 +60081,7 @@ static int test_one_file(char const   *inname___0 , char const   *outname___0 )
 #line 960
     png_free((png_const_structrp )read_ptr, (png_voidp )row_buf);
 #line 961
-    if (png_pixels != NULL) free(png_pixels);
+    if (png_pixels != 0) free(png_pixels);
     row_buf = (png_bytep )((void *)0);
 #line 962
     if (verbose != 0) {
