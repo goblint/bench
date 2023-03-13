@@ -40,14 +40,23 @@ To run the program, execute from within this folder/
 >  ../path/to/analyzer/repo/goblint pngtest_combined.c  --conf config.json &> pngtest_out.log
 
 Such a run takes about 50min and 35GB of RAM.
-The warnings that we believe to be indicative of a real bug are the warnings `[Warning][Unknown] accessing poisonous variable row_buf`.
+
+Among other warnings about issues such as possible null-pointer dereferences, six warnings related to the usage of
+setjmp/longjmp are produced.
+
+- The warnings that we believe to be indicative of a real bug are the two warnings `[Warning][Unknown] accessing poisonous variable row_buf`.
+- The three warnings about longjmps leading to potentially invalid targets start with `[Warning][Unknown] Longjmp to potentially invalid target [...]`.
+- The warning about jumping to a jump buffer that may receive its value by copying memory is `[Warning][Unknown] The jump buffer *(png_ptr->jmp_buf_ptr) contains values that were copied here instead of being set by setjmp.`.
 
 ## Bug Injection
 
 We have also injected a bug akin to the one in ImageMagick described in
 [this blog post](https://patrakov.blogspot.com/2009/07/dangers-of-setjmplongjmp.html).
 The corresponding program is also in the libpng folder (`pngtest_seeded_bug.c`).
-It can be run in the same way as the unmodified program.
+To understand the way in which the bug was introduced, it may be helpful to use a diff tool and compare
+`pngtest_combined.c` and `pngtest_seeded_bug.c`.
+
+Goblint can be run on it in the same way as the unmodified program.
 
 The inserted bug is that the variable `png_pixels` is accessed when it has indeterminate value.
 This is reflected in the extra warnings `[Warning][Unknown] accessing poisonous variable png_pixels`.
