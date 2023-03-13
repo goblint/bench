@@ -29,15 +29,29 @@ The runtime for all these litmus tests is negligable.
 
 # `Libpng` example
 
+## Current Version
+
 We have used Goblint's support for compilation DBs and the merger that comes with CIL to produce a single program, making it easier to run these tests.
 
 This program can be found inside the libpng folder.
 
-To run the program, execute
+To run the program, execute from within this folder/
 
->  ./goblint pngtest_combined.c  --conf config.json &> out.txt
+>  ../path/to/analyzer/repo/goblint pngtest_combined.c  --conf config.json &> pngtest_out.log
 
 Such a run takes about 50min and 35GB of RAM.
+The warnings that we believe to be indicative of a real bug are the warnings `[Warning][Unknown] accessing poisonous variable row_buf`.
+
+## Bug Injection
+
+We have also injected a bug akin to the one in ImageMagick described in
+[this blog post](https://patrakov.blogspot.com/2009/07/dangers-of-setjmplongjmp.html).
+The corresponding program is also in the libpng folder (`pngtest_seeded_bug.c`).
+It can be run in the same way as the unmodified program.
+
+The inserted bug is that the variable `png_pixels` is accessed when it has indeterminate value.
+This is reflected in the extra warnings `[Warning][Unknown] accessing poisonous variable png_pixels`.
+
 
 
 # Helpful Links
