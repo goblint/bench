@@ -10,9 +10,10 @@ The relevant branch is this one: https://github.com/goblint/analyzer/tree/longjm
 
 Please follow the installation guide given in https://github.com/goblint/analyzer/blob/longjmp/README.md
 
-# Small Examples
+# Small Litmus Tests
 
-The set of 40-ish small examples is integrated into the set of regression tests for the Goblint. To run all regression tests, one may simply call
+The set of 40-ish small examples is integrated into the set of regression tests for the Goblint.
+To run all regression tests, one may simply (in the analyzer directory) call
 
 > make test
 
@@ -24,6 +25,7 @@ where `NN` is the number at the beginning of the testcase in folder `tests/regre
 One may then inspect a visual representation of the results by serving the
 `result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/
 
+The runtime for all these litmus tests is negligable.
 
 # `Libpng` example
 
