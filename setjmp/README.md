@@ -25,7 +25,7 @@ where `NN` is the number at the beginning of the testcase in folder `tests/regre
 One may then inspect a visual representation of the results by serving the
 `result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/
 
-The runtime for all these litmus tests is negligable.
+The runtime for all these litmus tests is negligible.
 
 # `Libpng` example
 
@@ -41,8 +41,8 @@ To run the program, execute from within this folder/
 
 Such a run takes about 50min and 35GB of RAM.
 
-Among other warnings about issues such as possible null-pointer dereferences, six warnings related to the usage of
-setjmp/longjmp are produced.
+Among other warnings about internal issues of the analyzer related to precision loss, six warnings related to the usage of
+setjmp/longjmp are produced. (There are further warnings about variables having indeterminate value after longjmp. Those are only hints for developers, upon any access to such a variable an actual warning is produced).
 
 - The warnings that we believe to be indicative of a real bug are the two warnings `[Warning][Unknown] accessing poisonous variable row_buf`.
 - The three warnings about longjmps leading to potentially invalid targets start with `[Warning][Unknown] Longjmp to potentially invalid target [...]`.
