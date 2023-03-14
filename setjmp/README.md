@@ -11,6 +11,7 @@ The relevant tag is this one: https://github.com/goblint/analyzer/tree/v2.1.0-lo
 Please follow the installation guide given in https://github.com/goblint/analyzer/tree/v2.1.0-longjmp#readme
 
 # Small Litmus Tests
+## General
 
 The set of 40-ish small examples is integrated into the set of regression tests for the Goblint.
 To run all regression tests, one may simply (in the analyzer directory) call
@@ -23,9 +24,18 @@ In order to run one specific example, one may run
 
 where `NN` is the number at the beginning of the testcase in folder `tests/regression/66-longjmp/NN-one.c`.
 One may then inspect a visual representation of the results by serving the
-`result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/
-
+`result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/.
 The runtime for all these litmus tests is negligible.
+
+## Abstract Stack Unwinding
+
+We would like to particularly point out test `66/22` that demonstrates the need for abstract stack unwinding:
+ - `main` calls `setjmp`
+ - A pointer to `val` is passed to `fun` which sets `val` to `1`.
+ - `fun` then calls `foo`. `foo` is not passed a pointer to `val`, and thus `val` does not appear in its local state.
+ - `foo` causes a `longjmp` back to `main`
+
+Here, in order to account for the modification of `val`, it is necessary to pass values up the callstack, and calling $\textsf{combine}^\sharp$ while unwinding the stack.
 
 # `Libpng` example
 
