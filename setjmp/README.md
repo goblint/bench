@@ -6,9 +6,9 @@ that accompanies our manuscript.
 # Basic Setup
 
 On top of this repository, the Goblint Static Analyzer is needed.
-The relevant branch is this one: https://github.com/goblint/analyzer/tree/longjmp
+The relevant tag is this one: https://github.com/goblint/analyzer/tree/v2.1.0-longjmp
 
-Please follow the installation guide given in https://github.com/goblint/analyzer/blob/longjmp/README.md
+Please follow the installation guide given in https://github.com/goblint/analyzer/tree/v2.1.0-longjmp#readme
 
 # Small Litmus Tests
 
