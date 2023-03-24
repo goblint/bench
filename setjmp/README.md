@@ -58,11 +58,11 @@ To run the program, execute from within this folder/
 Such a run takes about 55min and 26GB of RAM.
 
 Among other warnings about internal issues of the analyzer related to precision loss, six warnings related to the usage of
-setjmp/longjmp are produced. (There are further warnings about variables having indeterminate value after longjmp. Those are only hints for developers, upon any access to such a variable an actual warning is produced).
+setjmp/longjmp are produced.
 
-- The warnings that we believe to be indicative of a real bug are the two warnings `[Warning][Unknown] accessing poisonous variable row_buf`.
-- The three warnings about longjmps leading to potentially invalid targets start with `[Warning][Unknown] Longjmp to potentially invalid target [...]`.
-- The warning about jumping to a jump buffer that may receive its value by copying memory is `[Warning][Unknown] The jump buffer *(png_ptr->jmp_buf_ptr) contains values that were copied here instead of being set by setjmp.`.
+- The warnings that we believe to be indicative of a real bug are the two warnings `[Warning][Behavior > Undefined > Other] Reading poisonous variable row_buf`.
+- The three warnings about longjmps leading to potentially invalid targets start with `[Warning][Behavior > Undefined > Other] Longjmp to potentially invalid target [...]` or `[Warning][Imprecise] Longjmp to potentially invalid target [...]`.
+- The warning about jumping to a jump buffer that may receive its value by copying memory is `[Warning][Behavior > Undefined > Other] The jump buffer *(png_ptr->jmp_buf_ptr) contains values that were copied here instead of being set by setjmp. This is Undefined Behavior.`.
 
 ## Bug Injection
 
