@@ -20,16 +20,16 @@ To run all regression tests, one may simply (in the analyzer directory) call
 
 In order to run one specific example, one may run
 
-> ./regtest.sh 66 NN
+> ./regtest.sh 68 NN
 
-where `NN` is the number at the beginning of the testcase in folder `tests/regression/66-longjmp/NN-one.c`.
+where `NN` is the number at the beginning of the testcase in folder `tests/regression/68-longjmp/NN-one.c`.
 One may then inspect a visual representation of the results by serving the
 `result` directory and accessing it via a browser. For details, refer to https://goblint.readthedocs.io/en/latest/user-guide/inspecting/.
 The runtime for all these litmus tests is negligible.
 
 ## Abstract Stack Unwinding
 
-We would like to particularly point out test `66/22` that demonstrates the need for abstract stack unwinding:
+We would like to particularly point out test `68/22` that demonstrates the need for abstract stack unwinding:
  - `main` calls `setjmp`
  - A pointer to `val` is passed to `fun` which sets `val` to `1`.
  - `fun` then calls `foo`. `foo` is not passed a pointer to `val`, and thus `val` does not appear in its local state.
