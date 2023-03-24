@@ -49,7 +49,7 @@ To run the program, execute from within this folder/
 
 >  ../path/to/analyzer/repo/goblint pngtest_combined.c  --conf config.json &> pngtest_out.log
 
-Such a run takes about 50min and 35GB of RAM.
+Such a run takes about 55min and 26GB of RAM.
 
 Among other warnings about internal issues of the analyzer related to precision loss, six warnings related to the usage of
 setjmp/longjmp are produced. (There are further warnings about variables having indeterminate value after longjmp. Those are only hints for developers, upon any access to such a variable an actual warning is produced).
