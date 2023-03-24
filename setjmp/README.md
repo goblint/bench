@@ -16,11 +16,15 @@ Please follow the installation guide given in https://github.com/goblint/analyze
 The set of 40-ish small examples is integrated into the set of regression tests for the Goblint.
 To run all regression tests, one may simply (in the analyzer directory) call
 
-> make test
+~~~console
+make test
+~~~
 
 In order to run one specific example, one may run
 
-> ./regtest.sh 68 NN
+~~~console
+./regtest.sh 68 NN
+~~~
 
 where `NN` is the number at the beginning of the testcase in folder `tests/regression/68-longjmp/NN-one.c`.
 One may then inspect a visual representation of the results by serving the
@@ -47,7 +51,9 @@ This program can be found inside the libpng folder.
 
 To run the program, execute from within this folder/
 
->  ../path/to/analyzer/repo/goblint pngtest_combined.c  --conf config.json &> pngtest_out.log
+~~~console
+../path/to/analyzer/repo/goblint pngtest_combined.c  --conf config.json &> pngtest_out.log
+~~~
 
 Such a run takes about 55min and 26GB of RAM.
 
