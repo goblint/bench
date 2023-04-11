@@ -4,8 +4,8 @@ shopt -s extglob
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 RESULTSDIR=$MYBENCHDIR/../../../results/st-same
-OURTOOLPARALLEL=14
-VALIDATEPARALLEL=14
+OURTOOLPARALLEL=4
+VALIDATEPARALLEL=4
 
 mkdir $RESULTSDIR
 

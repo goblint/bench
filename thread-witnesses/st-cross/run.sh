@@ -4,7 +4,7 @@ shopt -s extglob
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 AUTOACTIVEDIR=$MYBENCHDIR/../../../autoactive
-RESULTSDIR=$MYBENCHDIR/../../../results/st-cross-self-location
+RESULTSDIR=$MYBENCHDIR/../../../results/st-cross
 OURTOOLPARALLEL=4
 CPACHECKERPARALLEL=4
 VALIDATEPARALLEL=4

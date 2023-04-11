@@ -3,11 +3,11 @@
 shopt -s extglob
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RESULTSDIR=$MYBENCHDIR/../../../results/st-lit-location
-OURTOOLPARALLEL=14
+RESULTSDIR=$MYBENCHDIR/../../../results/st-lit
+OURTOOLPARALLEL=4
 CPACHECKERPARALLEL=4
 ULTIMATEPARALLEL=4
-VALIDATEPARALLEL=14
+VALIDATEPARALLEL=4
 
 mkdir $RESULTSDIR
 
