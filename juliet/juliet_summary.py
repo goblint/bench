@@ -74,7 +74,7 @@ def check_path(filepath):
 # '_good' or '_bad' determined by input parameter 'mode'
 def goblint_cmd(filepath, filename, mode):
 	func = re.sub('a?\.c$', mode, filename) # File ending is cut and replaced by mode
-	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --set "mainfun[+]" ' + func + ' --set ana.malloc.unique_address_count 1 --enable dbg.debug --enable dbg.timing.enabled'
+	cmd = goblint_path + ' ' + filepath + ' ' + testsupport_files + ' -I ' + testsupport_path + ' --set "mainfun[+]" ' + func + ' --set ana.malloc.unique_address_count 1 --enable warn.debug --enable dbg.timing.enabled'
 	print(filename + ' -- ' + mode[1:] + '     ', end='\r')
 	process = subprocess.run(cmd, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 	#title = '#####################\n' + mode.upper() + '\n#####################\n\n'

@@ -291,7 +291,7 @@ $projects.each do |p|
     precfile = $testresults + File.basename(filename,".c") + ".#{aname}.prec"
     starttime = Time.now
     #Add --sets cilout /dev/null to ignore CIL output.
-    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v 1>#{outfile} 2>&1"
+    cmd = "#{goblint} --conf #{goblint_conf} --set dbg.timeout #{timeout} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable warn.debug -v 1>#{outfile} 2>&1"
     system(cmd)
     status = $?.exitstatus
     endtime   = Time.now
@@ -313,7 +313,7 @@ $projects.each do |p|
       end
     else
       # Run again to get precision dump
-      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable dbg.debug -v --sets exp.relation.prec-dump #{precfile} 1>/dev/null 2>&1"
+      cmd = "#{goblint} --conf #{goblint_conf} #{aparam} #{filename} #{p.params}  --enable allglobs --enable dbg.timing.enabled --enable warn.debug -v --sets exp.relation.prec-dump #{precfile} 1>/dev/null 2>&1"
       # system(cmd)
       puts "-- Done!"
       precfiles << precfile
