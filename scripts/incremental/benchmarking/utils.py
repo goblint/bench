@@ -70,7 +70,7 @@ def reset_incremental_data(incr_data_dir):
 def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash, outdir, conf, extra_options, files):
 
     gr.checkout(commit_hash)
-    conf_path = os.path.join(analyzer_dir, 'conf', conf + '.json')
+    conf_path = conf
 
     # Creat the analyze command
     file_list = []
@@ -79,7 +79,7 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
             return os.path.join(repo_path, file)
         file_list = list(map(append_to_repo_path, files))
 
-    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), *file_list, *extra_options]
+    analyze_command = [os.path.join(analyzer_dir, 'goblint'), '--conf', conf_path, *file_list, *extra_options]
     # If the list of files was empty, we pass the repo_path to goblint
     if not files:
         analyze_command.append(repo_path)
@@ -117,7 +117,7 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
         outfile.close()
 
 def compare_runs(analyzer_dir, dummy_c_file, outdir, conf, compare_data_1, compare_data_2):
-    options = ['--conf', os.path.join(analyzer_dir, 'conf', conf + '.json'), '--disable', 'warn.warning', '--disable', 'warn.race', '--disable', 'dbg.compare_runs.diff', '--disable', 'dbg.compare_runs.eqsys', '--enable', 'dbg.compare_runs.node', '--compare_runs', compare_data_1, compare_data_2]
+    options = ['--conf', conf, '--disable', 'warn.warning', '--disable', 'warn.race', '--disable', 'dbg.compare_runs.diff', '--disable', 'dbg.compare_runs.eqsys', '--enable', 'dbg.compare_runs.node', '--compare_runs', compare_data_1, compare_data_2]
     analyze_command = [os.path.join(analyzer_dir, 'goblint'), *options, dummy_c_file]
     with open(os.path.join(outdir, comparelog), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
