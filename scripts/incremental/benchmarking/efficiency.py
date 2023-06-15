@@ -199,31 +199,30 @@ def collect_data(outdir):
             data["Change in number of race warnings"].append(0)
             continue
 
-        parent_info = utils.extract_from_analyzer_log(parent_log)
-        child_non_incr_info = utils.extract_from_analyzer_log(child_non_incr_log)
-        child_info = utils.extract_from_analyzer_log(child_log)
-        child_posts_info = utils.extract_from_analyzer_log(child_posts_log)
-        child_posts_rel_info = utils.extract_from_analyzer_log(child_posts_rel_log)
-        data["Changed/Added/Removed functions"].append(int(child_info["changed"]) + int(child_info["added"]) + int(child_info["removed"]))
-        data[utils.runtime_header_parent].append(float(parent_info["runtime"]))
-        data[utils.runtime_header_non_incr_child].append(float(child_non_incr_info["runtime"]))
-        data[utils.runtime_header_incr_child].append(float(child_info["runtime"]))
-        data[utils.runtime_header_incr_posts_child].append(float(child_posts_info["runtime"]))
-        data[utils.runtime_header_incr_posts_rel_child].append(float(child_posts_rel_info["runtime"]))
+        logs = [parent_log, child_non_incr_log, child_log, child_posts_log, child_posts_rel_log]
+        headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
+        infos = list(map(utils.extract_from_analyzer_log, logs))
 
-        data[utils.analysis_header_parent].append(float(parent_info["analysis_time"]))
-        data[utils.analysis_header_non_incr_child].append(float(child_non_incr_info["analysis_time"]))
-        data[utils.analysis_header_incr_child].append(float(child_info["analysis_time"]))
-        data[utils.analysis_header_incr_posts_child].append(float(child_posts_info["analysis_time"]))
-        data[utils.analysis_header_incr_posts_rel_child].append(float(child_posts_rel_info["analysis_time"]))
+        data["Changed/Added/Removed functions"].append(int(infos[1]["changed"]) + int(infos[1]["added"]) + int(infos[1]["removed"]))
 
-        data[utils.solving_header_parent].append(float(parent_info["solving_time"]))
-        data[utils.solving_header_non_incr_child].append(float(child_non_incr_info["solving_time"]))
-        data[utils.solving_header_incr_child].append(float(child_info["solving_time"]))
-        data[utils.solving_header_incr_posts_child].append(float(child_posts_info["solving_time"]))
-        data[utils.solving_header_incr_posts_rel_child].append(float(child_posts_rel_info["solving_time"]))
+        field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
+        field_indexes = ["runtime", "analysis_time", "solving_time"]
 
-        data["Change in number of race warnings"].append(int(child_info["race_warnings"] - int(parent_info["race_warnings"])))
+        for field in range(field_indexes.__len__()):
+            header_prefix = field_prefixes[field]
+            field_index = field_indexes[field]
+            for config in range(logs.__len__()):
+                header = header_prefix + headers[config]
+                info = infos[config]
+                data[header].append(float(info[field_index]))
+
+        parent_index = 0
+        parent_info = infos[parent_index]
+
+        child_non_incr_index = 2
+        child_non_incr_info = infos[child_non_incr_index]
+
+        data["Change in number of race warnings"].append(int(child_non_incr_info["race_warnings"] - int(parent_info["race_warnings"])))
     return data
 
 def runperprocess(core, from_c, to_c):
