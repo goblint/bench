@@ -178,41 +178,32 @@ def collect_data(outdir):
         data["Relevant changed LOC"].append(commit_prop["relCLOC"])
         data["Failed?"].append(commit_prop["failed"])
         data["Commit"].append(commit_prop["hash"][:7])
+
+        config_headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
+        field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
+        field_indexes = ["runtime", "analysis_time", "solving_time"]
+
         if commit_prop["failed"] == True:
-            data[utils.runtime_header_parent].append(0)
-            data[utils.runtime_header_non_incr_child].append(0)
-            data[utils.runtime_header_incr_child].append(0)
-            data[utils.runtime_header_incr_posts_child].append(0)
-            data[utils.runtime_header_incr_posts_rel_child].append(0)
-            data[utils.analysis_header_parent].append(0)
-            data[utils.analysis_header_non_incr_child].append(0)
-            data[utils.analysis_header_incr_child].append(0)
-            data[utils.analysis_header_incr_posts_child].append(0)
-            data[utils.analysis_header_incr_posts_rel_child].append(0)
-            data[utils.solving_header_parent].append(0)
-            data[utils.solving_header_non_incr_child].append(0)
-            data[utils.solving_header_incr_child].append(0)
-            data[utils.solving_header_incr_posts_child].append(0)
-            data[utils.solving_header_incr_posts_rel_child].append(0)
+            for field in range(field_indexes.__len__()):
+                header_prefix = field_prefixes[field]
+                field_index = field_indexes[field]
+                for config in range(config_headers.__len__()):
+                    header = header_prefix + config_headers[config]
+                    data[header].append(float(0))
 
             data["Changed/Added/Removed functions"].append(0)
             data["Change in number of race warnings"].append(0)
             continue
 
         logs = [parent_log, child_non_incr_log, child_log, child_posts_log, child_posts_rel_log]
-        headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
         infos = list(map(utils.extract_from_analyzer_log, logs))
-
         data["Changed/Added/Removed functions"].append(int(infos[1]["changed"]) + int(infos[1]["added"]) + int(infos[1]["removed"]))
-
-        field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
-        field_indexes = ["runtime", "analysis_time", "solving_time"]
 
         for field in range(field_indexes.__len__()):
             header_prefix = field_prefixes[field]
             field_index = field_indexes[field]
-            for config in range(logs.__len__()):
-                header = header_prefix + headers[config]
+            for config in range(config_headers.__len__()):
+                header = header_prefix + config_headers[config]
                 info = infos[config]
                 data[header].append(float(info[field_index]))
 
