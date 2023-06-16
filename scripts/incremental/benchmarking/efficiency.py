@@ -174,6 +174,9 @@ def collect_data(outdir):
         for config in config_headers:
             data[prefix + config] = []
 
+    if not os.path.exists(outdir):
+        return
+
     for t in os.listdir(outdir):
         parent_log = os.path.join(outdir, t, 'parent', utils.analyzerlog)
         child_non_incr_log = os.path.join(outdir, t, 'child-non-incr', utils.analyzerlog)
@@ -236,6 +239,7 @@ def runperprocess(core, from_c, to_c):
           shutil.rmtree(outdir)
         analyze_small_commits_in_repo(cwd, outdir, from_c, to_c)
     data_set = collect_data(outdir)
+
     df = pd.DataFrame(data_set)
     #df.sort_index(inplace=True, key=lambda idx: idx.map(lambda x: int(x.split(":")[0])))
     print(df)
