@@ -156,11 +156,19 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
     print("Failed: ", count_failed)
     print("Skipped: ", count_skipped)
 
+def add_version_with_cpu_suffix(strings):
+    string_with_cpu_suffix = list(map (lambda prefix : "CPU_" + prefix , strings))
+    return strings + string_with_cpu_suffix
+
 def collect_data(outdir):
     data = {"Commit": [], "Failed?": [], "Changed LOC": [], "Relevant changed LOC": [], "Changed/Added/Removed functions": [], "Change in number of race warnings": []}
 
     config_headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
     field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
+    field_indexes = ["runtime", "analysis_time", "solving_time"]
+
+    field_prefixes = add_version_with_cpu_suffix(field_prefixes)
+    field_indexes = add_version_with_cpu_suffix(field_indexes)
 
     for prefix in field_prefixes:
         for config in config_headers:
@@ -180,7 +188,6 @@ def collect_data(outdir):
         data["Failed?"].append(commit_prop["failed"])
         data["Commit"].append(commit_prop["hash"][:7])
 
-        field_indexes = ["runtime", "analysis_time", "solving_time"]
 
         if commit_prop["failed"] == True:
             for field in range(field_indexes.__len__()):
