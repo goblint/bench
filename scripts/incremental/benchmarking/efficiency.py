@@ -157,14 +157,15 @@ def analyze_small_commits_in_repo(cwd, outdir, from_c, to_c):
     print("Skipped: ", count_skipped)
 
 def collect_data(outdir):
-    data = {"Commit": [], "Failed?": [], "Changed LOC": [], "Relevant changed LOC": [], "Changed/Added/Removed functions": [],
-      utils.runtime_header_parent: [], utils.runtime_header_non_incr_child: [], utils.runtime_header_incr_child: [],
-      utils.runtime_header_incr_posts_child: [], utils.runtime_header_incr_posts_rel_child: [],
-      utils.analysis_header_parent: [], utils.analysis_header_non_incr_child: [], utils.analysis_header_incr_child: [],
-      utils.analysis_header_incr_posts_child: [], utils.analysis_header_incr_posts_rel_child: [],
-      utils.solving_header_parent: [], utils.solving_header_non_incr_child: [], utils.solving_header_incr_child: [],
-      utils.solving_header_incr_posts_child: [], utils.solving_header_incr_posts_rel_child: [],
-      "Change in number of race warnings": []}
+    data = {"Commit": [], "Failed?": [], "Changed LOC": [], "Relevant changed LOC": [], "Changed/Added/Removed functions": [], "Change in number of race warnings": []}
+
+    config_headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
+    field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
+
+    for prefix in field_prefixes:
+        for config in config_headers:
+            data[prefix + config] = []
+
     for t in os.listdir(outdir):
         parent_log = os.path.join(outdir, t, 'parent', utils.analyzerlog)
         child_non_incr_log = os.path.join(outdir, t, 'child-non-incr', utils.analyzerlog)
@@ -179,8 +180,6 @@ def collect_data(outdir):
         data["Failed?"].append(commit_prop["failed"])
         data["Commit"].append(commit_prop["hash"][:7])
 
-        config_headers = [utils.header_parent, utils.header_non_incr_child, utils.header_incr_child, utils.header_incr_posts_child, utils.header_incr_posts_rel_child]
-        field_prefixes = [utils.runtime_prefix, utils.analysis_prefix, utils.solving_prefix]
         field_indexes = ["runtime", "analysis_time", "solving_time"]
 
         if commit_prop["failed"] == True:
@@ -197,7 +196,11 @@ def collect_data(outdir):
 
         logs = [parent_log, child_non_incr_log, child_log, child_posts_log, child_posts_rel_log]
         infos = list(map(utils.extract_from_analyzer_log, logs))
-        data["Changed/Added/Removed functions"].append(int(infos[1]["changed"]) + int(infos[1]["added"]) + int(infos[1]["removed"]))
+
+
+        child_incr_index = 2
+        child_incr_info = infos[child_incr_index]
+        data["Changed/Added/Removed functions"].append(int(child_incr_info["changed"]) + int(child_incr_info["added"]) + int(child_incr_info["removed"]))
 
         for field in range(field_indexes.__len__()):
             header_prefix = field_prefixes[field]
@@ -210,7 +213,7 @@ def collect_data(outdir):
         parent_index = 0
         parent_info = infos[parent_index]
 
-        child_non_incr_index = 2
+        child_non_incr_index = 1
         child_non_incr_info = infos[child_non_incr_index]
 
         data["Change in number of race warnings"].append(int(child_non_incr_info["race_warnings"] - int(parent_info["race_warnings"])))
