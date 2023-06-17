@@ -1,18 +1,14 @@
-import argparse
-import os
-import shutil
-import sys
-sys.path.insert(0, "..")
-from util.util import *
-from util.add_check import add_check
-from util.add_check_comments import add_check_comments
-from generators.generate_mutations import *
-from generators.generate_ml import *
-from generators.generate_git import *
+from add_check import add_check
+from add_check_comments import add_check_comments
+from generate_git import *
+from generate_ml import *
+from generate_mutations import *
 
 generate_type_source = "SOURCE"
 
-def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations, enable_ml, enable_git, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
+
+def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations,
+                      enable_ml, enable_git, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
     # Clean working directory
     if os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
@@ -66,30 +62,34 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             failed_count += 1
             failed_compilation_keys.append(key)
     if failed_count == 0:
-        print(f"\r{COLOR_GREEN}All files compiled succesfully{COLOR_RESET}")
+        print(f"\r{COLOR_GREEN}All files compiled successfully{COLOR_RESET}")
     else:
-        print(f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
+        print(
+            f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
 
-if __name__ == '__main__':
+
+def main():
     parser = argparse.ArgumentParser(description='Generate programs in the working directory')
     parser.add_argument('source_path', help='Path to the original program or git sh file provided by the user')
     parser.add_argument('temp_dir', help='Path to the working directory')
     parser.add_argument('clang_tidy_path', help='Path to the modified clang-tidy executable')
     parser.add_argument('goblint_path', help='Path to the goblint executable')
     parser.add_argument('--apikey-path', help='Path to the API')
-    parser.add_argument('--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
+    parser.add_argument('--enable-mutations', action='store_true',
+                        help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('--enable-ml', action='store_true', help='Enable ML')
     parser.add_argument('--enable-git', action='store_true', help='Enable Git')
     parser.add_argument('--ml-count', type=int, default=DEFAULT_ML_COUNT, help='Number of ML programs to generate')
     parser.add_argument('--ml-select', type=int, default=DEFAULT_ML_SELECT, help='Number of selected lines for ML')
-    parser.add_argument('--ml-interesting', default="[]", help='Lines to randomly choose the start line for selection (Defaul are all lines)')
+    parser.add_argument('--ml-interesting', default="[]",
+                        help='Lines to randomly choose the start line for selection (Default are all lines)')
     parser.add_argument('--ml-16k', action='store_true', help='Use the 16k mode for ml')
     parser.add_argument('--git-start', help='The starting commit hash for git generation')
     parser.add_argument('--git-end', help='The ending commit hash for git generation')
 
     # Add mutation options
     add_mutation_options(parser)
-    
+
     args = parser.parse_args()
 
     # At least one generator has to be enabled
@@ -110,15 +110,20 @@ if __name__ == '__main__':
     if args.enable_ml and not args.apikey_path:
         parser.error("--enable-ml requires --apikey-path")
 
-    # Check ml intersting string
-    if args.ml_interesting != "[]" and validate_interesting_lines(args.ml_interesting, None) == None:
+    # Check ml interesting string
+    if args.ml_interesting != "[]" and validate_interesting_lines(args.ml_interesting, None) is None:
         sys.exit(-1)
 
     # Check git commit hashes
     git_start_commit = args.git_start
     git_end_commit = args.git_end
-    if (git_start_commit == None and git_end_commit != None) or (git_start_commit != None and git_end_commit == None):
+    if (git_start_commit is None and git_end_commit is not None) or (git_start_commit is not None and git_end_commit is None):
         parser.error('[ERROR] Give a git start commit hash AND a end commit hash')
 
-    generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path, mutations, args.enable_mutations, args.enable_ml, args.enable_git, args.ml_count, args.ml_select, args.ml_interesting, args.ml_16k, args.git_start, args.git_end)
+    generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path,
+                      mutations, args.enable_mutations, args.enable_ml, args.enable_git, args.ml_count, args.ml_select,
+                      args.ml_interesting, args.ml_16k, args.git_start, args.git_end)
 
+
+if __name__ == '__main__':
+    main()

@@ -1,13 +1,11 @@
 import argparse
 import os
-import shutil
 import subprocess
-import re
 import sys
-
 import questionary
-sys.path.insert(0, "..")
-from util.util import *
+
+from util import *
+
 
 def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     # When the directory has a starting number >99 rename it for in place running of the tests
@@ -22,7 +20,6 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
         test_dir = os.path.join(os.path.dirname(test_dir), new_name)
     else:
         print(f"{COLOR_RED}[ERROR] The test directory had not the format number-text{COLOR_RESET}")
-
 
     # Check the name of the test_dir
     test_dir_name = os.path.basename(test_dir)
@@ -72,6 +69,7 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     shutil.rmtree(test_dir)
     os.chdir(original_dir)
 
+
 def get_params_from_file(filename):
     param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
 
@@ -81,11 +79,13 @@ def get_params_from_file(filename):
             if match:
                 params = match.group(1).strip()
                 return params
-                
+
     return ""
 
+
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Run the tests in the specified test directory with the ruby script from Goblint')
+    parser = argparse.ArgumentParser(
+        description='Run the tests in the specified test directory with the ruby script from Goblint')
     parser.add_argument('program_path', help='Path to the input file of the user')
     parser.add_argument('test_dir', help='Path to the directory with the tests (WARNING Will be removed!)')
     parser.add_argument('goblint_repo_dir', help='Path to the Goblint repository')

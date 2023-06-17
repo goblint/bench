@@ -17,7 +17,7 @@ Alternatively you can clone the **Fork** with all the additional checks ready:
 `git clone https://github.com/J2000A/llvm-project.git`
 
 ## Creating the checks
- - [ ] When you cloned the Official Clang Repository you need to add the checks. Otherwise you can skip this part.
+ - [ ] When you cloned the Official Clang Repository you need to add the checks. Otherwise, you can skip this part.
  - [ ] Move to the directory `llvm-project/clang-tools-extra`
 
 In this directory are the implementations of the checks with their corresponding `.cpp` and `.h` file. In the following we will use the **>>check-name<<** of each check. You can get it by the filename without the word "Check" at the end and changing the capital letters to small ones with a minus in front (e.g. the >>check-name<< of `RemoveFunctionBodyCheck.cpp` is `remove-function-body`). Repeat the following steps for all new checks.
@@ -30,7 +30,7 @@ Now you have added all the check we need for the mutations.
 
 ## Build
 The first build can take a while (up to multiple hours). But you can increase the performance by changing the parallel compile and link jobs. For me using the value 5 for both of them got me the fastest results. When using too many jobs the memory becomes a bottleneck. You can check the memory status with `free -h --giga`.
-Additionally you may need to change the build target. Avaiable targets are: AMDGPU, ARM, AVR, BPF, Hexagon, Lanai, LoongArch, Mips, MSP430, NVPTX, PowerPC, RISCV, Sparc, SystemZ, VE, WebAssembly, X86, XCore
+Additionally, you may need to change the build target. Available targets are: AMDGPU, ARM, AVR, BPF, Hexagon, Lanai, LoongArch, Mips, MSP430, NVPTX, PowerPC, RISCV, Sparc, SystemZ, VE, WebAssembly, X86, XCore
 
  - [ ] Move to the directory `llvm-project/`
  - [ ] `mkdir build && cd build`

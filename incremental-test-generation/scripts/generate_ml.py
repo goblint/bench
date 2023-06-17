@@ -1,16 +1,15 @@
 import argparse
 import ast
-import os
 import random
 import sys
 import time
-import openai
-import yaml
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Lock
 
-sys.path.insert(0, "..")
-from util.util import *
+import openai
+import yaml
+
+from util import *
 
 SEPERATOR_EXPLANATION_START = 'EXPLANATION>'
 SEPERATOR_EXPLANATION_END = '<EXPLANATION_END'
@@ -19,6 +18,7 @@ SEPERATOR_CODE_END = '<CODE_END'
 
 error_counter = 0
 
+
 def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lines, interesting_lines, ml_16k):
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
@@ -26,7 +26,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     yaml_data[META_N] = index + ml_count
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
-    
+
     # Read the api key and organisation
     with open(apikey_path, 'r') as file:
         data = yaml.safe_load(file)
@@ -36,7 +36,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     # Authenticate
     openai.organization = organisation
     openai.api_key = api_key
-    
+
     # Get interesting lines
     with open(program_path, "r") as file:
         max_line = len(file.readlines())
@@ -44,31 +44,38 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
         num_selected_lines = max_line
     interesting_lines = validate_interesting_lines(interesting_lines, program_path)
     interesting_lines = _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line)
-    
+
     print(SEPERATOR)
-    interesting_lines_string = 'Start lines are randomly choosen from all lines.' if interesting_lines == [] else f' Start lines are randomly choosen from {interesting_lines}.'
-    print(f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
+    interesting_lines_string = 'Start lines are randomly chosen from all lines.' if interesting_lines == [] else f' Start lines are randomly chosen from {interesting_lines}.'
+    print(
+        f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
     file_lock = Lock()
     with ThreadPoolExecutor(max_workers=ML_WORKERS) as executor:
         for i in range(ml_count):
-            executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ml_16k, num_selected_lines, max_line, index + i + 1, file_lock)
+            executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ml_16k,
+                            num_selected_lines, max_line, index + i + 1, file_lock)
 
     print(SEPERATOR)
-    print('Check if all ML requests finsihed succesfully...')
-    print(f'{COLOR_GREEN}Finished all requests.{COLOR_RESET}' + (f'{COLOR_RED} {error_counter} failed with an exception.{COLOR_RESET}' if error_counter > 0 else ''))
+    print('Check if all ML requests finished successfully...')
+    print(f'{COLOR_GREEN}Finished all requests.{COLOR_RESET}' + (
+        f'{COLOR_RED} {error_counter} failed with an exception.{COLOR_RESET}' if error_counter > 0 else ''))
 
     return index + ml_count
 
-def _iterative_mutation_generation(program_path, meta_path, interesting_lines, ml_16k, num_selected_lines, max_line, index, lock):
+
+def _iterative_mutation_generation(program_path, meta_path, interesting_lines, ml_16k, num_selected_lines, max_line,
+                                   index, lock):
     try:
-        time.sleep((index * 50)/1000) # Sleep depending on index to print the start messages in the right order
+        time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
-        (explanation, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index)
+        (explanation, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines,
+                                                        max_line, index)
         _write_meta_data(meta_path, selected_lines, explanation, index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
         _write_meta_data(meta_path, [], '', index, lock, exception=e)
     return index
+
 
 def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index):
     # Get the original lines
@@ -81,7 +88,8 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     for i in selected_lines:
         snippet += lines[i]
 
-    print(f"[{index}][{Generate_Type.ML.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
+    print(
+        f"[{index}][{GenerateType.ML.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
 
     # Get response from gpt
     response = _make_gpt_request(snippet, ml_16k)
@@ -120,8 +128,8 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     limited_explanation = "\n".join(explanation_lines[:4])
     print(f'{COLOR_GREEN}[{index}] Finished request:{COLOR_RESET} {limited_explanation}')
 
-    return (explanation, selected_lines)
-    
+    return explanation, selected_lines
+
 
 def _write_meta_data(meta_path, selected_lines, explanation, index, lock, exception=None):
     lock.acquire()
@@ -129,22 +137,23 @@ def _write_meta_data(meta_path, selected_lines, explanation, index, lock, except
     try:
         with open(meta_path, 'r') as file:
             yaml_data = yaml.safe_load(file)
-        if exception == None:
+        if exception is None:
             yaml_data[f"p_{index}"] = {
-                META_TYPE: Generate_Type.ML.value,
+                META_TYPE: GenerateType.ML.value,
                 META_SUB_TYPE: explanation,
                 META_LINES: f'[{selected_lines.start}, {selected_lines.stop}]'
             }
         else:
             error_counter += 1
             yaml_data[f"p_{index}"] = {
-                META_TYPE: Generate_Type.ML.value,
+                META_TYPE: GenerateType.ML.value,
                 META_EXCEPTION: str(exception)
             }
         with open(meta_path, 'w') as file:
             yaml.safe_dump(yaml_data, file)
     finally:
         lock.release()
+
 
 def _make_gpt_request(snippet, ml_16k):
     prompt = f'''
@@ -170,7 +179,7 @@ def _make_gpt_request(snippet, ml_16k):
 
     response = openai.ChatCompletion.create(
         model=model,
-        n = 1,
+        n=1,
         messages=[
             {"role": "user", "content": prompt},
         ]
@@ -178,49 +187,56 @@ def _make_gpt_request(snippet, ml_16k):
 
     return response
 
+
 def _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line):
     for i in range(len(interesting_lines)):
         interesting_lines[i] = int(interesting_lines[i])
         # Adjust for line array starting with 0 but in input first line is 1
         interesting_lines[i] -= 1
-        # When line + num_selected_lines is greater then max_line correct the line downwards
-        if interesting_lines[i] + num_selected_lines > (max_line):
-            interesting_lines[i] =  (max_line) - num_selected_lines
+        # When line + num_selected_lines is greater than max_line correct the line downwards
+        if interesting_lines[i] + num_selected_lines > max_line:
+            interesting_lines[i] = max_line - num_selected_lines
     return interesting_lines
 
+
 def _select_lines(interesting_lines, num_selected_lines, max_line):
-    if interesting_lines == []:
-        selected_line = random.randint(0, (max_line) - num_selected_lines)
+    if not interesting_lines:
+        selected_line = random.randint(0, max_line - num_selected_lines)
     else:
         selected_line = random.choice(interesting_lines)
     return range(selected_line, selected_line + num_selected_lines)
 
-def validate_interesting_lines(intersting_lines_string: str, program_path):
-    if program_path != None:
+
+def validate_interesting_lines(interesting_lines_string: str, program_path):
+    if program_path is not None:
         with open(program_path, "r") as file:
             max_line = len(file.readlines())
     else:
         max_line = None
 
     try:
-        intersting_lines = ast.literal_eval(intersting_lines_string)
+        interesting_lines = ast.literal_eval(interesting_lines_string)
     except SyntaxError:
-        print(f"{COLOR_RED}The format \"{intersting_lines_string}\" is incorrect! Please use a format like this: \"[1, 42, 99]\"{COLOR_RESET}")
+        print(
+            f"{COLOR_RED}The format \"{interesting_lines_string}\" is incorrect! Please use a format like this: \"[1, 42, 99]\"{COLOR_RESET}")
         return None
     except Exception as e:
-        print(f"{COLOR_RED}An unexpected error occurred reading the input \"{intersting_lines_string}\":{COLOR_RESET} {e}")
+        print(
+            f"{COLOR_RED}An unexpected error occurred reading the input \"{interesting_lines_string}\":{COLOR_RESET} {e}")
         return None
-    
-    if max_line != None:
-        for line in intersting_lines:
+
+    if max_line is not None:
+        for line in interesting_lines:
             if line <= 0:
-                print(f"{COLOR_RED}All lines in \"{intersting_lines_string}\" should be greater zero!{COLOR_RESET}")
+                print(f"{COLOR_RED}All lines in \"{interesting_lines_string}\" should be greater zero!{COLOR_RESET}")
                 return None
             if line > max_line:
-                print(f"{COLOR_RED}All lines in \"{intersting_lines_string}\" should be below the maximum line {max_line}!{COLOR_RESET}")
+                print(
+                    f"{COLOR_RED}All lines in \"{interesting_lines_string}\" should be below the maximum line {max_line}!{COLOR_RESET}")
                 return None
-        
-    return intersting_lines
+
+    return interesting_lines
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate mutations with ML.")
@@ -235,8 +251,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     interesting_lines = validate_interesting_lines(args.interesting_lines, args.program)
-    if interesting_lines == None:
+    if interesting_lines is None:
         print(f'{COLOR_RED}Stopped program execution{COLOR_RESET}')
         sys.exit(-1)
 
-    generate_ml(args.program, args.apikey, args.meta_path, int(args.ml_count), int(args.num_selected_lines), interesting_lines, args.model_16k)
+    generate_ml(args.program, args.apikey, args.meta_path, int(args.ml_count), int(args.num_selected_lines),
+                interesting_lines, args.model_16k)

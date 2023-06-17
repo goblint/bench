@@ -6,11 +6,12 @@
 import argparse
 import re
 
+
 def add_check_comments(file_path: str, unknown_instead_of_success: bool):
     with open(file_path, 'r') as file:
         lines = file.readlines()
         modified_lines = []
-        
+
         for line in lines:
             if '__goblint_check(' in line:
                 match = re.search(r'(__goblint_check\(.*?\);)', line)
@@ -22,16 +23,17 @@ def add_check_comments(file_path: str, unknown_instead_of_success: bool):
                         modified_line += ' //SUCCESS'
                     line = line.replace(match.group(1), modified_line)
             modified_lines.append(line)
-        
+
         new_file_name = file_path.rsplit('.', 1)[0] + ('_unknown.c' if unknown_instead_of_success else '_success.c')
         with open(new_file_name, 'w') as new_file:
             new_file.writelines(modified_lines)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="Path to the C file")
     parser.add_argument("-u", "--undefined", action="store_true", help="Option for //UNDEFINED")
-    parser.add_argument("-s", "--success", action="store_true", help="ption for //SUCCESS")
+    parser.add_argument("-s", "--success", action="store_true", help="Option for //SUCCESS")
     args = parser.parse_args()
 
     if not (args.undefined or args.success):

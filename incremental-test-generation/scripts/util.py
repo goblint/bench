@@ -2,6 +2,7 @@ from enum import Enum
 import re
 import shutil
 
+
 class Mutations:
     def __init__(self, rfb=False, uoi=False, ror=False, cr=False, rt=False, lcr=False):
         self.rfb = rfb
@@ -17,11 +18,13 @@ class Mutations:
         self.lcr = lcr
         self.lcr_s = "logical-connector-replacement"
 
-class Generate_Type(Enum):
+
+class GenerateType(Enum):
     SOURCE = 'SOURCE'
     MUTATION = 'MUTATION'
     ML = 'ML'
     GIT = 'GIT'
+
 
 COLOR_RED = '\033[31m'
 COLOR_BLUE = '\033[34m'
@@ -58,18 +61,21 @@ DEFAULT_ML_COUNT = 5
 DEFAULT_ML_SELECT = 50
 ML_WORKERS = 5
 
+
 def make_program_copy(program_path, index):
     new_path = program_path.rsplit('.', 1)[0] + '_' + str(index) + '.c'
     shutil.copy2(program_path, new_path)
     return new_path
 
-def check_test_name(directoryName):
-    if directoryName is None or not isinstance(directoryName, str):
-        print(f"{COLOR_RED}[ERROR] Target Directory name {directoryName} is not a string{COLOR_RESET}")
+
+def check_test_name(directory_name):
+    if directory_name is None or not isinstance(directory_name, str):
+        print(f"{COLOR_RED}[ERROR] Target Directory name {directory_name} is not a string{COLOR_RESET}")
         return False
-    
+
     pattern = r"\d{2}-\w+"
-    if not re.match(pattern, directoryName):
-        print(f"{COLOR_RED}[ERROR] Target Directory name {directoryName} is not of the format 01-Name (\d{{2}}-\w+){COLOR_RESET}")
+    if not re.match(pattern, directory_name):
+        print(
+            f"{COLOR_RED}[ERROR] Target Directory name {directory_name} is not of the format 01-Name (\d{{2}}-\w+){COLOR_RESET}")
         return False
     return True

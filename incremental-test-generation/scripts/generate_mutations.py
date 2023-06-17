@@ -3,13 +3,13 @@
 
 import argparse
 import json
-import os
-import re
 import subprocess
 import sys
+
 import yaml
-sys.path.insert(0, "..")
-from util.util import *
+
+from util import *
+
 
 def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
     with open(meta_path, 'r') as file:
@@ -31,30 +31,33 @@ def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
 
     return index
 
+
 def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutation_name, index):
     print(SEPERATOR)
-    print(f"[{Generate_Type.MUTATION.value}] {mutation_name}")
-    lineGroups = _get_line_groups(clang_tidy_path, mutation_name, program_path, index)
-    for lines in lineGroups:
+    print(f"[{GenerateType.MUTATION.value}] {mutation_name}")
+    line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path)
+    for lines in line_groups:
         index += 1
         new_path = make_program_copy(program_path, index)
         if mutation_name == Mutations().rt_s:
-            # When Remove Thread create wrapper an then apply the mutations
+            # When Remove Thread create wrapper and then apply the mutations
             if len(lines) != 1:
                 # Needed to prevent conflicts on generating wrappers
-                print(f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
+                print(
+                    f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
             function_name = _get_thread_function_name(clang_tidy_path, lines, new_path, index)
             _wrap_thread_function(clang_tidy_path, new_path, function_name, index)
         _apply_mutation(clang_tidy_path, mutation_name, lines, new_path, index)
         _write_meta_data(meta_path, index, mutation_name, lines)
     return index
 
-def _get_line_groups(clang_tidy_path, mutation_name, program_path, index):
+
+def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     command = [
-    clang_tidy_path,
-    "-checks=-*,readability-" + mutation_name,
-    program_path,
-    "--"
+        clang_tidy_path,
+        "-checks=-*,readability-" + mutation_name,
+        program_path,
+        "--"
     ]
 
     result = subprocess.run(command, text=True, capture_output=True)
@@ -93,8 +96,9 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path, index):
     print(f"[MUTATION][CHECK RESULT] Mutation {mutation_name} can be applied to lines {line_groups}")
     return sorted(line_groups, key=lambda x: x[0])
 
+
 def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
-    lines_mapped = [[x,x] for x in lines]
+    lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
     command = [
@@ -116,8 +120,9 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
         print(f"{COLOR_RED}ERROR Running Clang{COLOR_RESET}")
         sys.exit(-1)
 
+
 def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
-    lines_mapped = [[x,x] for x in lines]
+    lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
     command = [
@@ -147,9 +152,11 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
     print(f"[{index}][WRAP RESULT] Found the thread function name {function_name}")
     return function_name
 
+
 def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
-    if function_name == None:
-        print(f"{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
+    if function_name is None:
+        print(
+            f"{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
         return
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
@@ -170,30 +177,39 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
         print(f"{COLOR_RED}ERROR Running Clang{COLOR_RESET}")
         sys.exit(-1)
 
+
 def _write_meta_data(meta_path, index, mutation_name, lines):
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
     yaml_data[META_N] = index
     yaml_data[f"p_{index}"] = {
-        META_TYPE: Generate_Type.MUTATION.value,
+        META_TYPE: GenerateType.MUTATION.value,
         META_SUB_TYPE: mutation_name,
         META_LINES: lines
     }
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
 
+
 def add_mutation_options(parser):
-    parser.add_argument("-rfb", "--remove-function-body", action="store_true", help="Option for \"remove function body\" mutation")
-    parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true", help="Option for \"unary operator inversion\" mutation")
-    parser.add_argument("-ror", "--relational-operator-replacement", action="store_true", help="Option for \"relational operator replacement\" mutation")
-    parser.add_argument("-cr", "--constant-replacement", action="store_true", help="Option for \"constant replacement\" mutation")
+    parser.add_argument("-rfb", "--remove-function-body", action="store_true",
+                        help="Option for \"remove function body\" mutation")
+    parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true",
+                        help="Option for \"unary operator inversion\" mutation")
+    parser.add_argument("-ror", "--relational-operator-replacement", action="store_true",
+                        help="Option for \"relational operator replacement\" mutation")
+    parser.add_argument("-cr", "--constant-replacement", action="store_true",
+                        help="Option for \"constant replacement\" mutation")
     parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" mutation")
-    parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true", help="Option for \"logical connector replacement\" mutation")
+    parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true",
+                        help="Option for \"logical connector replacement\" mutation")
+
 
 def get_mutations_from_args(args):
     return Mutations(args.remove_function_body, args.unary_operator_inversion,
-                                 args.relational_operator_replacement, args.constant_replacement,
-                                 args.remove_thread, args.logical_connector_replacement)
+                     args.relational_operator_replacement, args.constant_replacement,
+                     args.remove_thread, args.logical_connector_replacement)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate all possible mutations of a program.")
