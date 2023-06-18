@@ -38,17 +38,18 @@ for file in "$dir"/*.c
 do
     # Check if file contains "FAIL", "UNKNOWN", or "NOWARN"
     if grep -q "FAIL\|UNKNOWN\|NOWARN" "$file"; then
-        printf "${color_yellow}Skipping file $file due to contained keywords (FAIL, UNKNOWN, NOWARN)${color_reset}\n"
+        printf "${color_yellow}[BATCH] Skipping file $file due to contained keywords (FAIL, UNKNOWN, NOWARN)${color_reset}\n"
         skipped_files+=("$file")
     else
         # Run the command with remaining arguments
+        printf "${color_blue}[BATCH] Running file $file${color_reset}\n"
         ./RUN.sh -i "$file" "$@"
 
         # If RUN.sh returned != 0, ask for pressing enter to continue
         if [ $? -ne 0 ]; then
-            printf "${color_red}Run returned non-zero value. Likely a test failed.\n"
+            printf "${color_red}[BATCH] Run for file $file returned non-zero value. Maybe a test failed.\n"
             if $confirm ; then
-                printf "${color_blue}Press enter to continue...${color_reset}"
+                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
                 read _
             fi
             error_files+=("$file")
@@ -57,6 +58,8 @@ do
         fi
     fi
 done
+
+printf "${color_green}[BATCH] Batch finished\n"
 
 # Print all success files
 if [ ${#success_files[@]} -ne 0 ]; then
@@ -78,7 +81,7 @@ fi
 
 # Print all error files
 if [ ${#error_files[@]} -ne 0 ]; then
-    printf "${color_red}The following ${#error_files[@]} files produced a return code unequeal zero (Likely some tests failed):\n"
+    printf "${color_red}The following ${#error_files[@]} files produced a return code unequeal zero (Maybe some tests failed):\n"
     for file in "${error_files[@]}"; do
         printf "$file\n"
     done
