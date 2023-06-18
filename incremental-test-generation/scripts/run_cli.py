@@ -43,6 +43,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, is_git, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end)
 
     # Run tests
+    ret = ret_prec = 0
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
         if enable_precision:
@@ -52,14 +53,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                run_tests(input_path, path, goblint_path, cfg)
+                ret_prec = run_tests(input_path, path, goblint_path, cfg)
         print(SEPERATOR)
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, temp_name=True)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
-            run_tests(input_path, path, goblint_path, cfg)
+            ret = run_tests(input_path, path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
@@ -80,6 +81,9 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
+
+    if ret != 0 or ret_prec != 0:
+        sys.exit(1)
 
 
 def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, git_no_commit):

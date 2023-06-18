@@ -69,6 +69,8 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     shutil.rmtree(test_dir)
     os.chdir(original_dir)
 
+    return process.returncode
+
 
 def get_params_from_file(filename):
     param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
