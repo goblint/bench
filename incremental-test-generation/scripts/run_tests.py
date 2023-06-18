@@ -39,7 +39,7 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     ruby_path_abs = os.path.abspath(os.path.join(goblint_repo_dir, "scripts", "update_suite.rb"))
     params = get_params_from_file(program_path)
     if params != "":
-        print(f"\n{COLOR_YELLOW}Using parameters from input file:{COLOR_RESET} {params}")
+        print(f"\n{COLOR_BLUE}Using parameters from input file:{COLOR_RESET} {params}")
     original_dir = os.getcwd()
     os.chdir(goblint_repo_dir)
     command = f"{ruby_path_abs} group temp -p \"{params}\" -i"
