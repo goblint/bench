@@ -385,10 +385,6 @@ static struct result_list merge2(struct result_list list1 , struct result_list l
   result.size = list1.size + list2.size;
   tmp = malloc(result.size * sizeof(struct scored_result ));
   result.list = (struct scored_result *)tmp;
-  if (! result.list) {
-    fprintf((FILE * __restrict  )stderr, (char const   * __restrict  )"Error: Can\'t allocate memory\n");
-    abort();
-  }
   while (1) {
     if (index1 < list1.size) {
       if (! (index2 < list2.size)) {
@@ -683,6 +679,5 @@ int tty_interface_run(tty_interface_t *state )
     }
 
   }
-  return (state->exit);
 }
 }

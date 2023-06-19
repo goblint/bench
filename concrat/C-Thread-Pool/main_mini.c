@@ -52,7 +52,6 @@ struct thpool_ *thpool_init(int num_threads ) ;
 int thpool_add_work(struct thpool_ *thpool_p , void (*function_p)(void * ) , void *arg_p ) ;
 void thpool_wait(struct thpool_ *thpool_p ) ;
 void thpool_destroy(struct thpool_ *thpool_p ) ;
-int thpool_num_threads_working(struct thpool_ *thpool_p ) ;
 static int volatile   threads_keepalive  ;
 static int volatile   threads_on_hold  ;
 static int thread_init(thpool_ *thpool_p , struct thread **thread_p , int id ) ;
@@ -79,28 +78,13 @@ struct thpool_ *thpool_init(int num_threads )
   {
   threads_on_hold = (int volatile   )0;
   threads_keepalive = (int volatile   )1;
-  if (num_threads < 0) {
-    num_threads = 0;
-  }
   tmp = malloc(sizeof(struct thpool_ ));
   thpool_p = (struct thpool_ *)tmp;
-  if ((unsigned long )thpool_p == (unsigned long )((void *)0)) {
-    return ((struct thpool_ *)((void *)0));
-  }
   thpool_p->num_threads_alive = (int volatile   )0;
   thpool_p->num_threads_working = (int volatile   )0;
   tmp___0 = jobqueue_init(& thpool_p->jobqueue);
-  if (tmp___0 == -1) {
-    free((void *)thpool_p);
-    return ((struct thpool_ *)((void *)0));
-  }
   tmp___1 = malloc((unsigned long )num_threads * sizeof(struct thread *));
   thpool_p->threads = (struct thread **)tmp___1;
-  if ((unsigned long )thpool_p->threads == (unsigned long )((void *)0)) {
-    jobqueue_destroy(& thpool_p->jobqueue);
-    free((void *)thpool_p);
-    return ((struct thpool_ *)((void *)0));
-  }
   pthread_mutex_init(& thpool_p->thcount_lock, (pthread_mutexattr_t const   *)((void *)0));
   pthread_cond_init((pthread_cond_t * __restrict  )(& thpool_p->threads_all_idle),
                     (pthread_condattr_t const   * __restrict  )((void *)0));
@@ -123,9 +107,6 @@ int thpool_add_work(struct thpool_ *thpool_p , void (*function_p)(void * ) , voi
   {
   tmp = malloc(sizeof(struct job ));
   newjob = (struct job *)tmp;
-  if ((unsigned long )newjob == (unsigned long )((void *)0)) {
-    return (-1);
-  }
   newjob->function = function_p;
   newjob->arg = arg_p;
   jobqueue_push(& thpool_p->jobqueue, newjob);
@@ -161,9 +142,6 @@ void thpool_destroy(struct thpool_ *thpool_p )
   int n ;
 
   {
-  if ((unsigned long )thpool_p == (unsigned long )((void *)0)) {
-    return;
-  }
   threads_total = thpool_p->num_threads_alive;
   threads_keepalive = (int volatile   )0;
   TIMEOUT = 1.0;
@@ -197,14 +175,6 @@ void thpool_destroy(struct thpool_ *thpool_p )
 }
 }
 
-int thpool_num_threads_working(struct thpool_ *thpool_p ) 
-{ 
-
-
-  {
-  return ((int )thpool_p->num_threads_working);
-}
-}
 static int thread_init(thpool_ *thpool_p , struct thread **thread_p , int id ) 
 { 
   void *tmp ;
@@ -212,9 +182,6 @@ static int thread_init(thpool_ *thpool_p , struct thread **thread_p , int id )
   {
   tmp = malloc(sizeof(struct thread ));
   *thread_p = (struct thread *)tmp;
-  if ((unsigned long )*thread_p == (unsigned long )((void *)0)) {
-    return (-1);
-  }
   (*thread_p)->thpool_p = thpool_p;
   (*thread_p)->id = id;
   pthread_create((pthread_t * __restrict  )(& (*thread_p)->pthread), (pthread_attr_t const   * __restrict  )((void *)0),
@@ -298,9 +265,6 @@ static int jobqueue_init(jobqueue *jobqueue_p )
   jobqueue_p->rear = (job *)((void *)0);
   tmp = malloc(sizeof(struct bsem ));
   jobqueue_p->has_jobs = (struct bsem *)tmp;
-  if ((unsigned long )jobqueue_p->has_jobs == (unsigned long )((void *)0)) {
-    return (-1);
-  }
   pthread_mutex_init(& jobqueue_p->rwmutex, (pthread_mutexattr_t const   *)((void *)0));
   bsem_init(jobqueue_p->has_jobs, 0);
   return (0);
@@ -383,12 +347,6 @@ static void bsem_init(struct bsem *bsem_p , int value )
 
 
   {
-  if (value < 0) {
-    exit(1);
-  } else
-  if (value > 1) {
-    exit(1);
-  }
   pthread_mutex_init(& bsem_p->mutex, (pthread_mutexattr_t const   *)((void *)0));
   pthread_cond_init((pthread_cond_t * __restrict  )(& bsem_p->cond), (pthread_condattr_t const   * __restrict  )((void *)0));
   bsem_p->v = value;

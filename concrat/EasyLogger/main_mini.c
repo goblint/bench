@@ -59,7 +59,7 @@ struct sembuf {
 };
 
 ElogErrCode elog_init(void) ;
-void elog_deinit(void) ;
+
 void elog_start(void) ;
 
 void elog_set_output_enabled(_Bool enabled ) ;
@@ -81,17 +81,8 @@ ElogErrCode elog_init(void)
 
   {
   result = (ElogErrCode )0;
-  if ((int )elog.init_ok == 1) {
-    return (result);
-  }
   result = elog_port_init();
-  if ((unsigned int )result != 0U) {
-    return (result);
-  }
   result = elog_async_init();
-  if ((unsigned int )result != 0U) {
-    return (result);
-  }
   elog_output_lock_enabled((_Bool)1);
   elog.output_is_locked_before_enable = (_Bool)0;
   elog.output_is_locked_before_disable = (_Bool)0;
@@ -103,21 +94,6 @@ ElogErrCode elog_init(void)
 }
 }
 void elog_port_deinit(void) ;
-void elog_async_deinit(void) ;
-void elog_deinit(void) 
-{ 
-
-
-  {
-  if (! elog.init_ok) {
-    return;
-  }
-  elog_async_deinit();
-  elog_port_deinit();
-  elog.init_ok = (_Bool)0;
-  return;
-}
-}
 void elog_start(void) 
 { 
 
@@ -137,18 +113,6 @@ void elog_set_output_enabled(_Bool enabled )
 
 
   {
-  if (! ((int )enabled == 0)) {
-    if (! ((int )enabled == 1)) {
-      if ((unsigned long )elog_assert_hook == (unsigned long )((void *)0)) {
-        while (1) {
-
-        }
-      } else {
-        (*elog_assert_hook)("(enabled == false) || (enabled == true)", "elog_set_output_enabled",
-                            (size_t )275);
-      }
-    }
-  }
   elog.output_enabled = enabled;
   return;
 }
@@ -159,15 +123,6 @@ void elog_set_filter_lvl(uint8_t level )
 
 
   {
-  if (! ((int )level <= 5)) {
-    if ((unsigned long )elog_assert_hook == (unsigned long )((void *)0)) {
-      while (1) {
-
-      }
-    } else {
-      (*elog_assert_hook)("level <= ELOG_LVL_VERBOSE", "elog_set_filter_lvl", (size_t )342);
-    }
-  }
   elog.filter.level = level;
   return;
 }
@@ -193,21 +148,6 @@ void elog_output_lock_enabled(_Bool enabled )
 
   {
   elog.output_lock_enabled = enabled;
-  if (elog.output_lock_enabled) {
-    if (! elog.output_is_locked_before_disable) {
-      if (elog.output_is_locked_before_enable) {
-        elog_port_output_lock();
-      } else {
-        goto _L;
-      }
-    } else
-    _L: /* CIL Label */ 
-    if (elog.output_is_locked_before_disable) {
-      if (! elog.output_is_locked_before_enable) {
-        elog_port_output_unlock();
-      }
-    }
-  }
   return;
 }
 }
@@ -388,10 +328,6 @@ size_t elog_async_get_log(char *log , size_t size )
     size = (size_t )0;
     goto __exit;
   } else
-  if (! size) {
-    size = (size_t )0;
-    goto __exit;
-  }
   if (used <= size) {
     size = used;
     buf_is_empty = (_Bool)1;
@@ -424,8 +360,6 @@ void elog_async_output(uint8_t level , char const   *log , size_t size )
       if (put_size > 0UL) {
         elog_async_output_notice();
       }
-    } else {
-      elog_port_output(log, size);
     }
   } else {
     elog_port_output(log, size);
@@ -457,7 +391,6 @@ static void *async_output(void *arg )
       }
     }
   }
-  return ((void *)0);
 }
 }
 void elog_async_enabled(_Bool enabled ) 
@@ -475,9 +408,6 @@ ElogErrCode elog_async_init(void)
   int tmp ;
   {
   result = (ElogErrCode )0;
-  if (init_ok) {
-    return (result);
-  }
   sem_init(& output_notice, 0, 0U);
   thread_running = (_Bool)1;
   pthread_attr_init(& thread_attr);
@@ -491,20 +421,6 @@ ElogErrCode elog_async_init(void)
   pthread_attr_destroy(& thread_attr);
   init_ok = (_Bool)1;
   return (result);
-}
-}
-void elog_async_deinit(void) 
-{ 
-  {
-  if (! init_ok) {
-    return;
-  }
-  thread_running = (_Bool)0;
-  elog_async_output_notice();
-  pthread_join(async_output_thread, (void **)((void *)0));
-  sem_destroy(& output_notice);
-  init_ok = (_Bool)0;
-  return;
 }
 }
 
@@ -566,24 +482,6 @@ void elog_file_write(char const   *log , size_t size )
   long tmp___1 ;
   {
   file_size = (size_t )0;
-  if (! init_ok___0) {
-    if ((unsigned long )elog_assert_hook == (unsigned long )((void *)0)) {
-      while (1) {
-
-      }
-    } else {
-      (*elog_assert_hook)("init_ok", "elog_file_write", (size_t )114);
-    }
-  }
-  if (! log) {
-    if ((unsigned long )elog_assert_hook == (unsigned long )((void *)0)) {
-      while (1) {
-
-      }
-    } else {
-      (*elog_assert_hook)("log", "elog_file_write", (size_t )115);
-    }
-  }
   fseek(fp, 0L, 2);
   tmp = ftell(fp);
   file_size = (size_t )tmp;
@@ -602,31 +500,6 @@ void elog_file_write(char const   *log , size_t size )
 }
 }
 static int semid  =    -1;
-static void lock_init(void) ;
-static void lock_init(void) 
-{ 
-  int id ;
-  int rc ;
-  long tmp ;
-  {
-  id = semget(428934674, 1, 1974);
-  tmp = __builtin_expect((long )(! (! (id == -1))), 1L);
-  if (tmp) {
-  
-    if (id == -1) {
-      goto __exit;
-    }
-  } else {
-
-    if (rc == -1) {
-      goto __exit;
-    }
-  }
-  semid = id;
-  __exit: 
-  return;
-}
-}
 static pthread_mutex_t output_lock  ;
 ElogErrCode elog_port_init(void) 
 { 
@@ -638,25 +511,11 @@ ElogErrCode elog_port_init(void)
   return (result);
 }
 }
-void elog_port_deinit(void) 
-{ 
-  {
-  pthread_mutex_destroy(& output_lock);
-  return;
-}
-}
 void elog_port_output(char const   *log , size_t size ) 
 { 
   {
   printf((char const   * __restrict  )"%.*s", (int )size, log);
   elog_file_write(log, size);
-  return;
-}
-}
-void elog_port_output_lock(void) 
-{ 
-  {
-  pthread_mutex_lock(& output_lock);
   return;
 }
 }
@@ -678,7 +537,6 @@ int main(void)
   elog_init();
   elog_start();
   test_elog();
-  return (0);
 }
 }
 static void test_elog(void) 
