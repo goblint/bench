@@ -45,17 +45,20 @@ fi
 
 # Find .c files in subdirectories of the specified directory
 files=$(find "$dir" -type f -name "*.c")
+files_length=$(find "$dir" -type f -name "*.c" | wc -l)
 
 # Iterate over the found files
+index=0
 for file in $files
 do
+    ((index=index+1))
     # Check if file contains keywords
     if grep -q "FAIL\|UNKNOWN\|WARN\|RACE\|DEADLOCK" "$file"; then
-        printf "${color_yellow}[BATCH] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK)${color_reset}\n"
+        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK)${color_reset}\n"
         skipped_files+=("$file")
     else
         # Run the command with remaining arguments
-        printf "${color_blue}[BATCH] Running file $file${color_reset}\n"
+        printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
         ./RUN.sh -i "$file" "$@"
 
         # Check for different return values
@@ -93,8 +96,9 @@ done
 
 success_length=${#success_files[@]}
 skipped_length=${#skipped_files[@]}
-error_length=${#error_files[@]}
-total_length=$((success_length + skipped_length + error_length))
+nothing_length=${#failed_nothing_files[@]}
+failed_length=${#failed_files[@]}
+exception_length=${#exception_files[@]}
 printf "\n\n${color_green}[BATCH] Batch finished running $total_length input files \n\n"
 
 # Print all skipped files
@@ -117,7 +121,7 @@ fi
 
 # Print all files for which the test failed (but only nothing)
 if [ ${#failed_nothing_files[@]} -ne 0 ]; then
-    printf "${color_orange}The following files failed the tests, but only \"Expected *, but registered nothing\":\n"
+    printf "${color_orange}The following $nothing_length files failed the tests, but only \"Expected *, but registered nothing\":\n"
     for file in "${failed_nothing_files[@]}"; do
         printf "$file\n"
     done
@@ -126,7 +130,7 @@ fi
 
 # Print all files for which the test failed
 if [ ${#failed_files[@]} -ne 0 ]; then
-    printf "${color_red}The following files failed the tests:\n"
+    printf "${color_red}The following $failed_length files failed the tests:\n"
     for file in "${failed_files[@]}"; do
         printf "$file\n"
     done
@@ -136,7 +140,7 @@ fi
 
 # Print all files for which an exception occurred during execution
 if [ ${#exception_files[@]} -ne 0 ]; then
-    printf "${color_red}The following files experienced an exception during execution:\n"
+    printf "${color_red}The following $exception_length files experienced an exception during execution:\n"
     for file in "${exception_files[@]}"; do
         printf "$file\n"
     done
