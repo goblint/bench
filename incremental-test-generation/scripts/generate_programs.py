@@ -112,7 +112,7 @@ def main():
 
     # Check ml interesting string
     if args.ml_interesting != "[]" and validate_interesting_lines(args.ml_interesting, None) is None:
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     # Check git commit hashes
     git_start_commit = args.git_start

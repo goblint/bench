@@ -18,9 +18,9 @@ def add_check_comments(file_path: str, unknown_instead_of_success: bool):
                 if match:
                     modified_line = match.group(1)
                     if unknown_instead_of_success:
-                        modified_line += ' //UNKNOWN //SUCCESS'
+                        modified_line += ' // UNKNOWN or SUCCESS'
                     else:
-                        modified_line += ' //SUCCESS'
+                        modified_line += ' // SUCCESS'
                     line = line.replace(match.group(1), modified_line)
             modified_lines.append(line)
 
@@ -32,11 +32,11 @@ def add_check_comments(file_path: str, unknown_instead_of_success: bool):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="Path to the C file")
-    parser.add_argument("-u", "--undefined", action="store_true", help="Option for //UNDEFINED")
-    parser.add_argument("-s", "--success", action="store_true", help="Option for //SUCCESS")
+    parser.add_argument("-u", "--unknown", action="store_true", help="Option for // UNKNOWN")
+    parser.add_argument("-s", "--success", action="store_true", help="Option for // SUCCESS")
     args = parser.parse_args()
 
-    if not (args.undefined or args.success):
-        parser.error("Error: Invalid option. Provide -u for \"//UNDEFINED\" or -s for \"//SUCCESS\".")
+    if not (args.unknown or args.success):
+        parser.error("Error: Invalid option. Provide -u for \"//UNKNOWN\" or -s for \"//SUCCESS\".")
 
-    add_check_comments(args.file, args.undefined)
+    add_check_comments(args.file, args.unknown)

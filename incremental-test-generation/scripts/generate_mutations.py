@@ -3,8 +3,10 @@
 
 import argparse
 import json
+import os
 import subprocess
 import sys
+import tempfile
 
 import yaml
 
@@ -53,11 +55,14 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mut
 
 
 def _get_line_groups(clang_tidy_path, mutation_name, program_path):
+    program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
+    shutil.copy(program_path, program_path_temp)
+
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
         "--fix-errors",
-        program_path,
+        program_path_temp,
         "--"
     ]
 
@@ -67,7 +72,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     line_groups = []
     pattern = r":(\d+):.*\[readability-" + mutation_name + r"\]"
@@ -94,6 +99,8 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     # Remove duplicate line groups
     line_groups = [list(x) for x in set(tuple(x) for x in line_groups)]
 
+    os.remove(program_path_temp)
+
     print(f"[MUTATION][CHECK RESULT] Mutation {mutation_name} can be applied to lines {line_groups}")
     return sorted(line_groups, key=lambda x: x[0])
 
@@ -119,19 +126,22 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Apply){COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
 
 def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
+    program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
+    shutil.copy(program_path, program_path_temp)
+
     lines_mapped = [[x, x] for x in lines]
-    line_filter = [{"name": program_path, "lines": lines_mapped}]
+    line_filter = [{"name": program_path_temp, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + Mutations().rt_s,
         "-line-filter=" + line_filter_json,
         "--fix-errors",
-        program_path,
+        program_path_temp,
         "--"
     ]
     result = subprocess.run(command, text=True, capture_output=True)
@@ -140,7 +150,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Get Function Name){COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     function_name_pattern = r"\[FUNCTION_NAME\]\[(.*?)\]"
     function_name = None
@@ -150,6 +160,8 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
         if function_name_match:
             function_name = function_name_match.group(1)
             break
+
+    os.remove(program_path_temp)
 
     print(f"[{index}][WRAP RESULT] Found the thread function name {function_name}")
     return function_name
@@ -178,7 +190,7 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Wrap){COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
 
 def _write_meta_data(meta_path, index, mutation_name, lines):

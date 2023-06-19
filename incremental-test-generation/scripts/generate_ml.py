@@ -253,7 +253,7 @@ if __name__ == "__main__":
     interesting_lines = validate_interesting_lines(args.interesting_lines, args.program)
     if interesting_lines is None:
         print(f'{COLOR_RED}Stopped program execution{COLOR_RESET}')
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     generate_ml(args.program, args.apikey, args.meta_path, int(args.ml_count), int(args.num_selected_lines),
                 interesting_lines, args.model_16k)

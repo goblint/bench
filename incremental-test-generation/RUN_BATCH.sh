@@ -1,9 +1,11 @@
 #!/bin/bash
 
+color_grey="\033[90m"
 color_red="\033[31m"
 color_blue='\033[34m'
 color_green='\033[32m'
 color_yellow="\033[33m"
+color_orange="\033[38;5;208m"
 color_reset="\033[0m"
 confirm=true
 
@@ -33,56 +35,101 @@ if [[ $1 == "-y" ]]; then
     shift
 fi
 
-# Iterate over .c files in the directory
-for file in "$dir"/*.c
+# Find .c files in subdirectories of the specified directory
+files=$(find "$dir" -type f -name "*.c")
+
+# Iterate over the found files
+for file in $files
 do
-    # Check if file contains "FAIL", "UNKNOWN", or "NOWARN"
-    if grep -q "FAIL\|UNKNOWN\|NOWARN" "$file"; then
-        printf "${color_yellow}[BATCH] Skipping file $file due to contained keywords (FAIL, UNKNOWN, NOWARN)${color_reset}\n"
+    # Check if file contains keywords
+    if grep -q "FAIL\|UNKNOWN\|WARN\|RACE\|DEADLOCK" "$file"; then
+        printf "${color_yellow}[BATCH] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK)${color_reset}\n"
         skipped_files+=("$file")
     else
         # Run the command with remaining arguments
         printf "${color_blue}[BATCH] Running file $file${color_reset}\n"
         ./RUN.sh -i "$file" "$@"
 
-        # If RUN.sh returned != 0, ask for pressing enter to continue
-        if [ $? -ne 0 ]; then
-            printf "${color_red}[BATCH] Run for file $file returned non-zero value. Maybe a test failed.\n"
-            if $confirm ; then
-                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                read _
-            fi
-            error_files+=("$file")
-        else
-            success_files+=("$file")
-        fi
+        # Check for different return values
+        case $? in
+            0)
+                success_files+=("$file")
+                ;;
+            100)
+                printf "${color_red}[BATCH] Test failed for file $file.\n"
+                failed_files+=("$file")
+                if $confirm ; then
+                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                    read _
+                fi
+                ;;
+            101)
+                printf "${color_red}[BATCH] Test failed (but only \"Expected *, but registered nothing\") for file $file.\n"
+                failed_nothing_files+=("$file")
+                if $confirm ; then
+                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                    read _
+                fi
+                ;;
+            *)
+                printf "${color_red}[BATCH] Exception during execution for file $file.\n"
+                exception_files+=("$file")
+                if $confirm ; then
+                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                    read _
+                fi
+                ;;
+        esac
     fi
 done
 
-printf "${color_green}[BATCH] Batch finished\n"
-
-# Print all success files
-if [ ${#success_files[@]} -ne 0 ]; then
-    printf "${color_green}The following ${#success_files[@]} files were run succesfully with all tests passing:\n"
-    for file in "${success_files[@]}"; do
-        printf "$file\n"
-    done
-    printf "${color_reset}\n"
-fi
+success_length=${#success_files[@]}
+skipped_length=${#skipped_files[@]}
+error_length=${#error_files[@]}
+total_length=$((success_length + skipped_length + error_length))
+printf "\n\n${color_green}[BATCH] Batch finished running $total_length input files \n\n"
 
 # Print all skipped files
 if [ ${#skipped_files[@]} -ne 0 ]; then
-    printf "${color_yellow}The following ${#skipped_files[@]} files were skipped due to contained keywords (FAIL, UNKNOWN, NOWARN):\n"
+    printf "${color_grey}The following $skipped_length files were skipped due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK):\n"
     for file in "${skipped_files[@]}"; do
         printf "$file\n"
     done
     printf "${color_reset}\n"
 fi
 
-# Print all error files
-if [ ${#error_files[@]} -ne 0 ]; then
-    printf "${color_red}The following ${#error_files[@]} files produced a return code unequeal zero (Maybe some tests failed):\n"
-    for file in "${error_files[@]}"; do
+# Print all success files
+if [ ${#success_files[@]} -ne 0 ]; then
+    printf "${color_green}The following $success_length files were run succesfully with all tests passing:\n"
+    for file in "${success_files[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+# Print all files for which the test failed (but only nothing)
+if [ ${#failed_nothing_files[@]} -ne 0 ]; then
+    printf "${color_orange}The following files failed the tests, but only \"Expected *, but registered nothing\":\n"
+    for file in "${failed_nothing_files[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+# Print all files for which the test failed
+if [ ${#failed_files[@]} -ne 0 ]; then
+    printf "${color_red}The following files failed the tests:\n"
+    for file in "${failed_files[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+
+# Print all files for which an exception occurred during execution
+if [ ${#exception_files[@]} -ne 0 ]; then
+    printf "${color_red}The following files experienced an exception during execution:\n"
+    for file in "${exception_files[@]}"; do
         printf "$file\n"
     done
     printf "${color_reset}\n"

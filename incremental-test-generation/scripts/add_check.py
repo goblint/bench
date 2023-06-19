@@ -37,7 +37,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str):
         print(f"{COLOR_RED}Error compiling program with index {index}.{COLOR_RESET}")
         if index == 0 and not yaml_data["p_0"][META_TYPE] == GenerateType.GIT.value:
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
-            sys.exit(-1)
+            sys.exit(RETURN_ERROR)
         with open(meta_path, 'r') as file:
             yaml_data = yaml.safe_load(file)
         yaml_data[f"p_{index}"] = {

@@ -14,14 +14,14 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
     if not temp_name and not check_test_name(directory_name):
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     if os.path.exists(target_dir):
         print(f'{COLOR_RED}The test directory {target_dir} already exists.{COLOR_RESET}')
         if questionary.confirm('Replace the directory?', default=True).ask():
             shutil.rmtree(target_dir)
         else:
-            sys.exit(-1)
+            sys.exit(RETURN_ERROR)
     os.makedirs(target_dir)
 
     # Read the meta.yaml
@@ -40,7 +40,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
     if temp_name and int(directory_name[:3]) != 100:
         print(
             f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
     elif temp_name:
         current_dir_num = 100
         original_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
@@ -52,7 +52,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             if not temp_name and current_dir_num > 99:
                 print(
                     f'{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}')
-                sys.exit(-1)
+                sys.exit(RETURN_ERROR)
 
             group_name = re.match(r'\d+-(.*)', directory_name).group(1)
             target_dir = os.path.join(os.path.dirname(target_dir), f'{current_dir_num:02}-{group_name}')
@@ -63,7 +63,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
                 if questionary.confirm('Replace the directory?', default=True).ask():
                     shutil.rmtree(target_dir)
                 else:
-                    sys.exit(-1)
+                    sys.exit(RETURN_ERROR)
             os.mkdir(target_dir)
 
             current_test_num = 0
@@ -112,7 +112,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             end_program_precision = os.path.join(temp_dir, current_program_id + '_check_success.c')
         else:
             print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
-            sys.exit(-1)
+            sys.exit(RETURN_ERROR)
 
         # Copy mutated code as the original code
         shutil.copy2(start_program, os.path.join(target_dir, test_name + '.c'))

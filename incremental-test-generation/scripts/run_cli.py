@@ -44,6 +44,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
 
     # Run tests
     ret = ret_prec = 0
+    only_nothing = only_nothing_prec = True
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
         if enable_precision:
@@ -53,14 +54,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                ret_prec = run_tests(input_path, path, goblint_path, cfg)
+                ret_prec, only_nothing_prec = run_tests(input_path, path, goblint_path, cfg)
         print(SEPERATOR)
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, temp_name=True)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
-            ret = run_tests(input_path, path, goblint_path, cfg)            
+            ret, only_nothing = run_tests(input_path, path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
@@ -83,7 +84,12 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
                 print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
 
     if ret != 0 or ret_prec != 0:
-        sys.exit(1)
+        if only_nothing and only_nothing_prec:
+            sys.exit(RETURN_TEST_FAILED_NOTHING_ONLY)
+        else:
+            sys.exit(RETURN_TEST_FAILED)
+    else:
+        sys.exit(RETURN_SUCCESS)
 
 
 def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, git_no_commit):
@@ -259,7 +265,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             else:
                 input_file = questionary.text('Enter the path to the sh script with information\'s about the git repository (Use [-s] to see the template script ): ', default=last_input_git).ask()
                 config.update({CONFIG_LAST_INPUT_GIT: input_file})
-            if not os.path.exists(input_file):
+            if not os.path.exists(os.path.expanduser(input_file)):
                 print(f"{COLOR_RED}Please enter a valid path.{COLOR_RESET}")
                 continue
             with open(config_path, 'w') as outfile:
@@ -270,7 +276,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
 
 
 def main():
-    print(f'{COLOR_YELLOW}Use [-h] to see the command line options{COLOR_RESET}')
+    print(f'Use [-h] to see the command line options')
     print(logo)
 
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
@@ -316,7 +322,7 @@ def main():
             content = file.read()
         print(content)
         print('')
-        sys.exit(0)
+        sys.exit(RETURN_SUCCESS)
 
     if args.enable_mutations or args.enable_ml or args.enable_git:
         # If using git, only git can be used
@@ -382,7 +388,7 @@ def main():
         ml_select = None
 
     if args.ml_interesting is not None and validate_interesting_lines(args.ml_interesting, None) is None:
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     if args.ml_4k or args.ml_16k:
         # Only one can be selected
@@ -394,11 +400,11 @@ def main():
 
     test_name = args.test_name
     if test_name is not None and not check_test_name(test_name):
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     precision_name = args.precision_name
     if precision_name is not None and not check_test_name(precision_name):
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     cli(args.enable_mutations, args.enable_ml, args.enable_git, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, git_start_commit, git_end_commit, args.git_no_commit)
 

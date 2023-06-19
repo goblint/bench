@@ -25,7 +25,7 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     test_dir_name = os.path.basename(test_dir)
     if test_dir_name != "99-temp":
         print(f"{COLOR_RED}[ERROR] The test directory name has to be \'99-temp\'{COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
     incremental_tests_dir_abs = os.path.abspath(os.path.join(goblint_repo_dir, "tests", "incremental", test_dir_name))
     if os.path.exists(incremental_tests_dir_abs):
@@ -33,11 +33,11 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
         if questionary.confirm('Replace the directory?', default=True).ask():
             shutil.rmtree(incremental_tests_dir_abs)
         else:
-            sys.exit(-1)
+            sys.exit(RETURN_ERROR)
     shutil.copytree(test_dir, incremental_tests_dir_abs)
 
     ruby_path_abs = os.path.abspath(os.path.join(goblint_repo_dir, "scripts", "update_suite.rb"))
-    params = get_params_from_file(program_path)
+    params = _get_params_from_file(program_path)
     if params != "":
         print(f"\n{COLOR_BLUE}Using parameters from input file:{COLOR_RESET} {params}")
     original_dir = os.getcwd()
@@ -47,8 +47,9 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
         command += " -c"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 
-    # Print the output including carriage returns
+    # Process is running, print the output including carriage returns
     line = ''
+    only_nothing_errors = True
     while process.poll() is None:
         char = process.stdout.read(1).decode('utf-8')
         if char == '\r' or char == '\n':
@@ -56,23 +57,42 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
             sys.stdout.flush()
             if char == '\n':
                 print()
+                if only_nothing_errors:
+                    match = re.search(r'registered (\w+)', _remove_ansi_escape_sequences(line))
+                    if match and match.group(1) != 'nothing':
+                        only_nothing_errors = False
             line = ''
         else:
             line += char
-    if line:
-        sys.stdout.write('\r' + line + '\n')
-        sys.stdout.flush()
 
-    process.wait()
+    # Process has finished, but there might be output left to read.
+    while True:
+        char = process.stdout.read(1).decode('utf-8')
+        if not char:
+            break
+        if char == '\r' or char == '\n':
+            sys.stdout.write('\r' + line)
+            sys.stdout.flush()
+            if char == '\n':
+                print()
+                if only_nothing_errors:
+                    match = re.search(r'registered (\w+)', _remove_ansi_escape_sequences(line))
+                    if match and match.group(1) != 'nothing':
+                        only_nothing_errors = False
+            line = ''
+        else:
+            line += char
 
     shutil.rmtree(incremental_tests_dir_abs)
     shutil.rmtree(test_dir)
     os.chdir(original_dir)
 
-    return process.returncode
+    process.wait()
+
+    return process.returncode, only_nothing_errors
 
 
-def get_params_from_file(filename):
+def _get_params_from_file(filename):
     param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
 
     with open(filename, 'r') as f:
@@ -83,6 +103,11 @@ def get_params_from_file(filename):
                 return params
 
     return ""
+
+
+def _remove_ansi_escape_sequences(s):
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', s)
 
 
 if __name__ == '__main__':

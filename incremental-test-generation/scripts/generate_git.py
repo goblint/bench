@@ -56,7 +56,7 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
         f'[GIT] Start traversing {num_of_commits} commits. Including checkout, build and cil generation. This may take a while...')
     if num_of_commits <= 2:
         print(f'{COLOR_RED}You must traverse at least two commits to generate a test!')
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
     t = 0
     # last_failed = False
     for commit in get_commit_traverser():
@@ -120,7 +120,7 @@ def _clone_repo(git_info_sh_path, temp_repo_path):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}Could not clone!{COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
 
 
 def _get_build_path(git_info_sh_path, temp_repo_path):
@@ -130,7 +130,7 @@ def _get_build_path(git_info_sh_path, temp_repo_path):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}Could not get build path!{COLOR_RESET}")
-        sys.exit(-1)
+        sys.exit(RETURN_ERROR)
     build_path = os.path.normpath(result.stdout.strip())
     return build_path
 
