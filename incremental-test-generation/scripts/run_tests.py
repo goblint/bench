@@ -28,9 +28,11 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
         sys.exit(RETURN_ERROR)
 
     incremental_tests_dir_abs = os.path.abspath(os.path.join(goblint_repo_dir, "tests", "incremental", test_dir_name))
+    only_temp_file = os.path.basename(os.path.dirname(incremental_tests_dir_abs)) == 'incremental' and os.path.basename(incremental_tests_dir_abs) == '99-temp'
     if os.path.exists(incremental_tests_dir_abs):
-        print(f'{COLOR_RED}The test directory {incremental_tests_dir_abs} already exists.{COLOR_RESET}')
-        if questionary.confirm('Replace the directory?', default=True).ask():
+        if not only_temp_file:       
+            print(f'{COLOR_RED}The test directory {incremental_tests_dir_abs} already exists.{COLOR_RESET}')
+        if questionary.confirm('Replace the directory?', default=True).ask() or only_temp_file:
             shutil.rmtree(incremental_tests_dir_abs)
         else:
             sys.exit(RETURN_ERROR)
