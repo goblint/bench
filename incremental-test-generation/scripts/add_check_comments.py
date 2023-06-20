@@ -18,7 +18,7 @@ def add_check_comments(file_path: str, unknown_instead_of_success: bool):
                 if match:
                     modified_line = match.group(1)
                     if unknown_instead_of_success:
-                        modified_line += ' // UNKNOWN or SUCCESS'
+                        modified_line += ' // TODO'
                     else:
                         modified_line += ' // SUCCESS'
                     line = line.replace(match.group(1), modified_line)
