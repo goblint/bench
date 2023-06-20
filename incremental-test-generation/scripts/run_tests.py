@@ -94,6 +94,8 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
 
     process.wait()
 
+    print(f'You can find the mutated files in the directory ./temp with their corresponding indexes')
+
     return process.returncode, only_nothing_errors
 
 
