@@ -22,7 +22,8 @@ if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [-y] [additional arguments...]\n"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[-y]: continue at failed tests automatically without asking the user\n"
-    printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli. Recommended: -m -dp -er -dt -ec -c {}\n"
+    printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
+    printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
     exit 1
 fi
 
@@ -53,8 +54,8 @@ for file in $files
 do
     ((index=index+1))
     # Check if file contains keywords
-    if grep -q "FAIL\|UNKNOWN\|WARN\|RACE\|DEADLOCK" "$file"; then
-        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK)${color_reset}\n"
+    if grep -q "FAIL\|UNKNOWN\|WARN\|RACE\|DEADLOCK\|TODO\|SKIP" "$file"; then
+        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK, TODO, SKIP)${color_reset}\n"
         skipped_files+=("$file")
     else
         # Run the command with remaining arguments
@@ -103,7 +104,7 @@ printf "\n\n${color_green}[BATCH] Batch finished running $total_length input fil
 
 # Print all skipped files
 if [ ${#skipped_files[@]} -ne 0 ]; then
-    printf "${color_grey}The following $skipped_length files were skipped due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK):\n"
+    printf "${color_grey}The following $skipped_length files were skipped due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK, TODO, SKIP):\n"
     for file in "${skipped_files[@]}"; do
         printf "$file\n"
     done
