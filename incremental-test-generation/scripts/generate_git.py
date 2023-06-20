@@ -58,7 +58,6 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
         print(f'{COLOR_RED}You must traverse at least two commits to generate a test!')
         sys.exit(RETURN_ERROR)
     t = 0
-    # last_failed = False
     for commit in get_commit_traverser():
         t += 1
         if commit.merge:
@@ -69,16 +68,10 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
             _build_repo(git_info_sh_path, temp_repo_dir, meta_path, commit.hash)
             new_path = os.path.join(temp_dir, f"p_{index}.c")
             _create_cil_file(goblint_path, build_path, new_path, meta_path, commit.hash)
-
-            # if t % 10 == 0 or last_failed:
-            # last_failed = False
-            # print(f"{COLOR_GREEN}[GIT][{t}/{num_of_commits}] Written cil file with index {index}{COLOR_RESET}, continuing with the next commits...")
-            print(
-                f"{COLOR_GREEN}[{t}/{num_of_commits}] Written cil file with index [{index}] for commit {commit.hash}{COLOR_RESET}, continuing with the next commits...")
+            print(f"{COLOR_GREEN}[{t}/{num_of_commits}] Written cil file with index [{index}] for commit {commit.hash}{COLOR_RESET}, continuing with the next commits...")
             _write_meta_data(meta_path, commit.hash, index)
             index += 1
         except Exception as e:
-            # last_failed = True
             print(
                 f"{COLOR_RED}[{t}/{num_of_commits}][FAIL] Generating cil for commit {commit.hash} failed ({e}){COLOR_RESET}, continuing with the next commit...")
     print(f"{COLOR_GREEN}[FINISHED] Finished creating cil files for the commits.{COLOR_RESET}")
