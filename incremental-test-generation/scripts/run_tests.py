@@ -7,7 +7,7 @@ import questionary
 from util import *
 
 
-def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
+def run_tests(test_dir, goblint_repo_dir, cfg):
     # When the directory has a starting number >99 rename it for in place running of the tests
     match = re.match(r'(\d+)-(.*)', os.path.basename(test_dir))
     if match:
@@ -39,12 +39,9 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     shutil.copytree(test_dir, incremental_tests_dir_abs)
 
     ruby_path_abs = os.path.abspath(os.path.join(goblint_repo_dir, "scripts", "update_suite.rb"))
-    params = _get_params_from_file(program_path)
-    if params != "":
-        print(f"\n{COLOR_BLUE}Using parameters from input file:{COLOR_RESET} {params}")
     original_dir = os.getcwd()
     os.chdir(goblint_repo_dir)
-    command = f"{ruby_path_abs} group temp -p \"{params}\" -i"
+    command = f"{ruby_path_abs} group temp -i"
     if cfg:
         command += " -c"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
@@ -97,19 +94,6 @@ def run_tests(program_path, test_dir, goblint_repo_dir, cfg):
     print(f'You can find the mutated files in the directory ./temp with their corresponding indexes')
 
     return process.returncode, only_nothing_errors
-
-
-def _get_params_from_file(filename):
-    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
-
-    with open(filename, 'r') as f:
-        for line in f:
-            match = param_pattern.match(line)
-            if match:
-                params = match.group(1).strip()
-                return params
-
-    return ""
 
 
 def _remove_ansi_escape_sequences(s):

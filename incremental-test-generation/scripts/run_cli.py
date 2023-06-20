@@ -54,14 +54,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                ret_prec, only_nothing_prec = run_tests(input_path, path, goblint_path, cfg)
+                ret_prec, only_nothing_prec = run_tests(path, goblint_path, cfg)
         print(SEPERATOR)
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, temp_name=True)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
-            ret, only_nothing = run_tests(input_path, path, goblint_path, cfg)            
+            ret, only_nothing = run_tests(path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
