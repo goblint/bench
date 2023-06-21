@@ -94,7 +94,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
             source_program_id = 'p_0'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, source_program_id + '_check_unknown.c')
+            end_program = os.path.join(temp_dir, source_program_id + '_check_todo_unknown.c')
             end_program_precision = os.path.join(temp_dir, source_program_id + '_check_success.c')
         elif generate_type == GenerateType.GIT.value:
             # If it's the first compiling program skip it.
@@ -108,7 +108,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             previous_program_id = f'p_{compiling_programs[previous_program_index]}'
 
             start_program = os.path.join(temp_dir, previous_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, current_program_id + '_check_unknown.c')
+            end_program = os.path.join(temp_dir, current_program_id + '_check_todo.c')
             end_program_precision = os.path.join(temp_dir, current_program_id + '_check_success.c')
         else:
             print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
