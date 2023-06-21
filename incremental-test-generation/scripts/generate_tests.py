@@ -94,7 +94,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
             source_program_id = 'p_0'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, source_program_id + '_check_todo_unknown.c')
+            end_program = os.path.join(temp_dir, source_program_id + '_check_todo.c')
             end_program_precision = os.path.join(temp_dir, source_program_id + '_check_success.c')
         elif generate_type == GenerateType.GIT.value:
             # If it's the first compiling program skip it.
@@ -137,7 +137,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             else:
                 yaml_data[current_program_id][META_DIFF] = True
         else:
-            raise Exception("Command failed with return code: {}".format(result.returncode))
+            raise Exception(f"Command failed with return code: {result.returncode}")
         if goblint_config is None:
             # Create an empty config file
             data = {}
