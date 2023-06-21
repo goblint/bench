@@ -53,63 +53,47 @@ index=0
 for file in $files
 do
     ((index=index+1))
-    # Check if file contains keywords
-    if grep -q "FAIL\|UNKNOWN\|WARN\|RACE\|DEADLOCK\|TODO\|SKIP" "$file"; then
-        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK, TODO, SKIP)${color_reset}\n"
-        skipped_files+=("$file")
-    else
-        # Run the command with remaining arguments
-        printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
-        ./RUN.sh -i "$file" "$@"
+    # Run the command with remaining arguments
+    printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
+    ./RUN.sh -i "$file" "$@"
 
-        # Check for different return values
-        case $? in
-            0)
-                success_files+=("$file")
-                ;;
-            100)
-                printf "${color_red}[BATCH] Test failed for file $file.\n"
-                failed_files+=("$file")
-                if $confirm ; then
-                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                    read _
-                fi
-                ;;
-            101)
-                printf "${color_red}[BATCH] Test failed (but only \"Expected *, but registered nothing\") for file $file.\n"
-                failed_nothing_files+=("$file")
-                if $confirm ; then
-                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                    read _
-                fi
-                ;;
-            *)
-                printf "${color_red}[BATCH] Exception during execution for file $file.\n"
-                exception_files+=("$file")
-                if $confirm ; then
-                    printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                    read _
-                fi
-                ;;
-        esac
-    fi
+    # Check for different return values
+    case $? in
+        0)
+            success_files+=("$file")
+            ;;
+        100)
+            printf "${color_red}[BATCH] Test failed for file $file.\n"
+            failed_files+=("$file")
+            if $confirm ; then
+                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                read _
+            fi
+            ;;
+        101)
+            printf "${color_red}[BATCH] Test failed (but only \"Expected *, but registered nothing\") for file $file.\n"
+            failed_nothing_files+=("$file")
+            if $confirm ; then
+                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                read _
+            fi
+            ;;
+        *)
+            printf "${color_red}[BATCH] Exception during execution for file $file.\n"
+            exception_files+=("$file")
+            if $confirm ; then
+                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
+                read _
+            fi
+            ;;
+    esac
 done
 
 success_length=${#success_files[@]}
-skipped_length=${#skipped_files[@]}
 nothing_length=${#failed_nothing_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
 printf "\n\n${color_green}[BATCH] Batch finished running $total_length input files \n\n"
-
-# Print all skipped files
-if [ ${#skipped_files[@]} -ne 0 ]; then
-    printf "${color_grey}The following $skipped_length files were skipped due to contained keywords (FAIL, UNKNOWN, WARN, RACE, DEADLOCK, TODO, SKIP):\n"
-    for file in "${skipped_files[@]}"; do
-        printf "$file\n"
-    done
-    printf "${color_reset}\n"
-fi
 
 # Print all success files
 if [ ${#success_files[@]} -ne 0 ]; then
@@ -152,7 +136,6 @@ fi
 printf "\n[BATCH] Batch finished! Here is the summary:\n"
 printf "Total number of files: $files_length\n"
 printf "Number of successfully run files: $success_length\n"
-printf "Number of skipped files: $skipped_length\n"
 printf "Number of files that failed the tests, but only \"Expected *, but registered nothing\": $nothing_length\n"
 printf "Number of files that failed the tests: $failed_length\n"
 printf "Number of files that experienced an exception during execution: $exception_length\n"

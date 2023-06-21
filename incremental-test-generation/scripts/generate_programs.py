@@ -22,16 +22,18 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
+    # Preserve the __goblint_check() // comments
+    preserve_goblint_checks(program_0_path)
 
     index = 0
     if enable_mutations:
-        index = generate_mutations(program_path, clang_tidy_path, meta_path, mutations)
+        index = generate_mutations(program_0_path, clang_tidy_path, meta_path, mutations)
 
     if enable_ml:
-        index = generate_ml(program_path, apikey_path, meta_path, ml_count, ml_select, ml_interesting, ml_16k)
+        index = generate_ml(program_0_path, apikey_path, meta_path, ml_count, ml_select, ml_interesting, ml_16k)
 
     if enable_git:
-        index = generate_git(goblint_path, temp_dir, meta_path, program_path, git_start, git_end)
+        index = generate_git(goblint_path, temp_dir, meta_path, program_0_path, git_start, git_end)
 
     # Add checks with comments
     print(SEPERATOR)
@@ -66,6 +68,16 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     else:
         print(
             f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
+
+
+def preserve_goblint_checks(file_path):
+    with open(file_path, 'r') as file:
+        content = file.read()
+    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'\1 __goblint_check_comment(" \3");\n', content)
+    if transformed_content != content:
+        transformed_content += '\n\nvoid __goblint_check_comment(const char* comment) {}\n'
+        with open(file_path, 'w') as file:
+            file.write(transformed_content)
 
 
 def main():

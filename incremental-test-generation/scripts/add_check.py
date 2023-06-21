@@ -26,7 +26,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, tem
         file_path
     ]
 
-    result = subprocess.run(command, text=True, capture_output=True)
+    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     compiling = result.returncode == 0
 
@@ -37,7 +37,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, tem
         yaml.safe_dump(yaml_data, file)
 
     if not compiling:
-        print(f"{COLOR_RED}Error compiling program with index {index}.{COLOR_RESET}")
+        print(f"\n{COLOR_RED}Error compiling program with index {index}.{COLOR_RESET}")
         if index == 0 and not yaml_data["p_0"][META_TYPE] == GenerateType.GIT.value:
             print(result.stdout)
             print(result.stdout)
@@ -57,6 +57,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, tem
     origninal_input_file = os.path.join(temp_dir, 'p_0.c')
     params = _get_params_from_file(origninal_input_file)
     _prepend_param_line(file_path_out, params)
+    _preserve_goblint_checks(file_path_out)
 
     return True
 
@@ -80,6 +81,20 @@ def _prepend_param_line(file_path, params):
     with open(file_path, 'w') as f:
         f.write(f'//PARAM: {params}\n')
         f.writelines(lines)
+
+
+def _preserve_goblint_checks(file_path):
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    pattern = r'(__goblint_check)\((.*?)\);\s*(__goblint_check_comment)\("(.*?)"\);'
+    # Remove the comment function and place the comment at the previous line
+    replacement = r'\1(\2); //\4'
+    updated_content = re.sub(pattern, replacement, content)
+
+    with open(file_path, 'w') as file:
+        file.write(updated_content)
+
 
 
 if __name__ == '__main__':
