@@ -45,7 +45,7 @@ if [[ $1 == "-y" ]]; then
 fi
 
 # Find .c files in subdirectories of the specified directory
-files=$(find "$dir" -type f -name "*.c")
+files=$(find "$dir" -type f -name "*.c" | sort)
 files_length=$(find "$dir" -type f -name "*.c" | wc -l)
 
 # Iterate over the found files
@@ -147,3 +147,12 @@ if [ ${#exception_files[@]} -ne 0 ]; then
     done
     printf "${color_reset}\n"
 fi
+
+# Print summary
+printf "\n[BATCH] Batch finished! Here is the summary:\n"
+printf "Total number of files: $files_length\n"
+printf "Number of successfully run files: $success_length\n"
+printf "Number of skipped files: $skipped_length\n"
+printf "Number of files that failed the tests, but only \"Expected *, but registered nothing\": $nothing_length\n"
+printf "Number of files that failed the tests: $failed_length\n"
+printf "Number of files that experienced an exception during execution: $exception_length\n"
