@@ -32,7 +32,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     if os.path.exists(incremental_tests_dir_abs):
         if not only_temp_file:       
             print(f'{COLOR_RED}The test directory {incremental_tests_dir_abs} already exists.{COLOR_RESET}')
-        if questionary.confirm('Replace the directory?', default=True).ask() or only_temp_file:
+        if only_temp_file or questionary.confirm('Replace the directory?', default=True).ask():
             shutil.rmtree(incremental_tests_dir_abs)
         else:
             sys.exit(RETURN_ERROR)
