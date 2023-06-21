@@ -1,4 +1,5 @@
 from enum import Enum
+import os
 import re
 import shutil
 
@@ -67,7 +68,7 @@ ML_WORKERS = 5
 
 
 def make_program_copy(program_path, index):
-    new_path = program_path.rsplit('.', 1)[0] + '_' + str(index) + '.c'
+    new_path = os.path.join(os.path.dirname(program_path), 'p_' + str(index) + '.c')
     shutil.copy2(program_path, new_path)
     return new_path
 
