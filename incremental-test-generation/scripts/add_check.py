@@ -16,8 +16,7 @@ from util import *
 def add_check(file_path, goblint_path, meta_path, params, index):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
-    command = f'{goblint_path} {params} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
-    print(command)
+    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compiling = result.returncode == 0
 
@@ -81,12 +80,12 @@ def _annotate_extern_check_definitions(file_path):
         file.write(contents)
 
 
-# transform __goblint_check_comment to __goblint_check
+# transform __goblint_check_annotation to __goblint_check
 def _preserve_goblint_checks(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    pattern = r'__goblint_check_comment\((.*?), "(.*?)"\);'
+    pattern = r'__goblint_check_annotation\((.*?), "(.*?)"\);'
     replacement = r'__goblint_check(\1); // \2'
     updated_content = re.sub(pattern, replacement, content)
 
@@ -97,7 +96,7 @@ def _preserve_goblint_checks(file_path):
 # annotates generated checks depending on the goblint analysis result
 def _annotate_generated_checks(goblint_path, file_path, params):
     # run the analysis
-    command = f'{goblint_path} {params} --set result -json-messages {file_path}'
+    command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
         print(f"\n{COLOR_RED}Error compiling cil file.{COLOR_RESET}")

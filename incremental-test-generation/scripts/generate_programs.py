@@ -80,13 +80,13 @@ def _get_params_from_file(filename):
     return ""
 
 
-# Transform __goblint_check to __goblint_check_comment
+# Transform __goblint_check to __goblint_check_annotation
 def preserve_goblint_check_annotations(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
-    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__goblint_check_comment(\2, "\3");\n', content)
+    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__goblint_check_annotation(\2, "\3");\n', content)
     if transformed_content != content:
-        transformed_content += '\n\nvoid __goblint_check_comment(void* exp, const char* comment) {}\n'
+        transformed_content += '\n\nvoid __goblint_check_annotation(void* exp, const char* comment) {}\n'
         with open(file_path, 'w') as file:
             file.write(transformed_content)
 
