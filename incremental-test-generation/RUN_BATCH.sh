@@ -67,21 +67,23 @@ if [ -n "$ignore_file" ]; then
 fi
 
 # Find .c files in subdirectories of the specified directory
-all_files=$(find "$dir" -type f -name "*.c" | sort)
-for file in $all_files; do
-    if [[ $ignore_list =~ $(realpath "$file") ]]; then
-        ignored_files+=("$file")
-    else
-        files+=("$file")
-    fi
-done
-files_length=${#files[@]}
+files=$(find "$dir" -type f -name "*.c" | sort)
+files_length=$(find "$dir" -type f -name "*.c" | wc -l)
 
 # Iterate over the found files
 index=0
 for file in $files
 do
     ((index=index+1))
+
+    # Check if the file should be ignored
+    file_realpath=$(realpath "$file")
+    if [[ $ignore_list =~ $file_realpath ]]; then
+        printf "${color_yellow}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
+        ignored_files+=("$file")
+        continue
+    fi
+
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
     if [ "$no_print" = true ]; then
@@ -115,7 +117,7 @@ success_length=${#success_files[@]}
 nothing_length=${#failed_nothing_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
-printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files and ignored $ignored_length input files \n\n"
+printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files with $ignored_length ignored input files \n\n"
 
 # Print all ignored files
 if [ ${#ignored_files[@]} -ne 0 ]; then
@@ -165,8 +167,8 @@ fi
 
 # Print summary
 printf "\n[BATCH] Batch finished! Here is the summary:\n"
-printf "Total number of ignored files: $ignored_length\n"
 printf "Total number of executed files: $files_length\n"
+printf "Number of ignored files: $ignored_length\n"
 printf "Number of successfully executed files: $success_length\n"
 printf "Number of files that failed the tests, but only \"Expected *, but registered nothing\": $nothing_length\n"
 printf "Number of files that failed the tests: $failed_length\n"
