@@ -58,6 +58,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, tem
     origninal_input_file = os.path.join(temp_dir, 'p_0.c')
     params = _get_params_from_file(origninal_input_file)
     _prepend_param_line(file_path_out, params)
+    _mark_extern_check_definitions(file_path_out)
     _mark_generated_checks(goblint_path, file_path_out, index)
     _preserve_goblint_checks(file_path_out)
 
@@ -83,6 +84,19 @@ def _prepend_param_line(file_path, params):
     with open(file_path, 'w') as f:
         f.write(f'//PARAM: {params}\n')
         f.writelines(lines)
+
+
+def _mark_extern_check_definitions(file_path):
+    with open(file_path, 'r') as file:
+        contents = file.read()
+
+    pattern = r'(extern void __goblint_(?:check|assert)\(int exp \) ;)'
+    matches = re.findall(pattern, contents)
+    for match in matches:
+        contents = contents.replace(match, match + ' // NOWARN for extern definitions')
+
+    with open(file_path, 'w') as file:
+        file.write(contents)
 
 
 def _preserve_goblint_checks(file_path):
