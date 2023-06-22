@@ -52,7 +52,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     while process.poll() is None:
         char = process.stdout.read(1).decode('utf-8')
         if char == '\r' or char == '\n':
-            if not re.match(r'^Excellent: ignored check on .* is now passing!$', line):
+            if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):
                 sys.stdout.write('\r' + line)
                 sys.stdout.flush()
                 if char == '\n':
@@ -61,6 +61,8 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
                         match = re.search(r'registered (\w+)', _remove_ansi_escape_sequences(line))
                         if match and match.group(1) != 'nothing':
                             only_nothing_errors = False
+            else:
+                sys.stdout.write('\r' + ' ' * len(line))
             line = ''
         else:
             line += char
@@ -71,7 +73,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
         if not char:
             break
         if char == '\r' or char == '\n':
-            if not re.match(r'^Excellent: ignored check on .* is now passing!$', line):
+            if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):
                 sys.stdout.write('\r' + line)
                 sys.stdout.flush()
                 if char == '\n':
@@ -80,6 +82,8 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
                         match = re.search(r'registered (\w+)', _remove_ansi_escape_sequences(line))
                         if match and match.group(1) != 'nothing':
                             only_nothing_errors = False
+            else:
+                sys.stdout.write('\r' + ' ' * len(line))
             line = ''
         else:
             line += char
