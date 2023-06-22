@@ -3,6 +3,7 @@
 # When there is a compilation error the process writes [META_EXCEPTION] into the metadata file for the given index
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -57,6 +58,7 @@ def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, tem
     origninal_input_file = os.path.join(temp_dir, 'p_0.c')
     params = _get_params_from_file(origninal_input_file)
     _prepend_param_line(file_path_out, params)
+    _mark_generated_checks(goblint_path, file_path_out, index)
     _preserve_goblint_checks(file_path_out)
 
     return True
@@ -94,6 +96,86 @@ def _preserve_goblint_checks(file_path):
     with open(file_path, 'w') as file:
         file.write(updated_content)
 
+
+def _mark_generated_checks(goblint_path, file_path, index):
+    command = [
+        goblint_path,
+        "--set",
+        "result",
+        "json-messages",
+        file_path
+    ]
+
+    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    if result.returncode != 0:
+        print(f"\n{COLOR_RED}Error compiling cil file with index {index}.{COLOR_RESET}")
+        print(result.stdout)
+        print(result.stdout)
+        sys.exit(RETURN_ERROR)
+
+    json_string = extract_json(result.stdout)
+    if json_string is None:
+        print(f"{COLOR_RED}No JSON found in the goblint output{COLOR_RESET}")
+        print(result.stdout)
+        print(result.stdout)
+        sys.exit(RETURN_ERROR)
+    
+    json_data = json.loads(json_string)
+    line_ranges = []
+    for message in json_data['messages']:
+        for tag in message['tags']:
+            if "Category" in tag and "Deadcode" in tag["Category"]:
+                new_line_ranges = _get_line_ranges(message['multipiece'])
+                if new_line_ranges != []:
+                    line_ranges.append(new_line_ranges)
+    
+    # Flatten the list
+    line_ranges = [item for sublist in line_ranges for item in sublist]
+    _mark_deadcode_checks(line_ranges, file_path)
+
+
+def _get_line_ranges(multipiece):
+    line_ranges = []
+    if 'loc' in multipiece and multipiece['loc']:
+        line_ranges.append((multipiece['loc']['line'], multipiece['loc']['endLine']))
+    elif 'pieces' in multipiece:
+        for piece in multipiece['pieces']:
+            if piece['loc']:
+                line_ranges.append((piece['loc']['line'], piece['loc']['endLine']))
+    return line_ranges
+
+
+
+def _mark_deadcode_checks(line_ranges, file_path):
+    pattern = r'\s*__goblint_check\(.*\);(?!//).*'
+
+    with open(file_path, 'r') as f:
+        lines = f.readlines()
+
+    for i, line in enumerate(lines):
+        if any(start <= i+1 <= end for start, end in line_ranges):
+            if re.match(pattern, line):
+                lines[i] = line.rstrip('\n') + " // NOWARN! generated for deadcode\n"
+    
+    with open(file_path, 'w') as f:
+        f.writelines(lines)
+
+
+def extract_json(output):
+    start_marker = "{\"files\":"
+    end_marker = "]}"
+    
+    start_index = output.find(start_marker)
+    if start_index == -1:
+        return None
+
+    end_index = output.rfind(end_marker)
+    if end_index == -1:
+        return None
+
+    json_part = output[start_index:end_index + len(end_marker)]
+    return json_part
 
 
 if __name__ == '__main__':
