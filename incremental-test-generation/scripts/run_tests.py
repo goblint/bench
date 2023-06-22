@@ -50,7 +50,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     line = ''
     only_nothing_errors = True
     while process.poll() is None:
-        char = process.stdout.read(1).decode('utf-8')
+        char = process.stdout.read(1).decode('utf-8', 'replace')
         if char == '\r' or char == '\n':
             if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):
                 sys.stdout.write('\r' + line)
@@ -69,7 +69,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
 
     # Process has finished, but there might be output left to read.
     while True:
-        char = process.stdout.read(1).decode('utf-8')
+        char = process.stdout.read(1).decode('utf-8', 'replace')
         if not char:
             break
         if char == '\r' or char == '\n':
