@@ -73,9 +73,9 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
 def preserve_goblint_checks(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
-    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'\1 __goblint_check_comment(" \3");\n', content)
+    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__goblint_check_comment(\2, "\3");\n', content)
     if transformed_content != content:
-        transformed_content += '\n\nvoid __goblint_check_comment(const char* comment) {}\n'
+        transformed_content += '\n\nvoid __goblint_check_comment(void* exp, const char* comment) {}\n'
         with open(file_path, 'w') as file:
             file.write(transformed_content)
 

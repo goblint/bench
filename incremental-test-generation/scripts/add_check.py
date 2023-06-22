@@ -87,9 +87,8 @@ def _preserve_goblint_checks(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    pattern = r'(__goblint_check)\((.*?)\);\s*(__goblint_check_comment)\("(.*?)"\);'
-    # Remove the comment function and place the comment at the previous line
-    replacement = r'\1(\2); //\4'
+    pattern = r'__goblint_check_comment\((.*?), "(.*?)"\);'
+    replacement = r'__goblint_check(\1); // \2'
     updated_content = re.sub(pattern, replacement, content)
 
     with open(file_path, 'w') as file:
