@@ -15,13 +15,13 @@ color_green='\033[32m'
 color_yellow="\033[33m"
 color_orange="\033[38;5;208m"
 color_reset="\033[0m"
-confirm=true
+no_print=false
 
 # Check for at least one argument
 if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [-y] [additional arguments...]\n"
     printf "<directory>: path to a directory with the .c files for the batch\n"
-    printf "[-y]: continue at failed tests automatically without asking the user\n"
+    printf "[--no-print]: Do not print the mutation generator output\n"
     printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
     printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
     exit 1
@@ -37,10 +37,10 @@ if [ ! -d "$dir" ]; then
     exit 1
 fi
 
-# Check for -y option
+# Check for --no-print option
 confirm=true
-if [[ $1 == "-y" ]]; then
-    confirm=false
+if [[ $1 == "--no-print" ]]; then
+    no_print=true
     shift
 fi
 
@@ -55,7 +55,11 @@ do
     ((index=index+1))
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
-    ./RUN.sh -i "$file" "$@"
+    if [ "$no_print" = true ]; then
+        ./RUN.sh -i "$file" "$@" > /dev/null
+    else
+        ./RUN.sh -i "$file" "$@"
+    fi
 
     # Check for different return values
     case $? in
@@ -65,26 +69,14 @@ do
         100)
             printf "${color_red}[BATCH] Test failed for file $file.\n"
             failed_files+=("$file")
-            if $confirm ; then
-                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                read _
-            fi
             ;;
         101)
             printf "${color_red}[BATCH] Test failed (but only \"Expected *, but registered nothing\") for file $file.\n"
             failed_nothing_files+=("$file")
-            if $confirm ; then
-                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                read _
-            fi
             ;;
         *)
             printf "${color_red}[BATCH] Exception during execution for file $file.\n"
             exception_files+=("$file")
-            if $confirm ; then
-                printf "${color_blue}[BATCH] Press enter to continue...${color_reset}"
-                read _
-            fi
             ;;
     esac
 done
