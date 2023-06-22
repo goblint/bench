@@ -152,7 +152,7 @@ if [ ${#exception_files[@]} -ne 0 ]; then
 fi
 
 # Print summary
-printf "\n[BATCH] Batch finished! Here is the summary:\n"
+printf "\n[BATCH] Summary:\n"
 printf "Total number of executed files: $files_length\n"
 printf "${color_yellow}Number of ignored files: $ignored_length\n"
 printf "${color_green}Number of successfully executed files: $success_length\n"
