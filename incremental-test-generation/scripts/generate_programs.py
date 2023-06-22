@@ -1,12 +1,11 @@
 from add_check import add_check
-from add_check_comments import add_check_comments
+from add_check_annotations import add_check_annotations
 from generate_git import *
 from generate_ml import *
 from generate_mutations import *
 
-generate_type_source = "SOURCE"
 
-
+# generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations,
                       enable_ml, enable_git, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
     # Clean working directory
@@ -16,14 +15,14 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     # Create Meta file
     meta_path = os.path.join(temp_dir, META_FILENAME)
     with open(meta_path, 'w') as outfile:
-        yaml.dump({'n': 0, 'p_0': {META_TYPE: generate_type_source}}, outfile)
+        yaml.dump({'n': 0, 'p_0': {META_TYPE: GenerateType.SOURCE.value}}, outfile)
     # Copy the source program into the temp dir
     program_path = os.path.join(temp_dir, 'p.c' if not enable_git else 'p.sh')
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
-    # Preserve the __goblint_check() // comments
-    preserve_goblint_checks(program_0_path)
+    # Preserve the __goblint_check() annotations
+    preserve_goblint_check_annotations(program_0_path)
 
     index = 0
     if enable_mutations:
@@ -35,7 +34,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     if enable_git:
         index = generate_git(goblint_path, temp_dir, meta_path, program_0_path, git_start, git_end)
 
-    # Add checks with comments
+    # Add checks with annotations
     print(SEPERATOR)
     if enable_git:
         print('Generating goblint checks. This may take a while...')
@@ -43,13 +42,14 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
         sys.stdout.flush()
         file_path = os.path.join(temp_dir, f"p_{i}.c")
-        compiling = add_check(file_path, i, goblint_path, meta_path, temp_dir)
+        params = _get_params_from_file(program_0_path)
+        compiling = add_check(file_path, goblint_path, meta_path, params, i)
         if not compiling:
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
         if i == 0 or enable_git:
-            add_check_comments(file_path, unknown_instead_of_success=True)
-        add_check_comments(file_path, unknown_instead_of_success=False)
+            add_check_annotations(file_path, unknown_instead_of_success=True)
+        add_check_annotations(file_path, unknown_instead_of_success=False)
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
     # Check how many and which files were not compiling
@@ -66,11 +66,22 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     if failed_count == 0:
         print(f"\r{COLOR_GREEN}All files compiled successfully{COLOR_RESET}")
     else:
-        print(
-            f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
+        print(f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
 
 
-def preserve_goblint_checks(file_path):
+def _get_params_from_file(filename):
+    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
+    with open(filename, 'r') as f:
+        for line in f:
+            match = param_pattern.match(line)
+            if match:
+                params = match.group(1).strip()
+                return params
+    return ""
+
+
+# Transform __goblint_check to __goblint_check_comment
+def preserve_goblint_check_annotations(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__goblint_check_comment(\2, "\3");\n', content)
@@ -87,14 +98,12 @@ def main():
     parser.add_argument('clang_tidy_path', help='Path to the modified clang-tidy executable')
     parser.add_argument('goblint_path', help='Path to the goblint executable')
     parser.add_argument('--apikey-path', help='Path to the API')
-    parser.add_argument('--enable-mutations', action='store_true',
-                        help='Enable Mutations. When no mutation is selected all are activated.')
+    parser.add_argument('--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('--enable-ml', action='store_true', help='Enable ML')
     parser.add_argument('--enable-git', action='store_true', help='Enable Git')
     parser.add_argument('--ml-count', type=int, default=DEFAULT_ML_COUNT, help='Number of ML programs to generate')
     parser.add_argument('--ml-select', type=int, default=DEFAULT_ML_SELECT, help='Number of selected lines for ML')
-    parser.add_argument('--ml-interesting', default="[]",
-                        help='Lines to randomly choose the start line for selection (Default are all lines)')
+    parser.add_argument('--ml-interesting', default="[]", help='Lines to randomly choose the start line for selection (Default are all lines)')
     parser.add_argument('--ml-16k', action='store_true', help='Use the 16k mode for ml')
     parser.add_argument('--git-start', help='The starting commit hash for git generation')
     parser.add_argument('--git-end', help='The ending commit hash for git generation')

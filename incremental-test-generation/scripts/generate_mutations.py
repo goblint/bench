@@ -1,9 +1,5 @@
-# Generate all possible mutations of a program and
-# Assume there is a meta.yaml file with content "n: >=0"
-
 import argparse
 import json
-import os
 import subprocess
 import sys
 
@@ -12,10 +8,14 @@ import yaml
 from util import *
 
 
+# Generates mutations with clang-tidy
 def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-        index: int = yaml_data[META_N]
+    if meta_path is not None:
+        with open(meta_path, 'r') as file:
+            yaml_data = yaml.safe_load(file)
+            index = yaml_data[META_N]
+    else:
+        index = 0
 
     if mutations.rfb:
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.rfb_s, index)
@@ -36,12 +36,14 @@ def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
 def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutation_name, index):
     print(SEPERATOR)
     print(f"[{GenerateType.MUTATION.value}] {mutation_name}")
+    # get line groups for knowing where the mutation could be applied
     line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path)
+    # apply only one mutation at a time
     for lines in line_groups:
         index += 1
         new_path = make_program_copy(program_path, index)
         if mutation_name == Mutations().rt_s:
-            # When Remove Thread create wrapper and then apply the mutations
+            # When Remove-Thread create wrapper for the thread function and then apply the mutations
             if len(lines) != 1:
                 # Needed to prevent conflicts on generating wrappers
                 print(
@@ -53,10 +55,14 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mut
     return index
 
 
+# Returns a list of lists. The sub lists represent lines at which a single mutation should be applied
+# Per default this is only one line (eg.: [[1], [42]] ). Multiple lines are needed for replacing all Macros
 def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
 
+    # Execute all mutations to get the lines where the mutation is possible
+    print(f"[MUTATION][CHECK] Check mutation {mutation_name}")
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
@@ -64,25 +70,24 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
         program_path_temp,
         "--"
     ]
-
     result = subprocess.run(command, text=True, capture_output=True)
-    print(f"[MUTATION][CHECK] Check mutation {mutation_name}")
     if result.returncode != 0:
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}")
         sys.exit(RETURN_ERROR)
 
+    # get the line groups from the output
     line_groups = []
     pattern = r":(\d+):.*\[readability-" + mutation_name + r"\]"
     macro_pattern = r"\[MACRO\]\[(.*?)\]"
     macro_lines = {}
-
     for line in result.stdout.splitlines():
         match = re.search(pattern, line)
         if match:
             macro_match = re.search(macro_pattern, line)
             if macro_match:
+                # for macros add all macro occurrences to the line group
                 macro_name = macro_match.group(1)
                 line_number = int(match.group(1))
                 if macro_name not in macro_lines:
@@ -92,6 +97,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
             else:
                 line_groups.append([int(match.group(1))])
 
+    # add the line groups for macros
     for macro_name, lines in macro_lines.items():
         line_groups.append(lines)
 
@@ -128,6 +134,7 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
         sys.exit(RETURN_ERROR)
 
 
+# Execute the check to find the name of the thread function (needed to generate a wrapper)
 def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
@@ -166,6 +173,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
     return function_name
 
 
+# generate a wrapper for the thread function
 def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
     if function_name is None:
         print(
@@ -193,6 +201,8 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
 
 
 def _write_meta_data(meta_path, index, mutation_name, lines):
+    if meta_path is None:
+        return False
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
     yaml_data[META_N] = index
@@ -219,19 +229,12 @@ def add_mutation_options(parser):
                         help="Option for \"logical connector replacement\" mutation")
 
 
-def get_mutations_from_args(args):
-    return Mutations(args.remove_function_body, args.unary_operator_inversion,
-                     args.relational_operator_replacement, args.constant_replacement,
-                     args.remove_thread, args.logical_connector_replacement)
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate all possible mutations of a program.")
     parser.add_argument("program", help="Path to the C program")
     parser.add_argument("clang_tidy", help="Path to the modified clang-tidy executable")
-    parser.add_argument("meta", help="Path to the meta data file")
     add_mutation_options(parser)
 
     args = parser.parse_args()
     mutations = get_mutations_from_args(args)
-    generate_mutations(args.program, args.clang_tidy, args.meta, mutations)
+    generate_mutations(args.program, args.clang_tidy, None, mutations)

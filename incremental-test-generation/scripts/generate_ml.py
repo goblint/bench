@@ -1,7 +1,6 @@
 import argparse
 import ast
 import random
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Lock
@@ -19,13 +18,17 @@ SEPERATOR_CODE_END = '<CODE_END'
 error_counter = 0
 
 
+# generates mutated program by using chat-gpt
 def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lines, interesting_lines, ml_16k):
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-        index: int = yaml_data[META_N]
-    yaml_data[META_N] = index + ml_count
-    with open(meta_path, 'w') as file:
-        yaml.safe_dump(yaml_data, file)
+    if meta_path is not None:
+        with open(meta_path, 'r') as file:
+            yaml_data = yaml.safe_load(file)
+            index = yaml_data[META_N]
+        yaml_data[META_N] = index + ml_count
+        with open(meta_path, 'w') as file:
+            yaml.safe_dump(yaml_data, file)
+    else:
+        index = 0
 
     # Read the api key and organisation
     with open(apikey_path, 'r') as file:
@@ -49,6 +52,8 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     interesting_lines_string = 'Start lines are randomly chosen from all lines.' if interesting_lines == [] else f' Start lines are randomly chosen from {interesting_lines}.'
     print(
         f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
+
+    # Start executing multiple requests in parallel
     file_lock = Lock()
     with ThreadPoolExecutor(max_workers=ML_WORKERS) as executor:
         for i in range(ml_count):
@@ -68,8 +73,7 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, m
     try:
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
-        (explanation, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines,
-                                                        max_line, index)
+        (explanation, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index)
         _write_meta_data(meta_path, selected_lines, explanation, index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
@@ -77,6 +81,7 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, m
     return index
 
 
+# Makes a gpt request and places the result in the program
 def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index):
     # Get the original lines
     with open(new_path, "r") as file:
@@ -88,8 +93,7 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     for i in selected_lines:
         snippet += lines[i]
 
-    print(
-        f"[{index}][{GenerateType.ML.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
+    print(f"[{index}][{GenerateType.ML.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
 
     # Get response from gpt
     response = _make_gpt_request(snippet, ml_16k)
@@ -132,6 +136,8 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
 
 
 def _write_meta_data(meta_path, selected_lines, explanation, index, lock, exception=None):
+    if meta_path is None:
+        return False
     lock.acquire()
     global error_counter
     try:
@@ -242,18 +248,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate mutations with ML.")
     parser.add_argument("program", help="Path to the C program")
     parser.add_argument("apikey", help="Path to the api key")
-    parser.add_argument("meta_path", help="Path to the meta_file")
     parser.add_argument("ml_count", help="How many different programs should be generated with ML")
     parser.add_argument("num_selected_lines", help="How many lines to consider")
-    parser.add_argument("interesting_lines", help="Which parts are interesting (All: [], Specify: \"[1, 42, 99]\")")
     parser.add_argument('-m16', '--model-16k', action='store_true', help='Run with the 16k model instead of the 4k')
 
     args = parser.parse_args()
 
-    interesting_lines = validate_interesting_lines(args.interesting_lines, args.program)
-    if interesting_lines is None:
-        print(f'{COLOR_RED}Stopped program execution{COLOR_RESET}')
-        sys.exit(RETURN_ERROR)
-
-    generate_ml(args.program, args.apikey, args.meta_path, int(args.ml_count), int(args.num_selected_lines),
-                interesting_lines, args.model_16k)
+    generate_ml(args.program, args.apikey, None, int(args.ml_count), int(args.num_selected_lines), '[]', args.model_16k)

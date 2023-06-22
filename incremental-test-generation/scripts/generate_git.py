@@ -1,11 +1,8 @@
 import argparse
-import os
 import subprocess
 import sys
-
 import yaml
 from pydriller import Repository
-
 from util import *
 
 build_errors = 0
@@ -14,11 +11,16 @@ cil_errors = 0
 ids_errors = []
 
 
-def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_commit, end_commit):
+# Generate from git repository "mutated" files for each commit
+def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_commit, end_commit):
+    # Get paths
     goblint_path = os.path.expanduser(os.path.abspath(goblint_path))
-    temp_dir = os.path.expanduser(os.path.abspath(temp_dir))
-    temp_repo_dir = os.path.join(temp_dir, 'repo')
-    meta_path = os.path.expanduser(os.path.abspath(meta_path))
+    target_dir = os.path.expanduser(os.path.abspath(target_dir))
+    temp_repo_dir = os.path.join(target_dir, 'repo')
+    if not os.path.exists(temp_repo_dir):
+        os.mkdir(temp_repo_dir)
+    if meta_path is not None:
+        meta_path = os.path.expanduser(os.path.abspath(meta_path))
     git_info_sh_path = os.path.expanduser(os.path.abspath(git_info_sh_path))
 
     print(SEPERATOR)
@@ -26,9 +28,6 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
     _clone_repo(git_info_sh_path, temp_repo_dir)
     build_path = _get_build_path(git_info_sh_path, temp_repo_dir)
     print(f'{COLOR_GREEN}[GIT] Cloning finished{COLOR_RESET}')
-
-    if not os.path.exists(temp_repo_dir):
-        os.mkdir(temp_repo_dir)
 
     def get_commit_traverser():
         all_commits = list(Repository(build_path).traverse_commits())
@@ -46,9 +45,10 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
 
         return all_commits[start_index:end_index + 1]
 
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-        index: int = yaml_data[META_N]
+    if meta_path is not None:
+        with open(meta_path, 'r') as file:
+            yaml_data = yaml.safe_load(file)
+            index: int = yaml_data[META_N]
 
     num_of_commits = sum(1 for _ in get_commit_traverser())
     print(SEPERATOR)
@@ -61,14 +61,16 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
     for commit in get_commit_traverser():
         t += 1
         if commit.merge:
-            print(f"[GIT][{t}/{num_of_commits}] {COLOR_YELLOW}Skipping merge commit {commit.hash}{COLOR_RESET}, continuing with the next commit...")
+            print(
+                f"[GIT][{t}/{num_of_commits}] {COLOR_YELLOW}Skipping merge commit {commit.hash}{COLOR_RESET}, continuing with the next commit...")
             continue
         try:
             _checkout(build_path, meta_path, commit.hash)
             _build_repo(git_info_sh_path, temp_repo_dir, meta_path, commit.hash)
-            new_path = os.path.join(temp_dir, f"p_{index}.c")
+            new_path = os.path.join(target_dir, f"p_{index}.c")
             _create_cil_file(goblint_path, build_path, new_path, meta_path, commit.hash)
-            print(f"{COLOR_GREEN}[{t}/{num_of_commits}] Written cil file with index [{index}] for commit {commit.hash}{COLOR_RESET}, continuing with the next commits...")
+            print(
+                f"{COLOR_GREEN}[{t}/{num_of_commits}] Written cil file with index [{index}] for commit {commit.hash}{COLOR_RESET}, continuing with the next commits...")
             _write_meta_data(meta_path, commit.hash, index)
             index += 1
         except Exception as e:
@@ -78,12 +80,15 @@ def generate_git(goblint_path, temp_dir, meta_path, git_info_sh_path, start_comm
     if build_errors > 0 or checkout_errors > 0 or cil_errors > 0:
         print(
             f"{COLOR_RED}There were the following errors: {build_errors} build errors, {checkout_errors} checkout errors and {cil_errors} cil errors.{COLOR_RESET}")
-        print(f"{COLOR_RED}You can read the error messages in the {meta_path} file")
+        if meta_path is not None:
+            print(f"{COLOR_RED}You can read the error messages in the {meta_path} file")
         print(f"{COLOR_RED}The following commit ids resulted in errors:{COLOR_RESET} {', '.join(ids_errors)}")
     return index - 1
 
 
 def _write_meta_data(meta_path, commit_hash, index):
+    if meta_path is None:
+        return False
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
     yaml_data[META_N] = index
@@ -93,9 +98,12 @@ def _write_meta_data(meta_path, commit_hash, index):
     }
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
+    return True
 
 
 def _write_meta_data_failure(meta_path, commit_hash, stdout_msg, stderr_msg):
+    if meta_path is None:
+        return False
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
     yaml_data.setdefault(META_FAILURES, {})[commit_hash] = {
@@ -104,10 +112,11 @@ def _write_meta_data_failure(meta_path, commit_hash, stdout_msg, stderr_msg):
     }
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
+    return True
 
 
 def _clone_repo(git_info_sh_path, temp_repo_path):
-    command = ["generators/generate_git_build.sh", git_info_sh_path, temp_repo_path, "--clone"]
+    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--clone"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         print(result.stdout)
@@ -117,7 +126,7 @@ def _clone_repo(git_info_sh_path, temp_repo_path):
 
 
 def _get_build_path(git_info_sh_path, temp_repo_path):
-    command = ["generators/generate_git_build.sh", git_info_sh_path, temp_repo_path, "--path"]
+    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--path"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         print(result.stdout)
@@ -130,7 +139,7 @@ def _get_build_path(git_info_sh_path, temp_repo_path):
 
 def _build_repo(git_info_sh_path, temp_repo_path, meta_path, commit_hash):
     global build_errors
-    command = ["generators/generate_git_build.sh", git_info_sh_path, temp_repo_path, "--build"]
+    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--build"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         build_errors += 1
@@ -186,13 +195,12 @@ def _create_cil_file(goblint_path, build_path, output_path, meta_path, commit_ha
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Script for generating cil program files from commits")
     parser.add_argument("goblint_path", help="Path to Goblint directory")
-    parser.add_argument("temp_dir", help="Path to the temporary directory")
-    parser.add_argument("meta_path", help="Path to the meta directory")
+    parser.add_argument("temp_dir", help="Path to the temporary directory for storing the files")
     parser.add_argument("git_info_sh_path", help="Path to the Git information shell script")
     parser.add_argument("--start_commit", help="Hash id of the first commit to consider", default=None)
     parser.add_argument("--end_commit", help="Hash id of the last commit to consider", default=None)
 
     args = parser.parse_args()
 
-    generate_git(args.goblint_path, args.temp_dir, args.meta_path, args.git_info_sh_path, args.start_commit,
+    generate_git(args.goblint_path, args.temp_dir, None, args.git_info_sh_path, args.start_commit,
                  args.end_commit)

@@ -1,83 +1,64 @@
-# Takes a file and generates the goblint checks
-# Stores the file with an additional "_c"
-# When there is a compilation error the process writes [META_EXCEPTION] into the metadata file for the given index
-
 import argparse
 import json
-import os
 import subprocess
 import sys
+
 import yaml
+
 from util import *
 
 
-def add_check(file_path: str, index: int, goblint_path: str, meta_path: str, temp_dir: str):
+# Takes a file and generates the goblint checks
+# Adds a PARAM line
+# Annotates extern goblint checks and dead code goblint checks with // NOWARN
+# Stores the file with the appendix "_check"
+# Write information to the meta.yaml file
+def add_check(file_path, goblint_path, meta_path, params, index):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
-    command = [
-        goblint_path,
-        "--enable",
-        "trans.goblint-check",
-        "--set",
-        "trans.activated",
-        '["assert"]',
-        "--set",
-        "trans.output",
-        file_path_out,
-        file_path
-    ]
-
-    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+    command = f'{goblint_path} {params} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
+    print(command)
+    result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compiling = result.returncode == 0
 
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-        yaml_data["p_" + str(index)][META_COMPILING] = compiling
-    with open(meta_path, 'w') as file:
-        yaml.safe_dump(yaml_data, file)
+    # Write compiling result to meta.yaml
+    if meta_path is not None:
+        with open(meta_path, 'r') as file:
+            yaml_data = yaml.safe_load(file)
+            yaml_data["p_" + str(index)][META_COMPILING] = compiling
+        with open(meta_path, 'w') as file:
+            yaml.safe_dump(yaml_data, file)
 
     if not compiling:
         print(f"\n{COLOR_RED}Error compiling program with index {index}.{COLOR_RESET}")
+        # Check if program should be stopped
         if index == 0 and not yaml_data["p_0"][META_TYPE] == GenerateType.GIT.value:
             print(result.stdout)
             print(result.stdout)
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-        yaml_data[f"p_{index}"] = {
-            META_TYPE: GenerateType.ML.value,
-            META_EXCEPTION: result.stderr,
-            META_COMPILING: False
-        }
-        with open(meta_path, 'w') as file:
-            yaml.safe_dump(yaml_data, file)
+        # Write compiling result and exceptions to meta.yaml
+        if meta_path is not None:
+            with open(meta_path, 'r') as file:
+                yaml_data = yaml.safe_load(file)
+            yaml_data[f"p_{index}"] = {
+                META_TYPE: GenerateType.ML.value,
+                META_EXCEPTION: result.stderr,
+                META_COMPILING: False
+            }
+            with open(meta_path, 'w') as file:
+                yaml.safe_dump(yaml_data, file)
         return False
-    
-    origninal_input_file = os.path.join(temp_dir, 'p_0.c')
-    params = _get_params_from_file(origninal_input_file)
+
     _prepend_param_line(file_path_out, params)
-    _mark_extern_check_definitions(file_path_out)
-    _mark_generated_checks(goblint_path, file_path_out, index)
+    _annotate_extern_check_definitions(file_path_out)
+    _annotate_generated_checks(goblint_path, file_path_out, params)
     _preserve_goblint_checks(file_path_out)
 
     return True
 
 
-def _get_params_from_file(filename):
-    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
-
-    with open(filename, 'r') as f:
-        for line in f:
-            match = param_pattern.match(line)
-            if match:
-                params = match.group(1).strip()
-                return params
-
-    return ""
-
-
+# Add //PARAM: line at the beginning of file
 def _prepend_param_line(file_path, params):
     with open(file_path, 'r') as f:
         lines = f.readlines()
@@ -86,7 +67,8 @@ def _prepend_param_line(file_path, params):
         f.writelines(lines)
 
 
-def _mark_extern_check_definitions(file_path):
+# annotate extern void __goblint_check __goblint_assert with // NOWARN
+def _annotate_extern_check_definitions(file_path):
     with open(file_path, 'r') as file:
         contents = file.read()
 
@@ -99,6 +81,7 @@ def _mark_extern_check_definitions(file_path):
         file.write(contents)
 
 
+# transform __goblint_check_comment to __goblint_check
 def _preserve_goblint_checks(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
@@ -111,44 +94,43 @@ def _preserve_goblint_checks(file_path):
         file.write(updated_content)
 
 
-def _mark_generated_checks(goblint_path, file_path, index):
-    command = [
-        goblint_path,
-        "--set",
-        "result",
-        "json-messages",
-        file_path
-    ]
-
-    result = subprocess.run(command, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
+# annotates generated checks depending on the goblint analysis result
+def _annotate_generated_checks(goblint_path, file_path, params):
+    # run the analysis
+    command = f'{goblint_path} {params} --set result -json-messages {file_path}'
+    result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
-        print(f"\n{COLOR_RED}Error compiling cil file with index {index}.{COLOR_RESET}")
+        print(f"\n{COLOR_RED}Error compiling cil file.{COLOR_RESET}")
         print(result.stdout)
         print(result.stdout)
         sys.exit(RETURN_ERROR)
 
+    # get the json data
     json_string = extract_json(result.stdout)
     if json_string is None:
         print(f"{COLOR_RED}No JSON found in the goblint output{COLOR_RESET}")
         print(result.stdout)
         print(result.stdout)
         sys.exit(RETURN_ERROR)
-    
+
+    # search for corresponding lines
     json_data = json.loads(json_string)
-    line_ranges = []
+    line_ranges_deadcode = []
     for message in json_data['messages']:
         for tag in message['tags']:
             if "Category" in tag and "Deadcode" in tag["Category"]:
                 new_line_ranges = _get_line_ranges(message['multipiece'])
-                if new_line_ranges != []:
-                    line_ranges.append(new_line_ranges)
-    
-    # Flatten the list
-    line_ranges = [item for sublist in line_ranges for item in sublist]
-    _mark_deadcode_checks(line_ranges, file_path)
+                if new_line_ranges:
+                    line_ranges_deadcode.append(new_line_ranges)
+
+    # flatten the list
+    line_ranges_deadcode = [item for sublist in line_ranges_deadcode for item in sublist]
+
+    # add annotations to lines
+    _mark_deadcode_checks(line_ranges_deadcode, file_path)
 
 
+# read line ranges from json multipiece element: (start, end)
 def _get_line_ranges(multipiece):
     line_ranges = []
     if 'loc' in multipiece and multipiece['loc']:
@@ -160,7 +142,7 @@ def _get_line_ranges(multipiece):
     return line_ranges
 
 
-
+# mark all __goblint_check in the line ranges with NOWARN!
 def _mark_deadcode_checks(line_ranges, file_path):
     pattern = r'\s*__goblint_check\(.*\);(?!//).*'
 
@@ -168,18 +150,19 @@ def _mark_deadcode_checks(line_ranges, file_path):
         lines = f.readlines()
 
     for i, line in enumerate(lines):
-        if any(start <= i+1 <= end for start, end in line_ranges):
+        if any(start <= i + 1 <= end for start, end in line_ranges):
             if re.match(pattern, line):
                 lines[i] = line.rstrip('\n') + " // NOWARN! generated for deadcode\n"
-    
+
     with open(file_path, 'w') as f:
         f.writelines(lines)
 
 
+# get the json from the goblint terminal output
 def extract_json(output):
     start_marker = "{\"files\":"
     end_marker = "]}"
-    
+
     start_index = output.find(start_marker)
     if start_index == -1:
         return None
@@ -194,17 +177,15 @@ def extract_json(output):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Generate __goblint_check() for a C file. When not compiling write [NOT COMPILING] in the meta file')
+        description='Generate __goblint_check() for a C file and stores it with appendix _check')
 
     # Add the required arguments
     parser.add_argument('file', help='Path to the C file')
-    parser.add_argument('index', help='Index of the file (needed for meta data)')
     parser.add_argument('goblint', help='Path to the Goblint executable')
-    parser.add_argument('meta', help='Path to the meta data file')
-    parser.add_argument('temp', help='Path to the temp directory')
+    parser.add_argument('params', help='Command line parameters for goblint test')
 
     # Parse the command-line arguments
     args = parser.parse_args()
 
     # Call the process_file function with the provided arguments
-    add_check(args.file, args.index, args.goblint, args.meta, args.temp)
+    add_check(args.file, args.goblint, None, args.params, None)

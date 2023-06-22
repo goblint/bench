@@ -2,7 +2,7 @@
 
 # Source the input script from the provided path
 if [[ -n $1 ]]; then
-  source $1
+  source "$1"
 else
   echo "Please give the following arguments: build_info_path output_path [--clone][--build][--path]"
   echo ""
@@ -40,8 +40,8 @@ case "$3" in
     ;;
   "--clone")
     # Clone repo
-    rm -rf "$output_path/$repo_name"
-    git clone $git_url "$output_path/$repo_name"
+    rm -rf "${output_path:?}/${repo_name}"
+    git clone "$git_url" "$output_path/$repo_name"
     ;;
   "--build")
     # Build repo

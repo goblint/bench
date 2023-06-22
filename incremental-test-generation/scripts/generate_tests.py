@@ -1,6 +1,5 @@
 import argparse
 import json
-import os
 import subprocess
 import sys
 
@@ -10,10 +9,11 @@ import yaml
 from util import *
 
 
-def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_name):
+# Generate test directory based on previously generated directory with mutated files
+def generate_tests(temp_dir, target_dir, goblint_config, precision_test, inplace: bool):
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
-    if not temp_name and not check_test_name(directory_name):
+    if not inplace and not check_test_dir_name(directory_name):
         sys.exit(RETURN_ERROR)
 
     if os.path.exists(target_dir):
@@ -30,34 +30,40 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
         yaml_data = yaml.safe_load(file)
     n = yaml_data[META_N]
 
-    # loop threw all generated mutations
+    # store the paths to the test dirs
     original_target_dir = target_dir
     test_paths = [target_dir]
+    # count the tests to know when to create a new directory [0; 99]
     current_test_num = 1  # Skip num 0 to align program index with test number
+    # store the directory number
     current_dir_num = int(directory_name[:2])
+    # get the current values
     unchanged_count = 0
     compiling_programs = []
-    if temp_name and int(directory_name[:3]) != 100:
-        print(
-            f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
+    if inplace and int(directory_name[:3]) != 100:
+        print(f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
         sys.exit(RETURN_ERROR)
-    elif temp_name:
+    elif inplace:
+        # For inplace test files store them with dir num 100 and rename them later when running to 99
         current_dir_num = 100
         original_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
+
+    # loop threw all generated mutations
     for i in range(n + 1):
+        # When too many tests create a new directory
         if current_test_num > 99:
             current_dir_num += 1
 
-            # When temporary files let the files go over 99 to rename them later
-            if not temp_name and current_dir_num > 99:
+            # When the dir name is > 99 throw an error
+            if not inplace and current_dir_num > 99:
                 print(
                     f'{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}')
                 sys.exit(RETURN_ERROR)
 
+            # create the new dir
             group_name = re.match(r'\d+-(.*)', directory_name).group(1)
             target_dir = os.path.join(os.path.dirname(target_dir), f'{current_dir_num:02}-{group_name}')
             test_paths.append(target_dir)
-
             if os.path.exists(target_dir):
                 print(f'{COLOR_RED}The test directory {target_dir} already exists.{COLOR_RESET}')
                 if questionary.confirm('Replace the directory?', default=True).ask():
@@ -66,9 +72,13 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
                     sys.exit(RETURN_ERROR)
             os.mkdir(target_dir)
 
+            # reset the test num
             current_test_num = 0
 
+        # get the id of the current program
         current_program_id = f'p_{i}'
+
+        # check if it compiled. When not skip it
         compilation_success = yaml_data[current_program_id][META_COMPILING]
         if compilation_success:
             compiling_programs.append(i)
@@ -79,11 +89,15 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             print(
                 f"\rGenerating test files [{i}/{n}] {COLOR_YELLOW}Skipped {i} (Exception occurred during generation){COLOR_RESET}")
             continue
+
+        # Skip the reference program as it is used for the patch
         generate_type = yaml_data[current_program_id][META_TYPE]
         if generate_type == GenerateType.SOURCE.value or (generate_type == GenerateType.GIT.value and i == 0):
             continue
-        if (i - 1) % 9 == 0:
-            print(f"\rGenerating test files [{i}/{n}]", end='')
+
+        print(f"\rGenerating test files [{i}/{n}]", end='')
+
+        # Determine the name for the test
         sub_type = yaml_data[current_program_id][META_SUB_TYPE]
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.GIT.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_{sub_type}_{_format_number(i)}'
@@ -124,7 +138,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             patch_path
         )
         result = subprocess.run(command, shell=True)
-        if temp_name:
+        if inplace:
             # For patch files keep the 99 for running inplace after renaming folder
             _fix_patch_file(patch_path, os.path.basename(original_target_dir), test_name + '.c')
         else:
@@ -138,6 +152,8 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
                 yaml_data[current_program_id][META_DIFF] = True
         else:
             raise Exception(f"Command failed with return code: {result.returncode}")
+
+        # Create config file
         if goblint_config is None:
             # Create an empty config file
             data = {}
@@ -148,6 +164,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
             shutil.copy2(os.path.abspath(os.path.expanduser(goblint_config)),
                          os.path.join(target_dir, test_name + '.json'))
 
+        # next test
         current_test_num += 1
 
     print(f"\r{COLOR_GREEN}Generating test files [DONE]{SPACE}{COLOR_RESET}")
@@ -158,10 +175,11 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, temp_na
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
 
-    # Return the generated directories
+    # Return the list of generated directories
     return test_paths
 
 
+# Change the paths in the patch file so the tester can apply the test correctly
 def _fix_patch_file(patch_file, folder_name, file_name):
     with open(patch_file, 'r') as file:
         lines = file.readlines()
@@ -173,6 +191,7 @@ def _fix_patch_file(patch_file, folder_name, file_name):
             file.write(line)
 
 
+# Format the number with leading zeros as used in the tester
 def _format_number(n):
     return str(n).zfill(2)
 
@@ -183,14 +202,12 @@ def main():
     parser.add_argument('temp_dir', help='Path to the working directory')
     parser.add_argument('target_dir', help='Path to the target directory')
     parser.add_argument('-p', '--precision-test', action='store_true', help='Generate tests for precision')
-    parser.add_argument('-c', '--goblint-config',
-                        help='Optional path to the goblint config file used for the tests (using no option creates an empty one)')
-    parser.add_argument('-t', '--temp-name', action='store_true',
-                        help='Store name in special format for running the tests and removing them directly again')
+    parser.add_argument('-c', '--goblint-config', help='Optional path to the goblint config file used for the tests (using no option creates an empty one)')
+    parser.add_argument('-i', '--inplace', action='store_true', help='Generate test files for running in place')
 
     args = parser.parse_args()
 
-    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, args.precision_test, args.temp_name)
+    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, args.precision_test, args.inplace)
 
 
 if __name__ == '__main__':

@@ -20,11 +20,18 @@ class Mutations:
         self.lcr_s = "logical-connector-replacement"
 
 
+def get_mutations_from_args(args):
+    return Mutations(args.remove_function_body, args.unary_operator_inversion,
+                     args.relational_operator_replacement, args.constant_replacement,
+                     args.remove_thread, args.logical_connector_replacement)
+
+
 class GenerateType(Enum):
     SOURCE = 'SOURCE'
     MUTATION = 'MUTATION'
     ML = 'ML'
     GIT = 'GIT'
+
 
 RETURN_SUCCESS = 0
 RETURN_ERROR = -1
@@ -73,7 +80,7 @@ def make_program_copy(program_path, index):
     return new_path
 
 
-def check_test_name(directory_name):
+def check_test_dir_name(directory_name):
     if directory_name is None or not isinstance(directory_name, str):
         print(f"{COLOR_RED}[ERROR] Target Directory name {directory_name} is not a string{COLOR_RESET}")
         return False
