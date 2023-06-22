@@ -21,8 +21,10 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
-    # Preserve the __goblint_check() annotations
-    preserve_goblint_check_annotations(program_0_path)
+    # TODO Preserve the __goblint_check() annotations
+    # TODO _transform_asserts(program_0_path)
+    # TODO _preserve_goblint_check_annotations(program_0_path)
+    _remove_goblint_check_and_assertions(program_0_path)
 
     index = 0
     if enable_mutations:
@@ -79,14 +81,37 @@ def _get_params_from_file(filename):
                 return params
     return ""
 
+# Remove all goblint checks and assertions
+def _remove_goblint_check_and_assertions(program_0_path):
+    with open(program_0_path, 'r') as f:
+        lines = f.readlines()
 
-# Transform __goblint_check to __goblint_check_annotation
-def preserve_goblint_check_annotations(file_path):
+    # Replace the lines containing the keywords with '; // <old line>'
+    replaced_lines = ['; // ' + line if any(keyword in line for keyword in ['assert(', '__goblint_check(', '__goblint_assert(']) else line for line in lines]
+
+    with open(program_0_path, 'w') as f:
+        f.writelines(replaced_lines)
+
+
+# Change asserts to goblint checks
+def _transform_asserts(file_path):
+    with open(file_path, 'r') as f:
+        content = f.read()
+        
+    content = re.sub(r'(assert)\s*\(([^)]*)\);\s*//\s*(.*)', r'__goblint_check(\2); // \3 was origninally an assertion', content)
+    content = re.sub(r'(assert)\s*\(([^)]*)\);(.*)*', r'__goblint_check(\2); // was origninally an assertion', content)
+
+    with open(file_path, 'w') as f:
+        f.write(content)
+
+
+# Transform __goblint_check to __my_check_annotation
+def _preserve_goblint_check_annotations(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
-    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__goblint_check_annotation(\2, "\3");\n', content)
+    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__my_check_annotation(\2, "\3 was in the source program");\n', content)
     if transformed_content != content:
-        transformed_content += '\n\nvoid __goblint_check_annotation(void* exp, const char* comment) {}\n'
+        transformed_content += '\n\nvoid __my_check_annotation(void* exp, const char* comment) {}\n'
         with open(file_path, 'w') as file:
             file.write(transformed_content)
 

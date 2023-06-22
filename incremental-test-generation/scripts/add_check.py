@@ -29,11 +29,11 @@ def add_check(file_path, goblint_path, meta_path, params, index):
             yaml.safe_dump(yaml_data, file)
 
     if not compiling:
-        print(f"\n{COLOR_RED}Error compiling program with index {index}.{COLOR_RESET}")
+        print(f"\n{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
         # Check if program should be stopped
         if index == 0 and not yaml_data["p_0"][META_TYPE] == GenerateType.GIT.value:
             print(result.stdout)
-            print(result.stdout)
+            print(result.stderr)
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
         # Write compiling result and exceptions to meta.yaml
@@ -49,10 +49,10 @@ def add_check(file_path, goblint_path, meta_path, params, index):
                 yaml.safe_dump(yaml_data, file)
         return False
 
-    _prepend_param_line(file_path_out, params)
+    # TODO Alternative _prepend_param_line(file_path_out, params)
+    # TODO Alternative _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    _annotate_generated_checks(goblint_path, file_path_out, params)
-    _preserve_goblint_checks(file_path_out)
+    _annotate_checks(goblint_path, file_path_out, params)
 
     return True
 
@@ -71,7 +71,7 @@ def _annotate_extern_check_definitions(file_path):
     with open(file_path, 'r') as file:
         contents = file.read()
 
-    pattern = r'(extern void __goblint_(?:check|assert)\(int exp \) ;)'
+    pattern = r'(extern void __goblint_(?:check|assert)\(.*\) ;)'
     matches = re.findall(pattern, contents)
     for match in matches:
         contents = contents.replace(match, match + ' // NOWARN for extern definitions')
@@ -80,12 +80,12 @@ def _annotate_extern_check_definitions(file_path):
         file.write(contents)
 
 
-# transform __goblint_check_annotation to __goblint_check
+# transform __my_check_annotation to __goblint_check
 def _preserve_goblint_checks(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
 
-    pattern = r'__goblint_check_annotation\((.*?), "(.*?)"\);'
+    pattern = r'__my_check_annotation\((.*?), "(.*?)"\);'
     replacement = r'__goblint_check(\1); // \2'
     updated_content = re.sub(pattern, replacement, content)
 
@@ -94,7 +94,7 @@ def _preserve_goblint_checks(file_path):
 
 
 # annotates generated checks depending on the goblint analysis result
-def _annotate_generated_checks(goblint_path, file_path, params):
+def _annotate_checks(goblint_path, file_path, params):
     # run the analysis
     command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
