@@ -29,7 +29,7 @@ if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [-y] [additional arguments...]\n"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the mutation generator output\n"
-    printf "[--ignore-list] <file_path>: path to file containing paths to be ignored, separated by newlines\n"
+    printf "[--ignore] <file_path>: path to file containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
     printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
     exit 1
@@ -51,8 +51,8 @@ if [[ $1 == "--no-print" ]]; then
     shift
 fi
 
-# Check for --ignore-list option
-if [[ $1 == "--ignore-list" ]]; then
+# Check for --ignore option
+if [[ $1 == "--ignore" ]]; then
     ignore_file=$2
     shift 2
 fi
@@ -101,10 +101,6 @@ do
             printf "${color_red}[BATCH] Test failed for file $file.\n"
             failed_files+=("$file")
             ;;
-        101)
-            printf "${color_red}[BATCH] Test failed (but only \"Expected *, but registered nothing\") for file $file.\n"
-            failed_nothing_files+=("$file")
-            ;;
         *)
             printf "${color_red}[BATCH] Exception during execution for file $file.\n"
             exception_files+=("$file")
@@ -114,7 +110,6 @@ done
 
 ignored_length=${#ignored_files[@]}
 success_length=${#success_files[@]}
-nothing_length=${#failed_nothing_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
 printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files with $ignored_length ignored input files \n\n"
@@ -137,18 +132,9 @@ if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_reset}\n"
 fi
 
-# Print all files for which the test failed (but only nothing)
-if [ ${#failed_nothing_files[@]} -ne 0 ]; then
-    printf "${color_orange}The following $nothing_length files failed the tests, but only \"Expected *, but registered nothing\":\n"
-    for file in "${failed_nothing_files[@]}"; do
-        printf "$file\n"
-    done
-    printf "${color_reset}\n"
-fi
-
 # Print all files for which the test failed
 if [ ${#failed_files[@]} -ne 0 ]; then
-    printf "${color_red}The following $failed_length files failed the tests:\n"
+    printf "${color_orange}The following $failed_length files failed the tests:\n"
     for file in "${failed_files[@]}"; do
         printf "$file\n"
     done
@@ -168,8 +154,7 @@ fi
 # Print summary
 printf "\n[BATCH] Batch finished! Here is the summary:\n"
 printf "Total number of executed files: $files_length\n"
-printf "Number of ignored files: $ignored_length\n"
-printf "Number of successfully executed files: $success_length\n"
-printf "Number of files that failed the tests, but only \"Expected *, but registered nothing\": $nothing_length\n"
-printf "Number of files that failed the tests: $failed_length\n"
-printf "Number of files that experienced an exception during execution: $exception_length\n"
+printf "${color_yellow}Number of ignored files: $ignored_length\n"
+printf "${color_green}Number of successfully executed files: $success_length\n"
+printf "${color_orange}Number of files that failed the tests: $failed_length\n"
+printf "${color_red}Number of files that experienced an exception during execution: $exception_length\n"

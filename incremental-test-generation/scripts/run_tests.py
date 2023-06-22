@@ -44,17 +44,16 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
 
     # Process is running, print the output including carriage returns
     line = ''
-    only_nothing_errors = True
     while process.poll() is None:
         char = process.stdout.read(1).decode('utf-8', 'replace')
-        line, only_nothing_errors = _print_char_to_line(char, line, only_nothing_errors)
+        line = _print_char_to_line(char, line)
 
     # Process has finished, but there might be output left to read.
     while True:
         char = process.stdout.read(1).decode('utf-8', 'replace')
         if not char:
             break
-        line, only_nothing_errors = _print_char_to_line(char, line, only_nothing_errors)
+        line = _print_char_to_line(char, line)
 
     # Wait for process to finish
     process.wait()
@@ -64,7 +63,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     shutil.rmtree(test_dir)
     os.chdir(original_dir)
 
-    return process.returncode, only_nothing_errors
+    return process.returncode
 
 
 def _remove_ansi_escape_sequences(s):
@@ -72,23 +71,19 @@ def _remove_ansi_escape_sequences(s):
     return ansi_escape.sub('', s)
 
 
-def _print_char_to_line(char, line, only_nothing_errors):
+def _print_char_to_line(char, line):
     if char == '\r' or char == '\n':
         if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):
             sys.stdout.write('\r' + line)
             sys.stdout.flush()
             if char == '\n':
                 print()
-                if only_nothing_errors:
-                    match = re.search(r'registered (\w+)', _remove_ansi_escape_sequences(line))
-                    if match and match.group(1) != 'nothing':
-                        only_nothing_errors = False
         else:
             sys.stdout.write('\r' + ' ' * len(line))
         line = ''
     else:
         line += char
-    return line, only_nothing_errors
+    return line
 
 
 if __name__ == '__main__':

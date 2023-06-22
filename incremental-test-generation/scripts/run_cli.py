@@ -44,7 +44,6 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
 
     # Run tests
     ret = ret_precision = 0
-    only_nothing = only_nothing_precision = True
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
         if enable_precision:
@@ -54,14 +53,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                ret_precision, only_nothing_precision = run_tests(path, goblint_path, cfg)
+                ret_precision = run_tests(path, goblint_path, cfg)
         print(SEPERATOR)
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, inplace=True)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
-            ret, only_nothing = run_tests(path, goblint_path, cfg)            
+            ret = run_tests(path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
@@ -84,10 +83,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
                 print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
 
     if ret != 0 or ret_precision != 0:
-        if only_nothing and only_nothing_precision:
-            sys.exit(RETURN_TEST_FAILED_NOTHING_ONLY)
-        else:
-            sys.exit(RETURN_TEST_FAILED)
+        sys.exit(RETURN_TEST_FAILED)
     else:
         sys.exit(RETURN_SUCCESS)
 
