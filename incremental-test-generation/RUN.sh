@@ -8,5 +8,23 @@ if [ "$SCRIPT_DIR" != "$CURRENT_DIR" ]; then
   exit -1
 fi
 
+# Check for python imports
+modules=("argparse" "re" "json" "os" "subprocess" "sys" "yaml" "pydriller" "ast" "random" "time" "concurrent.futures" "multiprocessing" "openai" "questionary" "pathlib" "enum" "shutil")
+for module in "${modules[@]}"
+do
+    python3 -c "import $module" &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "Python module '$module' is not installed."
+        exit -1
+    fi
+done
+
+# Check if 'git' is installed
+command -v git > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "'git' is not installed."
+    exit -1
+fi
+
 # Run cli
 python3 ./scripts/run_cli.py "$@"
