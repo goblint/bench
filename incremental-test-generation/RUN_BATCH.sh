@@ -67,12 +67,15 @@ if [ -n "$ignore_file" ]; then
 fi
 
 # Find .c files in subdirectories of the specified directory
-files=$(find "$dir" -type f -name "*.c" | sort | while IFS= read -r file; do
-    if [[ ! $ignore_list =~ $(realpath "$file") ]]; then
-        echo "$file"
+all_files=$(find "$dir" -type f -name "*.c" | sort)
+for file in $all_files; do
+    if [[ $ignore_list =~ $(realpath "$file") ]]; then
+        ignored_files+=("$file")
+    else
+        files+=("$file")
     fi
-done)
-files_length=$(echo "$files" | wc -l)
+done
+files_length=${#files[@]}
 
 # Iterate over the found files
 index=0
@@ -107,11 +110,21 @@ do
     esac
 done
 
+ignored_length=${#ignored_files[@]}
 success_length=${#success_files[@]}
 nothing_length=${#failed_nothing_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
-printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files \n\n"
+printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files and ignored $ignored_length input files \n\n"
+
+# Print all ignored files
+if [ ${#ignored_files[@]} -ne 0 ]; then
+    printf "${color_yellow}The following $ignored_length files were ignored:\n"
+    for file in "${ignored_files[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
 
 # Print all success files
 if [ ${#success_files[@]} -ne 0 ]; then
@@ -152,8 +165,9 @@ fi
 
 # Print summary
 printf "\n[BATCH] Batch finished! Here is the summary:\n"
-printf "Total number of files: $files_length\n"
-printf "Number of successfully run files: $success_length\n"
+printf "Total number of ignored files: $ignored_length\n"
+printf "Total number of executed files: $files_length\n"
+printf "Number of successfully executed files: $success_length\n"
 printf "Number of files that failed the tests, but only \"Expected *, but registered nothing\": $nothing_length\n"
 printf "Number of files that failed the tests: $failed_length\n"
 printf "Number of files that experienced an exception during execution: $exception_length\n"
