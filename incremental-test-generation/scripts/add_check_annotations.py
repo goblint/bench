@@ -4,7 +4,7 @@ import re
 
 # Adds "//TODO" or "//SUCCESS" to the Goblint checks "__goblint_check(exp);" when there is no comment yet.
 # Stores the file with the appendix _success / _todo.
-def add_check_annotations(file_path: str, unknown_instead_of_success: bool):
+def add_check_annotations(file_path: str, todo_instead_of_success: bool):
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
@@ -13,14 +13,14 @@ def add_check_annotations(file_path: str, unknown_instead_of_success: bool):
         match = re.search(r'(__goblint_check\(.*?\);)(?!.*?//)', line)
         if match:
             modified_line = match.group(1)
-            if unknown_instead_of_success:
+            if todo_instead_of_success:
                 modified_line += ' // TODO'
             else:
                 modified_line += ' // SUCCESS'
             line = line.replace(match.group(1), modified_line)
         modified_lines.append(line)
 
-    new_file_name = file_path.rsplit('.', 1)[0] + ('_todo.c' if unknown_instead_of_success else '_success.c')
+    new_file_name = file_path.rsplit('.', 1)[0] + ('_todo.c' if todo_instead_of_success else '_success.c')
     with open(new_file_name, 'w') as new_file:
         new_file.writelines(modified_lines)
 

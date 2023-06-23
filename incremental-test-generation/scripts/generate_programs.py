@@ -7,7 +7,7 @@ from generate_mutations import *
 
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations,
-                      enable_ml, enable_git, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
+                      enable_ml, enable_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
     # Clean working directory
     if os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
@@ -49,9 +49,12 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         if not compiling:
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
+        # For the patched file generate TODO annotations
         if i == 0 or enable_git:
-            add_check_annotations(file_path, unknown_instead_of_success=True)
-        add_check_annotations(file_path, unknown_instead_of_success=False)
+            add_check_annotations(file_path, todo_instead_of_success=True)
+        # For the source file generate SUCCESS annotations
+        if i != 0 or enable_precision or enable_git:
+            add_check_annotations(file_path, todo_instead_of_success=False)
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
     # Check how many and which files were not compiling
@@ -126,6 +129,7 @@ def main():
     parser.add_argument('--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('--enable-ml', action='store_true', help='Enable ML')
     parser.add_argument('--enable-git', action='store_true', help='Enable Git')
+    parser.add_argument('--enable-precision', action='store_true', help='Enable generation for precision tests')
     parser.add_argument('--ml-count', type=int, default=DEFAULT_ML_COUNT, help='Number of ML programs to generate')
     parser.add_argument('--ml-select', type=int, default=DEFAULT_ML_SELECT, help='Number of selected lines for ML')
     parser.add_argument('--ml-interesting', default="[]", help='Lines to randomly choose the start line for selection (Default are all lines)')
@@ -167,7 +171,7 @@ def main():
         parser.error('[ERROR] Give a git start commit hash AND a end commit hash')
 
     generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path,
-                      mutations, args.enable_mutations, args.enable_ml, args.enable_git, args.ml_count, args.ml_select,
+                      mutations, args.enable_mutations, args.enable_ml, args.enable_git, args.enable_precision, args.ml_count, args.ml_select,
                       args.ml_interesting, args.ml_16k, args.git_start, args.git_end)
 
 
