@@ -49,7 +49,7 @@ def add_check(file_path, goblint_path, meta_path, params, index):
                 yaml.safe_dump(yaml_data, file)
         return False
 
-    # TODO Alternative _prepend_param_line(file_path_out, params)
+    _prepend_param_line(file_path_out, params)
     # TODO Alternative _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
     _annotate_checks(goblint_path, file_path_out, params)
@@ -114,13 +114,17 @@ def _annotate_checks(goblint_path, file_path, params):
 
     # search for corresponding lines
     json_data = json.loads(json_string)
+    print(json_string)
     line_ranges_deadcode = []
+    line_ranges_deadcode_ = []
     for message in json_data['messages']:
         for tag in message['tags']:
             if "Category" in tag and "Deadcode" in tag["Category"]:
-                new_line_ranges = _get_line_ranges(message['multipiece'])
-                if new_line_ranges:
-                    line_ranges_deadcode.append(new_line_ranges)
+                # Do not create when CWE Tag indicated that condition is always true
+                if ("CWE" in tag and tag["CWE"] != 571) or not "CWE" in tag:
+                    new_line_ranges = _get_line_ranges(message['multipiece'])
+                    if new_line_ranges:
+                        line_ranges_deadcode.append(new_line_ranges)
 
     # flatten the list
     line_ranges_deadcode = [item for sublist in line_ranges_deadcode for item in sublist]
