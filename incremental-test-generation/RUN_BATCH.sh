@@ -100,11 +100,11 @@ do
             success_files+=("$file")
             ;;
         100)
-            printf "${color_red}[BATCH] Test failed for file $file.\n"
+            printf "${color_red}[BATCH] Test failed for file $file\n"
             failed_files+=("$file")
             ;;
         *)
-            printf "${color_red}[BATCH] Exception during execution for file $file.\n"
+            printf "${color_red}[BATCH] Exception during execution for file $file\n"
             exception_files+=("$file")
             ;;
     esac
