@@ -111,7 +111,6 @@ do
 done
 
 ignored_length=${#ignored_files[@]}
-skipped_length=${#skipped_files[@]}
 success_length=${#success_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
@@ -177,9 +176,6 @@ printf "${color}Number of ignored files: $ignored_length\n"
 
 if [ "$success_length" -eq 0 ]; then color=${color_grey}; else color=${color_green}; fi
 printf "${color}Number of successfully executed files: $success_length\n"
-
-if [ "$skipped_length" -eq 0 ]; then color=${color_grey}; else color=${color_blue}; fi
-printf "${color}Number of skipped files: $skipped_length\n"
 
 if [ "$failed_length" -eq 0 ]; then color=${color_grey}; else color=${color_orange}; fi
 printf "${color}Number of files that failed the tests: $failed_length\n"
