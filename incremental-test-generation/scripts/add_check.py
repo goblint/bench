@@ -66,7 +66,7 @@ def _prepend_param_line(file_path, params):
         f.writelines(lines)
 
 
-# annotate extern void __goblint_check __goblint_assert with // NOWARN
+# annotate extern void __goblint_check __goblint_assert with // NOWARN!
 def _annotate_extern_check_definitions(file_path):
     with open(file_path, 'r') as file:
         contents = file.read()
@@ -74,7 +74,7 @@ def _annotate_extern_check_definitions(file_path):
     pattern = r'(extern void __goblint_(?:check|assert)\(.*\) ;)'
     matches = re.findall(pattern, contents)
     for match in matches:
-        contents = contents.replace(match, match + ' // NOWARN for extern definitions')
+        contents = contents.replace(match, match + ' // NOWARN! for extern definitions')
 
     with open(file_path, 'w') as file:
         file.write(contents)
@@ -111,9 +111,9 @@ def _annotate_checks(goblint_path, file_path, params):
         print(result.stdout)
         print(result.stdout)
         sys.exit(RETURN_ERROR)
-
-    # search for corresponding lines
     json_data = json.loads(json_string)
+
+    # search for lines which are marked as deadcode
     line_ranges_deadcode = []
     for message in json_data['messages']:
         for tag in message['tags']:
@@ -124,11 +124,22 @@ def _annotate_checks(goblint_path, file_path, params):
                     if new_line_ranges:
                         line_ranges_deadcode.append(new_line_ranges)
 
-    # flatten the list
+    # search for lines which are marked as succesfull asserts
+    line_ranges_success = []
+    for message in json_data['messages']:
+        for tag in message['tags']:
+            if "Category" in tag and "Assert" in tag["Category"]:
+                if "severity" in message and message["severity"] == "Success":
+                    new_line_ranges = _get_line_ranges(message['multipiece'])
+                    if new_line_ranges:
+                        line_ranges_success.append(new_line_ranges)
+
+    # flatten the lists
     line_ranges_deadcode = [item for sublist in line_ranges_deadcode for item in sublist]
+    line_ranges_success = [item for sublist in line_ranges_success for item in sublist]
 
     # add annotations to lines
-    _mark_deadcode_checks(line_ranges_deadcode, file_path)
+    _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path)
 
 
 # read line ranges from json multipiece element: (start, end)
@@ -143,20 +154,26 @@ def _get_line_ranges(multipiece):
     return line_ranges
 
 
-# mark all __goblint_check in the line ranges with NOWARN!
-def _mark_deadcode_checks(line_ranges, file_path):
+# mark all __goblint_check in the with deadcode but not succusfull with NOWARN!
+def _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
     pattern = r'\s*__goblint_check\(.*\);(?!//).*'
 
     with open(file_path, 'r') as f:
         lines = f.readlines()
 
+    print(line_ranges_success)
+    print(line_ranges_deadcode)
+
     for i, line in enumerate(lines):
-        if any(start <= i + 1 <= end for start, end in line_ranges):
+        # a line is considered if it is in line_ranges_deadcode and not in line_ranges_success
+        if any(start <= i + 1 <= end for start, end in line_ranges_deadcode) and \
+           not any(start <= i + 1 <= end for start, end in line_ranges_success):
             if re.match(pattern, line):
                 lines[i] = line.rstrip('\n') + " // NOWARN! generated for deadcode\n"
 
     with open(file_path, 'w') as f:
         f.writelines(lines)
+
 
 
 # get the json from the goblint terminal output
