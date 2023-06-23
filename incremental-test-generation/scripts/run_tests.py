@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 import sys
+import threading
 
 from util import *
 
@@ -42,6 +43,30 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
         command += " -c"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
 
+    # Handle the output in a thread
+    thread = threading.Thread(target=handle_output, args=(process,))
+    thread.start()
+
+    # Wait for processes to finish
+    process.wait()
+    thread.join()
+
+    # Cleanup
+    shutil.rmtree(incremental_tests_dir_abs)
+    shutil.rmtree(test_dir)
+    os.chdir(original_dir)
+
+    return process.returncode
+
+
+def handle_output(process):
+    line = ''
+    while True:
+        char = process.stdout.read(1).decode('utf-8', 'replace')
+        if not char and process.poll() is not None:
+            break
+        line = _print_char_to_line(char, line)
+
     # Process is running, print the output including carriage returns
     line = ''
     while process.poll() is None:
@@ -54,16 +79,6 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
         if not char:
             break
         line = _print_char_to_line(char, line)
-
-    # Wait for process to finish
-    process.wait()
-
-    # Cleanup
-    shutil.rmtree(incremental_tests_dir_abs)
-    shutil.rmtree(test_dir)
-    os.chdir(original_dir)
-
-    return process.returncode
 
 
 def _print_char_to_line(char, line):
