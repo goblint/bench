@@ -115,7 +115,7 @@ skipped_length=${#skipped_files[@]}
 success_length=${#success_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
-printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files\n\n"
+printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files${color_reset}\n\n"
 
 # Print all ignored files
 if [ ${#ignored_files[@]} -ne 0 ]; then
@@ -171,8 +171,18 @@ fi
 # Print summary
 printf "\n[BATCH] Summary:\n"
 printf "Total number of executed files: $files_length\n"
-printf "${color_yellow}Number of ignored files: $ignored_length\n"
-printf "${color_green}Number of successfully executed files: $success_length\n"
-printf "${color_blue}Number of skipped files: $skipped_length\n"
-printf "${color_orange}Number of files that failed the tests: $failed_length\n"
-printf "${color_red}Number of files that experienced an exception during execution: $exception_length\n"
+
+if [ "$ignored_length" -eq 0 ]; then color=${color_grey}; else color=${color_yellow}; fi
+printf "${color}Number of ignored files: $ignored_length\n"
+
+if [ "$success_length" -eq 0 ]; then color=${color_grey}; else color=${color_green}; fi
+printf "${color}Number of successfully executed files: $success_length\n"
+
+if [ "$skipped_length" -eq 0 ]; then color=${color_grey}; else color=${color_blue}; fi
+printf "${color}Number of skipped files: $skipped_length\n"
+
+if [ "$failed_length" -eq 0 ]; then color=${color_grey}; else color=${color_orange}; fi
+printf "${color}Number of files that failed the tests: $failed_length\n"
+
+if [ "$exception_length" -eq 0 ]; then color=${color_grey}; else color=${color_red}; fi
+printf "${color}Number of files that experienced an exception during execution: $exception_length\n"
