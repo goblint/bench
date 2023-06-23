@@ -161,9 +161,6 @@ def _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
     with open(file_path, 'r') as f:
         lines = f.readlines()
 
-    print(line_ranges_success)
-    print(line_ranges_deadcode)
-
     for i, line in enumerate(lines):
         # a line is considered if it is in line_ranges_deadcode and not in line_ranges_success
         if any(start <= i + 1 <= end for start, end in line_ranges_deadcode) and \
