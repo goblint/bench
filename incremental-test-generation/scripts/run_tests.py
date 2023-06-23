@@ -41,7 +41,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     command = f"{ruby_path_abs} group temp -i"
     if cfg:
         command += " -c"
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
     # Handle the output in a thread
     thread = threading.Thread(target=handle_output, args=(process,))
@@ -67,18 +67,6 @@ def handle_output(process):
             break
         line = _print_char_to_line(char, line)
 
-    # Process is running, print the output including carriage returns
-    line = ''
-    while process.poll() is None:
-        char = process.stdout.read(1).decode('utf-8', 'replace')
-        line = _print_char_to_line(char, line)
-
-    # Process has finished, but there might be output left to read.
-    while True:
-        char = process.stdout.read(1).decode('utf-8', 'replace')
-        if not char:
-            break
-        line = _print_char_to_line(char, line)
 
 
 def _print_char_to_line(char, line):
