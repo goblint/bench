@@ -160,7 +160,7 @@ if [ ${#exception_files[@]} -ne 0 ]; then
         # Check if the first line of the file contains "SKIP"
         first_line=$(head -n 1 "$file")
         if [[ $first_line == *"SKIP"* ]]; then
-            printf "${color_yellow} (Contained SKIP keyword in first line)${color_orange}\n"
+            printf "${color_yellow} (Contained SKIP keyword in first line)${color_red}\n"
         else
             printf "\n"
         fi
