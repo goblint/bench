@@ -63,7 +63,7 @@ fi
 if [ -n "$ignore_file" ]; then
     ignore_list=$(
         while IFS= read -r line; do
-            realpath "$line"
+            realpath "$line" 2>/dev/null
         done < "$ignore_file"
     )
 fi
