@@ -27,11 +27,13 @@ ignore_file=""
 # Check for at least one argument
 if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [--no-print] [--ignore <file_path>] [additional arguments...]\n"
+    printf "Please order the arguments and options as stated above"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the mutation generator output\n"
     printf "[--ignore <file_path>] : path to file containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
     printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
+    printf "       or in short: -m -dp -er -dt -ec -c {}\n"
     exit 1
 fi
 

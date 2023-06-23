@@ -114,9 +114,7 @@ def _annotate_checks(goblint_path, file_path, params):
 
     # search for corresponding lines
     json_data = json.loads(json_string)
-    print(json_string)
     line_ranges_deadcode = []
-    line_ranges_deadcode_ = []
     for message in json_data['messages']:
         for tag in message['tags']:
             if "Category" in tag and "Deadcode" in tag["Category"]:
