@@ -86,14 +86,6 @@ do
         continue
     fi
 
-    # Check if the first line of the file contains "SKIP"
-    first_line=$(head -n 1 "$file")
-    if [[ $first_line == *"SKIP"* ]]; then
-        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to SKIP in the first line${color_reset}\n"
-        skipped_files+=("$file")
-        continue
-    fi
-
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
     if [ "$no_print" = true ]; then
@@ -143,20 +135,18 @@ if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_reset}\n"
 fi
 
-# Print all skipped files
-if [ ${#skipped_files[@]} -ne 0 ]; then
-    printf "${color_blue}The following $skipped_length files were skiped by the keyword SKIP in the first line:\n"
-    for file in "${skipped_files[@]}"; do
-        printf "$file\n"
-    done
-    printf "${color_reset}\n"
-fi
-
 # Print all files for which the test failed
 if [ ${#failed_files[@]} -ne 0 ]; then
     printf "${color_orange}The following $failed_length files failed the tests:\n"
     for file in "${failed_files[@]}"; do
-        printf "$file\n"
+        printf "$file"
+        # Check if the first line of the file contains "SKIP"
+        first_line=$(head -n 1 "$file")
+        if [[ $first_line == *"SKIP"* ]]; then
+            printf "${color_yellow} (Contained SKIP keyword in first line)${color_orange}\n"
+        else
+            printf "\n"
+        fi
     done
     printf "${color_reset}\n"
 fi
@@ -166,7 +156,14 @@ fi
 if [ ${#exception_files[@]} -ne 0 ]; then
     printf "${color_red}The following $exception_length files experienced an exception during execution:\n"
     for file in "${exception_files[@]}"; do
-        printf "$file\n"
+        printf "$file"
+        # Check if the first line of the file contains "SKIP"
+        first_line=$(head -n 1 "$file")
+        if [[ $first_line == *"SKIP"* ]]; then
+            printf "${color_yellow} (Contained SKIP keyword in first line)${color_orange}\n"
+        else
+            printf "\n"
+        fi
     done
     printf "${color_reset}\n"
 fi
