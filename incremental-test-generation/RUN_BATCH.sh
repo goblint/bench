@@ -86,6 +86,14 @@ do
         continue
     fi
 
+    # Check if the first line of the file contains "SKIP"
+    first_line=$(head -n 1 "$file")
+    if [[ $first_line == *"SKIP"* ]]; then
+        printf "${color_yellow}[BATCH][${index}/${files_length}] Skipping file $file due to SKIP in the first line${color_reset}\n"
+        skipped_files+=("$file")
+        continue
+    fi
+
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
     if [ "$no_print" = true ]; then
@@ -111,10 +119,11 @@ do
 done
 
 ignored_length=${#ignored_files[@]}
+skipped_length=${#skipped_files[@]}
 success_length=${#success_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
-printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files with $ignored_length ignored input files \n\n"
+printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files\n\n"
 
 # Print all ignored files
 if [ ${#ignored_files[@]} -ne 0 ]; then
@@ -129,6 +138,15 @@ fi
 if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_green}The following $success_length files were run succesfully with all tests passing:\n"
     for file in "${success_files[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+# Print all skipped files
+if [ ${#skipped_files[@]} -ne 0 ]; then
+    printf "${color_blue}The following $skipped_length files were skiped by the keyword SKIP in the first line:\n"
+    for file in "${skipped_files[@]}"; do
         printf "$file\n"
     done
     printf "${color_reset}\n"
@@ -158,5 +176,6 @@ printf "\n[BATCH] Summary:\n"
 printf "Total number of executed files: $files_length\n"
 printf "${color_yellow}Number of ignored files: $ignored_length\n"
 printf "${color_green}Number of successfully executed files: $success_length\n"
+printf "${color_blue}Number of skipped files: $skipped_length\n"
 printf "${color_orange}Number of files that failed the tests: $failed_length\n"
 printf "${color_red}Number of files that experienced an exception during execution: $exception_length\n"
