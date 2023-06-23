@@ -45,7 +45,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
         sys.stdout.flush()
         file_path = os.path.join(temp_dir, f"p_{i}.c")
-        compiling = add_check(file_path, goblint_path, meta_path, params, i)
+        compiling = add_check(file_path, goblint_path, meta_path, params, i, enable_git)
         if not compiling:
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
