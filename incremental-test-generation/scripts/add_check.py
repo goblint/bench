@@ -133,7 +133,7 @@ def _annotate_checks(goblint_path, file_path, params):
     if result.returncode != 0:
         print(f"\n{COLOR_RED}Error compiling cil file.{COLOR_RESET}")
         print(result.stdout)
-        print(result.stdout)
+        print(result.stderr)
         sys.exit(RETURN_ERROR)
 
     # get the json data
