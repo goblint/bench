@@ -120,7 +120,12 @@ printf "\n\n${color_green}[BATCH] Batch finished running $files_length input fil
 if [ ${#ignored_files[@]} -ne 0 ]; then
     printf "${color_yellow}The following $ignored_length files were ignored:\n"
     for file in "${ignored_files[@]}"; do
-        printf "$file\n"
+        printf "$file"
+        if [[ $first_line == *"SKIP"* ]]; then
+            printf " (Contained SKIP keyword in first line)\n"
+        else
+            printf "\n"
+        fi
     done
     printf "${color_reset}\n"
 fi
