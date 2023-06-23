@@ -26,12 +26,16 @@ def get_mutations_from_args(args):
                      args.remove_thread, args.logical_connector_replacement)
 
 
+
 class GenerateType(Enum):
     SOURCE = 'SOURCE'
     MUTATION = 'MUTATION'
     ML = 'ML'
     GIT = 'GIT'
 
+def remove_ansi_escape_sequences(s):
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', s)
 
 RETURN_SUCCESS = 0
 RETURN_ERROR = -1

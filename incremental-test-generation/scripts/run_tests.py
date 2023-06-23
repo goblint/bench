@@ -66,11 +66,6 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     return process.returncode
 
 
-def _remove_ansi_escape_sequences(s):
-    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
-    return ansi_escape.sub('', s)
-
-
 def _print_char_to_line(char, line):
     if char == '\r' or char == '\n':
         if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):

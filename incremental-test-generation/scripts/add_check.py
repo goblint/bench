@@ -31,8 +31,8 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
         print(f"\n{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
         # Check if program should be stopped
         if index == 0 and not enable_git:
-            print(result.stdout)
-            print(result.stderr)
+            print(remove_ansi_escape_sequences(result.stdout))
+            print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
         _write_exception_to_meta(meta_path, index, result.stderr)
@@ -56,8 +56,8 @@ def _create_cil_file(goblint_path, input_path, output_path, meta_path, index, en
         _write_exception_to_meta(meta_path, index, result.stderr)
         # Check if program should be stopped
         if index == 0 and not enable_git:
-            print(result.stdout)
-            print(result.stderr)
+            print(remove_ansi_escape_sequences(result.stdout))
+            print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
     with open(output_path, 'w') as f:
