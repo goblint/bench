@@ -16,7 +16,11 @@ from util import *
 def add_check(file_path, goblint_path, meta_path, params, index):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
-    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
+    success = _create_cil_file(goblint_path, file_path, file_path_out, meta_path, index)
+    if not success:
+        return False
+
+    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path_out}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compiling = result.returncode == 0
 
@@ -54,6 +58,36 @@ def add_check(file_path, goblint_path, meta_path, params, index):
     _annotate_extern_check_definitions(file_path_out)
     _annotate_checks(goblint_path, file_path_out, params)
 
+    return True
+
+
+# Create a cil file from the original file
+def _create_cil_file(goblint_path, input_path, output_path, meta_path, index):
+    result = subprocess.run(
+        [goblint_path, '--set', 'justcil', 'true', '--set', 'cil.merge.inlines', 'false', input_path],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if result.returncode != 0:
+        print(f"\n{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
+        # Check if program should be stopped
+        if index == 0 and not yaml_data["p_0"][META_TYPE] == GenerateType.GIT.value:
+            print(result.stdout)
+            print(result.stderr)
+            print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
+            sys.exit(RETURN_ERROR)
+        # Write compiling result and exceptions to meta.yaml
+        if meta_path is not None:
+            with open(meta_path, 'r') as file:
+                yaml_data = yaml.safe_load(file)
+            yaml_data[f"p_{index}"] = {
+                META_TYPE: GenerateType.ML.value,
+                META_EXCEPTION: result.stderr,
+                META_COMPILING: False
+            }
+            with open(meta_path, 'w') as file:
+                yaml.safe_dump(yaml_data, file)
+        return False
+    with open(output_path, 'w') as f:
+        f.write(result.stdout.decode())
     return True
 
 
