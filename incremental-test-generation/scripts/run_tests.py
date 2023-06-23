@@ -48,8 +48,8 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     thread.start()
 
     # Wait for processes to finish
-    process.wait()
     thread.join()
+    process.wait()
 
     # Cleanup
     shutil.rmtree(incremental_tests_dir_abs)
