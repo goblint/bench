@@ -129,7 +129,14 @@ fi
 if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_green}The following $success_length files were run succesfully with all tests passing:\n"
     for file in "${success_files[@]}"; do
-        printf "$file\n"
+        printf "$file"
+        # Check if the first line of the file contains "SKIP"
+        first_line=$(head -n 1 "$file")
+        if [[ $first_line == *"SKIP"* ]]; then
+            printf "${color_yellow} (Contained SKIP keyword in first line)${color_green}\n"
+        else
+            printf "\n"
+        fi
     done
     printf "${color_reset}\n"
 fi
