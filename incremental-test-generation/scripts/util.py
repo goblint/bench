@@ -79,6 +79,18 @@ DEFAULT_ML_SELECT = 50
 ML_WORKERS = 5
 
 
+def fix_params(params):
+    params_original = params
+    
+    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*apron[\'"]*', '', params)
+    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*file[\'"]*', '', params)
+    params = re.sub(r'--set pre\.cppflags\[\+\] [\'"]*-O3[\'"]*', '', params)
+
+    if params_original != params:
+        print(f'{COLOR_YELLOW}[WARNING] The parameters from the PARAM string in the input file were changed to avoid crashing the tester:{COLOR_RESET} {params.strip()}')
+    return params
+
+
 def make_program_copy(program_path, index):
     new_path = os.path.join(os.path.dirname(program_path), 'p_' + str(index) + '.c')
     shutil.copy2(program_path, new_path)
