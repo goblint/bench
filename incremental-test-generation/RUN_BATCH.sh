@@ -100,7 +100,7 @@ do
             success_files+=("$file")
             ;;
         100)
-            printf "${color_red}[BATCH] Test failed for file $file\n"
+            printf "${color_orange}[BATCH] Test failed for file $file\n"
             failed_files+=("$file")
             ;;
         *)
