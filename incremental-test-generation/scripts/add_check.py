@@ -16,14 +16,9 @@ from util import *
 def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
-    success = _create_cil_file(goblint_path, file_path, file_path_out, meta_path, index, enable_git)
-    if not success:
-        return
-
-    if success:
-        command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path_out}'
-        result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        compiling = result.returncode == 0
+    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
+    result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    compiling = result.returncode == 0
 
     _write_compiling_result_to_meta(meta_path, index, compiling)
 
