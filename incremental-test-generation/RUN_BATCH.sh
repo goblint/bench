@@ -81,13 +81,13 @@ do
     # Check if the file should be ignored
     file_realpath=$(realpath "$file")
     if [[ $ignore_list =~ $file_realpath ]]; then
-        printf "${color_yellow}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
+        printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
         ignored_files+=("$file")
         continue
     fi
 
     # Run the command with remaining arguments
-    printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}\n"
+    printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}"
     if [ "$no_print" = true ]; then
         ./RUN.sh -i "$file" "$@" > /dev/null
     else
@@ -97,17 +97,19 @@ do
     # Check for different return values
     case $? in
         0)
+            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded for file $file"
             success_files+=("$file")
             ;;
         100)
-            printf "${color_orange}[BATCH] Test failed for file $file\n"
+            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed for file $file"
             failed_files+=("$file")
             ;;
         *)
-            printf "${color_red}[BATCH] Exception during execution for file $file\n"
+            printf "$\r${color_red}[BATCH][${index}/${files_length}] Exception during execution for file $file"
             exception_files+=("$file")
             ;;
     esac
+    printf "${color_reset}\n"
 done
 
 ignored_length=${#ignored_files[@]}
