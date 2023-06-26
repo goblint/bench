@@ -62,7 +62,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     shutil.copy(program_path, program_path_temp)
 
     # Execute all mutations to get the lines where the mutation is possible
-    print(f"[MUTATION][CHECK] Check mutation {mutation_name}")
+    print(f"[MUTATION][CHECK] Check mutation {mutation_name}, end=''")
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
@@ -72,6 +72,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     ]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
+        print('\n')
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}")
@@ -106,7 +107,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
 
     os.remove(program_path_temp)
 
-    print(f"[MUTATION][CHECK RESULT] Mutation {mutation_name} can be applied to lines {line_groups}")
+    print(f"\r[MUTATION][CHECK RESULT] Mutation {mutation_name} can be applied to lines {line_groups}")
     return sorted(line_groups, key=lambda x: x[0])
 
 
