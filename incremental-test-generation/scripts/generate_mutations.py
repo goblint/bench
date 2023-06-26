@@ -62,7 +62,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     shutil.copy(program_path, program_path_temp)
 
     # Execute all mutations to get the lines where the mutation is possible
-    print(f"[MUTATION][CHECK] Check mutation {mutation_name}, end=''")
+    print(f"[MUTATION][CHECK] Check mutation {mutation_name}", end='')
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
@@ -107,7 +107,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
 
     os.remove(program_path_temp)
 
-    print(f"\r[MUTATION][CHECK RESULT] Mutation {mutation_name} can be applied to lines {line_groups}")
+    print(f"\r[MUTATION][CHECK] Mutation {mutation_name} can be applied to lines {line_groups}")
     return sorted(line_groups, key=lambda x: x[0])
 
 
