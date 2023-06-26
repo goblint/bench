@@ -90,19 +90,33 @@ ML_WORKERS = 5
 def fix_params(params):
     params_original = params
     
-    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*apron[\'"]*', '', params)
-    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*file[\'"]*', '', params)
-    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*var_eq[\'"]*', '', params)
-    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*assert[\'"]*', '', params)
-    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*affeq[\'"]*', '', params)
-    params = re.sub(r'--set pre\.cppflags\[\+\] [\'"]*-O3[\'"]*', '', params)
-    params = re.sub(r'--enable ana\.int\.interval\b', '', params)
-    params = re.sub(r'--enable ana\.autotune\.enabled', '', params)
-    params = re.sub(r'--sets sem\.int\.signed_overflow assume_none', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*var_eq[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
+    params = re.sub(r'--enable [\'"]*ana\.int\.interval\b', '', params)
+    params = re.sub(r'--enable [\'"]*ana\.autotune\.enabled[\'"]*', '', params)
+    params = re.sub(r'--sets [\'"]*sem\.int\.signed_overflow[\'"]* assume_none', '', params)
+    params = re.sub(r'--set [\'"]*witness\.yaml\.validate[\'"]* \S*', '', params)
+    params = re.sub(r'--set [\'"]*witness\.yaml\.unassume[\'"]* \S*', '', params)
 
     if params_original != params:
         print(f'{COLOR_YELLOW}[WARNING] The parameters from the PARAM string in the input file were changed to avoid crashing the tester:{COLOR_RESET} {params.strip()}')
     return params
+
+
+def get_params_from_file(filename):
+    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
+    with open(filename, 'r') as f:
+        for line in f:
+            match = param_pattern.match(line)
+            if match:
+                params = match.group(1).strip()
+                return params
+    return ""
 
 
 def make_program_copy(program_path, index):

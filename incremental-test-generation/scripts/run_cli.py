@@ -1,4 +1,5 @@
 import argparse
+import glob
 import sys
 from pathlib import Path
 import questionary
@@ -30,7 +31,7 @@ logo = '''
         '''
 
 
-def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end):
+def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, include_paths):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -49,14 +50,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
         if enable_precision:
             print_seperator()
             print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
-            paths = generate_tests(temp_path, test_path, goblint_config, precision_test=True, inplace=True)
+            paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 ret_precision = run_tests(path, goblint_path, cfg)
         print_seperator()
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
-        paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, inplace=True)
+        paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
@@ -67,7 +68,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
         print_seperator()
         correctness_path = os.path.join(os.path.curdir, 'out', test_name)
         print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{test_name}{COLOR_RESET}:')
-        paths = generate_tests(temp_path, correctness_path, goblint_config, precision_test=False, inplace=False)
+        paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
         if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
@@ -76,7 +77,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
             print_seperator()
             precision_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out', precision_name)
             print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{precision_name}{COLOR_RESET}:')
-            paths = generate_tests(temp_path, precision_path, goblint_config, precision_test=False, inplace=False)
+            paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=False, inplace=False)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
@@ -88,7 +89,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, git_no_commit):
+def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, git_no_commit, include_paths):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -110,6 +111,8 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             last_input_git = config[CONFIG_LAST_INPUT_GIT]
             print(f'Using goblint-path (change in ./{CONFIG_FILENAME}): {goblint_path}')
             print(f'Using llvm-path (change in ./{CONFIG_FILENAME}): {llvm_path}')
+    goblint_path = _validate_path(goblint_path)
+    llvm_path = _validate_path(llvm_path)
 
     # Handle Questions
     if not (enable_mutations or enable_ml or enable_git):
@@ -176,12 +179,14 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
                 print(f'Using api-key for ML (change in ./{APIKEY_FILENAME}): ...{key[-4:]}')
                 print(f'Using organisation id for ML (change in ./{APIKEY_FILENAME}): ...{org[-4:]}')
         key_path = os.path.abspath(key_path)
+        key_path = _validate_path(key_path)
     else:
         key_path = None
 
     # Check for config file
     if goblint_config is None:
         goblint_config = questionary.text('Path to a goblint config file used to create tests. Passing {} creates an empty config file.', default='{}').ask()
+        goblint_config = _validate_path(goblint_config)
     if goblint_config == '{}' or goblint_config == '':
         goblint_config = None
 
@@ -267,8 +272,27 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             with open(config_path, 'w') as outfile:
                 yaml.dump(config, outfile)
             break
+    input_file = _validate_path(input_file)
 
-    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end)
+    # add files to include path that are named as the input file but with different ending
+    if (include_paths == None):
+        include_paths = []
+    if include_paths != []:
+        print(f'{COLOR_YELLOW}[INFO] Additionally to the input file the following files are copied into the temp and test directory:{COLOR_RESET}')
+        for path in include_paths:
+            print(path)
+    for path in include_paths:
+        path = _validate_path(path)
+
+    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, include_paths)
+
+
+def _validate_path(path):
+    path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
+    if not os.path.exists(path):
+        print(f"{COLOR_RED}The path {path} does not exist.{COLOR_RESET}")
+        sys.exit(RETURN_ERROR)
+    return path
 
 
 def main():
@@ -290,6 +314,7 @@ def main():
     parser.add_argument('-dc', '--disable-cfg', action='store_true', help='Disable fine grained cfg tests')
     parser.add_argument('-t', '--test-name', help='Test name')
     parser.add_argument('-p', '--precision-name', help='Precision test name')
+    parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
     parser.add_argument('-i', '--input', help='Input File')
 
     # Add mutation options
@@ -404,7 +429,7 @@ def main():
     if precision_name is not None and not check_test_dir_name(precision_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_mutations, args.enable_ml, args.enable_git, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, git_start_commit, git_end_commit, args.git_no_commit)
+    cli(args.enable_mutations, args.enable_ml, args.enable_git, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, git_start_commit, git_end_commit, args.git_no_commit, args.include)
 
 
 if __name__ == "__main__":

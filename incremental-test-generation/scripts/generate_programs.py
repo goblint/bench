@@ -21,10 +21,14 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
-    # TODO Preserve the __goblint_check() annotations
-    # TODO _transform_asserts(program_0_path)
-    # TODO _preserve_goblint_check_annotations(program_0_path)
+    # ALTERNATIVE Preserve the __goblint_check() annotations
+    # ALTERNATIVE _transform_asserts(program_0_path)
+    # ALTERNATIVE _preserve_goblint_check_annotations(program_0_path)
     _remove_goblint_check_and_assertions(program_0_path)
+
+    # Place include files in temp directory
+    for path in include_paths:
+        shutil.copy(path, os.path.join(temp_dir, os.path.basename(path)))
 
     index = 0
     if enable_mutations:
@@ -40,7 +44,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     print_seperator()
     if enable_git:
         print('Generating goblint checks. This may take a while...')
-    params = _get_params_from_file(program_0_path)
+    params = get_params_from_file(program_0_path)
     params = fix_params(params)
     for i in range(index + 1):
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
@@ -74,16 +78,6 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     else:
         print(f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
 
-
-def _get_params_from_file(filename):
-    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
-    with open(filename, 'r') as f:
-        for line in f:
-            match = param_pattern.match(line)
-            if match:
-                params = match.group(1).strip()
-                return params
-    return ""
 
 # Remove all goblint checks and assertions
 def _remove_goblint_check_and_assertions(program_0_path):

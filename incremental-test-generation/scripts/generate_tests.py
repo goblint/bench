@@ -10,7 +10,7 @@ from util import *
 
 
 # Generate test directory based on previously generated directory with mutated files
-def generate_tests(temp_dir, target_dir, goblint_config, precision_test, inplace: bool):
+def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precision_test, inplace: bool):
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
     if not inplace and not check_test_dir_name(directory_name):
@@ -23,6 +23,13 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, inplace
         else:
             sys.exit(RETURN_ERROR)
     os.makedirs(target_dir)
+
+    # Place include files in temp directory
+    include_paths_test = []
+    for path in include_paths:
+        include_path_new = os.path.join(target_dir, os.path.basename(path))
+        include_paths_test.append(include_path_new)
+        shutil.copy(path, include_path_new)
 
     # Read the meta.yaml
     meta_path = os.path.join(temp_dir, META_FILENAME)
