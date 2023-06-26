@@ -41,25 +41,6 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     return True
 
 
-# Create a cil file from the original file
-def _create_cil_file(goblint_path, input_path, output_path, meta_path, index, enable_git):
-    result = subprocess.run(
-        [goblint_path, '--set', 'justcil', 'true', '--set', 'cil.merge.inlines', 'false', input_path],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if result.returncode != 0:
-        _write_compiling_result_to_meta(meta_path, index, False)
-        _write_exception_to_meta(meta_path, index, result.stderr)
-        # Check if program should be stopped
-        if index == 0 and not enable_git:
-            print(remove_ansi_escape_sequences(result.stdout))
-            print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
-            sys.exit(RETURN_ERROR)
-    with open(output_path, 'w') as f:
-        f.write(result.stdout.decode())
-    return True
-
-
 def _write_compiling_result_to_meta(meta_path, index, compiling):
     # Write compiling result to meta.yaml
     if meta_path is not None:
@@ -71,7 +52,6 @@ def _write_compiling_result_to_meta(meta_path, index, compiling):
 
 
 def _write_exception_to_meta(meta_path, index, exceptions_string):
-    print(f"\n{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
     # Write compiling result and exceptions to meta.yaml
     if meta_path is not None:
         with open(meta_path, 'r') as file:
@@ -99,6 +79,11 @@ def _annotate_extern_check_definitions(file_path):
         contents = file.read()
 
     pattern = r'(extern void __goblint_(?:check|assert)\(.*\) ;)'
+    matches = re.findall(pattern, contents)
+    for match in matches:
+        contents = contents.replace(match, match + ' // NOWARN! for extern definitions')
+
+    pattern = r'(extern int \(.*__goblint_(?:check|assert)\)\(\) ;)'
     matches = re.findall(pattern, contents)
     for match in matches:
         contents = contents.replace(match, match + ' // NOWARN! for extern definitions')
