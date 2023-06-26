@@ -23,7 +23,7 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
         meta_path = os.path.expanduser(os.path.abspath(meta_path))
     git_info_sh_path = os.path.expanduser(os.path.abspath(git_info_sh_path))
 
-    print(SEPERATOR)
+    print_seperator()
     print(f'[GIT] Cloning into {temp_repo_dir}')
     _clone_repo(git_info_sh_path, temp_repo_dir)
     build_path = _get_build_path(git_info_sh_path, temp_repo_dir)
@@ -51,7 +51,7 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
             index: int = yaml_data[META_N]
 
     num_of_commits = sum(1 for _ in get_commit_traverser())
-    print(SEPERATOR)
+    print_seperator()
     print(
         f'[GIT] Start traversing {num_of_commits} commits. Including checkout, build and cil generation. This may take a while...')
     if num_of_commits <= 2:

@@ -47,14 +47,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
         if enable_precision:
-            print(SEPERATOR)
+            print_seperator()
             print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
             paths = generate_tests(temp_path, test_path, goblint_config, precision_test=True, inplace=True)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 ret_precision = run_tests(path, goblint_path, cfg)
-        print(SEPERATOR)
+        print_seperator()
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, precision_test=False, inplace=True)
         if len(paths) > 1:
@@ -64,7 +64,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
 
     # Write out custom test files
     if create_tests:
-        print(SEPERATOR)
+        print_seperator()
         correctness_path = os.path.join(os.path.curdir, 'out', test_name)
         print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{test_name}{COLOR_RESET}:')
         paths = generate_tests(temp_path, correctness_path, goblint_config, precision_test=False, inplace=False)
@@ -73,7 +73,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
         for path in paths:
             print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
         if enable_precision:
-            print(SEPERATOR)
+            print_seperator()
             precision_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out', precision_name)
             print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{precision_name}{COLOR_RESET}:')
             paths = generate_tests(temp_path, precision_path, goblint_config, precision_test=False, inplace=False)

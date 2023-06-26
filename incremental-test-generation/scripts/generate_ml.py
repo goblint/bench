@@ -48,7 +48,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     interesting_lines = validate_interesting_lines(interesting_lines, program_path)
     interesting_lines = _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line)
 
-    print(SEPERATOR)
+    print_seperator()
     interesting_lines_string = 'Start lines are randomly chosen from all lines.' if interesting_lines == [] else f' Start lines are randomly chosen from {interesting_lines}.'
     print(
         f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
@@ -60,7 +60,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
             executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ml_16k,
                             num_selected_lines, max_line, index + i + 1, file_lock)
 
-    print(SEPERATOR)
+    print_seperator()
     print('Check if all ML requests finished successfully...')
     print(f'{COLOR_GREEN}Finished all requests.{COLOR_RESET}' + (
         f'{COLOR_RED} {error_counter} failed with an exception.{COLOR_RESET}' if error_counter > 0 else ''))

@@ -49,7 +49,11 @@ COLOR_GREEN = '\033[32m'
 COLOR_YELLOW = '\033[33m'
 COLOR_RESET = '\033[0m'
 
-SEPERATOR = f"{COLOR_BLUE}------------------------------------------------------------------------------------------------------------------{COLOR_RESET}"
+
+def print_seperator():
+    print(COLOR_BLUE + '─' * os.get_terminal_size().columns + COLOR_RESET)
+
+
 SPACE = ' ' * 20
 
 META_FILENAME = 'meta.yaml'
@@ -84,6 +88,7 @@ def fix_params(params):
     
     params = re.sub(r'--set ana\.activated\[\+\] [\'"]*apron[\'"]*', '', params)
     params = re.sub(r'--set ana\.activated\[\+\] [\'"]*file[\'"]*', '', params)
+    params = re.sub(r'--set ana\.activated\[\+\] [\'"]*var_eq[\'"]*', '', params)
     params = re.sub(r'--set pre\.cppflags\[\+\] [\'"]*-O3[\'"]*', '', params)
 
     if params_original != params:

@@ -37,7 +37,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         index = generate_git(goblint_path, temp_dir, meta_path, program_0_path, git_start, git_end)
 
     # Add checks with annotations
-    print(SEPERATOR)
+    print_seperator()
     if enable_git:
         print('Generating goblint checks. This may take a while...')
     params = _get_params_from_file(program_0_path)
@@ -59,7 +59,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
     # Check how many and which files were not compiling
-    print(SEPERATOR)
+    print_seperator()
     print("Check if the files compiled...", end='')
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
