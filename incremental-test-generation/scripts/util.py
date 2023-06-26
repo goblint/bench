@@ -51,7 +51,11 @@ COLOR_RESET = '\033[0m'
 
 
 def print_seperator():
-    print(COLOR_BLUE + '─' * os.get_terminal_size().columns + COLOR_RESET)
+    try:
+        columns = os.get_terminal_size().columns
+    except:
+        columns = 20
+    print(COLOR_BLUE + '─' * columns + COLOR_RESET)
 
 
 SPACE = ' ' * 20
