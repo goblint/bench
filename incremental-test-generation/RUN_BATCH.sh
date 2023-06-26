@@ -118,7 +118,7 @@ ignored_length=${#ignored_files[@]}
 success_length=${#success_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
-printf "\n\n${color_green}[BATCH] Batch finished running $files_length input files${color_reset}\n\n"
+printf "\n\n${color_blue}[BATCH] Batch finished running $files_length input files${color_reset}\n\n"
 
 # Print all ignored files
 if [ ${#ignored_files[@]} -ne 0 ]; then
