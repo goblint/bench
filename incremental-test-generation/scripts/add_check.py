@@ -34,7 +34,7 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
         return False
 
     _prepend_param_line(file_path_out, params)
-    # TODO Alternative _preserve_goblint_checks(file_path_out)
+    # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
     _annotate_checks(goblint_path, file_path_out, params)
 
