@@ -92,6 +92,7 @@ do
     if [ "$no_print" = true ]; then
         ./RUN.sh -i "$file" "$@" > /dev/null
     else
+        printf "\n"
         ./RUN.sh -i "$file" "$@"
     fi
 
