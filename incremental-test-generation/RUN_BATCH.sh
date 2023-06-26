@@ -21,16 +21,17 @@ color_green='\033[32m'
 color_yellow="\033[33m"
 color_orange="\033[38;5;208m"
 color_reset="\033[0m"
+
 no_print=false
-ignore_file=""
+ignore_files=()
 
 # Check for at least one argument
 if [ $# -lt 1 ]; then
-    printf "Usage: $0 <directory> [--no-print] [--ignore <file_path>] [additional arguments...]\n"
+    printf "Usage: $0 <directory> [--no-print] [--ignore <file_path>]* [additional arguments...]\n"
     printf "Please order the arguments and options as stated above"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the mutation generator output\n"
-    printf "[--ignore <file_path>] : path to file containing paths to be ignored, separated by newlines\n"
+    printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
     printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
     printf "       or in short: -m -dp -er -dt -ec -c {}\n"
@@ -53,20 +54,20 @@ if [[ $1 == "--no-print" ]]; then
     shift
 fi
 
-# Check for --ignore option
-if [[ $1 == "--ignore" ]]; then
-    ignore_file=$2
+# Check for --ignore options and store ignore files in an array
+while [[ $1 == "--ignore" ]]; do
+    ignore_files+=($2)
     shift 2
-fi
+done
 
-# Normalize paths in ignore file
-if [ -n "$ignore_file" ]; then
-    ignore_list=$(
-        while IFS= read -r line; do
-            realpath "$line" 2>/dev/null
-        done < "$ignore_file"
-    )
-fi
+# Normalize paths in ignore files
+ignore_list=""
+for ignore_file in "${ignore_files[@]}"; do
+    while IFS= read -r line; do
+        ignore_list+=$(realpath "$line" 2>/dev/null)
+        ignore_list+=$'\n'
+    done < "$ignore_file"
+done
 
 # Find .c files in subdirectories of the specified directory
 files=$(find "$dir" -type f -name "*.c" | sort)
