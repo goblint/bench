@@ -168,7 +168,6 @@ def generate_tests(temp_dir, target_dir, goblint_config, precision_test, inplace
         current_test_num += 1
 
     print(f"\r{COLOR_GREEN}Generating test files [DONE]{SPACE}{COLOR_RESET}")
-    print(f'You can find the mutated files in the directory ./temp with their corresponding indexes')
     if unchanged_count > 0:
         print(f'{COLOR_YELLOW}There were {unchanged_count} patch files with no changes.{COLOR_RESET}')
 
