@@ -41,7 +41,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
-    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, is_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end)
+    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, is_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end, include_paths)
 
     # Run tests
     ret = ret_precision = 0

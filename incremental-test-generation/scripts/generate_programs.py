@@ -7,7 +7,7 @@ from generate_mutations import *
 
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations,
-                      enable_ml, enable_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end):
+                      enable_ml, enable_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end, include_paths):
     # Clean working directory
     if os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
@@ -167,7 +167,7 @@ def main():
 
     generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path,
                       mutations, args.enable_mutations, args.enable_ml, args.enable_git, args.enable_precision, args.ml_count, args.ml_select,
-                      args.ml_interesting, args.ml_16k, args.git_start, args.git_end)
+                      args.ml_interesting, args.ml_16k, args.git_start, args.git_end, [])
 
 
 if __name__ == '__main__':
