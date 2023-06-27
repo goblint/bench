@@ -121,20 +121,20 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
                 'Select one or more generator types (When git is checked no other can be checked!):',
                 choices=[
                     questionary.Choice('Mutations', checked=True),
-                    'ML',
-                    'Git'
+                    'ML (OpenAI)',
+                    'Git (Experimental)'
                 ]).ask()
 
-            # check if 'Git' is selected along with other options
-            if 'Git' in generators and len(generators) > 1:
-                print(f"{COLOR_RED}If 'Git' is selected, no other options should be selected. Please select again.{COLOR_RESET}")
+            # check if 'Git (Experimental)' is selected along with other options
+            if 'Git (Experimental)' in generators and len(generators) > 1:
+                print(f"{COLOR_RED}If 'Git (Experimental)' is selected, no other options should be selected. Please select again.{COLOR_RESET}")
                 continue
             else:
                 break
 
         enable_mutations = 'Mutations' in generators
-        enable_ml = 'ML' in generators
-        enable_git = 'Git' in generators
+        enable_ml = 'ML (OpenAI)' in generators
+        enable_git = 'Git (Experimental)' in generators
 
         if enable_mutations:
             selected_mutations = questionary.checkbox(
@@ -302,8 +302,8 @@ def main():
 
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
     parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
-    parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML')
-    parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git')
+    parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
+    parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Enable Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Disable Precision Tests')
