@@ -22,8 +22,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
     # ALTERNATIVE Preserve the __goblint_check() annotations
-    # ALTERNATIVE _transform_asserts(program_0_path)
     # ALTERNATIVE _preserve_goblint_check_annotations(program_0_path)
+    # ALTERNATIVE To be added: Also preserve _goblint_assert() and assert()
     _remove_goblint_check_and_assertions(program_0_path)
 
     # Place include files in temp directory
@@ -91,19 +91,8 @@ def _remove_goblint_check_and_assertions(program_0_path):
         f.writelines(replaced_lines)
 
 
-# Change asserts to goblint checks
-def _transform_asserts(file_path):
-    with open(file_path, 'r') as f:
-        content = f.read()
-        
-    content = re.sub(r'(assert)\s*\(([^)]*)\);\s*//\s*(.*)', r'__goblint_check(\2); // \3 was origninally an assertion', content)
-    content = re.sub(r'(assert)\s*\(([^)]*)\);(.*)*', r'__goblint_check(\2); // was origninally an assertion', content)
-
-    with open(file_path, 'w') as f:
-        f.write(content)
-
-
 # Transform __goblint_check to __my_check_annotation
+#TODO Extend to goblint_assert() and assert()
 def _preserve_goblint_check_annotations(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
