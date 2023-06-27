@@ -46,7 +46,7 @@ void RemoveFunctionBodyCheck::check(const MatchFinder::MatchResult &Result) {
         } else if (const RecordType *RT = ReturnType->getAsUnionType()) {
             Replacement += "(union " + RT->getDecl()->getNameAsString() + "){}";
         } else {
-            Replacement += "/* [TODO]: Add generic return value for " + ReturnType.getAsString() + " */";
+            Replacement += "/* Add generic return value for " + ReturnType.getAsString() + " */";
         }
         Replacement += "; ";
     }
