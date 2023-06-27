@@ -44,8 +44,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     print_seperator()
     if enable_git:
         print('Generating goblint checks. This may take a while...')
-    params = get_params_from_file(program_0_path)
-    params = fix_params(params)
+    params = _get_params_from_file(program_0_path)
+    params = _fix_params(params)
     for i in range(index + 1):
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
         sys.stdout.flush()
@@ -91,8 +91,48 @@ def _remove_goblint_check_and_assertions(program_0_path):
         f.writelines(replaced_lines)
 
 
-# Transform __goblint_check to __my_check_annotation
-#TODO Extend to goblint_assert() and assert()
+def _fix_params(params):
+    params_original = params
+    
+    # Do not use apron as marshalling is not supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
+
+    # Do not use witness options as the witness information can not be used for the incremental analysis
+    # (TODO: Maybe additional options have to be added if the incremental tests change)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*witness\.yaml\.validate[\'"]* \S*', '', params)
+    params = re.sub(r'--set [\'"]*witness\.yaml\.unassume[\'"]* \S*', '', params)
+
+    # Do not use autotune as it might change analyses that must not be changes during incremental analysis
+    params = re.sub(r'--enable [\'"]*ana\.autotune\.enabled[\'"]*', '', params)
+
+    # TODO Check why these params make problems
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*var_eq[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params) # Where does it fail
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # Where does it fail
+    params = re.sub(r'--enable [\'"]*ana\.int\.interval\b', '', params)
+    params = re.sub(r'--sets [\'"]*sem\.int\.signed_overflow[\'"]* assume_none', '', params)
+    
+
+    if params_original != params:
+        print(f'{COLOR_YELLOW}[WARNING] The parameters from the PARAM string in the input file were changed to avoid crashing the tester:{COLOR_RESET} {params.strip()}')
+    return params
+
+
+def _get_params_from_file(filename):
+    param_pattern = re.compile(r"\s*//.*PARAM\s*:\s*(.*)")
+    with open(filename, 'r') as f:
+        for line in f:
+            match = param_pattern.match(line)
+            if match:
+                params = match.group(1).strip()
+                return params
+    return ""
+
+
+# ALTERNATIVE Transform __goblint_check to __my_check_annotation
 def _preserve_goblint_check_annotations(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
