@@ -151,7 +151,7 @@ def _annotate_checks(goblint_path, file_path, params):
     line_ranges_success = [item for sublist in line_ranges_success for item in sublist]
 
     # add annotations to lines
-    _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path)
+    _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path)
 
 
 # read line ranges from json multipiece element: (start, end)
@@ -167,7 +167,7 @@ def _get_line_ranges(multipiece):
 
 
 # mark all __goblint_check in the with deadcode but not succusfull with NOWARN!
-def _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
+def _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
     pattern = r'\s*__goblint_check\(.*\);(?!//).*'
 
     with open(file_path, 'r') as f:
@@ -178,7 +178,7 @@ def _mark_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
         if any(start <= i + 1 <= end for start, end in line_ranges_deadcode) and \
            not any(start <= i + 1 <= end for start, end in line_ranges_success):
             if re.match(pattern, line):
-                lines[i] = line.rstrip('\n') + " // NOWARN! generated for deadcode\n"
+                lines[i] = "// check inside deadcode removed " + lines[i]
 
     with open(file_path, 'w') as f:
         f.writelines(lines)
