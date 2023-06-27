@@ -186,7 +186,8 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
     # Check for config file
     if goblint_config is None:
         goblint_config = questionary.text('Path to a goblint config file used to create tests. Passing {} creates an empty config file.', default='{}').ask()
-        goblint_config = _validate_path(goblint_config)
+        if goblint_config != '{}':
+            goblint_config = _validate_path(goblint_config)
     if goblint_config == '{}' or goblint_config == '':
         goblint_config = None
 
