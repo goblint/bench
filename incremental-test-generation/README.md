@@ -1,6 +1,9 @@
 # Create the clang tidy checks
 Read [this](clang-mutations/README.md) for creating the clang tidy checks needed to generate mutations.
 
+# The mutations
+Read [this](clang-mutations/MUTATIONS.md) to find out more about the different types of mutations.
+
 # Sample files
 In `samle-files/` you find some examples you can use as input to get started.
 
@@ -12,3 +15,6 @@ Run `./RUN_BATCH <directory> [additional arguments...]` for running all c files 
 ```
 ./RUN_BATCH.sh YOUR_PATH_TO_GOBLINT/analyzer/tests/regression/ --ignore sample-files/batch-ignore-files/regression-parsing-error.txt --ignore sample-files/batch-ignore-files/regression-exceptions.txt -m -dp -er -dt -ec -c {} --include YOUR_PATH_TO_GOBLINT/analyzer/tests/regression/28-race_reach/racemacros.h
 ```
+
+# Implementation
+To find out more about the implementation check out the `./scripts` directory and its [readme](./scripts/README.md) file.
