@@ -193,7 +193,7 @@ def _get_line_ranges(multipiece):
 
 # remove all __goblint_check in deadcode which are not annotated
 def _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
-    pattern = r'\s*__goblint_check\(.*\);(?!//).*'
+    pattern = r'\s*__goblint_check\((.*?)\);(?!//).*'
 
     with open(file_path, 'r') as f:
         lines = f.readlines()
