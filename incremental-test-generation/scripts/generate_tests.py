@@ -86,7 +86,11 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         current_program_id = f'p_{i}'
 
         # check if it compiled. When not skip it
-        compilation_success = yaml_data[current_program_id][META_COMPILING]
+        try:
+            compilation_success = yaml_data[current_program_id][META_COMPILING]
+        except:
+            print(f'\r{COLOR_RED}Error test file {i} has no entry in the metadata file{COLOR_RESET}')
+            sys.exit(RETURN_ERROR)
         if compilation_success:
             compiling_programs.append(i)
         else:

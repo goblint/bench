@@ -12,7 +12,7 @@ ids_errors = []
 
 
 # Generate from git repository "mutated" files for each commit
-def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_commit, end_commit):
+def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_commit, end_commit, generate_git_build_path):
     # Get paths
     goblint_path = os.path.expanduser(os.path.abspath(goblint_path))
     target_dir = os.path.expanduser(os.path.abspath(target_dir))
@@ -25,8 +25,8 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
 
     print_seperator()
     print(f'[GIT] Cloning into {temp_repo_dir}')
-    _clone_repo(git_info_sh_path, temp_repo_dir)
-    build_path = _get_build_path(git_info_sh_path, temp_repo_dir)
+    _clone_repo(git_info_sh_path, temp_repo_dir, generate_git_build_path)
+    build_path = _get_build_path(git_info_sh_path, temp_repo_dir, generate_git_build_path)
     print(f'{COLOR_GREEN}[GIT] Cloning finished{COLOR_RESET}')
 
     def get_commit_traverser():
@@ -66,7 +66,7 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
             continue
         try:
             _checkout(build_path, meta_path, commit.hash)
-            _build_repo(git_info_sh_path, temp_repo_dir, meta_path, commit.hash)
+            _build_repo(git_info_sh_path, temp_repo_dir, meta_path, commit.hash, generate_git_build_path)
             new_path = os.path.join(target_dir, f"p_{index}.c")
             _create_cil_file(goblint_path, build_path, new_path, meta_path, commit.hash)
             print(
@@ -108,15 +108,16 @@ def _write_meta_data_failure(meta_path, commit_hash, stdout_msg, stderr_msg):
         yaml_data = yaml.safe_load(file)
     yaml_data.setdefault(META_FAILURES, {})[commit_hash] = {
         META_FAILURES_STD_OUT: stdout_msg,
-        META_FAILURES_STD_ERR: stderr_msg
+        META_FAILURES_STD_ERR: stderr_msg,
+        META_COMPILING: False
     }
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
     return True
 
 
-def _clone_repo(git_info_sh_path, temp_repo_path):
-    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--clone"]
+def _clone_repo(git_info_sh_path, temp_repo_path, generate_git_build_path):
+    command = [generate_git_build_path, git_info_sh_path, temp_repo_path, "--clone"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         print(result.stdout)
@@ -125,8 +126,8 @@ def _clone_repo(git_info_sh_path, temp_repo_path):
         sys.exit(RETURN_ERROR)
 
 
-def _get_build_path(git_info_sh_path, temp_repo_path):
-    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--path"]
+def _get_build_path(git_info_sh_path, temp_repo_path, generate_git_build_path):
+    command = [generate_git_build_path, git_info_sh_path, temp_repo_path, "--path"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         print(result.stdout)
@@ -137,9 +138,9 @@ def _get_build_path(git_info_sh_path, temp_repo_path):
     return build_path
 
 
-def _build_repo(git_info_sh_path, temp_repo_path, meta_path, commit_hash):
+def _build_repo(git_info_sh_path, temp_repo_path, meta_path, commit_hash, generate_git_build_path):
     global build_errors
-    command = ["./generate_git_build.sh", git_info_sh_path, temp_repo_path, "--build"]
+    command = [generate_git_build_path, git_info_sh_path, temp_repo_path, "--build"]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
         build_errors += 1
@@ -203,4 +204,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     generate_git(args.goblint_path, args.temp_dir, None, args.git_info_sh_path, args.start_commit,
-                 args.end_commit)
+                 args.end_commit, './generate_git_build.sh')
