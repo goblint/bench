@@ -90,11 +90,11 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         if compilation_success:
             compiling_programs.append(i)
         else:
-            print(f"\rGenerating test files [{i}/{n}] {COLOR_YELLOW}Skipped {i} (Not compiling){COLOR_RESET}")
+            print(f"\r{COLOR_YELLOW}Skipped test file {i} as it did not compile while generating the checks{COLOR_RESET}")
             continue
         if META_EXCEPTION in yaml_data[current_program_id]:
             print(
-                f"\rGenerating test files [{i}/{n}] {COLOR_YELLOW}Skipped {i} (Exception occurred during generation){COLOR_RESET}")
+                f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occured in a previous step{COLOR_RESET}")
             continue
 
         # Skip the reference program as it is used for the patch

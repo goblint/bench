@@ -23,7 +23,7 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     _write_compiling_result_to_meta(meta_path, index, compiling)
 
     if not compiling:
-        print(f"\n{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
+        print(f"\r{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
         # Check if program should be stopped
         if index == 0 and not enable_git:
             print(remove_ansi_escape_sequences(result.stdout))
