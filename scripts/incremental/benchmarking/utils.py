@@ -173,17 +173,14 @@ def extract_precision_from_compare_log(log):
     precision = find_line(pattern, log)
     return {k: int(v) for k,v in precision.items()} if precision else None
 
-def barplot(data_set):
-    df = pandas.DataFrame(data_set["data"], index=data_set["index"]) # TODO: index=analyzed_commits
-    df.sort_index(inplace=True, key=lambda idx: idx.map(lambda x: int(x.split(":")[0])))
-    print(df)
-    df.to_csv('results.csv')
-
-    df.plot.bar(rot=0, width=0.7, figsize=(25,10))
+def barplot(df, figure_dir, outfile, figsize=None, colors=None):
+    df.plot.bar(rot=0, width=0.7, figsize=figsize, color=colors)
     plt.xticks(rotation=45, ha='right', rotation_mode='anchor')
     plt.xlabel('Commit')
     plt.tight_layout()
-    plt.savefig("figure.pdf")
+
+    outfile = os.path.join(figure_dir, outfile)
+    plt.savefig(outfile)
 
 def get_cleaned_filtered_data(result_csv_file, filterRelCLOC=False, filterDetectedChanges=False):
     df=pandas.read_csv(result_csv_file, index_col='Commit', sep=";")

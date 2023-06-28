@@ -7,6 +7,19 @@ description_incr = "(2)"
 description_incr_post = "(3)"
 description_incr_rel ="(4)"
 
+def efficiency_bar_plot_all4(results_dir, result_csv_filename, figure_dir):
+    outfile_nonincr_vs_incr = "figure_bar.pgf"
+    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
+
+    data_set = df[["Relevant changed LOC", utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child]]
+    data_set = data_set.rename(columns={utils.runtime_header_non_incr_child: description_non_incr, utils.runtime_header_incr_child: description_incr, utils.runtime_header_incr_posts_child: description_incr_post, utils.runtime_header_incr_posts_rel_child: description_incr_rel})
+
+    colors = ["tab:olive", "tab:blue", "tab:orange", "tab:green", "tab:red"]
+    textwidth = 7
+    size = (textwidth,textwidth/3)
+
+    utils.barplot(data_set, figure_dir, outfile_nonincr_vs_incr, size, colors)
+
 def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
     num_bins = 2000
     outfile_nonincr_vs_incr = "figure_cum_distr_incr.pdf"
@@ -162,9 +175,6 @@ def paper_precision_graph(results_precision, filename, outdir):
     utils.scatter_plot(data, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
 
 
-
-# efficiency plots
-
 def main():
     projects = ["figlet", "chrony", "zstd"]
     results_efficiency = "result_efficiency_"
@@ -191,7 +201,8 @@ def main():
             print("Creating efficiency plots.")
             cummulative_distr_compare2(efficiency_results, efficieny_filename, figures_dir)
             cummulative_distr_all4(efficiency_results, efficieny_filename, figures_dir)
-            # paper_efficiency_graphs(results_efficiency, filename, outdir, filterRelCLOC=True, filterDetectedChanges=False)
+            efficiency_bar_plot_all4(efficiency_results, efficieny_filename, figures_dir)
+            # paper_efficiency_graphs(efficiency_results, efficieny_filename, figures_dir, filterRelCLOC=True, filterDetectedChanges=False)
         else:
             print("No efficiency results available.")
 
