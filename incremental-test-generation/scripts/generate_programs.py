@@ -1,3 +1,4 @@
+import difflib
 from add_check import add_check
 from add_check_annotations import add_check_annotations
 from generate_git import *
@@ -92,10 +93,7 @@ def _remove_goblint_check_and_assertions(program_0_path):
 
 
 def _fix_params(params):
-    params_original = params
-    
-    # Do not use apron as marshalling is not supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
+    params_original = params   
 
     # Do not use witness options as the witness information can not be used for the incremental analysis
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
@@ -105,18 +103,34 @@ def _fix_params(params):
     # Do not use autotune as it might change analyses that must not be changes during incremental analysis
     params = re.sub(r'--enable [\'"]*ana\.autotune\.enabled[\'"]*', '', params)
 
-    # TODO Check why these params make problems
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*var_eq[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params) # Where does it fail
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # Where does it fail
-    params = re.sub(r'--enable [\'"]*ana\.int\.interval\b', '', params)
-    params = re.sub(r'--sets [\'"]*sem\.int\.signed_overflow[\'"]* assume_none', '', params)
-    
+    # Do not use assert as we do not want the analysis to mess with our asserts and checks
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
 
+    # TODO Check why these params make problems
+    #params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params) Erstmal kein problem # Do not use apron as marshalling is not supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params) # TODO Besprechen
+    #params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*var_eq[\'"]*', '', params) Erstmal kein problem
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params) # TODO Besprechen
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # TODO Besprechen
+    if 'td3' in params and 'apron' in params: # TODO Besprechen
+        params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
+        params = re.sub(r'--set [\'"]*solver[\'"]* [\'"]*td3[\'"]*', '', params)
+    
+    
     if params_original != params:
-        print(f'{COLOR_YELLOW}[WARNING] The parameters from the PARAM string in the input file were changed to avoid crashing the tester:{COLOR_RESET} {params.strip()}')
+        # If there are any changes, print a warning and mark the removed options in grey
+        result = []
+        for i in difflib.ndiff(params_original, params):
+            # i[0] will be a space if the characters are the same
+            # It will be '-' if the character is only in params_original
+            # It will be '+' if the character is only in params
+            if i[0] == ' ':
+                result.append(i[-1]) # add the character without color
+            elif i[0] == '-':
+                result.append(f'{COLOR_GREY}{i[-1]}{COLOR_RESET}')
+        result = "".join(result)
+        print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file were removed (grey) to avoid crashing the tester:{COLOR_RESET} {result}')
+    
     return params
 
 
