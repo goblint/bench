@@ -79,13 +79,13 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         print(f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
 
 
-# Remove all goblint checks and assertions
 def _remove_goblint_check_and_assertions(program_0_path):
     with open(program_0_path, 'r') as f:
         lines = f.readlines()
 
-    # Replace the lines containing the keywords with '; // <old line>'
-    replaced_lines = ['; // ' + line if any(keyword in line for keyword in ['assert(', '__goblint_check(', '__goblint_assert(']) else line for line in lines]
+    # Replace the lines containing the keywords with an empty statement
+    keywords = ['assert(', '__goblint_check(', '__goblint_assert(']
+    replaced_lines = [f'; // Removed assertions and checks from input program at line {i+1}\n' if any(keyword in line for keyword in keywords) else line for i, line in enumerate(lines)]
 
     with open(program_0_path, 'w') as f:
         f.writelines(replaced_lines)
