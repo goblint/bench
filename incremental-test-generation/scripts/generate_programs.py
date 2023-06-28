@@ -85,7 +85,7 @@ def _remove_goblint_check_and_assertions(program_0_path):
 
     # Replace the lines containing the keywords with an empty statement
     keywords = ['assert(', '__goblint_check(', '__goblint_assert(']
-    replaced_lines = [f'; // Removed assertions and checks from input program at line {i+1}\n' if any(keyword in line for keyword in keywords) else line for i, line in enumerate(lines)]
+    replaced_lines = [f'; // [REMOVED_CHECK] Removed assertions and checks from input program at line {i+1}\n' if any(keyword in line for keyword in keywords) else line for i, line in enumerate(lines)]
 
     with open(program_0_path, 'w') as f:
         f.writelines(replaced_lines)
