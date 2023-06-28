@@ -98,7 +98,6 @@ def _fix_params(params):
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
 
     # Do not use witness options as the witness information can not be used for the incremental analysis
-    # (TODO: Maybe additional options have to be added if the incremental tests change)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*witness\.yaml\.validate[\'"]* \S*', '', params)
     params = re.sub(r'--set [\'"]*witness\.yaml\.unassume[\'"]* \S*', '', params)
