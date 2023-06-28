@@ -10,10 +10,10 @@ import yaml
 
 from util import *
 
-SEPERATOR_EXPLANATION_START = 'EXPLANATION>'
-SEPERATOR_EXPLANATION_END = '<EXPLANATION_END'
-SEPERATOR_CODE_START = 'CODE>'
-SEPERATOR_CODE_END = '<CODE_END'
+SEPERATOR_EXPLANATION_START = '<EXPLANATION>'
+SEPERATOR_EXPLANATION_END = '</EXPLANATION>'
+SEPERATOR_CODE_START = '<CODE>'
+SEPERATOR_CODE_END = '</CODE>'
 
 error_counter = 0
 
@@ -171,7 +171,7 @@ def _make_gpt_request(snippet, ml_16k):
 
         The code you generate should be a self-contained snippet that could directly replace the provided excerpt in the original, complete program. It should preserve the overall functionality of the program and must not cause any compilation errors when reintegrated into the larger code base. Please consider the dependencies and interactions with other parts of the program when generating the previous version of the code. Your generated code should be able to interact correctly with the rest of the program just like the original excerpt does. You do not have to add import statements or function declarations or closing brackets when these are cut off in the snippet, but when they are in the snippet you need to add them to preserve the whole program.
 
-        Use these keywords (\"{SEPERATOR_EXPLANATION_START}\", \"{SEPERATOR_EXPLANATION_END}\", \"{SEPERATOR_CODE_START}\", \"{SEPERATOR_CODE_END}\") to structure you answer. You answer should have the following structure for better identifying the different parts of the response: {SEPERATOR_EXPLANATION_START} (Explain what you have changed in one or two sentences) {SEPERATOR_EXPLANATION_END} {SEPERATOR_CODE_START} (the previous version of the code) {SEPERATOR_CODE_END}
+        Use these keywords (\"{SEPERATOR_EXPLANATION_START}\", \"{SEPERATOR_EXPLANATION_END}\", \"{SEPERATOR_CODE_START}\", \"{SEPERATOR_CODE_END}\") similar to html tags to structure you answer. You answer should have the following structure for identifying the different parts of the response, as it will be interpreted by another program: {SEPERATOR_EXPLANATION_START} (Response: Explain what you have changed in one or two sentences) {SEPERATOR_EXPLANATION_END} {SEPERATOR_CODE_START} (Response: the previous version of the code) {SEPERATOR_CODE_END}
 
         ```c
             {snippet}
@@ -179,9 +179,9 @@ def _make_gpt_request(snippet, ml_16k):
         '''
 
     if ml_16k:
-        model = "gpt-3.5-turbo-16k"
+        model = ML_MODEL_16K
     else:
-        model = "gpt-3.5-turbo"
+        model = ML_MODEL
 
     response = openai.ChatCompletion.create(
         model=model,

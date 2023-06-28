@@ -88,6 +88,8 @@ APIKEY_APIKEY = 'api-key'
 APIKEY_ORGANISATION = 'organisation'
 
 
+ML_MODEL = "gpt-3.5-turbo"
+ML_MODEL_16K = "gpt-3.5-turbo-16k"
 DEFAULT_ML_COUNT = 5
 DEFAULT_ML_SELECT = 50
 ML_WORKERS = 5

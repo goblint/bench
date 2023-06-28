@@ -217,7 +217,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             break
 
     if enable_ml and ml_16k is None:
-        ml_16k = questionary.confirm('Use the gpt-3.5-turbo-16k model instead of the gpt-3.5-turbo model', default=False).ask()
+        ml_16k = questionary.confirm(f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model', default=False).ask()
 
     if enable_ml and ml_interesting is None:
         while True:
@@ -324,9 +324,9 @@ def main():
     # Add ML options
     parser.add_argument('-mc', '--ml-count', type=int, default=-1,  help='How many different programs should be generated with ML?')
     parser.add_argument('-ms', '--ml-select', type=int, default=-1,  help='How many lines should be selected for the snippet from the input file?')
-    parser.add_argument('-mi', '--ml-interesting', help='From which start lines should the snippet start be chosen randomly? Exp. :[] = From all lines, [1, 42], ...')
-    parser.add_argument('-m4', '--ml-4k', action='store_true', help='Use the gpt-3.5-turbo model instead of the gpt-3.5-turbo-16k model')
-    parser.add_argument('-m16', '--ml-16k', action='store_true', help='Use the gpt-3.5-turbo-16k model instead of the gpt-3.5-turbo model')
+    parser.add_argument('-mi', '--ml-interesting', help='From which start lines should the snippet start be chosen randomly? Exp.: [] = From all lines, [1, 42], ...')
+    parser.add_argument('-m4', '--ml-4k', action='store_true', help=f'Use the {ML_MODEL} model instead of the {ML_MODEL_16K} model')
+    parser.add_argument('-m16', '--ml-16k', action='store_true', help=f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model')
 
     # Add GIT options
     parser.add_argument('-s', '--template-script', action='store_true', help='Print the template script for git repositories')
