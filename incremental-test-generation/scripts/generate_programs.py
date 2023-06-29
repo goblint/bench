@@ -112,16 +112,16 @@ def _fix_params(params):
     # Do not privatization mutex-meet-tid as some of the information may get lost during incremental analysis
     params = re.sub(r'--set [\'"]*ana\.base\.privatization[\'"]* [\'"]*mutex-meet-tid[\'"]*', '', params)
 
+    # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
+
     # TODO Elaborate why these options create problems
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
-    if 'td3' in params and 'apron' in params:
+    if 'td3' in params_original and 'apron' in params_original:
         params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
         params = re.sub(r'--set [\'"]*solver[\'"]* [\'"]*td3[\'"]*', '', params)
-
-    # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
     
     if params_original != params:
         # If there are any changes, print a warning and mark the removed options in grey
