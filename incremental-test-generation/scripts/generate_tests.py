@@ -111,9 +111,9 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         # Determine the name for the test
         sub_type = yaml_data[current_program_id][META_SUB_TYPE]
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.GIT.value:
-            test_name = f'{_format_number(current_test_num)}-{generate_type}_{sub_type}_{_format_number(i)}'
+            test_name = f'{_format_number(current_test_num)}-{generate_type}_{sub_type}_p_{_format_number(i)}'
         else:
-            test_name = f'{_format_number(current_test_num)}-{generate_type}_{_format_number(i)}'
+            test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
         # Select depending on generator the start and end file of at test
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
