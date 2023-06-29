@@ -152,7 +152,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
         "--"
     ]
     result = subprocess.run(command, text=True, capture_output=True)
-    print(f"[{index}][WRAP] Check function name for wrapping thread function")
+    print(f'[{index}][WRAP] Check function name for wrapping thread function', end='')
     if result.returncode != 0:
         print(result.stdout)
         print(result.stderr)
@@ -170,7 +170,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
 
     os.remove(program_path_temp)
 
-    print(f"[{index}][WRAP RESULT] Found the thread function name {function_name}")
+    print(f'\r[{index}][WRAP RESULT] Found the thread function name {function_name}{SPACE}', end='')
     return function_name
 
 
@@ -178,7 +178,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
 def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
     if function_name is None:
         print(
-            f"{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
+            f"\r{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
         return
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
@@ -193,7 +193,7 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
         "--"
     ]
     result = subprocess.run(command, text=True, capture_output=True)
-    print(f"[{index}][WRAP FIX] Apply the wrapping of {function_name}")
+    print(f"\r[{index}][WRAP FIX] Applied the wrapping of the thread function {function_name}{SPACE}")
     if result.returncode != 0:
         print(result.stdout)
         print(result.stderr)
