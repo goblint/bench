@@ -2,10 +2,10 @@
 This directory contains all the files required to generate incremental tests from the provided input file. Each script is briefly described below.
 
 # run_cli.py
-This [script](./run_cli.py) handels the options from the terminal and asks the user interactively for the inputs if the information was not yet provided by the terminal options.
+This [script](./run_cli.py) processes the options from the terminal and asks the user interactively for the inputs if the information was not yet provided by the terminal options.
 
 # util.py
-This [script](./util.py) contains usefull constants and functions for all programs. This enables the developer to access and change the behaviour fast and easily.
+This [script](./util.py) contains useful constants and functions for all programs. This enables the developer to access and change the behaviour fast and easily.
 
 # generate_programs.py
 This [script](generate_programs.py) generates a new `temp` directory. Depending on the passed options the different generator scripts are called to create mutated files (`p_42.c`). It then adds the `___goblint_check()` function along with corresponding comments by calling `add_check.py` and `add_check_annotations.py`.

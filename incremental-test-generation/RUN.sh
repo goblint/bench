@@ -5,7 +5,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CURRENT_DIR=$(pwd)
 if [ "$SCRIPT_DIR" != "$CURRENT_DIR" ]; then
   echo "Script is NOT run from its own directory! Please change the directory to the location of the script."
-  exit -1
+  exit 1
 fi
 
 # Check for python imports
@@ -15,7 +15,7 @@ do
     python3 -c "import $module" &> /dev/null
     if [ $? -ne 0 ]; then
         echo "Python module '$module' is not installed."
-        exit -1
+        exit 1
     fi
 done
 
@@ -23,7 +23,7 @@ done
 command -v git > /dev/null 2>&1
 if [ $? -ne 0 ]; then
     echo "'git' is not installed."
-    exit -1
+    exit 1
 fi
 
 # Run cli

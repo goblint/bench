@@ -11,12 +11,14 @@ from util import *
 # Takes a file and generates the goblint checks
 # Adds a PARAM line
 # Annotates extern goblint checks and dead code goblint checks with // NOWARN
+# Removes check which are dead, fail or are unknown
 # Stores the file with the appendix "_check"
 # Write information to the meta.yaml file
 def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
-    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' --set trans.output {file_path_out} {file_path}'
+    command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' ' \
+              f'--set trans.output {file_path_out} {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     compiling = result.returncode == 0
 
@@ -60,6 +62,7 @@ def _write_exception_to_meta(meta_path, index, exceptions_string):
         yaml_data[f"p_{index}"][META_COMPILING] = False
         with open(meta_path, 'w') as file:
             yaml.safe_dump(yaml_data, file)
+
 
 # Add //PARAM: line at the beginning of file
 def _prepend_param_line(file_path, params):
@@ -133,7 +136,7 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
         for tag in message['tags']:
             if "Category" in tag and "Deadcode" in tag["Category"]:
                 # Do not create when CWE Tag indicated that condition is always true
-                if ("CWE" in tag and tag["CWE"] != 571) or not "CWE" in tag:
+                if ("CWE" in tag and tag["CWE"] != 571) or "CWE" not in tag:
                     new_line_ranges = _get_line_ranges(message['multipiece'])
                     if new_line_ranges:
                         line_ranges_deadcode.append(new_line_ranges)
@@ -147,7 +150,6 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
                     new_line_ranges = _get_line_ranges(message['multipiece'])
                     if new_line_ranges:
                         line_ranges_success.append(new_line_ranges)
-
 
     # search for lines which are marked as unknown asserts
     line_ranges_unknown = []
@@ -205,10 +207,10 @@ def _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path
     for i, line in enumerate(lines):
         # a line is considered if it is in line_ranges_deadcode and not in line_ranges_success
         if any(start <= i + 1 <= end for start, end in line_ranges_deadcode) and \
-           not any(start <= i + 1 <= end for start, end in line_ranges_success):
+                not any(start <= i + 1 <= end for start, end in line_ranges_success):
             match = re.match(pattern, line)
             if match:
-                lines[i] = f"; // [REMOVED_CHECK] generated check inside deadcode at line {i+1} removed: {match.group(1)}\n"
+                lines[i] = f"; // [REMOVED_CHECK] generated check inside deadcode at line {i + 1} removed: {match.group(1)}\n"
 
     with open(file_path, 'w') as f:
         f.writelines(lines)
@@ -226,7 +228,7 @@ def _remove_unknown_checks(line_ranges_unknown, file_path):
         if any(start <= i + 1 <= end for start, end in line_ranges_unknown):
             match = re.match(pattern, line)
             if match:
-                lines[i] = f"; // [REMOVED_CHECK] generated check which is unknown at line {i+1} removed: {match.group(1)}\n"
+                lines[i] = f"; // [REMOVED_CHECK] generated check which is unknown at line {i + 1} removed: {match.group(1)}\n"
 
     with open(file_path, 'w') as f:
         f.writelines(lines)
@@ -244,11 +246,11 @@ def _remove_failing_checks(line_ranges_fail, file_path):
         if any(start <= i + 1 <= end for start, end in line_ranges_fail):
             match = re.search(pattern, line)
             if match:
-                lines[i] = f"; // [REMOVED_CHECK] generated check which is failing at line {i+1} removed: {match.group(1)}\n"
+                lines[
+                    i] = f"; // [REMOVED_CHECK] generated check which is failing at line {i + 1} removed: {match.group(1)}\n"
 
     with open(file_path, 'w') as f:
         f.writelines(lines)
-
 
 
 # get the json from the goblint terminal output

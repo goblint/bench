@@ -1,5 +1,4 @@
 import argparse
-import glob
 import sys
 from pathlib import Path
 import questionary
@@ -48,33 +47,33 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
         if enable_precision:
-            print_seperator()
+            print_separator()
             print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
             paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 ret_precision = run_tests(path, goblint_path, cfg)
-        print_seperator()
+        print_separator()
         print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
         paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
         if len(paths) > 1:
-                print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
+            print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
             ret = run_tests(path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
-        print_seperator()
+        print_separator()
         correctness_path = os.path.join(os.path.curdir, 'out', test_name)
         print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{test_name}{COLOR_RESET}:')
         paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
         if len(paths) > 1:
-                print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
+            print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
         for path in paths:
             print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
         if enable_precision:
-            print_seperator()
+            print_separator()
             precision_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out', precision_name)
             print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{precision_name}{COLOR_RESET}:')
             paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=False, inplace=False)
@@ -276,14 +275,14 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
     input_file = _validate_path(input_file)
 
     # add files to include path that are named as the input file but with different ending
-    if (include_paths == None):
+    if include_paths is None:
         include_paths = []
-    if include_paths != []:
+    if include_paths:
         print(f'{COLOR_YELLOW}[INFO] Additionally to the input file the following files are copied into the temp and test directory:{COLOR_RESET}')
         for path in include_paths:
             print(path)
     for path in include_paths:
-        path = _validate_path(path)
+        _validate_path(path)
 
     run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, include_paths)
 

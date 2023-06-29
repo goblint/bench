@@ -42,7 +42,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         index = generate_git(goblint_path, temp_dir, meta_path, program_0_path, git_start, git_end, generate_git_build_path)
 
     # Add checks with annotations
-    print_seperator()
+    print_separator()
     if enable_git:
         print('Generating goblint checks. This may take a while...')
     params = _get_params_from_file(program_0_path)
@@ -64,7 +64,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
     # Check how many and which files were not compiling
-    print_seperator()
+    print_separator()
     print("Check if the files compiled...", end='')
     with open(meta_path, 'r') as file:
         yaml_data = yaml.safe_load(file)
@@ -131,7 +131,7 @@ def _fix_params(params):
             # It will be '-' if the character is only in params_original
             # It will be '+' if the character is only in params
             if i[0] == ' ':
-                result.append(i[-1]) # add the character without color
+                result.append(i[-1])  # add the character without color
             elif i[0] == '-':
                 result.append(f'{COLOR_GREY}{i[-1]}{COLOR_RESET}')
         result = "".join(result)

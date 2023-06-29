@@ -53,7 +53,7 @@ COLOR_GREY = '\033[90m'
 COLOR_RESET = '\033[0m'
 
 
-def print_seperator():
+def print_separator():
     try:
         columns = os.get_terminal_size().columns
     except:

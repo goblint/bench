@@ -5,7 +5,7 @@
 int main() {
     int x;
     srand(time(NULL));
-    x = rand() % 250; // Generiere eine zufällige Zahl zwischen 0 und 249
+    x = rand() % 250; // Generate random number between 0 and 249
     
     printf("%d\n", x);
 

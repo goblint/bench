@@ -68,7 +68,6 @@ def handle_output(process):
         line = _print_char_to_line(char, line)
 
 
-
 def _print_char_to_line(char, line):
     if char == '\r' or char == '\n':
         if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):

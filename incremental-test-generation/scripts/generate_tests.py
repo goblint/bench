@@ -98,7 +98,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             continue
         if META_EXCEPTION in yaml_data[current_program_id]:
             print(
-                f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occured in a previous step{COLOR_RESET}")
+                f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occurred in a previous step{COLOR_RESET}")
             continue
 
         # Skip the reference program as it is used for the patch

@@ -34,7 +34,7 @@ def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
 
 
 def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutation_name, index):
-    print_seperator()
+    print_separator()
     print(f"[{GenerateType.MUTATION.value}] {mutation_name}")
     # get line groups for knowing where the mutation could be applied
     line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path)

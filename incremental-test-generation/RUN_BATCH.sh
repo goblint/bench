@@ -5,13 +5,13 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CURRENT_DIR=$(pwd)
 if [ "$SCRIPT_DIR" != "$CURRENT_DIR" ]; then
   echo "Script is NOT run from its own directory! Please change the directory to the location of the script."
-  exit -1
+  exit 1
 fi
 
 # Check if realpath is available
 if ! command -v realpath &> /dev/null; then
     echo "realpath command is not available. Please install it."
-    exit -1
+    exit 1
 fi
 
 color_grey="\033[90m"
@@ -32,8 +32,8 @@ if [ $# -lt 1 ]; then
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the mutation generator output\n"
     printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
-    printf "[additional arguments...]: Arguments passed to goblint to skip interactive cli.\n"
-    printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
+    printf "[additional arguments...]: Arguments passed to Goblint to skip interactive cli.\n"
+    printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --Goblint-config {}\n"
     printf "       or in short: -m -dp -er -dt -ec -c {}\n"
     exit 1
 fi
@@ -137,7 +137,7 @@ fi
 
 # Print all success files
 if [ ${#success_files[@]} -ne 0 ]; then
-    printf "${color_green}The following $success_length files were run succesfully with all tests passing:\n"
+    printf "${color_green}The following $success_length files were run successfully with all tests passing:\n"
     for file in "${success_files[@]}"; do
         printf "$file"
         # Check if the first line of the file contains "SKIP"

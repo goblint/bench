@@ -10,6 +10,8 @@ checkout_errors = 0
 cil_errors = 0
 ids_errors = []
 
+# TODO [WARNING] This implementation is just experimental, not fully tested and may contain errors or bugs!
+
 
 # Generate from git repository "mutated" files for each commit
 def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_commit, end_commit, generate_git_build_path):
@@ -23,7 +25,7 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
         meta_path = os.path.expanduser(os.path.abspath(meta_path))
     git_info_sh_path = os.path.expanduser(os.path.abspath(git_info_sh_path))
 
-    print_seperator()
+    print_separator()
     print(f'[GIT] Cloning into {temp_repo_dir}')
     _clone_repo(git_info_sh_path, temp_repo_dir, generate_git_build_path)
     build_path = _get_build_path(git_info_sh_path, temp_repo_dir, generate_git_build_path)
@@ -34,11 +36,11 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
         if start_commit is None:
             start_index = 0
         else:
-            start_index = next((i for i, commit in enumerate(all_commits) if commit.hash == start_commit), None)
+            start_index = next((i for i, commit_i in enumerate(all_commits) if commit_i.hash == start_commit), None)
         if end_commit is None:
             end_index = len(all_commits) - 1
         else:
-            end_index = next((i for i, commit in enumerate(all_commits) if commit.hash == end_commit), None)
+            end_index = next((i for i, commit_i in enumerate(all_commits) if commit_i.hash == end_commit), None)
 
         if start_index is None or end_index is None:
             raise ValueError("One or both commit hashes not found in the repository")
@@ -51,7 +53,7 @@ def generate_git(goblint_path, target_dir, meta_path, git_info_sh_path, start_co
             index: int = yaml_data[META_N]
 
     num_of_commits = sum(1 for _ in get_commit_traverser())
-    print_seperator()
+    print_separator()
     print(
         f'[GIT] Start traversing {num_of_commits} commits. Including checkout, build and cil generation. This may take a while...')
     if num_of_commits <= 2:

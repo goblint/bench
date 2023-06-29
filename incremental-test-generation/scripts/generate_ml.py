@@ -10,10 +10,10 @@ import yaml
 
 from util import *
 
-SEPERATOR_EXPLANATION_START = '<EXPLANATION>'
-SEPERATOR_EXPLANATION_END = '</EXPLANATION>'
-SEPERATOR_CODE_START = '<CODE>'
-SEPERATOR_CODE_END = '</CODE>'
+SEPARATOR_EXPLANATION_START = '<EXPLANATION>'
+SEPARATOR_EXPLANATION_END = '</EXPLANATION>'
+SEPARATOR_CODE_START = '<CODE>'
+SEPARATOR_CODE_END = '</CODE>'
 
 error_counter = 0
 
@@ -48,7 +48,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     interesting_lines = validate_interesting_lines(interesting_lines, program_path)
     interesting_lines = _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line)
 
-    print_seperator()
+    print_separator()
     interesting_lines_string = 'Start lines are randomly chosen from all lines.' if interesting_lines == [] else f' Start lines are randomly chosen from {interesting_lines}.'
     print(
         f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
@@ -60,7 +60,7 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
             executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ml_16k,
                             num_selected_lines, max_line, index + i + 1, file_lock)
 
-    print_seperator()
+    print_separator()
     print('Check if all ML requests finished successfully...')
     print(f'{COLOR_GREEN}Finished all requests.{COLOR_RESET}' + (
         f'{COLOR_RED} {error_counter} failed with an exception.{COLOR_RESET}' if error_counter > 0 else ''))
@@ -99,13 +99,13 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     response = _make_gpt_request(snippet, ml_16k)
 
     # Extract Explanation
-    explanation_start = response.find(SEPERATOR_EXPLANATION_START) + len(SEPERATOR_EXPLANATION_START)
-    explanation_end = response.find(SEPERATOR_EXPLANATION_END)
+    explanation_start = response.find(SEPARATOR_EXPLANATION_START) + len(SEPARATOR_EXPLANATION_START)
+    explanation_end = response.find(SEPARATOR_EXPLANATION_END)
     explanation = response[explanation_start:explanation_end].strip()
 
     # Extract Code lines
-    code_start = response.find(SEPERATOR_CODE_START) + len(SEPERATOR_CODE_START)
-    code_end = response.find(SEPERATOR_CODE_END)
+    code_start = response.find(SEPARATOR_CODE_START) + len(SEPARATOR_CODE_START)
+    code_end = response.find(SEPARATOR_CODE_END)
     code = response[code_start:code_end].strip()
     new_code_lines = code.splitlines()
     new_code_lines = [line for line in new_code_lines if line != '```' and line != '```c' and line != '``']
@@ -171,7 +171,7 @@ def _make_gpt_request(snippet, ml_16k):
 
         The code you generate should be a self-contained snippet that could directly replace the provided excerpt in the original, complete program. It should preserve the overall functionality of the program and must not cause any compilation errors when reintegrated into the larger code base. Please consider the dependencies and interactions with other parts of the program when generating the previous version of the code. Your generated code should be able to interact correctly with the rest of the program just like the original excerpt does. You do not have to add import statements or function declarations or closing brackets when these are cut off in the snippet, but when they are in the snippet you need to add them to preserve the whole program.
 
-        Use these keywords (\"{SEPERATOR_EXPLANATION_START}\", \"{SEPERATOR_EXPLANATION_END}\", \"{SEPERATOR_CODE_START}\", \"{SEPERATOR_CODE_END}\") similar to html tags to structure you answer. You answer should have the following structure for identifying the different parts of the response, as it will be interpreted by another program: {SEPERATOR_EXPLANATION_START} (Response: Explain what you have changed in one or two sentences) {SEPERATOR_EXPLANATION_END} {SEPERATOR_CODE_START} (Response: the previous version of the code) {SEPERATOR_CODE_END}
+        Use these keywords (\"{SEPARATOR_EXPLANATION_START}\", \"{SEPARATOR_EXPLANATION_END}\", \"{SEPARATOR_CODE_START}\", \"{SEPARATOR_CODE_END}\") similar to html tags to structure you answer. You answer should have the following structure for identifying the different parts of the response, as it will be interpreted by another program: {SEPARATOR_EXPLANATION_START} (Response: Explain what you have changed in one or two sentences) {SEPARATOR_EXPLANATION_END} {SEPARATOR_CODE_START} (Response: the previous version of the code) {SEPARATOR_CODE_END}
 
         ```c
             {snippet}
