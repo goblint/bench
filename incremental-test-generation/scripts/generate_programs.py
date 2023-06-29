@@ -77,7 +77,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     if failed_count == 0:
         print(f"\r{COLOR_GREEN}All files compiled successfully{COLOR_RESET}")
     else:
-        print(f"\r{COLOR_RED}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
+        print(f"\r{COLOR_YELLOW}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
 
 
 def _remove_goblint_check_and_assertions(program_0_path):
@@ -106,13 +106,11 @@ def _fix_params(params):
     # Do not use assert as we do not want the analysis to mess with our asserts and checks
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
 
-    # TODO Check why these params make problems
-    #params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params) Erstmal kein problem # Do not use apron as marshalling is not supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params) # TODO Besprechen
-    #params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*var_eq[\'"]*', '', params) Erstmal kein problem
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params) # TODO Besprechen
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # TODO Besprechen
-    if 'td3' in params and 'apron' in params: # TODO Besprechen
+    # TODO Elaborate why these options create problems
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
+    if 'td3' in params and 'apron' in params:
         params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
         params = re.sub(r'--set [\'"]*solver[\'"]* [\'"]*td3[\'"]*', '', params)
     
