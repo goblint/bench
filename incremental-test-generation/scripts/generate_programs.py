@@ -106,6 +106,9 @@ def _fix_params(params):
     # Do not use assert as we do not want the analysis to mess with our asserts and checks
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
 
+    # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
+    params = re.sub(r'--disable [\'"]*warn\.assert[\'"]*', '', params)
+
     # TODO Elaborate why these options create problems
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
@@ -128,6 +131,9 @@ def _fix_params(params):
                 result.append(f'{COLOR_GREY}{i[-1]}{COLOR_RESET}')
         result = "".join(result)
         print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file were removed (grey) to avoid crashing the tester:{COLOR_RESET} {result}')
+
+    # Always activate the analysis assert as it is needed for the update_suite ruby script to check the annotations
+    params += ' --set ana.activated[+] assert'
     
     return params
 
