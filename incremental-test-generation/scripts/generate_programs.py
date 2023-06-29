@@ -123,7 +123,6 @@ def _fix_params(params):
     # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
     
-    
     if params_original != params:
         # If there are any changes, print a warning and mark the removed options in grey
         result = []
