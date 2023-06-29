@@ -109,6 +109,9 @@ def _fix_params(params):
     # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
     params = re.sub(r'--disable [\'"]*warn\.assert[\'"]*', '', params)
 
+    # Do not privatization mutex-meet-tid as some of the information may get lost during incremental analysis
+    params = re.sub(r'--set [\'"]*ana\.base\.privatization[\'"]* [\'"]*mutex-meet-tid[\'"]*', '', params)
+
     # TODO Elaborate why these options create problems
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
