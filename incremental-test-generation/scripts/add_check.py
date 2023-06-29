@@ -36,9 +36,9 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     _prepend_param_line(file_path_out, params)
     # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    _annotate_checks(goblint_path, file_path_out, params)
+    compiling = _annotate_checks(goblint_path, file_path_out, params, meta_path, enable_git, index)
 
-    return True
+    return compiling
 
 
 def _write_compiling_result_to_meta(meta_path, index, compiling):
@@ -56,11 +56,8 @@ def _write_exception_to_meta(meta_path, index, exceptions_string):
     if meta_path is not None:
         with open(meta_path, 'r') as file:
             yaml_data = yaml.safe_load(file)
-        yaml_data[f"p_{index}"] = {
-            META_TYPE: GenerateType.ML.value,
-            META_EXCEPTION: exceptions_string,
-            META_COMPILING: False
-        }
+        yaml_data[f"p_{index}"][META_EXCEPTION] = exceptions_string
+        yaml_data[f"p_{index}"][META_COMPILING] = False
         with open(meta_path, 'w') as file:
             yaml.safe_dump(yaml_data, file)
 
@@ -106,15 +103,21 @@ def _preserve_goblint_checks(file_path):
 
 
 # annotates generated checks depending on the goblint analysis result
-def _annotate_checks(goblint_path, file_path, params):
+def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, index):
     # run the analysis
     command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
-        print(f"\n{COLOR_RED}Error compiling cil file.{COLOR_RESET}")
-        print(result.stdout)
-        print(result.stderr)
-        sys.exit(RETURN_ERROR)
+        print(f"\r{COLOR_YELLOW}Error annotating checks for program with index {index}.{COLOR_RESET}")
+        # Check if program should be stopped
+        if index == 0 and not enable_git:
+            print(remove_ansi_escape_sequences(result.stdout))
+            print(remove_ansi_escape_sequences(result.stderr))
+            print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
+            print(result.returncode)
+            sys.exit(RETURN_ERROR)
+        _write_exception_to_meta(meta_path, index, result.stderr)
+        return False
 
     # get the json data
     json_string = extract_json(result.stdout)
@@ -177,6 +180,8 @@ def _annotate_checks(goblint_path, file_path, params):
     _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path)
     _remove_unknown_checks(line_ranges_unknown, file_path)
     _remove_failing_checks(line_ranges_fail, file_path)
+
+    return True
 
 
 # read line ranges from json multipiece element: (start, end)
