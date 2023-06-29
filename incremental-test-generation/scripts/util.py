@@ -21,9 +21,15 @@ class Mutations:
 
 
 def get_mutations_from_args(args):
-    return Mutations(args.remove_function_body, args.unary_operator_inversion,
-                     args.relational_operator_replacement, args.constant_replacement,
-                     args.remove_thread, args.logical_connector_replacement)
+    if args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
+            or args.constant_replacement or args.remove_thread or args.logical_connector_replacement:
+
+        return Mutations(args.remove_function_body, args.unary_operator_inversion,
+                        args.relational_operator_replacement, args.constant_replacement,
+                        args.remove_thread, args.logical_connector_replacement)
+    
+    else:
+        return None
 
 
 class GenerateType(Enum):
