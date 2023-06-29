@@ -119,6 +119,9 @@ def _fix_params(params):
     if 'td3' in params and 'apron' in params:
         params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
         params = re.sub(r'--set [\'"]*solver[\'"]* [\'"]*td3[\'"]*', '', params)
+
+    # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
     
     
     if params_original != params:
