@@ -61,11 +61,10 @@ while [[ $1 == "--ignore" ]]; do
 done
 
 # Normalize paths in ignore files
-ignore_list=""
+ignore_patterns=()
 for ignore_file in "${ignore_files[@]}"; do
     while IFS= read -r line; do
-        ignore_list+=$(realpath "$line" 2>/dev/null)
-        ignore_list+=$'\n'
+        ignore_patterns+=("$(realpath "$line" 2>/dev/null)")
     done < "$ignore_file"
 done
 
@@ -81,11 +80,13 @@ do
 
     # Check if the file should be ignored
     file_realpath=$(realpath "$file")
-    if [[ $ignore_list =~ $file_realpath ]]; then
-        printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
-        ignored_files+=("$file")
-        continue
-    fi
+    for pattern in "${ignore_patterns[@]}"; do
+        if [[ "$file_realpath" == $pattern ]]; then
+            printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
+            ignored_files+=("$file")
+            continue 2
+        fi
+    done
 
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}"
