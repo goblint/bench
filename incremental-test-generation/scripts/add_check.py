@@ -114,7 +114,6 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
-            print(result.returncode)
             sys.exit(RETURN_ERROR)
         _write_exception_to_meta(meta_path, index, result.stderr)
         return False
