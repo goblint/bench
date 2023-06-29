@@ -135,7 +135,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
         enable_ml = 'ML (OpenAI)' in generators
         enable_git = 'Git (Experimental)' in generators
 
-        if enable_mutations and mutations is None:
+        if enable_mutations:
             selected_mutations = questionary.checkbox(
                 'Select one or more mutation types:',
                 choices=[
@@ -353,6 +353,7 @@ def main():
             parser.error("--enable-git cannot be used with --enable-ml or --enable-mutations")
 
         # If all mutation options are false, set all to true
+        mutations = get_mutations_from_args(args)
         non_str_attributes = [attr for attr in vars(mutations) if not attr.endswith('_s')]
         if all(getattr(mutations, attr) is False for attr in non_str_attributes):
             mutations = Mutations(True, True, True, True, True, True)
@@ -360,8 +361,12 @@ def main():
         args.enable_mutations = None
         args.enable_ml = None
         args.enable_git = None
+        mutations = None
 
-    mutations = get_mutations_from_args(args)
+    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
+            or args.constant_replacement or args.remove_thread or args.logical_connector_replacement) \
+            and not args.enable_mutations:
+        parser.error("Setting single mutations only takes affect when also the mutation was enabled by the command line (-m)!")
 
     git_start_commit = args.git_start_commit
     git_end_commit = args.git_end_commit
