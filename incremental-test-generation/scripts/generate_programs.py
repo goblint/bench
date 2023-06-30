@@ -109,6 +109,12 @@ def _fix_params(params):
     # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
     params = re.sub(r'--disable [\'"]*warn\.assert[\'"]*', '', params)
 
+    # Do not use ana.race.direct-arithmetic as it requires json files as input
+    params = re.sub(r'--enable [\'"]*ana\.race\.direct-arithmetic[\'"]*', '', params)
+
+    # Do use ana.thread.context.create-edges as it otherwise requires json files
+    params = re.sub(r'--disable [\'"]*ana\.thread\.context\.create-edges[\'"]*', '', params)
+
     # Do not privatization mutex-meet-tid as some of the information may get lost during incremental analysis
     params = re.sub(r'--set [\'"]*ana\.base\.privatization[\'"]* [\'"]*mutex-meet-tid[\'"]*', '', params)
 
