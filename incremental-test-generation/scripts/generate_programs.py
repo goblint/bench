@@ -103,21 +103,11 @@ def _fix_params(params):
     # Do not use autotune as it might change analyses that must not be changes during incremental analysis
     params = re.sub(r'--enable [\'"]*ana\.autotune\.enabled[\'"]*', '', params)
 
-    # Do not use assert as we do not want the analysis to mess with our asserts and checks
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
-
     # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
     params = re.sub(r'--disable [\'"]*warn\.assert[\'"]*', '', params)
 
-    # Do not change ana.race.direct-arithmetic as it requires json files as input
-    params = re.sub(r'--enable [\'"]*ana\.race\.direct-arithmetic[\'"]*', '', params)
-    params = re.sub(r'--disable [\'"]*ana\.race\.direct-arithmetic[\'"]*', '', params)
-
-    # Do use ana.thread.context.create-edges as it otherwise requires json files
-    params = re.sub(r'--disable [\'"]*ana\.thread\.context\.create-edges[\'"]*', '', params)
-
-    # Do not privatization mutex-meet-tid as some of the information may get lost during incremental analysis
-    params = re.sub(r'--set [\'"]*ana\.base\.privatization[\'"]* [\'"]*mutex-meet-tid[\'"]*', '', params)
+    # Do not use transformation assert as it interferes with the checks generated for the tester
+    params = re.sub(r'--set [\'"]*trans\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
 
     # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
