@@ -130,31 +130,24 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
         sys.exit(RETURN_ERROR)
     json_data = json.loads(json_string)
 
-    # search for lines which are marked as deadcode
     line_ranges_deadcode = []
+    line_ranges_unknown = []
+    line_ranges_fail = []
     for message in json_data['messages']:
         for tag in message['tags']:
+            # search for lines which are marked as deadcode
             if "Category" in tag and "Deadcode" in tag["Category"]:
                 new_line_ranges = _get_line_ranges(message['multipiece'])
                 if new_line_ranges:
                     line_ranges_deadcode.append(new_line_ranges)
-
-    # search for lines which are marked as unknown asserts
-    line_ranges_unknown = []
-    for message in json_data['messages']:
-        for tag in message['tags']:
-            if "Category" in tag and "Assert" in tag["Category"]:
+            elif "Category" in tag and "Assert" in tag["Category"]:
+                # search for lines which are marked as unknown asserts
                 if "severity" in message and message["severity"] == "Warning":
                     new_line_ranges = _get_line_ranges(message['multipiece'])
                     if new_line_ranges:
                         line_ranges_unknown.append(new_line_ranges)
-
-    # search for lines which are marked as failing asserts
-    line_ranges_fail = []
-    for message in json_data['messages']:
-        for tag in message['tags']:
-            if "Category" in tag and "Assert" in tag["Category"]:
-                if "severity" in message and message["severity"] == "Error":
+                # search for lines which are marked as failing asserts
+                elif "severity" in message and message["severity"] == "Error":
                     new_line_ranges = _get_line_ranges(message['multipiece'])
                     if new_line_ranges:
                         line_ranges_fail.append(new_line_ranges)
