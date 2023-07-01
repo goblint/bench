@@ -135,21 +135,9 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
     for message in json_data['messages']:
         for tag in message['tags']:
             if "Category" in tag and "Deadcode" in tag["Category"]:
-                # Do not create when CWE Tag indicated that condition is always true
-                if ("CWE" in tag and tag["CWE"] != 571) or "CWE" not in tag:
-                    new_line_ranges = _get_line_ranges(message['multipiece'])
-                    if new_line_ranges:
-                        line_ranges_deadcode.append(new_line_ranges)
-
-    # search for lines which are marked as successful asserts
-    line_ranges_success = []
-    for message in json_data['messages']:
-        for tag in message['tags']:
-            if "Category" in tag and "Assert" in tag["Category"]:
-                if "severity" in message and message["severity"] == "Success":
-                    new_line_ranges = _get_line_ranges(message['multipiece'])
-                    if new_line_ranges:
-                        line_ranges_success.append(new_line_ranges)
+                new_line_ranges = _get_line_ranges(message['multipiece'])
+                if new_line_ranges:
+                    line_ranges_deadcode.append(new_line_ranges)
 
     # search for lines which are marked as unknown asserts
     line_ranges_unknown = []
@@ -173,12 +161,11 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
 
     # flatten the lists
     line_ranges_deadcode = [item for sublist in line_ranges_deadcode for item in sublist]
-    line_ranges_success = [item for sublist in line_ranges_success for item in sublist]
     line_ranges_unknown = [item for sublist in line_ranges_unknown for item in sublist]
     line_ranges_fail = [item for sublist in line_ranges_fail for item in sublist]
 
     # remove unwanted checks
-    _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path)
+    _remove_deadcode_checks(line_ranges_deadcode, file_path)
     _remove_unknown_checks(line_ranges_unknown, file_path)
     _remove_failing_checks(line_ranges_fail, file_path)
 
@@ -198,16 +185,14 @@ def _get_line_ranges(multipiece):
 
 
 # remove all __goblint_check in deadcode which are not annotated
-def _remove_deadcode_checks(line_ranges_deadcode, line_ranges_success, file_path):
+def _remove_deadcode_checks(line_ranges_deadcode, file_path):
     pattern = r'\s*__goblint_check\((.*?)\);(?!//).*'
 
     with open(file_path, 'r') as f:
         lines = f.readlines()
 
     for i, line in enumerate(lines):
-        # a line is considered if it is in line_ranges_deadcode and not in line_ranges_success
-        if any(start <= i + 1 <= end for start, end in line_ranges_deadcode) and \
-                not any(start <= i + 1 <= end for start, end in line_ranges_success):
+        if any(start <= i + 1 <= end for start, end in line_ranges_deadcode):
             match = re.match(pattern, line)
             if match:
                 lines[i] = f"; // [REMOVED_CHECK] generated check inside deadcode at line {i + 1} removed: {match.group(1)}\n"
@@ -224,7 +209,6 @@ def _remove_unknown_checks(line_ranges_unknown, file_path):
         lines = f.readlines()
 
     for i, line in enumerate(lines):
-        # a line is considered if it is in line_ranges_deadcode and not in line_ranges_success
         if any(start <= i + 1 <= end for start, end in line_ranges_unknown):
             match = re.match(pattern, line)
             if match:
@@ -242,7 +226,6 @@ def _remove_failing_checks(line_ranges_fail, file_path):
         lines = f.readlines()
 
     for i, line in enumerate(lines):
-        # a line is considered if it is in line_ranges_fail and not in line_ranges_success
         if any(start <= i + 1 <= end for start, end in line_ranges_fail):
             match = re.search(pattern, line)
             if match:
