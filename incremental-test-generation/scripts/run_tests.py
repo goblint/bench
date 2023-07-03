@@ -70,13 +70,10 @@ def handle_output(process):
 
 def _print_char_to_line(char, line):
     if char == '\r' or char == '\n':
-        if not re.match(r'.*Excellent: ignored check on .* is now passing!$', line):
-            sys.stdout.write('\r' + line)
-            sys.stdout.flush()
-            if char == '\n':
-                print()
-        else:
-            sys.stdout.write('\r' + ' ' * len(line))
+        sys.stdout.write('\r' + line)
+        sys.stdout.flush()
+        if char == '\n':
+            print()
         line = ''
     else:
         line += char
