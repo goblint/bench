@@ -46,37 +46,37 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     ret = ret_precision = 0
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
+        print_separator()
         if enable_precision:
-            print_separator()
             print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
             paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 ret_precision = run_tests(path, goblint_path, cfg)
-        print_separator()
-        print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
-        paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
-        if len(paths) > 1:
-            print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
-        for path in paths:
-            ret = run_tests(path, goblint_path, cfg)            
+        else:
+            print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
+            paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
+            if len(paths) > 1:
+                print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
+            for path in paths:
+                ret = run_tests(path, goblint_path, cfg)            
 
     # Write out custom test files
     if create_tests:
         print_separator()
-        correctness_path = os.path.join(os.path.curdir, 'out', test_name)
-        print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{test_name}{COLOR_RESET}:')
-        paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
-        if len(paths) > 1:
-            print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
-        for path in paths:
-            print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
         if enable_precision:
-            print_separator()
             precision_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out', precision_name)
-            print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{precision_name}{COLOR_RESET}:')
+            print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{COLOR_RESET} {precision_name}:')
             paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=False, inplace=False)
+            if len(paths) > 1:
+                print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
+            for path in paths:
+                print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
+        else:
+            correctness_path = os.path.join(os.path.curdir, 'out', test_name)
+            print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{COLOR_RESET} {test_name}:')
+            paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
@@ -222,7 +222,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
         while True:
             ml_interesting = questionary.text('From which start lines should the snippet start be chosen randomly ([] stands for all)?', default='[]').ask()
             if validate_interesting_lines(ml_interesting, None) is None:
-                print(f'{COLOR_RED}Please enter a valid string like [1, 42], [99], ....{COLOR_RESET}')
+                print(f'{COLOR_RED}Please enter a valid string like [1, 42], [99], ...{COLOR_RESET}')
                 continue
             break
 
@@ -233,17 +233,17 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             git_end = questionary.text('Enter end commit hash:').ask()
 
     # Output options
+    if enable_precision is None:
+        enable_precision = questionary.confirm('Run precision tests?', default=False).ask()
+
     if create_tests is None:
         create_tests = questionary.confirm('Create test files?', default=False).ask()
 
-    if create_tests and test_name is None:
+    if create_tests and not enable_precision and test_name is None:
         while True:
             test_name = questionary.text('Enter the test name: ', default="90-test").ask()
             if check_test_dir_name(test_name):
                 break
-
-    if enable_precision is None:
-        enable_precision = questionary.confirm('Enable precision tests?', default=False).ask()
 
     if create_tests and enable_precision and precision_name is None:
         while True:
@@ -304,8 +304,8 @@ def main():
     parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
     parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
-    parser.add_argument('-ep', '--enable-precision', action='store_true', help='Enable Precision Tests')
-    parser.add_argument('-dp', '--disable-precision', action='store_true', help='Disable Precision Tests')
+    parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
+    parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
     parser.add_argument('-er', '--enable-running', action='store_true', help='Enable running tests')
     parser.add_argument('-dr', '--disable-running', action='store_true', help='Disable running tests')
     parser.add_argument('-et', '--enable-create-tests', action='store_true', help='Enable creating test files')
