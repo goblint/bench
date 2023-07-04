@@ -121,7 +121,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
                 choices=[
                     questionary.Choice('Mutations', checked=True),
                     'ML (OpenAI)',
-                    'Git (Experimental)'
+                    # EXPERIEMNTAL 'Git (Experimental)'
                 ]).ask()
 
             # check if 'Git (Experimental)' is selected along with other options
@@ -133,7 +133,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
 
         enable_mutations = 'Mutations' in generators
         enable_ml = 'ML (OpenAI)' in generators
-        enable_git = 'Git (Experimental)' in generators
+        enable_git = False # EXPERIEMNTAL enable_git = 'Git (Experimental)' in generators
 
         if enable_mutations:
             selected_mutations = questionary.checkbox(
@@ -302,7 +302,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
     parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
-    parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
+    # EXPERIEMNTAL parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
@@ -328,15 +328,22 @@ def main():
     parser.add_argument('-m16', '--ml-16k', action='store_true', help=f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model')
 
     # Add GIT options
+    # EXPERIEMNTAL 
+    '''
     parser.add_argument('-s', '--template-script', action='store_true', help='Print the template script for git repositories')
     parser.add_argument('-gs', '--git-start-commit', help='The hash of the first commit to consider')
     parser.add_argument('-ge', '--git-end-commit', help='The hash of the last commit to consider')
     parser.add_argument('-gn', '--git-no-commit', action='store_true', help='Suppress asking for commit hashes in CLI')
+    '''
 
     args = parser.parse_args()
 
     # Postprocess arguments
-
+    args.enable_git = False # EXPERIEMNTAL
+    args.template_script = None  # EXPERIEMNTAL
+    args.git_end_commit = None # EXPERIEMNTAL
+    args.git_start_commit = None # EXPERIEMNTAL
+    args.git_no_commit = None # EXPERIMENTAL
     if args.template_script:
         template_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'generators', 'generate_git_build_USER_INFO_TEMPLATE.sh'))
         print(f'{COLOR_YELLOW}Template can be found at: {template_path}{COLOR_RESET}')
