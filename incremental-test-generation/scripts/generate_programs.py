@@ -113,7 +113,7 @@ def _fix_params(params):
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
 
-    # Remove file analysis as this programs usally depend on external files which may not be accesible
+    # Remove file analysis as these programs usally depend on external files which may not be accesible
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
 
     # O3 changes the compiler flags in a way that the tests throw the exception Failure("there can only be one definition and one declaration per global")
