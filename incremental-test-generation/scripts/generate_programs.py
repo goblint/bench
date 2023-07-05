@@ -109,16 +109,16 @@ def _fix_params(params):
     # Do not use transformation assert as it interferes with the checks generated for the tester
     params = re.sub(r'--set [\'"]*trans\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
 
-    # Remove apron as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
+    # Remove apron and affeq as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
-
-    # TODO Elaborate why these options create problems
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
-    if 'td3' in params_original and 'apron' in params_original:
-        params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
-        params = re.sub(r'--set [\'"]*solver[\'"]* [\'"]*td3[\'"]*', '', params)
+
+    # Remove file analysis as this programs usally depend on external files which may not be accesible
+    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
+
+    # O3 changes the compiler flags in a way that the tests throw the exception Failure("there can only be one definition and one declaration per global")
+    # TODO Investigate further which compiler flag causes the problem
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # O3 verändert verändert flags => Müsste man sich näher ansehen
     
     if params_original != params:
         # If there are any changes, print a warning and mark the removed options in grey
@@ -136,6 +136,9 @@ def _fix_params(params):
 
     # Always activate the analysis assert as it is needed for the update_suite ruby script to check the annotations
     params += ' --set ana.activated[+] assert'
+
+    # Always use the top down solver as only for this the incremental analysis is implemented
+    params += ' --set solver td3'
     
     return params
 
