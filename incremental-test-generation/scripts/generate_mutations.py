@@ -66,7 +66,6 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     command = [
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
-        "--fix-errors",
         program_path_temp,
         "--"
     ]
@@ -119,7 +118,6 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
         clang_tidy_path,
         "-checks=-*,readability-" + mutation_name,
         "-fix",
-        "--fix-errors",
         "-line-filter=" + line_filter_json,
         program_path,
         "--"
@@ -147,7 +145,6 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
         clang_tidy_path,
         "-checks=-*,readability-" + Mutations().rt_s,
         "-line-filter=" + line_filter_json,
-        "--fix-errors",
         program_path_temp,
         "--"
     ]
@@ -188,7 +185,6 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
         "-checks=-*,readability-remove-thread-wrapper",
         "-config=" + check_options_json,
         "-fix",
-        "--fix-errors",
         program_path,
         "--"
     ]
