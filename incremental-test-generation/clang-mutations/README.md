@@ -11,22 +11,12 @@ For building Clang you need to install some dependencies:
 ## Cloning the repository
  - There are two alternatives for getting the repository
 
-For creating all the checks by yourself clone the **Official Clang Repository**:
-`git clone https://github.com/llvm/llvm-project.git` (Tested with Version 17.0.0)
-Alternatively you can clone the **Fork** with all the additional checks ready:
+RECOMENDED: You can clone the **Fork** with all the additional checks and options ready:
 `git clone https://github.com/J2000A/llvm-project.git`
 
-## Creating the checks
- - When you cloned the Official Clang Repository you need to add the checks. Otherwise, you can skip this part.
- - Move to the directory `llvm-project/clang-tools-extra`
-
-In this directory are the implementations of the checks with their corresponding `.cpp` and `.h` file. In the following we will use the **>>check-name<<** of each check. You can get it by the filename without the word "Check" at the end and changing the capital letters to small ones with a minus in front (e.g. the >>check-name<< of `RemoveFunctionBodyCheck.cpp` is `remove-function-body`). Repeat the following steps for all new checks.
-
- - Run `clang-tidy/add_new_check.py readability >>check-name<<`
- - Replace `./clang-tidy/readability/>>check-name<<.cpp` with the implementation in this directory
- - Replace `./clang-tidy/readability/>>check-name<<.h` with the header file in this directory
-
-Now you have added all the check we need for the mutations.
+For creating all the checks and options by yourself clone the **Official Clang Repository**:
+`git clone https://github.com/llvm/llvm-project.git` (Tested with Version 17.0.0)
+Then you have to add the checks and options by yourself. You find a description of the needed modifications in [this file](MODIFICATIONS.md).
 
 ## Build
 The first build can take a while (up to multiple hours). But you can increase the performance by changing the parallel compile and link jobs. For me using the value 5 for both of them got me the fastest results. When using too many jobs the memory becomes a bottleneck. You can check the memory status with `free -h --giga`.
