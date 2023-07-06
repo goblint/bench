@@ -30,7 +30,7 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
         if index == 0 and not enable_git:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
+            print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
         _write_exception_to_meta(meta_path, index, result.stderr)
         return False
@@ -116,7 +116,7 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, ind
         if index == 0 and not enable_git:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}The original program did not compile. Stopping program!{COLOR_RESET}")
+            print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
             sys.exit(RETURN_ERROR)
         _write_exception_to_meta(meta_path, index, result.stderr)
         return False

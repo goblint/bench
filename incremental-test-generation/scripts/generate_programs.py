@@ -93,7 +93,7 @@ def _remove_goblint_check_and_assertions(program_0_path):
 
 
 def _fix_params(params):
-    params_original = params   
+    params_inital = params   
 
     # Do not use witness options as the witness information can not be used for the incremental analysis
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
@@ -120,12 +120,12 @@ def _fix_params(params):
     # TODO Investigate further which compiler flag causes the problem
     params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # O3 verändert verändert flags => Müsste man sich näher ansehen
     
-    if params_original != params:
+    if params_inital != params:
         # If there are any changes, print a warning and mark the removed options in grey
         result = []
-        for i in difflib.ndiff(params_original, params):
+        for i in difflib.ndiff(params_inital, params):
             # i[0] will be a space if the characters are the same
-            # It will be '-' if the character is only in params_original
+            # It will be '-' if the character is only in params_inital
             # It will be '+' if the character is only in params
             if i[0] == ' ':
                 result.append(i[-1])  # add the character without color
@@ -167,7 +167,7 @@ def _preserve_goblint_check_annotations(file_path):
 
 def main():
     parser = argparse.ArgumentParser(description='Generate programs in the working directory')
-    parser.add_argument('source_path', help='Path to the original program or git sh file provided by the user')
+    parser.add_argument('source_path', help='Path to the inital program or git sh file provided by the user')
     parser.add_argument('temp_dir', help='Path to the working directory')
     parser.add_argument('clang_tidy_path', help='Path to the modified clang-tidy executable')
     parser.add_argument('goblint_path', help='Path to the goblint executable')

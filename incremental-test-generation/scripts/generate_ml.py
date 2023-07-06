@@ -83,7 +83,7 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, m
 
 # Makes a gpt request and places the result in the program
 def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index):
-    # Get the original lines
+    # Get the inital lines
     with open(new_path, "r") as file:
         lines = file.readlines()
 
@@ -110,7 +110,7 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     new_code_lines = code.splitlines()
     new_code_lines = [line for line in new_code_lines if line != '```' and line != '```c' and line != '``']
 
-    # Comment out the original lines
+    # Comment out the inital lines
     for i in selected_lines:
         lines[i] = '// ' + lines[i]
 
@@ -169,7 +169,7 @@ def _make_gpt_request(snippet, ml_16k):
 
         Below is an snippet from a C file which represents a part of the finished program. My question is how a previous version of this code could have looked like before some typical code changes done by developers. Can you generate me such a previous version?
 
-        The code you generate should be a self-contained snippet that could directly replace the provided excerpt in the original, complete program. It should preserve the overall functionality of the program and must not cause any compilation errors when reintegrated into the larger code base. Please consider the dependencies and interactions with other parts of the program when generating the previous version of the code. Your generated code should be able to interact correctly with the rest of the program just like the original excerpt does. You do not have to add import statements or function declarations or closing brackets when these are cut off in the snippet, but when they are in the snippet you need to add them to preserve the whole program.
+        The code you generate should be a self-contained snippet that could directly replace the provided excerpt in the inital, complete program. It should preserve the overall functionality of the program and must not cause any compilation errors when reintegrated into the larger code base. Please consider the dependencies and interactions with other parts of the program when generating the previous version of the code. Your generated code should be able to interact correctly with the rest of the program just like the inital excerpt does. You do not have to add import statements or function declarations or closing brackets when these are cut off in the snippet, but when they are in the snippet you need to add them to preserve the whole program.
 
         Use these keywords (\"{SEPARATOR_EXPLANATION_START}\", \"{SEPARATOR_EXPLANATION_END}\", \"{SEPARATOR_CODE_START}\", \"{SEPARATOR_CODE_END}\") similar to html tags to structure you answer. You answer should have the following structure for identifying the different parts of the response, as it will be interpreted by another program: {SEPARATOR_EXPLANATION_START} (Response: Explain what you have changed in one or two sentences) {SEPARATOR_EXPLANATION_END} {SEPARATOR_CODE_START} (Response: the previous version of the code) {SEPARATOR_CODE_END}
 

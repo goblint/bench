@@ -38,7 +38,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     n = yaml_data[META_N]
 
     # store the paths to the test dirs
-    original_target_dir = target_dir
+    inital_target_dir = target_dir
     test_paths = [target_dir]
     # count the tests to know when to create a new directory [0; 99]
     current_test_num = 1  # Skip num 0 to align program index with test number
@@ -53,7 +53,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     elif inplace:
         # For inplace test files store them with dir num 100 and rename them later when running to 99
         current_dir_num = 100
-        original_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
+        inital_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
 
     # loop threw all generated mutations
     for i in range(n + 1):
@@ -139,7 +139,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
             sys.exit(RETURN_ERROR)
 
-        # Copy mutated code as the original code
+        # Copy mutated code as the inital code
         shutil.copy2(start_program, os.path.join(target_dir, test_name + '.c'))
         # Create a patch file
         patch_path = os.path.join(target_dir, test_name + '.patch')
@@ -151,7 +151,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         result = subprocess.run(command, shell=True)
         if inplace:
             # For patch files keep the 99 for running inplace after renaming folder
-            _fix_patch_file(patch_path, os.path.basename(original_target_dir), test_name + '.c')
+            _fix_patch_file(patch_path, os.path.basename(inital_target_dir), test_name + '.c')
         else:
             _fix_patch_file(patch_path, os.path.basename(target_dir), test_name + '.c')
         if result.returncode in [0, 1]:

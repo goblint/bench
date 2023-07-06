@@ -36,7 +36,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
 
     # Start running the tester
     ruby_path_abs = os.path.abspath(os.path.join(goblint_repo_dir, "scripts", "update_suite.rb"))
-    original_dir = os.getcwd()
+    inital_dir = os.getcwd()
     os.chdir(goblint_repo_dir)
     command = f"{ruby_path_abs} group temp -i"
     if cfg:
@@ -54,7 +54,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     # Cleanup
     shutil.rmtree(incremental_tests_dir_abs)
     shutil.rmtree(test_dir)
-    os.chdir(original_dir)
+    os.chdir(inital_dir)
 
     return process.returncode
 
