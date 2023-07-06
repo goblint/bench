@@ -277,11 +277,6 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
     # add files to include path that are named as the input file but with different ending
     if include_paths is None:
         include_paths = []
-    # When the input file contains <goblint.h> add the .h file per default
-    with open(input_file, 'r') as f:
-        contents = f.read()
-    if '<goblint.h>' in contents:
-        include_paths.append(os.path.join(goblint_path, "lib", "goblint", "runtime", "include", "goblint.h"))
     if include_paths:
         print(f'{COLOR_YELLOW}[INFO] Additionally to the input file the following files are copied into the temp and test directory:{COLOR_RESET}')
         for path in include_paths:
