@@ -300,13 +300,15 @@ def main():
     print(logo)
 
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
+    parser.add_argument('-d', '--default', action='store_true', help='Skip the interactive command line interface with the default options (-m -dp -er -dt -ec -c {}). Just add the --input option')
+    parser.add_argument('-i', '--input', help='Input File')
     parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
     # EXPERIEMNTAL parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
-    parser.add_argument('-er', '--enable-running', action='store_true', help='Enable running tests')
+    parser.add_argument('-er', '--enable-running', action='store_true', help='Enable ru1nning tests')
     parser.add_argument('-dr', '--disable-running', action='store_true', help='Disable running tests')
     parser.add_argument('-et', '--enable-create-tests', action='store_true', help='Enable creating test files')
     parser.add_argument('-dt', '--disable-create-tests', action='store_true', help='Disable creating test files')
@@ -315,7 +317,6 @@ def main():
     parser.add_argument('-t', '--test-name', help='Test name')
     parser.add_argument('-p', '--precision-name', help='Precision test name')
     parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
-    parser.add_argument('-i', '--input', help='Input File')
 
     # Add mutation options
     add_mutation_options(parser)
@@ -339,6 +340,16 @@ def main():
     args = parser.parse_args()
 
     # Postprocess arguments
+    if args.default:
+        args.enable_mutations = True
+        args.disable_precision = True
+        args.enable_running = True
+        args.disable_create_tests = True
+        args.enable_cfg = True
+        if args.goblint_config is not None:
+            parser.error('You can not use the --goblint-config option in combination with --default')
+        args.goblint_config = "{}"
+
     args.enable_git = False # EXPERIEMNTAL
     args.template_script = None  # EXPERIEMNTAL
     args.git_end_commit = None # EXPERIEMNTAL
