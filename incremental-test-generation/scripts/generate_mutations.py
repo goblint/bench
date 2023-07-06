@@ -63,13 +63,8 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
 
     # Execute all mutations to get the lines where the mutation is possible
     print(f"[MUTATION][CHECK] Check mutation {mutation_name}", end='')
-    command = [
-        clang_tidy_path,
-        "-checks=-*,readability-" + mutation_name,
-        program_path_temp,
-        "--"
-    ]
-    result = subprocess.run(command, text=True, capture_output=True)
+    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} {program_path_temp} -- -I{os.path.dirname(program_path)}'
+    result = subprocess.run(command, text=True, shell=True, capture_output=True)
     if result.returncode != 0:
         print('\n')
         print(result.stdout)
@@ -114,16 +109,8 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
-    command = [
-        clang_tidy_path,
-        "-checks=-*,readability-" + mutation_name,
-        "-fix",
-        "-line-filter=" + line_filter_json,
-        program_path,
-        "--"
-    ]
-
-    result = subprocess.run(command, text=True, capture_output=True)
+    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} -fix -line-filter="{line_filter_json}" {program_path} -- -I{os.path.dirname(program_path)}'
+    result = subprocess.run(command, shell=True, text=True, capture_output=True)
     if result.returncode == 0:
         print(f"{COLOR_GREEN}[{index}] Finished mutation:{COLOR_RESET} {mutation_name} on lines {lines}")
     else:
@@ -141,14 +128,8 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path_temp, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
-    command = [
-        clang_tidy_path,
-        "-checks=-*,readability-" + Mutations().rt_s,
-        "-line-filter=" + line_filter_json,
-        program_path_temp,
-        "--"
-    ]
-    result = subprocess.run(command, text=True, capture_output=True)
+    command = f'{clang_tidy_path} -checks=-*,readability-{Mutations().rt_s} -line-filter="{line_filter_json}" {program_path_temp} -- -I{os.path.dirname(program_path)}'
+    result = subprocess.run(command, text=True, shell=True, capture_output=True)
     print(f'[{index}][WRAP] Check function name for wrapping thread function', end='')
     if result.returncode != 0:
         print(result.stdout)
@@ -180,15 +161,8 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
     check_options_json = json.dumps(check_options)
-    command = [
-        clang_tidy_path,
-        "-checks=-*,readability-remove-thread-wrapper",
-        "-config=" + check_options_json,
-        "-fix",
-        program_path,
-        "--"
-    ]
-    result = subprocess.run(command, text=True, capture_output=True)
+    command = f'{clang_tidy_path} -checks=-*,readability-remove-thread-wrapper -config="{check_options_json}" -fix {program_path} -- -I{os.path.dirname(program_path)}'
+    result = subprocess.run(command, shell=True, text=True, capture_output=True)
     print(f"\r[{index}][WRAP FIX] Applied the wrapping of the thread function {function_name}{SPACE}")
     if result.returncode != 0:
         print(result.stdout)

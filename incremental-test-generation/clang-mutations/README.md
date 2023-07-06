@@ -49,8 +49,9 @@ We will use the **>>check-name<<** again as defined in "Creating the checks".
 
  - General Options
  `-checks=-*,readability->>check-name<<` Deactivating all checks except >>check-name<<.
-`-fix` Applying the mutations.
-`--fix-errors` Apply also when errors where detected
+`-fix` Applying the mutations and fail in case of found compiler errors.
+`--fix-warnings` Apply the mutation to warnings and ignore found compiler errors.
+`--quiet-return` Return 0 instad of 1 in case of found compiler warnings and do quiet printing.
 `-line filter='[{"name":"test.c","lines":[[4,4],[14,14]]}]'` Apply the mutations only on line 4 and 14.
 
  - Special Options
@@ -63,4 +64,4 @@ We will use the **>>check-name<<** again as defined in "Creating the checks".
 You find more details about the different Mutations in the [Mutations](MUTATIONS.md) file.
 
 ## Workflow
-First run the check without `-fix --fix-errors` to see where mutations are possible without applying them. Remember the lines where you actually want to apply the mutation. Make a copy of the input file that you will mutate. The run the check again with `-fix --fix-errors` and `-line filter=...` on the copied file to apply only specific mutations and not all at ones.
+First run the check without the fix flag, but with `--quiet-return` to see where mutations are possible without applying them. Remember the lines where you actually want to apply the mutation. Make a copy of the input file that you will mutate. Then run the check again with `--fix-warnings` and `-line filter=...` on the copied file to apply only specific mutations and not all at ones.
