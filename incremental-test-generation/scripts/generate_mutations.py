@@ -161,7 +161,7 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
     check_options_json = json.dumps(check_options)
-    command = f'{clang_tidy_path} -checks=-*,readability-remove-thread-wrapper -config="{check_options_json}" --fix-warnings {program_path} -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-remove-thread-wrapper -config=\'{check_options_json}\' --fix-warnings {program_path} -- -I{os.path.dirname(program_path)}'
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
     print(f"\r[{index}][WRAP FIX] Applied the wrapping of the thread function {function_name}{SPACE}")
     if result.returncode != 0:
