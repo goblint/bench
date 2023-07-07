@@ -125,12 +125,7 @@ printf "\n\n${color_blue}[BATCH] Batch finished running $files_length input file
 if [ ${#ignored_files[@]} -ne 0 ]; then
     printf "${color_yellow}The following $ignored_length files were ignored:\n"
     for file in "${ignored_files[@]}"; do
-        printf "$file"
-        if [[ $first_line == *"SKIP"* ]]; then
-            printf " (Contained SKIP keyword in first line)\n"
-        else
-            printf "\n"
-        fi
+        printf "$file\n"
     done
     printf "${color_reset}\n"
 fi
@@ -139,14 +134,7 @@ fi
 if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_green}The following $success_length files were run successfully with all tests passing:\n"
     for file in "${success_files[@]}"; do
-        printf "$file"
-        # Check if the first line of the file contains "SKIP"
-        first_line=$(head -n 1 "$file")
-        if [[ $first_line == *"SKIP"* ]]; then
-            printf "${color_yellow} (Contained SKIP keyword in first line)${color_green}\n"
-        else
-            printf "\n"
-        fi
+        printf "$file\n"
     done
     printf "${color_reset}\n"
 fi
@@ -155,14 +143,7 @@ fi
 if [ ${#failed_files[@]} -ne 0 ]; then
     printf "${color_orange}The following $failed_length files failed the tests:\n"
     for file in "${failed_files[@]}"; do
-        printf "$file"
-        # Check if the first line of the file contains "SKIP"
-        first_line=$(head -n 1 "$file")
-        if [[ $first_line == *"SKIP"* ]]; then
-            printf "${color_yellow} (Contained SKIP keyword in first line)${color_orange}\n"
-        else
-            printf "\n"
-        fi
+        printf "$file\n"
     done
     printf "${color_reset}\n"
 fi
@@ -172,14 +153,7 @@ fi
 if [ ${#exception_files[@]} -ne 0 ]; then
     printf "${color_red}The following $exception_length files experienced an exception during execution:\n"
     for file in "${exception_files[@]}"; do
-        printf "$file"
-        # Check if the first line of the file contains "SKIP"
-        first_line=$(head -n 1 "$file")
-        if [[ $first_line == *"SKIP"* ]]; then
-            printf "${color_yellow} (Contained SKIP keyword in first line)${color_red}\n"
-        else
-            printf "\n"
-        fi
+        printf "$file\n"
     done
     printf "${color_reset}\n"
 fi
