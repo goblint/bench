@@ -66,21 +66,21 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     if create_tests:
         print_separator()
         if enable_precision:
-            precision_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'out', precision_name)
+            precision_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', precision_name))
             print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{COLOR_RESET} {precision_name}:')
             paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=False, inplace=False)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
+                print(f'{COLOR_GREEN}Test stored in the directory: {path}{COLOR_RESET}')
         else:
-            correctness_path = os.path.join(os.path.curdir, 'out', test_name)
+            correctness_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', test_name))
             print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{COLOR_RESET} {test_name}:')
             paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                print(f'{COLOR_GREEN}Test stored in the file: {path}{COLOR_RESET}')
+                print(f'{COLOR_GREEN}Test stored in the directory: {path}{COLOR_RESET}')
 
     if ret != 0 or ret_precision != 0:
         sys.exit(RETURN_TEST_FAILED)
