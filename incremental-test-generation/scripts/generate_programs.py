@@ -116,9 +116,11 @@ def _fix_params(params):
     # Remove file analysis as these programs usally depend on external files which may not be accesible
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
 
-    # O3 changes the compiler flags in a way that the tests throw the exception Failure("there can only be one definition and one declaration per global")
-    # TODO Investigate further which compiler flag causes the problem
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params) # O3 verändert verändert flags => Müsste man sich näher ansehen
+    # Optimisations activate the compiler flag -fmove-loop-stores which causes problems with the incremental analysis
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-fmove-loop-stores[\'"]*', '', params)
     
     if params_inital != params:
         # If there are any changes, print a warning and mark the removed options in grey
