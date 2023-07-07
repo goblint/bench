@@ -1,4 +1,3 @@
-import difflib
 from add_check import add_check
 from add_check_annotations import add_check_annotations
 from generate_git import *
@@ -123,18 +122,7 @@ def _fix_params(params):
     params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-fmove-loop-stores[\'"]*', '', params)
     
     if params_inital != params:
-        # If there are any changes, print a warning and mark the removed options in grey
-        result = []
-        for i in difflib.ndiff(params_inital, params):
-            # i[0] will be a space if the characters are the same
-            # It will be '-' if the character is only in params_inital
-            # It will be '+' if the character is only in params
-            if i[0] == ' ':
-                result.append(i[-1])  # add the character without color
-            elif i[0] == '-':
-                result.append(f'{COLOR_GREY}{i[-1]}{COLOR_RESET}')
-        result = "".join(result)
-        print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file were removed (grey) to avoid crashing the tester:{COLOR_RESET} {result}')
+        print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file (grey) were removed to avoid crashing the tester:{COLOR_RESET} {params} {COLOR_GREY}{params_inital}{COLOR_RESET}')
 
     # Always activate the analysis assert as it is needed for the update_suite ruby script to check the annotations
     params += ' --set ana.activated[+] assert'
