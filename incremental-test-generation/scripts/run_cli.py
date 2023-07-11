@@ -136,24 +136,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
         enable_git = False # EXPERIEMNTAL enable_git = 'Git (Experimental)' in generators
 
         if enable_mutations:
-            selected_mutations = questionary.checkbox(
-                'Select one or more mutation types:',
-                choices=[
-                    questionary.Choice('remove-function-body (RFB)', checked=True),
-                    questionary.Choice('unary-operator-inversion (UOI)', checked=True),
-                    questionary.Choice('relational-operator-replacement (ROR)', checked=True),
-                    questionary.Choice('constant-replacement (CR)', checked=True),
-                    questionary.Choice('remove-thread (RT)', checked=True),
-                    questionary.Choice('logical-connector-replacement (LCR)', checked=True),
-                ]).ask()
-            mutations = Mutations(
-                rfb='remove-function-body (RFB)' in selected_mutations,
-                uoi='unary-operator-inversion (UOI)' in selected_mutations,
-                ror='relational-operator-replacement (ROR)' in selected_mutations,
-                cr='constant-replacement (CR)' in selected_mutations,
-                rt='remove-thread (RT)' in selected_mutations,
-                lcr='logical-connector-replacement (LCR)' in selected_mutations
-            )
+            mutations = interactivelyAskForMutations(questionary)
 
     # Check for API Key
     if enable_ml:
@@ -381,10 +364,7 @@ def main():
         args.enable_git = None
         mutations = None
 
-    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
-            or args.constant_replacement or args.remove_thread or args.logical_connector_replacement) \
-            and not args.enable_mutations:
-        parser.error("Setting single mutations only takes affect when also the mutation was enabled by the command line (-m)!")
+    check_for_mutation_selection_without_enabling_mutation(parser, args)
 
     git_start_commit = args.git_start_commit
     git_end_commit = args.git_end_commit

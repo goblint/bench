@@ -5,7 +5,7 @@ import shutil
 
 
 class Mutations:
-    def __init__(self, rfb=False, uoi=False, ror=False, cr=False, rt=False, lcr=False):
+    def __init__(self, rfb=False, uoi=False, ror=False, cr=False, rt=False, lcr=False, ris=False):
         self.rfb = rfb
         self.rfb_s = "remove-function-body"
         self.uoi = uoi
@@ -18,12 +18,57 @@ class Mutations:
         self.rt_s = "remove-thread"
         self.lcr = lcr
         self.lcr_s = "logical-connector-replacement"
+        self.ris = ris
+        self.ris_s = "remove-if-statement"
 
+
+def add_mutation_options(parser):
+    parser.add_argument("-rfb", "--remove-function-body", action="store_true",
+                        help="Option for \"remove function body\" mutation")
+    parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true",
+                        help="Option for \"unary operator inversion\" mutation")
+    parser.add_argument("-ror", "--relational-operator-replacement", action="store_true",
+                        help="Option for \"relational operator replacement\" mutation")
+    parser.add_argument("-cr", "--constant-replacement", action="store_true",
+                        help="Option for \"constant replacement\" mutation")
+    parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" mutation")
+    parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true",
+                        help="Option for \"logical connector replacement\" mutation")
+    parser.add_argument("-ris", "--remove-if-statement", action="store_true",
+                        help="Option for \"remove if statement\" mutation")
 
 def get_mutations_from_args(args):
     return Mutations(args.remove_function_body, args.unary_operator_inversion,
                      args.relational_operator_replacement, args.constant_replacement,
-                     args.remove_thread, args.logical_connector_replacement)
+                     args.remove_thread, args.logical_connector_replacement, args.remove_if_statement)
+def check_for_mutation_selection_without_enabling_mutation(parser, args):
+    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
+                or args.constant_replacement or args.remove_thread or args.logical_connector_replacement or args.remove_if_statement) \
+                and not args.enable_mutations:
+            parser.error("Setting single mutations only takes affect when also the mutation was enabled by the command line (-m)!")
+
+def interactivelyAskForMutations(questionary):
+    selected_mutations = questionary.checkbox(
+        'Select one or more mutation types:',
+        choices=[
+            questionary.Choice('remove-function-body (RFB)', checked=True),
+            questionary.Choice('unary-operator-inversion (UOI)', checked=True),
+            questionary.Choice('relational-operator-replacement (ROR)', checked=True),
+            questionary.Choice('constant-replacement (CR)', checked=True),
+            questionary.Choice('remove-thread (RT)', checked=True),
+            questionary.Choice('logical-connector-replacement (LCR)', checked=True),
+            questionary.Choice('remove-if-statement (RIS)', checked=True)
+        ]).ask()
+    mutations = Mutations(
+        rfb='remove-function-body (RFB)' in selected_mutations,
+        uoi='unary-operator-inversion (UOI)' in selected_mutations,
+        ror='relational-operator-replacement (ROR)' in selected_mutations,
+        cr='constant-replacement (CR)' in selected_mutations,
+        rt='remove-thread (RT)' in selected_mutations,
+        lcr='logical-connector-replacement (LCR)' in selected_mutations,
+        ris='remove-if-statement (RIS)' in selected_mutations
+    )
+    return mutations
 
 
 class GenerateType(Enum):

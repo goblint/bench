@@ -112,3 +112,16 @@ if (a || /* [MUTATION][LCR] Replaced Logical Connector */ b) {
     printf("Both a and b are non-zero\n");
 }
 ```
+
+## Remove If Statement - RIS
+**readability-remove-if-statement**<br>
+Removes `if` statements that have no `else` or `else if` body.
+```
+if (a && b) {
+    printf("Both a and b are non-zero\n");
+}
+```
+`clang-tidy -checks=-*,readability-remove-if-statement -fix ifStatements.c --`
+```
+; /* [MUTATION][RIS] Removed if statement */
+```

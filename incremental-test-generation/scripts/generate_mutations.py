@@ -29,6 +29,8 @@ def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.rt_s, index)
     if mutations.lcr:
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.lcr_s, index)
+    if mutations.ris:
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.ris_s, index)
 
     return index
 
@@ -184,20 +186,6 @@ def _write_meta_data(meta_path, index, mutation_name, lines):
     }
     with open(meta_path, 'w') as file:
         yaml.safe_dump(yaml_data, file)
-
-
-def add_mutation_options(parser):
-    parser.add_argument("-rfb", "--remove-function-body", action="store_true",
-                        help="Option for \"remove function body\" mutation")
-    parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true",
-                        help="Option for \"unary operator inversion\" mutation")
-    parser.add_argument("-ror", "--relational-operator-replacement", action="store_true",
-                        help="Option for \"relational operator replacement\" mutation")
-    parser.add_argument("-cr", "--constant-replacement", action="store_true",
-                        help="Option for \"constant replacement\" mutation")
-    parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" mutation")
-    parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true",
-                        help="Option for \"logical connector replacement\" mutation")
 
 
 if __name__ == "__main__":
