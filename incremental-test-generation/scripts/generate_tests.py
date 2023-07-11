@@ -120,7 +120,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             inital_program_id = 'p_0'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
             end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_success.c')
+            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_noimprecision.c')
         elif generate_type == GenerateType.GIT.value:
             # If it's the first compiling program skip it.
             if i == compiling_programs[0]:
@@ -134,7 +134,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
             start_program = os.path.join(temp_dir, previous_program_id + '_check_success.c')
             end_program = os.path.join(temp_dir, current_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, current_program_id + '_check_success.c')
+            end_program_precision = os.path.join(temp_dir, current_program_id + '_check_notinprecise.c')
         else:
             print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
             sys.exit(RETURN_ERROR)

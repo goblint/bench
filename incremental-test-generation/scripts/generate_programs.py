@@ -54,13 +54,13 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         if not compiling:
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
-        # For the patched file generate NOFAIL annotations
+        # For the patched file generate NOFAIL / NOTINPRECISE annotations
         if i == 0 or enable_git:
             if enable_precision:
                 add_check_annotations(file_path, 'NOTINPRECISE')
             else:
                 add_check_annotations(file_path, 'NOFAIL')
-        # For the inital file generate SUCCESS  annotations
+        # For the inital file generate SUCCESS annotations
         if i != 0 or enable_git:
             add_check_annotations(file_path, 'SUCCESS')
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
