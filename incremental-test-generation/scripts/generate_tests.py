@@ -120,7 +120,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             inital_program_id = 'p_0'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
             end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_noimprecision.c')
+            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
         elif generate_type == GenerateType.GIT.value:
             # If it's the first compiling program skip it.
             if i == compiling_programs[0]:
