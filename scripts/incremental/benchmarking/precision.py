@@ -32,6 +32,7 @@ url = project.url
 repo_name = project.repo_name
 build_compdb = project.build_compdb
 conf = project.conf_base
+conf_incrpost = project.conf_incrpost
 begin = project.begin
 to = project.to
 diff_exclude = project.diff_exclude
@@ -106,6 +107,15 @@ def find_sequences():
         json.dump(seq_list, outfile, indent=4)
     return seq_list
 
+def incremental_analyze(commit, out_commit, out_dir_name, compare_data_file, gr, repo_path):
+    # analyze commit incrementally based on the previous commit and save run for comparison
+    # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
+    out_incr = os.path.join(out_commit, out_dir_name)
+    os.makedirs(out_incr)
+    file_incremental_run = os.path.join(out_incr, compare_data_file)
+    add_options = ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', 'incremental.reluctant.enabled', '--set', 'save_run', file_incremental_run]
+    utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
+
 def analyze_series_in_repo(series):
     prev_commit = ""
     commit_num = 0
@@ -172,6 +182,8 @@ def analyze_series_in_repo(series):
                 file_incremental_run = os.path.join(out_incr, "compare-data-incr")
                 add_options = ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', 'incremental.reluctant.enabled', '--set', 'save_run', file_incremental_run]
                 utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
+
+                incremental_analyze(commit, out_commit, 'incr', "compare-data-incr", gr, repo_path)
 
                 if commit_num in compare_commits or commit_num == len(series) - 1:
                     # compare stored data of original and incremental run
