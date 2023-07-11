@@ -15,7 +15,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     # Create Meta file
     meta_path = os.path.join(temp_dir, META_FILENAME)
     with open(meta_path, 'w') as outfile:
-        yaml.dump({'n': 0, 'p_0': {META_TYPE: GenerateType.SOURCE.value}}, outfile)
+        yaml.dump({'n': 0, 'p_0': {META_TYPE: GenerateType.INITAL.value}}, outfile)
     # Copy the source program into the temp dir
     program_path = os.path.join(temp_dir, 'p.c' if not enable_git else 'p.sh')
     shutil.copy2(source_path, program_path)
@@ -160,7 +160,7 @@ def _preserve_goblint_check_annotations(file_path):
 
 def main():
     parser = argparse.ArgumentParser(description='Generate programs in the working directory')
-    parser.add_argument('source_path', help='Path to the inital program or git sh file provided by the user')
+    parser.add_argument('source_path', help='Path to the source program or git sh file provided by the user')
     parser.add_argument('temp_dir', help='Path to the working directory')
     parser.add_argument('clang_tidy_path', help='Path to the modified clang-tidy executable')
     parser.add_argument('goblint_path', help='Path to the goblint executable')

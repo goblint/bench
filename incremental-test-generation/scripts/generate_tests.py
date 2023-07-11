@@ -103,7 +103,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
         # Skip the reference program as it is used for the patch
         generate_type = yaml_data[current_program_id][META_TYPE]
-        if generate_type == GenerateType.SOURCE.value or (generate_type == GenerateType.GIT.value and i == 0):
+        if generate_type == GenerateType.INITAL.value or (generate_type == GenerateType.GIT.value and i == 0):
             continue
 
         print(f"\rGenerating test files [{i}/{n}]", end='')
@@ -117,15 +117,15 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
         # Select depending on generator the start and end file of at test
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
-            source_program_id = 'p_0'
+            inital_program_id = 'p_0'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, source_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, source_program_id + '_check_success.c')
+            end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
+            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_success.c')
         elif generate_type == GenerateType.GIT.value:
             # If it's the first compiling program skip it.
             if i == compiling_programs[0]:
                 print(
-                    f"\rGenerating test files [{i}/{n}] {COLOR_BLUE}Skipped {i} as the source file for the first test{COLOR_RESET}")
+                    f"\rGenerating test files [{i}/{n}] {COLOR_BLUE}Skipped {i} as the inital file for the first test{COLOR_RESET}")
                 continue
 
             # Find the index of the previous compiling program.

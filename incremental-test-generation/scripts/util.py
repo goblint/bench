@@ -73,7 +73,7 @@ def getMutationDescriptionsForML():
  return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
 
 class GenerateType(Enum):
-    SOURCE = 'SOURCE'
+    INITAL = 'INITAL'
     MUTATION = 'MUTATION'
     ML = 'ML'
     GIT = 'GIT'
