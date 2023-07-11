@@ -2,9 +2,9 @@ import argparse
 import re
 
 
-# Adds "//NOFAIL" or "//SUCCESS" to the Goblint checks "__goblint_check(exp);" when there is no annotation yet.
-# Stores the file with the appendix _success / _nofail.
-def add_check_annotations(file_path: str, nofail_instead_of_success: bool):
+# Adds annotations to the Goblint checks "__goblint_check(exp);" when there is no annotation yet.
+# Stores the file with the appendix of the annotation name.
+def add_check_annotations(file_path: str, annotation: str):
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
@@ -13,14 +13,11 @@ def add_check_annotations(file_path: str, nofail_instead_of_success: bool):
         match = re.search(r'(__goblint_check\(.*?\);)(?!.*?//)', line)
         if match:
             modified_line = match.group(1)
-            if nofail_instead_of_success:
-                modified_line += ' // NOFAIL'
-            else:
-                modified_line += ' // SUCCESS'
+            modified_line += f' // {str.upper(annotation)}'
             line = line.replace(match.group(1), modified_line)
         modified_lines.append(line)
 
-    new_file_name = file_path.rsplit('.', 1)[0] + ('_nofail.c' if nofail_instead_of_success else '_success.c')
+    new_file_name = f"{file_path.rsplit('.', 1)[0]}_{str.lower(annotation)}.c"
     with open(new_file_name, 'w') as new_file:
         new_file.writelines(modified_lines)
 
@@ -28,11 +25,7 @@ def add_check_annotations(file_path: str, nofail_instead_of_success: bool):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("file", help="Path to the C file")
-    parser.add_argument("-n", "--nofail", action="store_true", help="Option for // NOFAIL")
-    parser.add_argument("-s", "--success", action="store_true", help="Option for // SUCCESS")
+    parser.add_argument("annotation", help="Name of the annotation")
     args = parser.parse_args()
 
-    if not (args.nofail or args.success):
-        parser.error("Error: Invalid option. Provide -t for \"//NOFAIL\" or -s for \"//SUCCESS\".")
-
-    add_check_annotations(args.file, args.nofail)
+    add_check_annotations(args.file, args.annotation)
