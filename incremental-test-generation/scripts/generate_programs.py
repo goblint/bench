@@ -118,11 +118,10 @@ def _fix_params(params):
     # Remove file analysis as these programs usally depend on external files which may not be accesible
     params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
 
-    # Optimisations activate the compiler flag -fmove-loop-stores which causes problems with the incremental analysis
-    #params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*', '', params)
-    #params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*', '', params)
-    #params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
-    #params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-fmove-loop-stores[\'"]*', '', params)
+    # Optimisations activate the compiler flags which cause problems with the incremental analysis
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*', '', params)
+    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
     
     if params_inital != params:
         print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file (grey) were removed to avoid crashing the tester:{COLOR_RESET} {params} {COLOR_GREY}{params_inital}{COLOR_RESET}')
