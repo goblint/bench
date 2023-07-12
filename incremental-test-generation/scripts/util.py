@@ -2,6 +2,7 @@ from enum import Enum
 import os
 import re
 import shutil
+import sys
 
 
 class Mutations:
@@ -144,3 +145,11 @@ def check_test_dir_name(directory_name):
             f"{COLOR_RED}[ERROR] Target Directory name {directory_name} is not of the format 01-Name (\d{{2}}-\w+){COLOR_RESET}")
         return False
     return True
+
+
+def validate_path(path):
+    path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
+    if not os.path.exists(path):
+        print(f"{COLOR_RED}The path {path} does not exist.{COLOR_RESET}")
+        sys.exit(RETURN_ERROR)
+    return path

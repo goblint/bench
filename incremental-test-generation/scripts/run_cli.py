@@ -10,6 +10,7 @@ from generate_tests import generate_tests
 from run_tests import run_tests
 from util import *
 from meta import META_FILENAME
+from stats import *
 
 
 logo = '''
@@ -31,7 +32,7 @@ logo = '''
         '''
 
 
-def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths):
+def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -84,13 +85,19 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, gobl
             for path in paths:
                 print(f'{COLOR_GREEN}Test stored in the directory: {path}{COLOR_RESET}')
 
+    if statistics:
+        stats_filename = 'stats-run.yaml'
+        stats_path = os.path.join(temp_path, stats_filename)
+        stats_append_meta(stats_path, meta_path)
+        stats_print(stats_path)
+
     if ret != 0 or ret_precision != 0:
         sys.exit(RETURN_TEST_FAILED)
     else:
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths):
+def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -110,8 +117,8 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
             last_input_mutation = config[CONFIG_LAST_INPUT_MUTATION]
             print(f'Using goblint-path (change in ./{CONFIG_FILENAME}): {goblint_path}')
             print(f'Using llvm-path (change in ./{CONFIG_FILENAME}): {llvm_path}')
-    goblint_path = _validate_path(goblint_path)
-    llvm_path = _validate_path(llvm_path)
+    goblint_path = validate_path(goblint_path)
+    llvm_path = validate_path(llvm_path)
 
     # Handle Questions
     if not (enable_mutations or enable_ml):
@@ -151,7 +158,7 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
                 print(f'Using api-key for ML (change in ./{APIKEY_FILENAME}): ...{key[-4:]}')
                 print(f'Using organisation id for ML (change in ./{APIKEY_FILENAME}): ...{org[-4:]}')
         key_path = os.path.abspath(key_path)
-        key_path = _validate_path(key_path)
+        key_path = validate_path(key_path)
     else:
         key_path = None
 
@@ -159,7 +166,7 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
     if goblint_config is None:
         goblint_config = questionary.text('Path to a goblint config file used to create tests. Passing {} creates an empty config file.', default='{}').ask()
         if goblint_config != '{}':
-            goblint_config = _validate_path(goblint_config)
+            goblint_config = validate_path(goblint_config)
     if goblint_config == '{}' or goblint_config == '':
         goblint_config = None
 
@@ -235,7 +242,7 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
             with open(config_path, 'w') as outfile:
                 yaml.dump(config, outfile)
             break
-    input_file = _validate_path(input_file)
+    input_file = validate_path(input_file)
 
     # add files to include path that are named as the input file but with different ending
     if include_paths is None:
@@ -245,17 +252,9 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
         for path in include_paths:
             print(path)
     for path in include_paths:
-        _validate_path(path)
+        validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths)
-
-
-def _validate_path(path):
-    path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
-    if not os.path.exists(path):
-        print(f"{COLOR_RED}The path {path} does not exist.{COLOR_RESET}")
-        sys.exit(RETURN_ERROR)
-    return path
+    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics)
 
 
 def main():
@@ -279,6 +278,7 @@ def main():
     parser.add_argument('-t', '--test-name', help='Test name')
     parser.add_argument('-p', '--precision-name', help='Precision test name')
     parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
+    parser.add_argument('-s', '--statistics', action='store_true', help='Print statistics about the run')
 
     # Add mutation options
     add_mutation_options(parser)
@@ -377,7 +377,7 @@ def main():
     if precision_name is not None and not check_test_dir_name(precision_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_mutations, args.enable_ml, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, args.include)
+    cli(args.enable_mutations, args.enable_ml, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, args.include, args.statistics)
 
 
 if __name__ == "__main__":

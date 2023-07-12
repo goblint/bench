@@ -1,4 +1,5 @@
 import yaml
+
 from util import GenerateType
 
 
@@ -48,7 +49,10 @@ def meta_create_file(meta_path, source_path):
 
 def meta_get_n(meta_path) -> int:
     if meta_path == None: return 0
-    return _get_yaml_data(meta_path)[META_N]
+    return stats_get_n(_get_yaml_data(meta_path))
+
+def stats_get_n(data):
+    return data[META_N]
 
 def meta_set_n(meta_path, n: int):
     if meta_path == None: return

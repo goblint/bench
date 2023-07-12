@@ -27,7 +27,7 @@ ignore_files=()
 
 # Check for at least one argument
 if [ $# -lt 1 ]; then
-    printf "Usage: $0 <directory> [--no-print] [--ignore <file_path>]* [additional arguments...]\n"
+    printf "Usage: $0 <directory> [--no-print] [--statistics] [--ignore <file_path>]* [additional arguments...]\n"
     printf "Please order the arguments and options as stated above"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the mutation generator output\n"
@@ -54,11 +54,22 @@ if [[ $1 == "--no-print" ]]; then
     shift
 fi
 
+# Check for --statistics option
+if [[ $1 == "--statistics" ]]; then
+    statistics=true
+    shift
+fi
+
 # Check for --ignore options and store ignore files in an array
 while [[ $1 == "--ignore" ]]; do
     ignore_files+=($2)
     shift 2
 done
+
+# Remove old statistics
+if [ "$statistics" = true ]; then
+    rm ./out/stats.yaml
+fi
 
 # Normalize paths in ignore files
 ignore_patterns=()
@@ -95,6 +106,11 @@ do
     else
         printf "\n"
         ./RUN.sh -i "$file" "$@"
+    fi
+
+    # Append the meta file to the statistics
+    if [ "$statistics" = true ]; then
+        python3 ./scripts/stats.py ./out/stats.yaml --append ./temp/meta.yaml
     fi
 
     # Check for different return values
@@ -173,3 +189,10 @@ printf "${color}Number of files that failed the tests: $failed_length\n"
 
 if [ "$exception_length" -eq 0 ]; then color=${color_grey}; else color=${color_red}; fi
 printf "${color}Number of files that experienced an exception during execution: $exception_length\n"
+
+printf $color_reset
+
+# Print statistics
+if [ "$statistics" = true ]; then
+    python3 ./scripts/stats.py ./out/stats.yaml
+fi
