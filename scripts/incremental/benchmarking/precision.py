@@ -31,8 +31,9 @@ if project == None:
 url = project.url
 repo_name = project.repo_name
 build_compdb = project.build_compdb
-conf = project.conf_base
-conf_incrpost = project.conf_incrpost
+cwd = os.getcwd()
+conf = os.path.join(cwd, project.conf_base + ".json")
+conf_incrpost = os.path.join(cwd, project.conf_incrpost + ".json")
 begin = project.begin
 to = project.to
 diff_exclude = project.diff_exclude
