@@ -76,7 +76,6 @@ class GenerateType(Enum):
     INITAL = 'INITAL'
     MUTATION = 'MUTATION'
     ML = 'ML'
-    GIT = 'GIT'
 
 
 def remove_ansi_escape_sequences(s):
@@ -127,7 +126,6 @@ CONFIG_FILENAME = 'config.yaml'
 CONFIG_GOBLINT = "goblint-path"
 CONFIG_LLVM = "llvm-path"
 CONFIG_LAST_INPUT_MUTATION = "last-input-mutation"
-CONFIG_LAST_INPUT_GIT = "last-input-git"
 
 
 APIKEY_FILENAME = 'api-key.yaml'

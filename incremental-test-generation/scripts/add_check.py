@@ -14,7 +14,7 @@ from util import *
 # Removes check which are dead, fail or are unknown
 # Stores the file with the appendix "_check"
 # Write information to the meta.yaml file
-def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
+def add_check(file_path, goblint_path, meta_path, params, index):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
     command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' ' \
@@ -27,7 +27,7 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     if not compiling:
         print(f"\r{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
         # Check if program should be stopped
-        if index == 0 and not enable_git:
+        if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
@@ -38,7 +38,7 @@ def add_check(file_path, goblint_path, meta_path, params, index, enable_git):
     _prepend_param_line(file_path_out, params)
     # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    compiling = _annotate_checks(goblint_path, file_path_out, params, meta_path, enable_git, index)
+    compiling = _annotate_checks(goblint_path, file_path_out, params, meta_path, index)
 
     return compiling
 
@@ -106,14 +106,14 @@ def _preserve_goblint_checks(file_path):
 
 
 # annotates generated checks depending on the goblint analysis result
-def _annotate_checks(goblint_path, file_path, params, meta_path, enable_git, index):
+def _annotate_checks(goblint_path, file_path, params, meta_path, index):
     # run the analysis
     command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
         print(f"\r{COLOR_YELLOW}Error annotating checks for program with index {index}.{COLOR_RESET}")
         # Check if program should be stopped
-        if index == 0 and not enable_git:
+        if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")

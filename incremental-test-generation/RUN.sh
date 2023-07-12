@@ -19,12 +19,5 @@ do
     fi
 done
 
-# Check if 'git' is installed
-command -v git > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "'git' is not installed."
-    exit 1
-fi
-
 # Run cli
 python3 ./scripts/run_cli.py "$@"

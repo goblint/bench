@@ -103,16 +103,16 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
         # Skip the reference program as it is used for the patch
         generate_type = yaml_data[current_program_id][META_TYPE]
-        if generate_type == GenerateType.INITAL.value or (generate_type == GenerateType.GIT.value and i == 0):
+        if generate_type == GenerateType.INITAL.value:
             continue
 
         print(f"\rGenerating test files [{i}/{n}]", end='')
 
         # Determine the name for the test
         sub_type = yaml_data[current_program_id][META_SUB_TYPE]
-        if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.GIT.value:
+        if generate_type == GenerateType.MUTATION.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_{sub_type}_p_{_format_number(i)}'
-        else:
+        elif generate_type == GenerateType.ML.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
         # Select depending on generator the start and end file of at test
@@ -121,20 +121,6 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
             end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
             end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
-        elif generate_type == GenerateType.GIT.value:
-            # If it's the first compiling program skip it.
-            if i == compiling_programs[0]:
-                print(
-                    f"\rGenerating test files [{i}/{n}] {COLOR_BLUE}Skipped {i} as the inital file for the first test{COLOR_RESET}")
-                continue
-
-            # Find the index of the previous compiling program.
-            previous_program_index = compiling_programs.index(i) - 1
-            previous_program_id = f'p_{compiling_programs[previous_program_index]}'
-
-            start_program = os.path.join(temp_dir, previous_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, current_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, current_program_id + '_check_notinprecise.c')
         else:
             print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
             sys.exit(RETURN_ERROR)

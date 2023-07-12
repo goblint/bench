@@ -30,7 +30,7 @@ logo = '''
         '''
 
 
-def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, include_paths):
+def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -40,7 +40,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
-    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, is_git, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, git_start, git_end, 'scripts/generate_git_build.sh', include_paths)
+    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, include_paths)
 
     # Run tests
     ret = ret_precision = 0
@@ -88,7 +88,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, is_git, mutatio
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, git_no_commit, include_paths):
+def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -96,9 +96,8 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
         print(f'Config file "{config_path}" not found. Please provide the paths:')
         goblint_path = questionary.text('Enter the path to the goblint repository: ', default="~/Goblint-Repo/analyzer").ask()
         llvm_path = questionary.text('Enter the path to the llvm repository with the modified clang-tidy: ', default="~/Clang-Repo/llvm-project").ask()
-        config.update({CONFIG_GOBLINT: goblint_path, CONFIG_LLVM: llvm_path, CONFIG_LAST_INPUT_MUTATION: '', CONFIG_LAST_INPUT_GIT: ''})
+        config.update({CONFIG_GOBLINT: goblint_path, CONFIG_LLVM: llvm_path, CONFIG_LAST_INPUT_MUTATION: ''})
         last_input_mutation = ''
-        last_input_git = ''
         with open(config_path, 'w') as outfile:
             yaml.dump(config, outfile)
     else:
@@ -107,33 +106,22 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
             goblint_path = config[CONFIG_GOBLINT]
             llvm_path = config[CONFIG_LLVM]
             last_input_mutation = config[CONFIG_LAST_INPUT_MUTATION]
-            last_input_git = config[CONFIG_LAST_INPUT_GIT]
             print(f'Using goblint-path (change in ./{CONFIG_FILENAME}): {goblint_path}')
             print(f'Using llvm-path (change in ./{CONFIG_FILENAME}): {llvm_path}')
     goblint_path = _validate_path(goblint_path)
     llvm_path = _validate_path(llvm_path)
 
     # Handle Questions
-    if not (enable_mutations or enable_ml or enable_git):
-        while True:
-            generators = questionary.checkbox(
-                'Select one or more generator types (When git is checked no other can be checked!):',
-                choices=[
-                    questionary.Choice('Mutations', checked=True),
-                    'ML (OpenAI)',
-                    # EXPERIEMNTAL 'Git (Experimental)'
-                ]).ask()
-
-            # check if 'Git (Experimental)' is selected along with other options
-            if 'Git (Experimental)' in generators and len(generators) > 1:
-                print(f"{COLOR_RED}If 'Git (Experimental)' is selected, no other options should be selected. Please select again.{COLOR_RESET}")
-                continue
-            else:
-                break
+    if not (enable_mutations or enable_ml):
+        generators = questionary.checkbox(
+            'Select one or more generator types:',
+            choices=[
+                questionary.Choice('Mutations', checked=True),
+                'ML (OpenAI)',
+            ]).ask()
 
         enable_mutations = 'Mutations' in generators
         enable_ml = 'ML (OpenAI)' in generators
-        enable_git = False # EXPERIEMNTAL enable_git = 'Git (Experimental)' in generators
 
         if enable_mutations:
             mutations = interactivelyAskForMutations(questionary)
@@ -209,18 +197,12 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
                 continue
             break
 
-    # Git options
-    if enable_git and not (git_start is not None and git_end is not None) and not git_no_commit:
-        if questionary.confirm('Do you want to give a start and end commit hash?', default=False).ask():
-            git_start = questionary.text('Enter start commit hash:').ask()
-            git_end = questionary.text('Enter end commit hash:').ask()
-
     # Output options
     if enable_precision is None:
         enable_precision = questionary.confirm('Run precision tests?', default=False).ask()
 
     if create_tests is None:
-        create_tests = questionary.confirm('Create test files?', default=False).ask()
+        create_tests = questionary.confirm('Export test files?', default=False).ask()
 
     if create_tests and not enable_precision and test_name is None:
         while True:
@@ -243,12 +225,8 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
     # input options
     if input_file is None:
         while True:
-            if enable_mutations or enable_ml:
-                input_file = questionary.text('Enter the path to the c program for the mutations: ', default=last_input_mutation).ask()
-                config.update({CONFIG_LAST_INPUT_MUTATION: input_file})
-            else:
-                input_file = questionary.text('Enter the path to the sh script with information\'s about the git repository (Use [-s] to see the template script ): ', default=last_input_git).ask()
-                config.update({CONFIG_LAST_INPUT_GIT: input_file})
+            input_file = questionary.text('Enter the path to the c program for the mutations: ', default=last_input_mutation).ask()
+            config.update({CONFIG_LAST_INPUT_MUTATION: input_file})
             if not os.path.exists(os.path.expanduser(input_file)):
                 print(f"{COLOR_RED}Please enter a valid path.{COLOR_RESET}")
                 continue
@@ -267,7 +245,7 @@ def cli(enable_mutations, enable_ml, enable_git, mutations, goblint_config, test
     for path in include_paths:
         _validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, enable_git, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, git_start, git_end, include_paths)
+    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths)
 
 
 def _validate_path(path):
@@ -287,7 +265,6 @@ def main():
     parser.add_argument('-i', '--input', help='Input File')
     parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
     parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
-    # EXPERIEMNTAL parser.add_argument('-g', '--enable-git', action='store_true', help='Enable Git (Experimental)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
@@ -306,19 +283,10 @@ def main():
 
     # Add ML options
     parser.add_argument('-mc', '--ml-count', type=int, default=-1,  help='How many different programs should be generated with ML?')
-    parser.add_argument('-ms', '--ml-select', type=int, default=-1,  help='How many lines should be selected for the snippet from the input file?')
-    parser.add_argument('-mi', '--ml-interesting', help='From which start lines should the snippet start be chosen randomly? Exp.: [] = From all lines, [1, 42], ...')
+    parser.add_argument('-ms', '--ml-select', type=int, default=-1,  help='How many lines should be selected for the ML snippet from the input file?')
+    parser.add_argument('-mi', '--ml-interesting', help='From which start lines should the ML snippet start be chosen randomly? Exp.: [] = From all lines, [1, 42], ...')
     parser.add_argument('-m4', '--ml-4k', action='store_true', help=f'Use the {ML_MODEL} model instead of the {ML_MODEL_16K} model')
     parser.add_argument('-m16', '--ml-16k', action='store_true', help=f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model')
-
-    # Add GIT options
-    # EXPERIEMNTAL 
-    '''
-    parser.add_argument('-s', '--template-script', action='store_true', help='Print the template script for git repositories')
-    parser.add_argument('-gs', '--git-start-commit', help='The hash of the first commit to consider')
-    parser.add_argument('-ge', '--git-end-commit', help='The hash of the last commit to consider')
-    parser.add_argument('-gn', '--git-no-commit', action='store_true', help='Suppress asking for commit hashes in CLI')
-    '''
 
     args = parser.parse_args()
 
@@ -333,26 +301,7 @@ def main():
             parser.error('You can not use the --goblint-config option in combination with --default')
         args.goblint_config = "{}"
 
-    args.enable_git = False # EXPERIEMNTAL
-    args.template_script = None  # EXPERIEMNTAL
-    args.git_end_commit = None # EXPERIEMNTAL
-    args.git_start_commit = None # EXPERIEMNTAL
-    args.git_no_commit = None # EXPERIMENTAL
-    if args.template_script:
-        template_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'generators', 'generate_git_build_USER_INFO_TEMPLATE.sh'))
-        print(f'{COLOR_YELLOW}Template can be found at: {template_path}{COLOR_RESET}')
-        print('')
-        with open(template_path, 'r') as file:
-            content = file.read()
-        print(content)
-        print('')
-        sys.exit(RETURN_SUCCESS)
-
-    if args.enable_mutations or args.enable_ml or args.enable_git:
-        # If using git, only git can be used
-        if args.enable_git and (args.enable_ml or args.enable_mutations):
-            parser.error("--enable-git cannot be used with --enable-ml or --enable-mutations")
-
+    if args.enable_mutations or args.enable_ml:
         # If all mutation options are false, set all to true
         mutations = get_mutations_from_args(args)
         non_str_attributes = [attr for attr in vars(mutations) if not attr.endswith('_s')]
@@ -361,15 +310,9 @@ def main():
     else:
         args.enable_mutations = None
         args.enable_ml = None
-        args.enable_git = None
         mutations = None
 
     check_for_mutation_selection_without_enabling_mutation(parser, args)
-
-    git_start_commit = args.git_start_commit
-    git_end_commit = args.git_end_commit
-    if (git_start_commit is None and git_end_commit is not None) or (git_start_commit is not None and git_end_commit is None):
-        parser.error('[ERROR] Give a git start commit hash AND a end commit hash')
 
     if args.enable_precision or args.disable_precision:
         # Only one can be selected
@@ -432,7 +375,7 @@ def main():
     if precision_name is not None and not check_test_dir_name(precision_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_mutations, args.enable_ml, args.enable_git, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, git_start_commit, git_end_commit, args.git_no_commit, args.include)
+    cli(args.enable_mutations, args.enable_ml, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, args.include)
 
 
 if __name__ == "__main__":
