@@ -4,9 +4,9 @@ import subprocess
 import sys
 
 import questionary
-import yaml
 
 from util import *
+from meta import *
 
 
 # Generate test directory based on previously generated directory with mutated files
@@ -33,9 +33,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
     # Read the meta.yaml
     meta_path = os.path.join(temp_dir, META_FILENAME)
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-    n = yaml_data[META_N]
+    n = meta_get_n(meta_path)
 
     # store the paths to the test dirs
     inital_target_dir = target_dir
@@ -46,7 +44,6 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     current_dir_num = int(directory_name[:2])
     # get the current values
     unchanged_count = 0
-    compiling_programs = []
     if inplace and int(directory_name[:3]) != 100:
         print(f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
         sys.exit(RETURN_ERROR)
@@ -82,42 +79,30 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             # reset the test num
             current_test_num = 0
 
-        # get the id of the current program
-        current_program_id = f'p_{i}'
+        # Skip mutations with exceptions            
+        if meta_exception_exists(meta_path, i):
+            print(f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occurred in a previous step{COLOR_RESET}")
+            continue
 
-        # check if it compiled. When not skip it
-        try:
-            compilation_success = yaml_data[current_program_id][META_COMPILING]
-        except:
-            print(f'\r{COLOR_RED}Error test file {i} has no entry in the metadata file{COLOR_RESET}')
-            sys.exit(RETURN_ERROR)
-        if compilation_success:
-            compiling_programs.append(i)
-        else:
-            print(f"\r{COLOR_YELLOW}Skipped test file {i} as it did not compile while generating the checks{COLOR_RESET}")
-            continue
-        if META_EXCEPTION in yaml_data[current_program_id]:
-            print(
-                f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occurred in a previous step{COLOR_RESET}")
-            continue
+        # Get the type and subtype of the mutation
+        (generate_type, generate_sub_type) = meta_get_type_and_subtype(meta_path, i)
 
         # Skip the reference program as it is used for the patch
-        generate_type = yaml_data[current_program_id][META_TYPE]
         if generate_type == GenerateType.INITAL.value:
             continue
 
         print(f"\rGenerating test files [{i}/{n}]", end='')
 
         # Determine the name for the test
-        sub_type = yaml_data[current_program_id][META_SUB_TYPE]
         if generate_type == GenerateType.MUTATION.value:
-            test_name = f'{_format_number(current_test_num)}-{generate_type}_{sub_type}_p_{_format_number(i)}'
+            test_name = f'{_format_number(current_test_num)}-{generate_type}_{generate_sub_type}_p_{_format_number(i)}'
         elif generate_type == GenerateType.ML.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
         # Select depending on generator the start and end file of at test
         if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
             inital_program_id = 'p_0'
+            current_program_id = f'p_{i}'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
             end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
             end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
@@ -144,11 +129,10 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             if result.returncode == 0:
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
-                yaml_data[current_program_id][META_DIFF] = False
-            else:
-                yaml_data[current_program_id][META_DIFF] = True
+                meta_empty_diff(meta_path, current_program_id)
         else:
-            raise Exception(f"Command failed with return code: {result.returncode}")
+            print(f"Creation of patch failed with return code: {result.returncode}")
+            sys.exit(RETURN_ERROR)
 
         # Create config file
         if goblint_config is None:
@@ -167,9 +151,6 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     print(f"\r{COLOR_GREEN}Generating test files [DONE]{SPACE}{COLOR_RESET}")
     if unchanged_count > 0:
         print(f'{COLOR_YELLOW}There were {unchanged_count} patch files with no changes.{COLOR_RESET}')
-
-    with open(meta_path, 'w') as file:
-        yaml.safe_dump(yaml_data, file)
 
     # Return the list of generated directories
     return test_paths

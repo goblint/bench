@@ -4,11 +4,12 @@ import sys
 import threading
 
 from util import *
+from meta import *
 
 
 # Run the tests
 # The test_dir must be in the format xxx-tmp where xxx is a number >= 100
-def run_tests(test_dir, goblint_repo_dir, cfg):
+def run_tests(test_dir, goblint_repo_dir, meta_path, cfg):
     # Change the number of the test directory to 99 for in place testing
     match = re.match(r'(\d+)-(.*)', os.path.basename(test_dir))
     if match:
@@ -44,36 +45,42 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
     # Handle the output in a thread
-    thread = threading.Thread(target=handle_output, args=(process,))
+    output_lines = []
+    thread = threading.Thread(target=handle_output, args=(process, output_lines))
     thread.start()
 
     # Wait for processes to finish
     thread.join()
     process.wait()
+    output = '\n'.join(output_lines)
 
     # Cleanup
     shutil.rmtree(incremental_tests_dir_abs)
     shutil.rmtree(test_dir)
     os.chdir(inital_dir)
 
+    if process.returncode != 0 and meta_path != None:
+        meta_test_failed(meta_path, output)
+
     return process.returncode
 
 
-def handle_output(process):
+def handle_output(process, output_lines):
     line = ''
     while True:
         char = process.stdout.read(1).decode('utf-8', 'replace')
         if not char and process.poll() is not None:
             break
-        line = _print_char_to_line(char, line)
+        line = _print_char_to_line(char, line, output_lines)
 
 
-def _print_char_to_line(char, line):
+def _print_char_to_line(char, line, output_lines):
     if char == '\r' or char == '\n':
         sys.stdout.write('\r' + line)
         sys.stdout.flush()
         if char == '\n':
             print()
+            output_lines.append(line)
         line = ''
     else:
         line += char
@@ -88,4 +95,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    run_tests(args.test_dir, args.goblint_repo_dir, args.cfg)
+    run_tests(args.test_dir, args.goblint_repo_dir, None, args.cfg)

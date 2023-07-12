@@ -3,9 +3,8 @@ import json
 import subprocess
 import sys
 
-import yaml
-
 from util import *
+from meta import *
 
 
 # Takes a file and generates the goblint checks
@@ -20,48 +19,23 @@ def add_check(file_path, goblint_path, meta_path, params, index):
     command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' ' \
               f'--set trans.output {file_path_out} {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    compiling = result.returncode == 0
-
-    _write_compiling_result_to_meta(meta_path, index, compiling)
-
-    if not compiling:
-        print(f"\r{COLOR_RED}Error writing checks for program with index {index}.{COLOR_RESET}")
+    if result.returncode != 0:
         # Check if program should be stopped
         if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
+            meta_crash(meta_path, META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
             sys.exit(RETURN_ERROR)
-        _write_exception_to_meta(meta_path, index, result.stderr)
+        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_CREATE_CHECK, result)
         return False
 
     _prepend_param_line(file_path_out, params)
     # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    compiling = _annotate_checks(goblint_path, file_path_out, params, meta_path, index)
+    success = _annotate_checks(goblint_path, file_path_out, params, meta_path, index)
 
-    return compiling
-
-
-def _write_compiling_result_to_meta(meta_path, index, compiling):
-    # Write compiling result to meta.yaml
-    if meta_path is not None:
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-            yaml_data["p_" + str(index)][META_COMPILING] = compiling
-        with open(meta_path, 'w') as file:
-            yaml.safe_dump(yaml_data, file)
-
-
-def _write_exception_to_meta(meta_path, index, exceptions_string):
-    # Write compiling result and exceptions to meta.yaml
-    if meta_path is not None:
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-        yaml_data[f"p_{index}"][META_EXCEPTION] = exceptions_string
-        yaml_data[f"p_{index}"][META_COMPILING] = False
-        with open(meta_path, 'w') as file:
-            yaml.safe_dump(yaml_data, file)
+    return success
 
 
 # Add //PARAM: line at the beginning of file
@@ -117,17 +91,13 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, index):
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
+            meta_crash(meta_path, META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
             sys.exit(RETURN_ERROR)
-        _write_exception_to_meta(meta_path, index, result.stderr)
+        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_ANNOTATE_CHECK, result)
         return False
 
     # get the json data
     json_string = extract_json(result.stdout)
-    if json_string is None:
-        print(f"{COLOR_RED}No JSON found in the goblint output{COLOR_RESET}")
-        print(result.stdout)
-        print(result.stdout)
-        sys.exit(RETURN_ERROR)
     json_data = json.loads(json_string)
 
     line_ranges_deadcode = []

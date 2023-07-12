@@ -3,19 +3,13 @@ import json
 import subprocess
 import sys
 
-import yaml
-
 from util import *
+from meta import *
 
 
 # Generates mutations with clang-tidy
 def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
-    if meta_path is not None:
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-            index = yaml_data[META_N]
-    else:
-        index = 0
+    index = meta_get_n(meta_path)
 
     if mutations.rfb:
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.rfb_s, index)
@@ -39,7 +33,7 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mut
     print_separator()
     print(f"[{GenerateType.MUTATION.value}] {mutation_name}")
     # get line groups for knowing where the mutation could be applied
-    line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path)
+    line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path, meta_path)
     # apply only one mutation at a time
     for lines in line_groups:
         index += 1
@@ -50,16 +44,16 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mut
                 # Needed to prevent conflicts on generating wrappers
                 print(
                     f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
-            function_name = _get_thread_function_name(clang_tidy_path, lines, new_path, index)
-            _wrap_thread_function(clang_tidy_path, new_path, function_name, index)
-        _apply_mutation(clang_tidy_path, mutation_name, lines, new_path, index)
+            function_name = _get_thread_function_name(clang_tidy_path, lines, new_path, meta_path, index)
+            _wrap_thread_function(clang_tidy_path, new_path, meta_path, function_name, index)
+        _apply_mutation(clang_tidy_path, mutation_name, lines, new_path, meta_path, index)
         _write_meta_data(meta_path, index, mutation_name, lines)
     return index
 
 
 # Returns a list of lists. The sub lists represent lines at which a single mutation should be applied
 # Per default this is only one line (eg.: [[1], [42]] ). Multiple lines are needed for replacing all Macros
-def _get_line_groups(clang_tidy_path, mutation_name, program_path):
+def _get_line_groups(clang_tidy_path, mutation_name, program_path, meta_path):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
 
@@ -72,6 +66,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}")
+        meta_crash(meta_path, META_CRASH_MESSAGE_CLANG_LINE_GROUPS)
         sys.exit(RETURN_ERROR)
 
     # get the line groups from the output
@@ -107,7 +102,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     return sorted(line_groups, key=lambda x: x[0])
 
 
-def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
+def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, meta_path, index):
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
@@ -119,11 +114,12 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Apply){COLOR_RESET}")
+        meta_crash(meta_path, META_CRASH_MESSAGE_CLANG_APPLY)
         sys.exit(RETURN_ERROR)
 
 
 # Execute the check to find the name of the thread function (needed to generate a wrapper)
-def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
+def _get_thread_function_name(clang_tidy_path, lines, program_path, meta_path, index):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
 
@@ -137,6 +133,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Get Function Name){COLOR_RESET}")
+        meta_crash(meta_path, META_CRASH_MESSAGE_CLANG_FUNCTION_NAME)
         sys.exit(RETURN_ERROR)
 
     function_name_pattern = r"\[FUNCTION_NAME\]\[(.*?)\]"
@@ -155,7 +152,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
 
 
 # generate a wrapper for the thread function
-def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
+def _wrap_thread_function(clang_tidy_path, program_path, meta_path, function_name, index):
     if function_name is None:
         print(
             f"\r{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
@@ -170,22 +167,13 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
         print(result.stdout)
         print(result.stderr)
         print(f"{COLOR_RED}ERROR Running Clang (Wrap){COLOR_RESET}")
+        meta_crash(meta_path, META_CRASH_MESSAGE_CLANG_WRAP)
         sys.exit(RETURN_ERROR)
 
 
 def _write_meta_data(meta_path, index, mutation_name, lines):
-    if meta_path is None:
-        return False
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-    yaml_data[META_N] = index
-    yaml_data[f"p_{index}"] = {
-        META_TYPE: GenerateType.MUTATION.value,
-        META_SUB_TYPE: mutation_name,
-        META_LINES: lines
-    }
-    with open(meta_path, 'w') as file:
-        yaml.safe_dump(yaml_data, file)
+    meta_set_n(meta_path, index)
+    meta_create_index(meta_path, index, GenerateType.MUTATION.value, mutation_name, lines)
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from add_check import add_check
 from add_check_annotations import add_check_annotations
 from generate_ml import *
 from generate_mutations import *
+from meta import *
 
 
 # generates programs in the temp_dir
@@ -13,8 +14,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     os.makedirs(temp_dir)
     # Create Meta file
     meta_path = os.path.join(temp_dir, META_FILENAME)
-    with open(meta_path, 'w') as outfile:
-        yaml.dump({'n': 0, 'p_0': {META_TYPE: GenerateType.INITAL.value}}, outfile)
+    meta_create_file(meta_path, source_path)
     # Copy the source program into the temp dir
     program_path = os.path.join(temp_dir, 'p.c')
     shutil.copy2(source_path, program_path)
@@ -46,6 +46,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         file_path = os.path.join(temp_dir, f"p_{i}.c")
         compiling = add_check(file_path, goblint_path, meta_path, params, i)
         if not compiling:
+            print(f"\r{COLOR_YELLOW}[{i}/{index}] Program with mutation did not compile{COLOR_RESET}{SPACE}")
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
         # For the patched file generate NOFAIL / NOTINPRECISE annotations
@@ -59,30 +60,14 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             add_check_annotations(file_path, 'SUCCESS')
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
-    # Check how many and which files were not compiling
-    print_separator()
-    print("Check if the files compiled...", end='')
-    with open(meta_path, 'r') as file:
-        yaml_data = yaml.safe_load(file)
-    failed_count = 0
-    failed_compilation_keys = []
-    for key, value in yaml_data.items():
-        if isinstance(value, dict) and META_COMPILING in value and value[META_COMPILING] is False:
-            failed_count += 1
-            failed_compilation_keys.append(key)
-    if failed_count == 0:
-        print(f"\r{COLOR_GREEN}All files compiled successfully{COLOR_RESET}")
-    else:
-        print(f"\r{COLOR_YELLOW}There were {failed_count} files not compiling (stderr written to {temp_dir}/meta.yaml):{COLOR_RESET} {failed_compilation_keys}")
-
 
 def _remove_goblint_check_and_assertions(program_0_path):
     with open(program_0_path, 'r') as f:
         lines = f.readlines()
 
     # Replace the lines containing the keywords with an empty statement
-    keywords = ['assert(', '__goblint_check(', '__goblint_assert(']
-    replaced_lines = [f'; // [REMOVED_CHECK] Removed assertions and checks from input program at line {i+1}\n' if any(keyword in line for keyword in keywords) else line for i, line in enumerate(lines)]
+    keyword_list = ['assert(', '__goblint_check(', '__goblint_assert(']
+    replaced_lines = [f'; // [REMOVED_CHECK] Removed assertions and checks from input program at line {i+1}\n' if any(keyword in line for keyword in keyword_list) else line for i, line in enumerate(lines)]
 
     with open(program_0_path, 'w') as f:
         f.writelines(replaced_lines)
@@ -187,7 +172,7 @@ def main():
 
     # Check ml interesting string
     if args.ml_interesting != "[]" and validate_interesting_lines(args.ml_interesting, None) is None:
-        sys.exit(RETURN_ERROR)
+        parser.error('Interesting lines invalid')
 
     generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path,
                       mutations, args.enable_mutations, args.enable_ml, args.enable_precision, args.ml_count, args.ml_select,

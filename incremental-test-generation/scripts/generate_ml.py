@@ -6,9 +6,9 @@ from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Lock
 
 import openai
-import yaml
 
 from util import *
+from meta import *
 
 SEPARATOR_EXPLANATION_START = '<EXPLANATION>'
 SEPARATOR_EXPLANATION_END = '</EXPLANATION>'
@@ -20,15 +20,8 @@ error_counter = 0
 
 # generates mutated program by using chat-gpt
 def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lines, interesting_lines, ml_16k):
-    if meta_path is not None:
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-            index = yaml_data[META_N]
-        yaml_data[META_N] = index + ml_count
-        with open(meta_path, 'w') as file:
-            yaml.safe_dump(yaml_data, file)
-    else:
-        index = 0
+    index = meta_get_n(meta_path)
+    meta_set_n(meta_path, index + ml_count)
 
     # Read the api key and organisation
     with open(apikey_path, 'r') as file:
@@ -73,8 +66,8 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, m
     try:
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
-        (explanation, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index)
-        _write_meta_data(meta_path, selected_lines, explanation, index, lock)
+        (response, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index)
+        _write_meta_data(meta_path, selected_lines, remove_ansi_escape_sequences(response), index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
         _write_meta_data(meta_path, [], '', index, lock, exception=e)
@@ -132,31 +125,22 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     limited_explanation = "\n".join(explanation_lines[:4])
     print(f'{COLOR_GREEN}[{index}] Finished request:{COLOR_RESET} {limited_explanation}')
 
-    return explanation, selected_lines
+    return response, selected_lines
 
 
-def _write_meta_data(meta_path, selected_lines, explanation, index, lock, exception=None):
+def _write_meta_data(meta_path, selected_lines, response, index, lock, exception=None):
     if meta_path is None:
         return False
     lock.acquire()
-    global error_counter
+    global error_counter   
     try:
-        with open(meta_path, 'r') as file:
-            yaml_data = yaml.safe_load(file)
-        if exception is None:
-            yaml_data[f"p_{index}"] = {
-                META_TYPE: GenerateType.ML.value,
-                META_SUB_TYPE: explanation,
-                META_LINES: f'[{selected_lines.start}, {selected_lines.stop}]'
-            }
-        else:
+        lines = [selected_lines.start, selected_lines.stop]
+        if response is None:
+            response = ''
+        meta_create_index(meta_path, index, GenerateType.ML.value, response, lines)
+        if exception is not None:
             error_counter += 1
-            yaml_data[f"p_{index}"] = {
-                META_TYPE: GenerateType.ML.value,
-                META_EXCEPTION: str(exception)
-            }
-        with open(meta_path, 'w') as file:
-            yaml.safe_dump(yaml_data, file)
+            meta_exception(meta_path, index, META_EXCEPTION_CAUSE_ML, str(exception))
     finally:
         lock.release()
 

@@ -9,6 +9,7 @@ from generate_programs import generate_programs
 from generate_tests import generate_tests
 from run_tests import run_tests
 from util import *
+from meta import META_FILENAME
 
 
 logo = '''
@@ -43,6 +44,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, gobl
     generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, include_paths)
 
     # Run tests
+    meta_path = os.path.join(temp_path, META_FILENAME)
     ret = ret_precision = 0
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
@@ -53,14 +55,14 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, gobl
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                ret_precision = run_tests(path, goblint_path, cfg)
+                ret_precision = run_tests(path, goblint_path, meta_path, cfg)
         else:
             print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
             paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
-                ret = run_tests(path, goblint_path, cfg)            
+                ret = run_tests(path, goblint_path, meta_path, cfg)            
 
     # Write out custom test files
     if create_tests:

@@ -109,19 +109,6 @@ def print_separator():
 SPACE = ' ' * 20
 
 
-META_FILENAME = 'meta.yaml'
-META_N = 'n'
-META_COMPILING = 'compilation'
-META_EXCEPTION = 'exception'
-META_DIFF = 'diff'
-META_TYPE = 'type'
-META_SUB_TYPE = 'sub_type'
-META_LINES = 'lines'
-META_FAILURES = 'failures'
-META_FAILURES_STD_OUT = 'stdout'
-META_FAILURES_STD_ERR = 'stderr'
-
-
 CONFIG_FILENAME = 'config.yaml'
 CONFIG_GOBLINT = "goblint-path"
 CONFIG_LLVM = "llvm-path"
