@@ -62,7 +62,7 @@ def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tup
 
 
 def _print_collector_with_type(collector: list[tuple[str, int]], title: str):
-    print(title)
+    print(f'{title}:')
     sum = 0
     for (k,v) in collector:
         if v == 0: continue
