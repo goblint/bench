@@ -49,9 +49,7 @@ def meta_create_file(meta_path, source_path):
 
 def meta_get_n(meta_path) -> int:
     if meta_path == None: return 0
-    return stats_get_n(_get_yaml_data(meta_path))
-
-def stats_get_n(data):
+    data = _get_yaml_data(meta_path)
     return data[META_N]
 
 def meta_set_n(meta_path, n: int):
@@ -119,3 +117,24 @@ def meta_test_failed(meta_path, output):
     data[META_TEST_FAILED] = True
     data[META_TEST_OUTPUT] = output
     _write_yaml_data(meta_path, data)
+
+
+# Collection of stats
+def stats_get_mutation_by_type_subtype(data):
+    return _stats_get_by_type_subtype(data, (lambda index: 1))
+
+
+def stats_get_empty_diff_by_type_subtype(data):
+    return _stats_get_by_type_subtype(data, (lambda index: 1 if data.get(_meta_index(index), {}).get(META_EMPTY_DIFF, False) else 0))
+
+
+def _stats_get_by_type_subtype(data, lambda_function):
+    n = data[META_N]
+    mutation_types = []
+    for index in range(1, n + 1):
+        type = data.get(_meta_index(index), {}).get(META_TYPE, '')
+        sub_type = data.get(_meta_index(index), {}).get(META_SUB_TYPE, '')
+        if type == GenerateType.ML.value: # if type is ML set subtype to 'openai' as the subtype varies
+            sub_type = 'openai'
+        mutation_types.append((f'{type}-{sub_type}', lambda_function(index)))
+    return mutation_types

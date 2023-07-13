@@ -31,19 +31,44 @@ def stats_print(stats_path):
     with open(stats_path, 'r') as file:
         stats_data = yaml.safe_load(file)
 
-    # Init collectors
-    number_of_mutations = 0
-
-    for data in stats_data.values():
-        # Collect data for each run
-        number_of_mutations += stats_get_n(data)
-
     print_separator()
     print(f'{COLOR_BLUE}STATISTICS:{COLOR_RESET}')
     print(f'{COLOR_GREY}The collected meta data can be found at {stats_path}{COLOR_RESET}')
 
+    # Init collectors
+    mutations_by_type = []
+    empty_diff_by_type = []
+
+    for data in stats_data.values():
+        # Collect data for each run
+        mutations_by_type = _merge_collector_with_type(mutations_by_type, stats_get_mutation_by_type_subtype(data))
+        empty_diff_by_type = _merge_collector_with_type(empty_diff_by_type, stats_get_empty_diff_by_type_subtype(data))
+
     # Print results
-    print(f"Total number of mutations: {number_of_mutations}")   
+    _print_collector_with_type(mutations_by_type, 'Number of mutations by type')
+    _print_collector_with_type(empty_diff_by_type, 'Number of empty patch files by type')
+
+
+
+def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tuples: list[tuple[str, int]]) -> list[tuple[str, int]]:
+    current_dict = {k: v for k, v in current_collector}
+    for k, v in new_tuples:
+        if k in current_dict:
+            current_dict[k] += v
+        else:
+            current_dict[k] = v
+    unsorted_list = [(k, v) for k, v in current_dict.items()]
+    return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
+
+
+def _print_collector_with_type(collector: list[tuple[str, int]], title: str):
+    print(title)
+    sum = 0
+    for (k,v) in collector:
+        if v == 0: continue
+        print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
+        sum += v
+    print(f'\t{COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
 
 
 def main():
