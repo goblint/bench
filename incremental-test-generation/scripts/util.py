@@ -23,6 +23,10 @@ class Mutations:
         self.ris_s = "remove-if-statement"
 
 
+def get_default_mutations():
+    return Mutations(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
+
+
 def add_mutation_options(parser):
     parser.add_argument("-rfb", "--remove-function-body", action="store_true",
                         help="Option for \"remove function body\" mutation")

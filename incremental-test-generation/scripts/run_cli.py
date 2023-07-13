@@ -308,7 +308,7 @@ def main():
         mutations = get_mutations_from_args(args)
         non_str_attributes = [attr for attr in vars(mutations) if not attr.endswith('_s')]
         if all(getattr(mutations, attr) is False for attr in non_str_attributes):
-            mutations = Mutations(True, True, True, True, True, True)
+            mutations = get_default_mutations()
     else:
         args.enable_mutations = None
         args.enable_ml = None
