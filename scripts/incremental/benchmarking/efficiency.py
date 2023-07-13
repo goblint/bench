@@ -46,7 +46,7 @@ diff_exclude = project.diff_exclude
 
 # Project independent settings
 result_dir    = os.path.join(os.getcwd(), 'result_efficiency')
-maxCLOC       = 50 # can be deactivated with None
+maxCLOC       = None # was 50; can be deactivated with None
 analyzer_dir  = sys.argv[1]
 only_collect_results = False # can be turned on to collect results, if data collection was aborted before the creation of result tables
 ################################################################################
