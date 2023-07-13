@@ -68,7 +68,7 @@ done
 
 # Remove old statistics
 if [ "$statistics" = true ]; then
-    rm ./out/stats.yaml
+    rm ./out/stats.yaml 2>/dev/null
 fi
 
 # Normalize paths in ignore files
