@@ -129,7 +129,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             if result.returncode == 0:
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
-                meta_empty_diff(meta_path, current_program_id)
+                meta_empty_diff(meta_path, i)
         else:
             print(f"Creation of patch failed with return code: {result.returncode}")
             sys.exit(RETURN_ERROR)
