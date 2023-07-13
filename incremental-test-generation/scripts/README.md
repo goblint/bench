@@ -1,4 +1,3 @@
-# Scripts
 This directory contains all the files required to generate incremental tests from the provided input file. Each script is briefly described below.
 
 # run_cli.py
@@ -36,3 +35,9 @@ api-key: (Found at https://platform.openai.com/account/api-keys)
 You can specify `num_selected_lines` to tell the script how many consecutive lines should be sent together with the prompt. To many lines could lead to an error because of a too large request. To few lines may result in a bad mutation because of less context.
 <br><br>
 You can specify `interesting_lines` to guide the selection of the lines send with the request. The selection process works by selecting a random start line out of a set of lines. From the start line on the `num_selected_lines` are selected. When `interesting_lines` equals to `[]` all the lines (`[1, 2, 3, ..., MAX_LINE - NUM_SELECTED_LINES]`) are interesting lines. Alternatively you can pass specific lines (`[1, 42, 99]`). Note that when a line is larger then `(MAX_LINE - NUM_SELECTED_LINES)` it will be set to this value.
+
+# meta.py
+Script containing functions for the collection of meta data.
+
+# stats.py
+Script for collecting meta data and calculating statistics, which will be printed on the terminal.
