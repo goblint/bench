@@ -66,10 +66,9 @@ while [[ $1 == "--ignore" ]]; do
     shift 2
 done
 
-# Remove old statistics
-if [ "$statistics" = true ]; then
-    rm ./out/stats.yaml 2>/dev/null
-fi
+# Get statistics path
+timestamp=$(date "+%Y-%m-%d-%H-%M-%S")
+statistics_path=./out/stats-${timestamp}.yaml
 
 # Normalize paths in ignore files
 ignore_patterns=()
@@ -127,7 +126,7 @@ do
 
     # Append the meta file to the statistics
     if [ "$statistics" = true ]; then
-        python3 ./scripts/stats.py ./out/stats.yaml --append ./temp/meta.yaml
+        python3 ./scripts/stats.py $statistics_path --append ./temp/meta.yaml
     fi
 done
 
@@ -194,5 +193,5 @@ printf $color_reset
 
 # Print statistics
 if [ "$statistics" = true ]; then
-    python3 ./scripts/stats.py ./out/stats.yaml
+    python3 ./scripts/stats.py $statistics_path
 fi

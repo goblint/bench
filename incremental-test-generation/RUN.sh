@@ -9,7 +9,7 @@ if [ "$SCRIPT_DIR" != "$CURRENT_DIR" ]; then
 fi
 
 # Check for python imports
-modules=("argparse" "glob" "threading" "re" "json" "os" "subprocess" "sys" "yaml" "pydriller" "ast" "random" "time" "concurrent.futures" "multiprocessing" "openai" "questionary" "pathlib" "enum" "shutil")
+modules=("argparse" "datetime" "glob" "threading" "re" "json" "os" "subprocess" "sys" "yaml" "pydriller" "ast" "random" "time" "concurrent.futures" "multiprocessing" "openai" "questionary" "pathlib" "enum" "shutil")
 for module in "${modules[@]}"
 do
     python3 -c "import $module" &> /dev/null
