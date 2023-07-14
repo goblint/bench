@@ -28,25 +28,45 @@ def stats_append_meta(stats_path, path):
 
 def stats_print(stats_path):
     validate_path(stats_path)
+    print("\rLoading stats. Please wait...", end='')
     with open(stats_path, 'r') as file:
         stats_data = yaml.safe_load(file)
 
+    print('\r', end='')
     print_separator()
     print(f'{COLOR_BLUE}STATISTICS:{COLOR_RESET}')
     print(f'{COLOR_GREY}The collected meta data can be found at {stats_path}{COLOR_RESET}')
 
     # Init collectors
+    files_failed_tests = 0
+    files_crash = 0
+    crash_by_message = []
     mutations_by_type = []
     empty_diff_by_type = []
+    exception_by_type = []
+    exception_by_cause = []
 
     for data in stats_data.values():
         # Collect data for each run
+        files_failed_tests += stats_get_failed_tests(data)
+        files_crash += stats_get_crash(data)
+        crash_by_message = _merge_collector_with_type(crash_by_message, stats_get_crash_by_message(data))
         mutations_by_type = _merge_collector_with_type(mutations_by_type, stats_get_mutation_by_type_subtype(data))
         empty_diff_by_type = _merge_collector_with_type(empty_diff_by_type, stats_get_empty_diff_by_type_subtype(data))
+        exception_by_type = _merge_collector_with_type(exception_by_type, stats_get_exception_by_type_subtype(data))
+        exception_by_cause = _merge_collector_with_type(exception_by_cause, stats_get_exceptions_by_cause(data))
 
     # Print results
-    _print_collector_with_type(mutations_by_type, 'Number of mutations by type')
-    _print_collector_with_type(empty_diff_by_type, 'Number of empty patch files by type')
+    input_files = _print_value(len(stats_data.values()), 'Number of input files')
+    _print_value(files_failed_tests, 'Number of input files with failed test', tab=True)
+    _print_value(files_crash, 'Number of input files with crashes', tab=True)
+    if files_crash > 0:
+        _print_collector_with_type(crash_by_message, 'Number of crashes by message', input_files)
+    _print_collector_with_type(mutations_by_type, 'Number of mutations by type', input_files)
+    _print_collector_with_type(empty_diff_by_type, 'Number of empty patch files by type', input_files)
+    _print_collector_with_type(exception_by_type, 'Number of exceptions by type', input_files)
+    _print_collector_with_type(exception_by_cause, 'Number of exceptions by cause', input_files)
+    print_separator()
 
 
 
@@ -61,7 +81,7 @@ def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tup
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
-def _print_collector_with_type(collector: list[tuple[str, int]], title: str):
+def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int):
     print(f'{title}:')
     sum = 0
     for (k,v) in collector:
@@ -69,6 +89,16 @@ def _print_collector_with_type(collector: list[tuple[str, int]], title: str):
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
         sum += v
     print(f'\t{COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
+    if avg_sum is not None:
+        print(f'\t{COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
+    return sum
+
+
+def _print_value(value: int, title: str, tab=False):
+    if tab:
+        print('\t', end='')
+    print(f'{title}: {COLOR_YELLOW}{value}{COLOR_RESET}')
+    return value
 
 
 def main():

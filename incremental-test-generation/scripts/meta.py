@@ -128,6 +128,31 @@ def stats_get_empty_diff_by_type_subtype(data):
     return _stats_get_by_type_subtype(data, (lambda index: 1 if data.get(_meta_index(index), {}).get(META_EMPTY_DIFF, False) else 0))
 
 
+def stats_get_exception_by_type_subtype(data):
+    return _stats_get_by_type_subtype(data, (lambda index: 1 if data.get(_meta_index(index), {}).get(META_EXCEPTION, False) else 0))
+
+
+def stats_get_failed_tests(data):
+    return 1 if data.get(META_TEST_FAILED, False) else 0
+
+def stats_get_crash(data):
+    return 1 if data.get(META_CRASH, False) else 0
+
+def stats_get_exceptions_by_cause(data):
+    n = data[META_N]
+    mutation_types = []
+    for index in range(1, n + 1):
+        if not data.get(_meta_index(index), {}).get(META_EXCEPTION, False):
+            continue
+        cause = data.get(_meta_index(index), {}).get(META_EXCEPTION_CAUSE, '')
+        mutation_types.append((f'{cause}', 1))
+    return mutation_types
+
+def stats_get_crash_by_message(data):
+    if not data.get(META_CRASH, False):
+        return []
+    return [(data.get(META_CRASH_MESSAGE, ''), 1)]
+
 def _stats_get_by_type_subtype(data, lambda_function):
     n = data[META_N]
     mutation_types = []
