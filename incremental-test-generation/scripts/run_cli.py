@@ -1,5 +1,5 @@
 import argparse
-import datetime
+from datetime import datetime
 import sys
 from pathlib import Path
 import questionary
@@ -88,7 +88,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
 
     if statistics:
         timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        stats_path = os.path.join('out', f'stats{timestamp}.yaml')
+        stats_path = os.path.join('out', f'stats-{timestamp}.yaml')
         stats_append_meta(stats_path, meta_path)
         stats_print(stats_path)
 
