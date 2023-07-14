@@ -88,9 +88,9 @@ def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg
         if v == 0: continue
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
         sum += v
-    print(f'\t{COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
+    print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
     if avg_sum is not None:
-        print(f'\t{COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
+        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
     return sum
 
 
