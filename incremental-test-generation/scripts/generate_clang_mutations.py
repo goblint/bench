@@ -8,7 +8,7 @@ from meta import *
 
 
 # Generates mutations with clang-tidy
-def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
+def generate_clang_mutations(program_path, clang_tidy_path, meta_path, mutations):
     index = meta_get_n(meta_path)
 
     if mutations.rfb:
@@ -38,7 +38,7 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mut
     for lines in line_groups:
         index += 1
         new_path = make_program_copy(program_path, index)
-        if mutation_name == Mutations().rt_s:
+        if mutation_name == Operators().rt_s:
             # When Remove-Thread create wrapper for the thread function and then apply the mutations
             if len(lines) != 1:
                 # Needed to prevent conflicts on generating wrappers
@@ -126,7 +126,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, meta_path, i
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path_temp, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
-    command = f'{clang_tidy_path} -checks=-*,readability-{Mutations().rt_s} -line-filter="{line_filter_json}" {program_path_temp} --quiet-return -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-{Operators().rt_s} -line-filter="{line_filter_json}" {program_path_temp} --quiet-return -- -I{os.path.dirname(program_path)}'
     result = subprocess.run(command, text=True, shell=True, capture_output=True)
     print(f'[{index}][WRAP] Check function name for wrapping thread function', end='')
     if result.returncode != 0:
@@ -180,8 +180,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate all possible mutations of a program.")
     parser.add_argument("program", help="Path to the C program")
     parser.add_argument("clang_tidy", help="Path to the modified clang-tidy executable")
-    add_mutation_options(parser)
+    add_clang_options(parser)
 
     args = parser.parse_args()
-    mutations = get_mutations_from_args(args)
-    generate_mutations(args.program, args.clang_tidy, None, mutations)
+    mutations = get_operators_from_args(args)
+    generate_clang_mutations(args.program, args.clang_tidy, None, mutations)

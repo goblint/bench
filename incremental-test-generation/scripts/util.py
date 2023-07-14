@@ -7,7 +7,7 @@ import sys
 
 ######################################################################
 ##### Classes and Functions for generating new clang tidy checks #####
-class Mutations:
+class Operators:
     def __init__(self, rfb=False, uoi=False, ror=False, cr=False, rt=False, lcr=False, ris=False):
         self.rfb = rfb
         self.rfb_s = "remove-function-body"
@@ -25,42 +25,42 @@ class Mutations:
         self.ris_s = "remove-if-statement"
 
 
-def get_default_mutations():
-    return Mutations(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
+def get_default_operators():
+    return Operators(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
 
 
-def add_mutation_options(parser):
+def add_clang_options(parser):
     parser.add_argument("-rfb", "--remove-function-body", action="store_true",
-                        help="Option for \"remove function body\" mutation")
+                        help="Option for \"remove function body\" operator")
     parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true",
-                        help="Option for \"unary operator inversion\" mutation")
+                        help="Option for \"unary operator inversion\" operator")
     parser.add_argument("-ror", "--relational-operator-replacement", action="store_true",
-                        help="Option for \"relational operator replacement\" mutation")
+                        help="Option for \"relational operator replacement\" operator")
     parser.add_argument("-cr", "--constant-replacement", action="store_true",
-                        help="Option for \"constant replacement\" mutation")
-    parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" mutation")
+                        help="Option for \"constant replacement\" operator")
+    parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" operator")
     parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true",
-                        help="Option for \"logical connector replacement\" mutation")
+                        help="Option for \"logical connector replacement\" operator")
     parser.add_argument("-ris", "--remove-if-statement", action="store_true",
-                        help="Option for \"remove if statement\" mutation")
+                        help="Option for \"remove if statement\" operator")
 
 
-def get_mutations_from_args(args):
-    return Mutations(args.remove_function_body, args.unary_operator_inversion,
+def get_operators_from_args(args):
+    return Operators(args.remove_function_body, args.unary_operator_inversion,
                      args.relational_operator_replacement, args.constant_replacement,
                      args.remove_thread, args.logical_connector_replacement, args.remove_if_statement)
 
 
-def check_for_mutation_selection_without_enabling_mutation(parser, args):
+def check_for_operator_selection_without_enabling_clang(parser, args):
     if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
                 or args.constant_replacement or args.remove_thread or args.logical_connector_replacement or args.remove_if_statement) \
-                and not args.enable_mutations:
-            parser.error("Setting single mutations only takes affect when also the mutation was enabled by the command line (-m)!")
+                and not args.enable_clang:
+            parser.error("Setting single mutation operator only takes affect when also the clang mutation was enabled by the command line (-m)!")
 
 
-def interactivelyAskForMutations(questionary):
-    selected_mutations = questionary.checkbox(
-        'Select one or more mutation types:',
+def interactivelyAskForOperators(questionary):
+    selected_operators = questionary.checkbox(
+        'Select the mutation operators:',
         choices=[
             questionary.Choice('remove-function-body (RFB)', checked=True),
             questionary.Choice('unary-operator-inversion (UOI)', checked=True),
@@ -70,19 +70,19 @@ def interactivelyAskForMutations(questionary):
             questionary.Choice('logical-connector-replacement (LCR)', checked=True),
             questionary.Choice('remove-if-statement (RIS)', checked=True)
         ]).ask()
-    mutations = Mutations(
-        rfb='remove-function-body (RFB)' in selected_mutations,
-        uoi='unary-operator-inversion (UOI)' in selected_mutations,
-        ror='relational-operator-replacement (ROR)' in selected_mutations,
-        cr='constant-replacement (CR)' in selected_mutations,
-        rt='remove-thread (RT)' in selected_mutations,
-        lcr='logical-connector-replacement (LCR)' in selected_mutations,
-        ris='remove-if-statement (RIS)' in selected_mutations
+    operators = Operators(
+        rfb='remove-function-body (RFB)' in selected_operators,
+        uoi='unary-operator-inversion (UOI)' in selected_operators,
+        ror='relational-operator-replacement (ROR)' in selected_operators,
+        cr='constant-replacement (CR)' in selected_operators,
+        rt='remove-thread (RT)' in selected_operators,
+        lcr='logical-connector-replacement (LCR)' in selected_operators,
+        ris='remove-if-statement (RIS)' in selected_operators
     )
-    return mutations
+    return operators
 
 
-def getMutationDescriptionsForAI():
+def getOperatorDescriptionsForAI():
  return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
 
 

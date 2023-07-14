@@ -21,11 +21,11 @@ This [script](./generate_tests.py) generates the test files for each mutation. A
 # run_tests.py
 This [script](./run_tests.py) copies the test directory into the incremental tester directory and executes the `update_suite.rb` script.
 
-# generate_mutations.py
-This [script](./generate_mutations.py) uses the custom clang-tidy checks to generate mutations on a given program. More information about the mutations can be found in this file: [Mutations](../clang-mutations/MUTATIONS.md)
+# generate_clang_mutations.py
+This [script](./generate_clang_mutations.py) uses the custom clang-tidy checks to generate mutations on a given program. More information about the mutation operators can be found in [this file](../clang-mutations/MUTATIONS.md).
 
-# generate_ai.py
-This [script](./generate_ai.py) uses gpt-3.5-turbo with the api from openai. It generates mutations on a program by asking it how a previous version of the code could have looked like before some typical code changes were done by developers.
+# ggenerate_ai_mutations.py
+This [script](./generate_ai_mutations.py) uses gpt-3.5-turbo with the api from openai. It generates mutations on a program by asking it how a previous version of the code could have looked like before some typical code changes were done by developers.
 <br><br>
 You need to pass a `apikey.yaml` file with the following format:
 ```
