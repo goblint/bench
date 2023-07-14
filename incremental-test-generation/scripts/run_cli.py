@@ -4,8 +4,8 @@ import sys
 from pathlib import Path
 import questionary
 import yaml
-from generate_ai import validate_interesting_lines
-from generate_mutations import add_mutation_options
+from generate_ai_mutations import validate_interesting_lines
+from generate_clang_mutations import add_clang_options
 from generate_programs import generate_programs
 from generate_tests import generate_tests
 from run_tests import run_tests
@@ -33,7 +33,7 @@ logo = '''
         '''
 
 
-def run(goblint_path, llvm_path, input_path, is_mutation, is_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
+def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -43,7 +43,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ai, mutations, gobl
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
-    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
+    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
 
     # Run tests
     meta_path = os.path.join(temp_path, META_FILENAME)
@@ -98,7 +98,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ai, mutations, gobl
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_mutations, enable_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
+def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -122,7 +122,7 @@ def cli(enable_mutations, enable_ai, mutations, goblint_config, test_name, creat
     llvm_path = validate_path(llvm_path)
 
     # Handle Questions
-    if not (enable_mutations or enable_ai):
+    if not (enable_clang or enable_ai):
         generators = questionary.checkbox(
             'Select one or more generator types:',
             choices=[
@@ -130,11 +130,11 @@ def cli(enable_mutations, enable_ai, mutations, goblint_config, test_name, creat
                 'AI (OpenAI)',
             ]).ask()
 
-        enable_mutations = 'Clang Mutations' in generators
+        enable_clang = 'Clang Mutations' in generators
         enable_ai = 'AI (OpenAI)' in generators
 
-        if enable_mutations:
-            mutations = interactivelyAskForMutations(questionary)
+        if enable_clang:
+            operators = interactivelyAskForOperators(questionary)
 
     # Check for API Key
     if enable_ai:
@@ -255,7 +255,7 @@ def cli(enable_mutations, enable_ai, mutations, goblint_config, test_name, creat
     for path in include_paths:
         validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics)
+    run(goblint_path, llvm_path, input_file, enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics)
 
 
 def main():
@@ -265,7 +265,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
     parser.add_argument('-d', '--default', action='store_true', help='Skip the interactive command line interface with the default options (-m -dp -er -dt -ec -c {}). Just add the --input option')
     parser.add_argument('-i', '--input', help='Input File')
-    parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Clang Mutations. When no mutation is selected all are activated.')
+    parser.add_argument('-m', '--enable-clang', action='store_true', help='Enable Clang Mutations. When no mutation operator is selected all are activated.')
     parser.add_argument('-a', '--enable-ai', action='store_true', help='Enable AI (OpenAI)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
@@ -281,8 +281,8 @@ def main():
     parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
     parser.add_argument('-s', '--statistics', action='store_true', help='Print statistics about the run')
 
-    # Add mutation options
-    add_mutation_options(parser)
+    # Add clang options
+    add_clang_options(parser)
 
     # Add AI options
     parser.add_argument('-ac', '--ai-count', type=int, default=-1,  help='How many different programs should be generated with AI?')
@@ -295,7 +295,7 @@ def main():
 
     # Postprocess arguments
     if args.default:
-        args.enable_mutations = True
+        args.enable_clang = True
         args.disable_precision = True
         args.enable_running = True
         args.disable_create_tests = True
@@ -304,18 +304,18 @@ def main():
             parser.error('You can not use the --goblint-config option in combination with --default')
         args.goblint_config = "{}"
 
-    if args.enable_mutations or args.enable_ai:
-        # If all mutation options are false, set all to true
-        mutations = get_mutations_from_args(args)
-        non_str_attributes = [attr for attr in vars(mutations) if not attr.endswith('_s')]
-        if all(getattr(mutations, attr) is False for attr in non_str_attributes):
-            mutations = get_default_mutations()
+    if args.enable_clang or args.enable_ai:
+        # If all mutation operator options are false, set all to true
+        operators = get_operators_from_args(args)
+        non_str_attributes = [attr for attr in vars(operators) if not attr.endswith('_s')]
+        if all(getattr(operators, attr) is False for attr in non_str_attributes):
+            operators = get_default_operators()
     else:
-        args.enable_mutations = None
+        args.enable_clang = None
         args.enable_ai = None
-        mutations = None
+        operators = None
 
-    check_for_mutation_selection_without_enabling_mutation(parser, args)
+    check_for_operator_selection_without_enabling_clang(parser, args)
 
     if args.enable_precision or args.disable_precision:
         # Only one can be selected
@@ -378,7 +378,7 @@ def main():
     if precision_name is not None and not check_test_dir_name(precision_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_mutations, args.enable_ai, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics)
+    cli(args.enable_clang, args.enable_ai, operators, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics)
 
 
 if __name__ == "__main__":

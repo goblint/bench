@@ -33,7 +33,7 @@ if [ $# -lt 1 ]; then
     printf "[--no-print]: Do not print the mutation generator output\n"
     printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to Goblint to skip interactive cli.\n"
-    printf "    -> Recommended: --enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --Goblint-config {}\n"
+    printf "    -> Recommended: --enable-clang --disable-precision --enable-running --disable-create-tests --enable-cfg --Goblint-config {}\n"
     printf "       or in short: --default\n"
     exit 1
 fi

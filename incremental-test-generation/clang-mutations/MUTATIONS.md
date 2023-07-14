@@ -1,5 +1,5 @@
-# Mutations
-In this document is described what the different mutations do. In the [Readme](README.md) file it is described how to run the mutations.
+# Mutation Operators
+In this document is described what the different operators do. In the [Readme](README.md) file it is described how to run the mutation operators.
 
 ## Remove Function Body - RFB
 **readability-remove-function-body**<br>

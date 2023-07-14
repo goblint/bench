@@ -51,7 +51,7 @@ We will use the **>>check-name<<** again as defined in "Creating the checks".
 `test.c --` The filename.
 
 ## Mutations
-You find more details about the different Mutations in the [Mutations](MUTATIONS.md) file.
+You find more details about the different mutation operators in the [Mutations](MUTATIONS.md) file.
 
 ## Workflow
 First run the check without the fix flag, but with `--quiet-return` to see where mutations are possible without applying them. Remember the lines where you actually want to apply the mutation. Make a copy of the input file that you will mutate. Then run the check again with `--fix-warnings` and `-line filter=...` on the copied file to apply only specific mutations and not all at ones.
