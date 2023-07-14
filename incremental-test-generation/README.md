@@ -18,5 +18,8 @@ Default command for running on the regression tests:
 
 Run `./RUN_BATCH <directory> [additional arguments...]` for running all c files in the directory. The additional arguments are passed to goblint to skip the interactive cli (Recommended: `--enable-mutations --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}` or in short `--default`). When there are arguments defined in the file by the `PARAM` keyword they are recognized and passed to the incremental tester. When running on the regression test `28-race_reach` you should add this include `--include YOUR_PATH_TO_GOBLINT/analyzer/tests/regression/28-race_reach/racemacros.h`. You can also ignore files using a `.ignore` file with all the paths seperated by a new line. It is recommended to ignore the files `--ignore sample-files/ignore-files/regression-parsing-error.ignore` and `--ignore sample-files/ignore-files/regression-exceptions.ignore`. Use `--no-print` to print only the status updates on input level. Use `--statistics` to collect the meta data of each run and calculate the statistics. For detailed information about the arguments run `./RUN_BATCH` without any arguments.
 
+# Reprint the statistics
+Run `python3 scripts/stats.py out/stats.yaml` to reprint the statistics collected from the yaml file.
+
 # Implementation
 To find out more about the implementation check out the `./scripts` directory and its [readme](./scripts/README.md) file.
