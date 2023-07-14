@@ -178,7 +178,7 @@ fi
 
 # Print summary
 printf "\n[BATCH] Summary:\n"
-printf "Total number of executed files: $files_length\n"
+printf "Total number of input files: $files_length\n"
 
 if [ "$ignored_length" -eq 0 ]; then color=${color_grey}; else color=${color_yellow}; fi
 printf "${color}Number of ignored files: $ignored_length\n"
