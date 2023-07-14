@@ -125,9 +125,12 @@ do
     printf "${color_reset}\n"
 
     # Append the meta file to the statistics
+    printf "${color_grey}Update statistics...${color_reset}"
     if [ "$statistics" = true ]; then
         python3 ./scripts/stats.py $statistics_path --append ./temp/meta.yaml
     fi
+    printf "\r"
+    
 done
 
 ignored_length=${#ignored_files[@]}
