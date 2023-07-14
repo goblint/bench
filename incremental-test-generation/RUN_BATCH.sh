@@ -108,11 +108,6 @@ do
         ./RUN.sh -i "$file" "$@"
     fi
 
-    # Append the meta file to the statistics
-    if [ "$statistics" = true ]; then
-        python3 ./scripts/stats.py ./out/stats.yaml --append ./temp/meta.yaml
-    fi
-
     # Check for different return values
     case $? in
         0)
@@ -129,6 +124,11 @@ do
             ;;
     esac
     printf "${color_reset}\n"
+
+    # Append the meta file to the statistics
+    if [ "$statistics" = true ]; then
+        python3 ./scripts/stats.py ./out/stats.yaml --append ./temp/meta.yaml
+    fi
 done
 
 ignored_length=${#ignored_files[@]}
