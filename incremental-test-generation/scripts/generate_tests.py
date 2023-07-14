@@ -94,13 +94,13 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         print(f"\rGenerating test files [{i}/{n}]", end='')
 
         # Determine the name for the test
-        if generate_type == GenerateType.MUTATION.value:
+        if generate_type == GenerateType.CLANG.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_{generate_sub_type}_p_{_format_number(i)}'
         elif generate_type == GenerateType.ML.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
         # Select depending on generator the start and end file of at test
-        if generate_type == GenerateType.MUTATION.value or generate_type == GenerateType.ML.value:
+        if generate_type == GenerateType.CLANG.value or generate_type == GenerateType.ML.value:
             inital_program_id = 'p_0'
             current_program_id = f'p_{i}'
             start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')

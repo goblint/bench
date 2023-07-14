@@ -126,11 +126,11 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
         generators = questionary.checkbox(
             'Select one or more generator types:',
             choices=[
-                questionary.Choice('Mutations', checked=True),
+                questionary.Choice('Clang Mutations', checked=True),
                 'ML (OpenAI)',
             ]).ask()
 
-        enable_mutations = 'Mutations' in generators
+        enable_mutations = 'Clang Mutations' in generators
         enable_ml = 'ML (OpenAI)' in generators
 
         if enable_mutations:
@@ -265,7 +265,7 @@ def main():
     parser = argparse.ArgumentParser(description='Generates mutations for creating incremental tests')
     parser.add_argument('-d', '--default', action='store_true', help='Skip the interactive command line interface with the default options (-m -dp -er -dt -ec -c {}). Just add the --input option')
     parser.add_argument('-i', '--input', help='Input File')
-    parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
+    parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Clang Mutations. When no mutation is selected all are activated.')
     parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')

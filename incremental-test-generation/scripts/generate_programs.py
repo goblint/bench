@@ -74,33 +74,10 @@ def _remove_goblint_check_and_assertions(program_0_path):
 
 
 def _fix_params(params):
-    params_inital = params   
+    params_inital = params
 
-    # Do not use witness options as the witness information can not be used for the incremental analysis
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*witness\.yaml\.validate[\'"]* \S*', '', params)
-    params = re.sub(r'--set [\'"]*witness\.yaml\.unassume[\'"]* \S*', '', params)
-
-    # Do not use autotune as it might change analyses that must not be changes during incremental analysis
-    params = re.sub(r'--enable [\'"]*ana\.autotune\.enabled[\'"]*', '', params)
-
-    # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
-    params = re.sub(r'--disable [\'"]*warn\.assert[\'"]*', '', params)
-
-    # Do not use transformation assert as it interferes with the checks generated for the tester
-    params = re.sub(r'--set [\'"]*trans\.activated\[\+\][\'"]* [\'"]*assert[\'"]*', '', params)
-
-    # Remove apron and affeq as there is no marshalling for incremental analysis supported (https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*', '', params)
-
-    # Remove file analysis as these programs usally depend on external files which may not be accesible
-    params = re.sub(r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*', '', params)
-
-    # Optimisations activate the compiler flags which cause problems with the incremental analysis
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*', '', params)
-    params = re.sub(r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*', '', params)
+    for regex in REGEX_PARAMETER_REMOVAL:
+        params = re.sub(regex, '', params)
     
     if params_inital != params:
         print(f'{COLOR_YELLOW}[WARNING] Some parameters from the PARAM string in the input file (grey) were removed to avoid crashing the tester:{COLOR_RESET} {params} {COLOR_GREY}{params_inital}{COLOR_RESET}')

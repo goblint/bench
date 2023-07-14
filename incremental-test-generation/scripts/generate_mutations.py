@@ -31,7 +31,7 @@ def generate_mutations(program_path, clang_tidy_path, meta_path, mutations):
 
 def _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutation_name, index):
     print_separator()
-    print(f"[{GenerateType.MUTATION.value}] {mutation_name}")
+    print(f"[{GenerateType.CLANG.value}] {mutation_name}")
     # get line groups for knowing where the mutation could be applied
     line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path, meta_path)
     # apply only one mutation at a time
@@ -58,7 +58,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path, meta_path):
     shutil.copy(program_path, program_path_temp)
 
     # Execute all mutations to get the lines where the mutation is possible
-    print(f"[MUTATION][CHECK] Check mutation {mutation_name}", end='')
+    print(f"[CLANG][CHECK] Check mutation {mutation_name}", end='')
     command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} {program_path_temp} --quiet --quiet-return -- -I{os.path.dirname(program_path)}'
     result = subprocess.run(command, text=True, shell=True, capture_output=True)
     if result.returncode != 0:
@@ -98,7 +98,7 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path, meta_path):
 
     os.remove(program_path_temp)
 
-    print(f"\r[MUTATION][CHECK] Mutation {mutation_name} can be applied to lines {line_groups}")
+    print(f"\r[CLANG][CHECK] Mutation {mutation_name} can be applied to lines {line_groups}")
     return sorted(line_groups, key=lambda x: x[0])
 
 
@@ -173,7 +173,7 @@ def _wrap_thread_function(clang_tidy_path, program_path, meta_path, function_nam
 
 def _write_meta_data(meta_path, index, mutation_name, lines):
     meta_set_n(meta_path, index)
-    meta_create_index(meta_path, index, GenerateType.MUTATION.value, mutation_name, lines)
+    meta_create_index(meta_path, index, GenerateType.CLANG.value, mutation_name, lines)
 
 
 if __name__ == "__main__":
