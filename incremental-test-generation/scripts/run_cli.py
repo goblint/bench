@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 import questionary
 import yaml
-from generate_ml import validate_interesting_lines
+from generate_ai import validate_interesting_lines
 from generate_mutations import add_mutation_options
 from generate_programs import generate_programs
 from generate_tests import generate_tests
@@ -33,7 +33,7 @@ logo = '''
         '''
 
 
-def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics):
+def run(goblint_path, llvm_path, input_path, is_mutation, is_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -43,7 +43,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, gobl
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
-    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ml, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, include_paths)
+    generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, mutations, is_mutation, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
 
     # Run tests
     meta_path = os.path.join(temp_path, META_FILENAME)
@@ -98,7 +98,7 @@ def run(goblint_path, llvm_path, input_path, is_mutation, is_ml, mutations, gobl
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics):
+def cli(enable_mutations, enable_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -122,22 +122,22 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
     llvm_path = validate_path(llvm_path)
 
     # Handle Questions
-    if not (enable_mutations or enable_ml):
+    if not (enable_mutations or enable_ai):
         generators = questionary.checkbox(
             'Select one or more generator types:',
             choices=[
                 questionary.Choice('Clang Mutations', checked=True),
-                'ML (OpenAI)',
+                'AI (OpenAI)',
             ]).ask()
 
         enable_mutations = 'Clang Mutations' in generators
-        enable_ml = 'ML (OpenAI)' in generators
+        enable_ai = 'AI (OpenAI)' in generators
 
         if enable_mutations:
             mutations = interactivelyAskForMutations(questionary)
 
     # Check for API Key
-    if enable_ml:
+    if enable_ai:
         key_path = Path(APIKEY_FILENAME)
         key_data = {}
         if not key_path.is_file():
@@ -156,8 +156,8 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
                 key_data = yaml.safe_load(stream)
                 key = key_data[APIKEY_APIKEY]
                 org = key_data[APIKEY_ORGANISATION]
-                print(f'Using api-key for ML (change in ./{APIKEY_FILENAME}): ...{key[-4:]}')
-                print(f'Using organisation id for ML (change in ./{APIKEY_FILENAME}): ...{org[-4:]}')
+                print(f'Using api-key for AI (change in ./{APIKEY_FILENAME}): ...{key[-4:]}')
+                print(f'Using organisation id for AI (change in ./{APIKEY_FILENAME}): ...{org[-4:]}')
         key_path = os.path.abspath(key_path)
         key_path = validate_path(key_path)
     else:
@@ -171,38 +171,38 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
     if goblint_config == '{}' or goblint_config == '':
         goblint_config = None
 
-    # ML Options
-    if enable_ml and ml_count is None:
+    # AI Options
+    if enable_ai and ai_count is None:
         while True:
-            ml_count = questionary.text('How many different programs should be generated with ML?', default=str(DEFAULT_ML_COUNT)).ask()
-            if not ml_count.strip('\n').isdigit():
+            ai_count = questionary.text('How many different programs should be generated with AI?', default=str(DEFAULT_AI_COUNT)).ask()
+            if not ai_count.strip('\n').isdigit():
                 print(f"{COLOR_RED}Please enter a valid number.{COLOR_RESET}")
                 continue
-            ml_count = int(ml_count.strip('\n'))
-            if ml_count <= 0:
+            ai_count = int(ai_count.strip('\n'))
+            if ai_count <= 0:
                 print(f"{COLOR_RED}Please enter a number greater zero.{COLOR_RESET}")
                 continue
             break
 
-    if enable_ml and ml_select is None:
+    if enable_ai and ai_select is None:
         while True:
-            ml_select = questionary.text('How many lines should be selected for the snippet from the input file?', default=str(DEFAULT_ML_SELECT)).ask()
-            if not ml_select.strip('\n').isdigit():
+            ai_select = questionary.text('How many lines should be selected for the snippet from the input file?', default=str(DEFAULT_AI_SELECT)).ask()
+            if not ai_select.strip('\n').isdigit():
                 print(f"{COLOR_RED}Please enter a valid number.{COLOR_RESET}")
                 continue
-            ml_select = int(ml_select.strip('\n'))
-            if ml_select <= 0:
+            ai_select = int(ai_select.strip('\n'))
+            if ai_select <= 0:
                 print(f"{COLOR_RED}Please enter a number greater zero.{COLOR_RESET}")
                 continue
             break
 
-    if enable_ml and ml_16k is None:
-        ml_16k = questionary.confirm(f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model', default=False).ask()
+    if enable_ai and ai_16k is None:
+        ai_16k = questionary.confirm(f'Use the {AI_MODEL_16K} model instead of the {AI_MODEL} model', default=False).ask()
 
-    if enable_ml and ml_interesting is None:
+    if enable_ai and ai_interesting is None:
         while True:
-            ml_interesting = questionary.text('From which start lines should the snippet start be chosen randomly ([] stands for all)?', default='[]').ask()
-            if validate_interesting_lines(ml_interesting, None) is None:
+            ai_interesting = questionary.text('From which start lines should the snippet start be chosen randomly ([] stands for all)?', default='[]').ask()
+            if validate_interesting_lines(ai_interesting, None) is None:
                 print(f'{COLOR_RED}Please enter a valid string like [1, 42], [99], ...{COLOR_RESET}')
                 continue
             break
@@ -255,7 +255,7 @@ def cli(enable_mutations, enable_ml, mutations, goblint_config, test_name, creat
     for path in include_paths:
         validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ml, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ml_count, ml_select, ml_interesting, ml_16k, cfg, include_paths, statistics)
+    run(goblint_path, llvm_path, input_file, enable_mutations, enable_ai, mutations, goblint_config, test_name, create_tests, enable_precision, precision_name, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics)
 
 
 def main():
@@ -266,7 +266,7 @@ def main():
     parser.add_argument('-d', '--default', action='store_true', help='Skip the interactive command line interface with the default options (-m -dp -er -dt -ec -c {}). Just add the --input option')
     parser.add_argument('-i', '--input', help='Input File')
     parser.add_argument('-m', '--enable-mutations', action='store_true', help='Enable Clang Mutations. When no mutation is selected all are activated.')
-    parser.add_argument('-o', '--enable-ml', action='store_true', help='Enable ML (OpenAI)')
+    parser.add_argument('-a', '--enable-ai', action='store_true', help='Enable AI (OpenAI)')
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
@@ -284,12 +284,12 @@ def main():
     # Add mutation options
     add_mutation_options(parser)
 
-    # Add ML options
-    parser.add_argument('-mc', '--ml-count', type=int, default=-1,  help='How many different programs should be generated with ML?')
-    parser.add_argument('-ms', '--ml-select', type=int, default=-1,  help='How many lines should be selected for the ML snippet from the input file?')
-    parser.add_argument('-mi', '--ml-interesting', help='From which start lines should the ML snippet start be chosen randomly? Exp.: [] = From all lines, [1, 42], ...')
-    parser.add_argument('-m4', '--ml-4k', action='store_true', help=f'Use the {ML_MODEL} model instead of the {ML_MODEL_16K} model')
-    parser.add_argument('-m16', '--ml-16k', action='store_true', help=f'Use the {ML_MODEL_16K} model instead of the {ML_MODEL} model')
+    # Add AI options
+    parser.add_argument('-ac', '--ai-count', type=int, default=-1,  help='How many different programs should be generated with AI?')
+    parser.add_argument('-as', '--ai-select', type=int, default=-1,  help='How many lines should be selected for the AI snippet from the input file?')
+    parser.add_argument('-ai', '--ai-interesting', help='From which start lines should the AI snippet start be chosen randomly? Exp.: [] = From all lines, [1, 42], ...')
+    parser.add_argument('-a4', '--ai-4k', action='store_true', help=f'Use the {AI_MODEL} model instead of the {AI_MODEL_16K} model')
+    parser.add_argument('-a16', '--ai-16k', action='store_true', help=f'Use the {AI_MODEL_16K} model instead of the {AI_MODEL} model')
 
     args = parser.parse_args()
 
@@ -304,7 +304,7 @@ def main():
             parser.error('You can not use the --goblint-config option in combination with --default')
         args.goblint_config = "{}"
 
-    if args.enable_mutations or args.enable_ml:
+    if args.enable_mutations or args.enable_ai:
         # If all mutation options are false, set all to true
         mutations = get_mutations_from_args(args)
         non_str_attributes = [attr for attr in vars(mutations) if not attr.endswith('_s')]
@@ -312,7 +312,7 @@ def main():
             mutations = get_default_mutations()
     else:
         args.enable_mutations = None
-        args.enable_ml = None
+        args.enable_ai = None
         mutations = None
 
     check_for_mutation_selection_without_enabling_mutation(parser, args)
@@ -349,26 +349,26 @@ def main():
     else:
         cfg = None
 
-    if args.ml_count > 0:
-        ml_count = args.ml_count
+    if args.ai_count > 0:
+        ai_count = args.ai_count
     else:
-        ml_count = None
+        ai_count = None
 
-    if args.ml_select > 0:
-        ml_select = args.ml_select
+    if args.ai_select > 0:
+        ai_select = args.ai_select
     else:
-        ml_select = None
+        ai_select = None
 
-    if args.ml_interesting is not None and validate_interesting_lines(args.ml_interesting, None) is None:
+    if args.ai_interesting is not None and validate_interesting_lines(args.ai_interesting, None) is None:
         sys.exit(RETURN_ERROR)
 
-    if args.ml_4k or args.ml_16k:
+    if args.ai_4k or args.ai_16k:
         # Only one can be selected
-        if args.ml_4k and args.ml_16k:
-            parser.error('Only one ml model can be selected!')
-        ml_16k = args.ml_16k
+        if args.ai_4k and args.ai_16k:
+            parser.error('Only one AI model can be selected!')
+        ai_16k = args.ai_16k
     else:
-        ml_16k = None
+        ai_16k = None
 
     test_name = args.test_name
     if test_name is not None and not check_test_dir_name(test_name):
@@ -378,7 +378,7 @@ def main():
     if precision_name is not None and not check_test_dir_name(precision_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_mutations, args.enable_ml, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ml_count, ml_select, args.ml_interesting, ml_16k, cfg, args.include, args.statistics)
+    cli(args.enable_mutations, args.enable_ai, mutations, args.goblint_config, test_name, create_tests, precision, precision_name, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics)
 
 
 if __name__ == "__main__":

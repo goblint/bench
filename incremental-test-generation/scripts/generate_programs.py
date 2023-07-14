@@ -1,13 +1,13 @@
 from add_check import add_check
 from add_check_annotations import add_check_annotations
-from generate_ml import *
+from generate_ai import *
 from generate_mutations import *
 from meta import *
 
 
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, mutations, enable_mutations,
-                      enable_ml, enable_precision, ml_count, ml_select, ml_interesting, ml_16k, include_paths):
+                      enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths):
     # Clean working directory
     if os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
@@ -33,8 +33,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     if enable_mutations:
         index = generate_mutations(program_0_path, clang_tidy_path, meta_path, mutations)
 
-    if enable_ml:
-        index = generate_ml(program_0_path, apikey_path, meta_path, ml_count, ml_select, ml_interesting, ml_16k)
+    if enable_ai:
+        index = generate_ai(program_0_path, apikey_path, meta_path, ai_count, ai_select, ai_interesting, ai_16k)
 
     # Add checks with annotations
     print_separator()
@@ -121,12 +121,12 @@ def main():
     parser.add_argument('goblint_path', help='Path to the goblint executable')
     parser.add_argument('--apikey-path', help='Path to the API')
     parser.add_argument('--enable-mutations', action='store_true', help='Enable Mutations. When no mutation is selected all are activated.')
-    parser.add_argument('--enable-ml', action='store_true', help='Enable ML')
+    parser.add_argument('--enable-ai', action='store_true', help='Enable AI')
     parser.add_argument('--enable-precision', action='store_true', help='Enable generation for precision tests')
-    parser.add_argument('--ml-count', type=int, default=DEFAULT_ML_COUNT, help='Number of ML programs to generate')
-    parser.add_argument('--ml-select', type=int, default=DEFAULT_ML_SELECT, help='Number of selected lines for ML')
-    parser.add_argument('--ml-interesting', default="[]", help='Lines to randomly choose the start line for selection (Default are all lines)')
-    parser.add_argument('--ml-16k', action='store_true', help='Use the 16k mode for ml')
+    parser.add_argument('--ai-count', type=int, default=DEFAULT_AI_COUNT, help='Number of AI programs to generate')
+    parser.add_argument('--ai-select', type=int, default=DEFAULT_AI_SELECT, help='Number of selected lines for AI')
+    parser.add_argument('--ai-interesting', default="[]", help='Lines to randomly choose the start line for selection (Default are all lines)')
+    parser.add_argument('--ai-16k', action='store_true', help='Use the 16k context for AI')
 
     # Add mutation options
     add_mutation_options(parser)
@@ -134,8 +134,8 @@ def main():
     args = parser.parse_args()
 
     # At least one generator has to be enabled
-    if not args.enable_mutations and not args.enable_ml:
-        parser.error("At least one generator has to be enabled (--enable_mutations, --enable-ml)")
+    if not args.enable_mutations and not args.enable_ai:
+        parser.error("At least one generator has to be enabled (--enable_mutations, --enable-ai)")
 
     # If all mutation options are false, set all to true
     mutations = get_mutations_from_args(args)
@@ -144,16 +144,16 @@ def main():
         mutations = Mutations(True, True, True, True, True, True)
 
     # Check required parameters for optional features
-    if args.enable_ml and not args.apikey_path:
-        parser.error("--enable-ml requires --apikey-path")
+    if args.enable_ai and not args.apikey_path:
+        parser.error("--enable-ai requires --apikey-path")
 
-    # Check ml interesting string
-    if args.ml_interesting != "[]" and validate_interesting_lines(args.ml_interesting, None) is None:
+    # Check ai interesting string
+    if args.ai_interesting != "[]" and validate_interesting_lines(args.ai_interesting, None) is None:
         parser.error('Interesting lines invalid')
 
     generate_programs(args.source_path, args.temp_dir, args.clang_tidy_path, args.goblint_path, args.apikey_path,
-                      mutations, args.enable_mutations, args.enable_ml, args.enable_precision, args.ml_count, args.ml_select,
-                      args.ml_interesting, args.ml_16k, [])
+                      mutations, args.enable_mutations, args.enable_ai, args.enable_precision, args.ai_count, args.ai_select,
+                      args.ai_interesting, args.ai_16k, [])
 
 
 if __name__ == '__main__':

@@ -21,7 +21,7 @@ META_LINES = 'lines'
 
 META_EXCEPTION_CAUSE_CREATE_CHECK = 'create_check'
 META_EXCEPTION_CAUSE_ANNOTATE_CHECK = 'annotate_check'
-META_EXCEPTION_CAUSE_ML = 'ml_request'
+META_EXCEPTION_CAUSE_AI = 'ai_request'
 
 META_CRASH_MESSAGE_INITAL_NOT_COMPILE = 'inital_program_did_not_compile'
 META_CRASH_MESSAGE_CLANG_LINE_GROUPS = 'exception_in_clang_line_groups'
@@ -159,7 +159,7 @@ def _stats_get_by_type_subtype(data, lambda_function):
     for index in range(1, n + 1):
         type = data.get(_meta_index(index), {}).get(META_TYPE, '')
         sub_type = data.get(_meta_index(index), {}).get(META_SUB_TYPE, '')
-        if type == GenerateType.ML.value: # if type is ML set subtype to 'openai' as the subtype varies
+        if type == GenerateType.AI.value: # if type is AI set subtype to 'openai' as the subtype varies
             sub_type = 'openai'
         mutation_types.append((f'{type}-{sub_type}', lambda_function(index)))
     return mutation_types

@@ -82,7 +82,7 @@ def interactivelyAskForMutations(questionary):
     return mutations
 
 
-def getMutationDescriptionsForML():
+def getMutationDescriptionsForAI():
  return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
 
 
@@ -121,7 +121,7 @@ REGEX_PARAMETER_REMOVAL = [
 class GenerateType(Enum):
     INITAL = 'INITAL'
     CLANG = 'CLANG'
-    ML = 'ML'
+    AI = 'OPENAI'
 
 
 ##### Return Codesconstants #####
@@ -153,12 +153,12 @@ APIKEY_APIKEY = 'api-key'
 APIKEY_ORGANISATION = 'organisation'
 
 
-##### ML Constants #####
-ML_MODEL = "gpt-3.5-turbo"
-ML_MODEL_16K = "gpt-3.5-turbo-16k"
-DEFAULT_ML_COUNT = 5
-DEFAULT_ML_SELECT = 50
-ML_WORKERS = 5
+##### AI Constants #####
+AI_MODEL = "gpt-3.5-turbo"
+AI_MODEL_16K = "gpt-3.5-turbo-16k"
+DEFAULT_AI_COUNT = 5
+DEFAULT_AI_SELECT = 50
+AI_WORKERS = 5
 
 
 ##### Helper Functions #####

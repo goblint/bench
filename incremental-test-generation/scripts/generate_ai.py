@@ -19,9 +19,9 @@ error_counter = 0
 
 
 # generates mutated program by using chat-gpt
-def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lines, interesting_lines, ml_16k):
+def generate_ai(program_path, apikey_path, meta_path, ai_count, num_selected_lines, interesting_lines, ai_16k):
     index = meta_get_n(meta_path)
-    meta_set_n(meta_path, index + ml_count)
+    meta_set_n(meta_path, index + ai_count)
 
     # Read the api key and organisation
     with open(apikey_path, 'r') as file:
@@ -44,29 +44,29 @@ def generate_ml(program_path, apikey_path, meta_path, ml_count, num_selected_lin
     print_separator()
     interesting_lines_string = 'Start lines are randomly chosen from all lines.' if interesting_lines == [] else f' Start lines are randomly chosen from {interesting_lines}.'
     print(
-        f'[ML] Start making {ml_count} requests with ML. {ML_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
+        f'[AI] Start making {ai_count} requests with AI. {AI_WORKERS} are executed in parallel. {num_selected_lines} from {max_line} lines will be selected. {interesting_lines_string}')
 
     # Start executing multiple requests in parallel
     file_lock = Lock()
-    with ThreadPoolExecutor(max_workers=ML_WORKERS) as executor:
-        for i in range(ml_count):
-            executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ml_16k,
+    with ThreadPoolExecutor(max_workers=AI_WORKERS) as executor:
+        for i in range(ai_count):
+            executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ai_16k,
                             num_selected_lines, max_line, index + i + 1, file_lock)
 
     print_separator()
-    print('Check if all ML requests finished successfully...')
+    print('Check if all AI requests finished successfully...')
     print(f'{COLOR_GREEN}Finished all requests.{COLOR_RESET}' + (
         f'{COLOR_RED} {error_counter} failed with an exception.{COLOR_RESET}' if error_counter > 0 else ''))
 
-    return index + ml_count
+    return index + ai_count
 
 
-def _iterative_mutation_generation(program_path, meta_path, interesting_lines, ml_16k, num_selected_lines, max_line,
+def _iterative_mutation_generation(program_path, meta_path, interesting_lines, ai_16k, num_selected_lines, max_line,
                                    index, lock):
     try:
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
-        (response, selected_lines) = _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index)
+        (response, selected_lines) = _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index)
         _write_meta_data(meta_path, selected_lines, remove_ansi_escape_sequences(response), index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
@@ -75,7 +75,7 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, m
 
 
 # Makes a gpt request and places the result in the program
-def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max_line, index):
+def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index):
     # Get the inital lines
     with open(new_path, "r") as file:
         lines = file.readlines()
@@ -86,10 +86,10 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
     for i in selected_lines:
         snippet += lines[i]
 
-    print(f"[{index}][{GenerateType.ML.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
+    print(f"[{index}][{GenerateType.AI.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
 
     # Get response from gpt
-    response = _make_gpt_request(snippet, ml_16k)
+    response = _make_gpt_request(snippet, ai_16k)
 
     # Extract Explanation
     explanation_start = response.find(SEPARATOR_EXPLANATION_START) + len(SEPARATOR_EXPLANATION_START)
@@ -108,14 +108,14 @@ def _apply_mutation(new_path, interesting_lines, ml_16k, num_selected_lines, max
         lines[i] = '// ' + lines[i]
 
     # Add start marker
-    lines.insert(selected_lines[0], f'//[ML][START] {explanation.replace("/n", "")}\n')
+    lines.insert(selected_lines[0], f'//[AI][START] {explanation.replace("/n", "")}\n')
 
     # Insert new lines of code
     for i, new_line in enumerate(new_code_lines, start=selected_lines[0] + 1):
         lines.insert(i, new_line + '\n')
 
     # Add end marker
-    lines.insert(selected_lines[0] + len(new_code_lines) + 1, '//[ML][END]\n')
+    lines.insert(selected_lines[0] + len(new_code_lines) + 1, '//[AI][END]\n')
 
     # Write the updated lines back to the file
     with open(new_path, "w") as file:
@@ -137,19 +137,19 @@ def _write_meta_data(meta_path, selected_lines, response, index, lock, exception
         lines = [selected_lines.start, selected_lines.stop]
         if response is None:
             response = ''
-        meta_create_index(meta_path, index, GenerateType.ML.value, response, lines)
+        meta_create_index(meta_path, index, GenerateType.AI.value, response, lines)
         if exception is not None:
             error_counter += 1
-            meta_exception(meta_path, index, META_EXCEPTION_CAUSE_ML, str(exception))
+            meta_exception(meta_path, index, META_EXCEPTION_CAUSE_AI, str(exception))
     finally:
         lock.release()
 
 
-def _make_gpt_request(snippet, ml_16k):
+def _make_gpt_request(snippet, ai_16k):
     prompt = f'''
         You are a developer for C helping me with my following question. I want to understand the typical process of code evolution by looking at how developers make changes over time for testing an incremental analysis of the static c analyzer Goblint.
 
-        The following mutations are already generated by me. So please do not generate programs that can be generated by this mutations: {getMutationDescriptionsForML()}. Please do not consider these mutations as examples how your code changes should look like. Just try to prevent doing things that could be done with these mutations.
+        The following mutations are already generated by me. So please do not generate programs that can be generated by this mutations: {getMutationDescriptionsForAI()}. Please do not consider these mutations as examples how your code changes should look like. Just try to prevent doing things that could be done with these mutations.
 
         Below is an snippet from a C file which represents a part of the finished program. My question is how a previous version of this code could have looked like before some typical code changes done by developers. Can you generate me such a previous version?
 
@@ -162,10 +162,10 @@ def _make_gpt_request(snippet, ml_16k):
         ```
         '''
 
-    if ml_16k:
-        model = ML_MODEL_16K
+    if ai_16k:
+        model = AI_MODEL_16K
     else:
-        model = ML_MODEL
+        model = AI_MODEL
 
     response = openai.ChatCompletion.create(
         model=model,
@@ -229,13 +229,13 @@ def validate_interesting_lines(interesting_lines_string: str, program_path):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate mutations with ML.")
+    parser = argparse.ArgumentParser(description="Generate mutations with AI.")
     parser.add_argument("program", help="Path to the C program")
     parser.add_argument("apikey", help="Path to the api key")
-    parser.add_argument("ml_count", help="How many different programs should be generated with ML")
+    parser.add_argument("ai_count", help="How many different programs should be generated with AI")
     parser.add_argument("num_selected_lines", help="How many lines to consider")
     parser.add_argument('-m16', '--model-16k', action='store_true', help='Run with the 16k model instead of the 4k')
 
     args = parser.parse_args()
 
-    generate_ml(args.program, args.apikey, None, int(args.ml_count), int(args.num_selected_lines), '[]', args.model_16k)
+    generate_ai(args.program, args.apikey, None, int(args.ai_count), int(args.num_selected_lines), '[]', args.model_16k)
