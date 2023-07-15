@@ -60,6 +60,7 @@ def stats_print(stats_path):
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
     performance_max = _max_collector_with_type(performance_by_measurement)
+    performance_min = _min_collector_with_type(performance_by_measurement)
 
     # Print results
     input_files = _print_value(len(stats_data.values()), 'Number of input files')
@@ -73,6 +74,7 @@ def stats_print(stats_path):
     _print_collector_with_type(exception_by_cause, 'Number of exceptions by cause', input_files)
     _print_collector_with_type(performance_avg, 'Average performance in ms', None)
     _print_collector_with_type(performance_max, 'Lowest performance in ms', None)
+    _print_collector_with_type(performance_min, 'Highest performance in ms', None)
     print_separator()
 
 
@@ -113,6 +115,16 @@ def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str
     unsorted_list = [(k, v) for k, v in max_dict.items()]
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
+
+def _min_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str, int]]:
+    max_dict = {}
+    for k, v in collector:
+        if k in max_dict:
+            max_dict[k] = min(max_dict[k], v)
+        else:
+            max_dict[k] = v
+    unsorted_list = [(k, v) for k, v in max_dict.items()]
+    return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
 def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int):
