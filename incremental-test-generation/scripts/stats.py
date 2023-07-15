@@ -45,6 +45,7 @@ def stats_print(stats_path):
     empty_diff_by_type = []
     exception_by_type = []
     exception_by_cause = []
+    performance_by_measurement = []
 
     for data in stats_data.values():
         # Collect data for each run
@@ -55,6 +56,10 @@ def stats_print(stats_path):
         empty_diff_by_type = _merge_collector_with_type(empty_diff_by_type, stats_get_empty_diff_by_type_subtype(data))
         exception_by_type = _merge_collector_with_type(exception_by_type, stats_get_exception_by_type_subtype(data))
         exception_by_cause = _merge_collector_with_type(exception_by_cause, stats_get_exceptions_by_cause(data))
+        performance_by_measurement.extend(stats_get_performance(data))
+
+    performance_avg = _average_collector_with_type(performance_by_measurement)
+    performance_max = _max_collector_with_type(performance_by_measurement)
 
     # Print results
     input_files = _print_value(len(stats_data.values()), 'Number of input files')
@@ -66,6 +71,8 @@ def stats_print(stats_path):
     _print_collector_with_type(empty_diff_by_type, 'Number of empty patch files by type', input_files)
     _print_collector_with_type(exception_by_type, 'Number of exceptions by type', input_files)
     _print_collector_with_type(exception_by_cause, 'Number of exceptions by cause', input_files)
+    _print_collector_with_type(performance_avg, 'Average performance in ms', None)
+    _print_collector_with_type(performance_max, 'Lowest performance in ms', None)
     print_separator()
 
 
@@ -81,6 +88,33 @@ def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tup
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
+def _average_collector_with_type(collector: list[tuple[str, float]]) -> list[tuple[str, float]]:
+    sum_dict = {}
+    count_dict = {}
+    for k, v in collector:
+        if k in sum_dict:
+            sum_dict[k] += v
+            count_dict[k] += 1
+        else:
+            sum_dict[k] = v
+            count_dict[k] = 1
+    average_dict = {k: sum_dict[k] // count_dict[k] for k in sum_dict}
+    unsorted_list = [(k, v) for k, v in average_dict.items()]
+    return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
+
+
+def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str, int]]:
+    max_dict = {}
+    for k, v in collector:
+        if k in max_dict:
+            max_dict[k] = max(max_dict[k], v)
+        else:
+            max_dict[k] = v
+    unsorted_list = [(k, v) for k, v in max_dict.items()]
+    return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
+
+
+
 def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int):
     print(f'{title}:')
     sum = 0
@@ -88,8 +122,8 @@ def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg
         if v == 0: continue
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
         sum += v
-    print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
     if avg_sum is not None:
+        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
         print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
     return sum
 

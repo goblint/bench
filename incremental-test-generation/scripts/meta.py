@@ -1,3 +1,4 @@
+import time
 import yaml
 
 from util import GenerateType
@@ -28,6 +29,14 @@ META_CRASH_MESSAGE_CLANG_LINE_GROUPS = 'exception_in_clang_line_groups'
 META_CRASH_MESSAGE_CLANG_APPLY = 'exception_in_clang_apply'
 META_CRASH_MESSAGE_CLANG_FUNCTION_NAME = 'exception_in_clang_function_name'
 META_CRASH_MESSAGE_CLANG_WRAP = 'exception_in_clang_wrap'
+
+META_PERF_OVERALL = "perf_overall_ns"
+META_PERF_CLANG = "perf_clang_ns"
+META_PERF_AI = "perf_ai_ns"
+META_PERF_CHECKS_GENERATE = "perf_checks_generate_ns"
+META_PERF_CHECKS_ANNOTATE = "perf_checks_annotate_ns"
+META_PERF_GENERATE_TESTS = "perf_write_tests_ns"
+META_PERF_RUN_TESTS = "perf_run_tests_ns"
 
 def _meta_index(index):
     return f'p_{index}'
@@ -118,8 +127,31 @@ def meta_test_failed(meta_path, output):
     data[META_TEST_OUTPUT] = output
     _write_yaml_data(meta_path, data)
 
+def meta_start_performance(title: str) -> tuple[str, int, float]:
+    current_ns = time.perf_counter_ns()
+    return (title, current_ns)
+
+def meta_stop_performance(start_performance, meta_path):
+    current_ns = time.perf_counter_ns()
+    (title, start_ns) = start_performance
+    duration_ns = current_ns - start_ns
+    data = _get_yaml_data(meta_path)
+    data[title] = duration_ns + data.get(title, 0)
+    _write_yaml_data(meta_path, data)
+
 
 # Collection of stats
+def stats_get_performance(data):
+    return [
+        ('Overall', data.get(META_PERF_OVERALL, 0) // 1000000),
+        ('Clang', data.get(META_PERF_CLANG, 0) // 1000000),
+        ('AI', data.get(META_PERF_AI, 0) // 1000000),
+        ('Generate Checks', data.get(META_PERF_CHECKS_GENERATE, 0) // 1000000),
+        ('Annotate Checks', data.get(META_PERF_CHECKS_ANNOTATE, 0) // 1000000),
+        ('Generate Tests', data.get(META_PERF_GENERATE_TESTS, 0) // 1000000),
+        ('Run Tests', data.get(META_PERF_RUN_TESTS, 0) // 1000000)
+    ]
+
 def stats_get_mutation_by_type_subtype(data):
     return _stats_get_by_type_subtype(data, (lambda index: 1))
 

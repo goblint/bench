@@ -31,10 +31,14 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
 
     index = 0
     if enable_clang:
+        perf_clang = meta_start_performance(META_PERF_CLANG)
         index = generate_clang_mutations(program_0_path, clang_tidy_path, meta_path, operators)
+        meta_stop_performance(perf_clang, meta_path)
 
     if enable_ai:
+        perf_ai = meta_start_performance(META_PERF_AI)
         index = generate_ai_mutations(program_0_path, apikey_path, meta_path, ai_count, ai_select, ai_interesting, ai_16k)
+        meta_stop_performance(perf_ai, meta_path)
 
     # Add checks with annotations
     print_separator()
@@ -44,20 +48,25 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
         sys.stdout.flush()
         file_path = os.path.join(temp_dir, f"p_{i}.c")
+        perf_generate_check = meta_start_performance(META_PERF_CHECKS_GENERATE)
         compiling = add_check(file_path, goblint_path, meta_path, params, i)
+        meta_stop_performance(perf_generate_check, meta_path)
         if not compiling:
             print(f"\r{COLOR_YELLOW}[{i}/{index}] Program with mutation did not compile{COLOR_RESET}{SPACE}")
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
         # For the patched file generate NOFAIL / NOTINPRECISE annotations
+        perf_annoate_check = meta_start_performance(META_PERF_CHECKS_ANNOTATE)
         if i == 0:
             if enable_precision:
                 add_check_annotations(file_path, 'NOTINPRECISE')
             else:
                 add_check_annotations(file_path, 'NOFAIL')
+            
         # For the inital file generate SUCCESS annotations
         if i != 0:
             add_check_annotations(file_path, 'SUCCESS')
+        meta_stop_performance(perf_annoate_check, meta_path)
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
 
 
