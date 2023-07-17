@@ -25,6 +25,8 @@ def generate_clang_mutations(program_path, clang_tidy_path, meta_path, mutations
     if mutations.ris:
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.ris_s, index)
 
+    meta_set_n(meta_path, index)
+
     return index
 
 
@@ -171,7 +173,6 @@ def _wrap_thread_function(clang_tidy_path, program_path, meta_path, function_nam
 
 
 def _write_meta_data(meta_path, index, mutation_name, lines):
-    meta_set_n(meta_path, index)
     meta_create_index(meta_path, index, GenerateType.CLANG.value, mutation_name, lines)
 
 
