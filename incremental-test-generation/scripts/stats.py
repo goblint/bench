@@ -73,8 +73,8 @@ def stats_print(stats_path):
     _print_collector_with_type(exception_by_type, 'Number of exceptions by type', input_files)
     _print_collector_with_type(exception_by_cause, 'Number of exceptions by cause', input_files)
     _print_collector_with_type(performance_avg, 'Average performance in ms', None)
-    _print_collector_with_type(performance_max, 'Lowest performance in ms', None)
-    _print_collector_with_type(performance_min, 'Highest performance in ms', None)
+    _print_collector_with_type(performance_max, 'Worst performance in ms', None)
+    _print_collector_with_type(performance_min, 'Best performance in ms', None)
     print_separator()
 
 
