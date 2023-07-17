@@ -93,7 +93,7 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, index):
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
             meta_crash(meta_path, META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
             sys.exit(RETURN_ERROR)
-        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_ANNOTATE_CHECK, result)
+        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_VERIFY_CHECK, result)
         return False
 
     # get the json data

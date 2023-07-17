@@ -64,7 +64,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
         # For the patched file generate NOFAIL / NOTINPRECISE annotations
-        perf_annoate_check = meta_start_performance(META_PERF_CHECKS_ANNOTATE)
+        perf_annoate_check = meta_start_performance(META_PERF_CHECKS_VERIFY)
         if i == 0:
             if enable_precision:
                 add_check_annotations(file_path, 'NOTINPRECISE')

@@ -21,7 +21,7 @@ META_SUB_TYPE = 'subtype'
 META_LINES = 'lines'
 
 META_EXCEPTION_CAUSE_CREATE_CHECK = 'create_check'
-META_EXCEPTION_CAUSE_ANNOTATE_CHECK = 'annotate_check'
+META_EXCEPTION_CAUSE_VERIFY_CHECK = 'verify_check'
 META_EXCEPTION_CAUSE_AI = 'ai_request'
 
 META_CRASH_MESSAGE_INITAL_NOT_COMPILE = 'inital_program_did_not_compile'
@@ -34,7 +34,7 @@ META_PERF_OVERALL = "perf_overall_ns"
 META_PERF_CLANG = "perf_clang_ns"
 META_PERF_AI = "perf_ai_ns"
 META_PERF_CHECKS_GENERATE = "perf_checks_generate_ns"
-META_PERF_CHECKS_ANNOTATE = "perf_checks_annotate_ns"
+META_PERF_CHECKS_VERIFY = "perf_checks_verify_ns"
 META_PERF_GENERATE_TESTS = "perf_write_tests_ns"
 META_PERF_RUN_TESTS = "perf_run_tests_ns"
 
@@ -147,7 +147,7 @@ def stats_get_performance(data):
         ('Clang', data.get(META_PERF_CLANG, 0) // 1000000),
         ('AI', data.get(META_PERF_AI, 0) // 1000000),
         ('Generate Checks', data.get(META_PERF_CHECKS_GENERATE, 0) // 1000000),
-        ('Annotate Checks', data.get(META_PERF_CHECKS_ANNOTATE, 0) // 1000000),
+        ('Verify Checks', data.get(META_PERF_CHECKS_VERIFY, 0) // 1000000),
         ('Generate Tests', data.get(META_PERF_GENERATE_TESTS, 0) // 1000000),
         ('Run Tests', data.get(META_PERF_RUN_TESTS, 0) // 1000000)
     ]
