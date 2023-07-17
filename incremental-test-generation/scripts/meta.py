@@ -1,3 +1,4 @@
+import sys
 import time
 import yaml
 
@@ -7,6 +8,7 @@ from util import GenerateType
 META_FILENAME = 'meta.yaml'
 META_INPUT = 'input'
 META_N = 'n'
+META_COMMAND = 'command'
 META_TEST_FAILED = 'test_failed'
 META_TEST_OUTPUT = 'test_output'
 META_CRASH = 'crash'
@@ -55,7 +57,7 @@ def _write_yaml_data(meta_path, data):
 
 def meta_create_file(meta_path, source_path):
     if meta_path == None: return
-    data = {META_N: 0, META_INPUT: source_path, _meta_index(0): {META_TYPE: GenerateType.INITAL.value}}
+    data = {META_N: 0, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}', _meta_index(0): {META_TYPE: GenerateType.INITAL.value}}
     _write_yaml_data(meta_path, data)
 
 def meta_get_n(meta_path) -> int:
