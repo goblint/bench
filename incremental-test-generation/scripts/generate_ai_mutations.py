@@ -65,11 +65,11 @@ def _iterative_mutation_generation(program_path, meta_path, interesting_lines, a
     try:
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
-        (response, selected_lines) = _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index)
-        _write_meta_data(meta_path, selected_lines, remove_ansi_escape_sequences(response), index, lock)
+        (response, selected_lines, prompt_tokens, completion_tokens) = _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index)
+        _write_meta_data(meta_path, selected_lines, remove_ansi_escape_sequences(response),prompt_tokens, completion_tokens, index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
-        _write_meta_data(meta_path, [], '', index, lock, exception=e)
+        _write_meta_data(meta_path, None, '', 0, 0, index, lock, exception=e)
     return index
 
 
@@ -88,7 +88,7 @@ def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max
     print(f"[{index}][{GenerateType.AI.value}][REQUEST] Make request for lines [{selected_lines.start}, {selected_lines.stop}]. This may take a few seconds...")
 
     # Get response from gpt
-    response = _make_gpt_request(snippet, ai_16k)
+    (response, prompt_tokens, completion_tokens) = _make_gpt_request(snippet, ai_16k)
 
     # Extract Explanation
     explanation_start = response.find(SEPARATOR_EXPLANATION_START) + len(SEPARATOR_EXPLANATION_START)
@@ -122,24 +122,32 @@ def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max
 
     explanation_lines = explanation.splitlines()
     limited_explanation = "\n".join(explanation_lines[:4])
-    print(f'{COLOR_GREEN}[{index}] Finished request:{COLOR_RESET} {limited_explanation}')
+    print(f'{COLOR_GREEN}[{index}] Finished request with {prompt_tokens} promt tokens and {completion_tokens} completion tokens ({prompt_tokens + completion_tokens} total):{COLOR_RESET} {limited_explanation}')
 
-    return response, selected_lines
+    return response, selected_lines, prompt_tokens, completion_tokens
 
 
-def _write_meta_data(meta_path, selected_lines, response, index, lock, exception=None):
+def _write_meta_data(meta_path, selected_lines, response, prompt_tokens, completion_tokens, index, lock, exception=None):
     if meta_path is None:
         return False
     lock.acquire()
     global error_counter   
     try:
-        lines = [selected_lines.start, selected_lines.stop]
+        if selected_lines is not None:
+            lines = [selected_lines.start, selected_lines.stop]
+        else:
+            lines = []
         if response is None:
             response = ''
         meta_create_index(meta_path, index, GenerateType.AI.value, response, lines)
+        if prompt_tokens != 0 or completion_tokens != 0:
+            meta_add_ai_tokens(meta_path, prompt_tokens, completion_tokens, index)
         if exception is not None:
             error_counter += 1
             meta_exception(meta_path, index, META_EXCEPTION_CAUSE_AI, str(exception))
+    except Exception as e:
+        print(e)
+        exit(RETURN_ERROR)
     finally:
         lock.release()
 
@@ -172,9 +180,13 @@ def _make_gpt_request(snippet, ai_16k):
         messages=[
             {"role": "user", "content": prompt},
         ]
-    ).choices[0].message['content']
+    )
 
-    return response
+    response_message = response.choices[0].message['content']
+    prompt_tokens = response.usage.prompt_tokens
+    completion_tokens = response.usage.completion_tokens
+
+    return response_message, prompt_tokens, completion_tokens
 
 
 def _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line):

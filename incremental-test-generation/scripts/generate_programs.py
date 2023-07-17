@@ -55,6 +55,9 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     for i in range(index + 1):
         print(f"\r[{i}/{index}] Generating goblint checks...", end='')
         sys.stdout.flush()
+        if meta_exception_exists(meta_path, i):
+            print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
+            continue
         file_path = os.path.join(temp_dir, f"p_{i}.c")
         perf_generate_check = meta_start_performance(META_PERF_CHECKS_GENERATE)
         compiling = add_check(file_path, goblint_path, meta_path, params, i)

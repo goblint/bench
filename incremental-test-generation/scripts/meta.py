@@ -19,6 +19,8 @@ META_EMPTY_DIFF = 'empty_diff'
 META_TYPE = 'type'
 META_SUB_TYPE = 'subtype'
 META_LINES = 'lines'
+META_PROMPT_TOKENS = 'tokens_promt'
+META_COMPLETION_TOKENS = 'tokens_completion'
 
 META_EXCEPTION_CAUSE_CREATE_CHECK = 'create_check'
 META_EXCEPTION_CAUSE_VERIFY_CHECK = 'verify_check'
@@ -96,7 +98,7 @@ def meta_exception(meta_path, index, cause, cmd_result_or_string):
     _write_yaml_data(meta_path, data)
 
 def meta_exception_exists(meta_path, index) -> bool:
-    if meta_path == None: return
+    if meta_path == None: return False
     data = _get_yaml_data(meta_path)
     return data.get(_meta_index(index), {}).get(META_EXCEPTION, False)
 
@@ -137,6 +139,13 @@ def meta_stop_performance(start_performance, meta_path):
     duration_ns = current_ns - start_ns
     data = _get_yaml_data(meta_path)
     data[title] = duration_ns + data.get(title, 0)
+    _write_yaml_data(meta_path, data)
+
+
+def meta_add_ai_tokens(meta_path, prompt_tokens, completion_tokens, index):
+    data = _get_yaml_data(meta_path)
+    data[_meta_index(index)][META_PROMPT_TOKENS] = prompt_tokens
+    data[_meta_index(index)][META_COMPLETION_TOKENS] = completion_tokens
     _write_yaml_data(meta_path, data)
 
 
@@ -195,3 +204,15 @@ def _stats_get_by_type_subtype(data, lambda_function):
             sub_type = 'openai'
         mutation_types.append((f'{type}-{sub_type}', lambda_function(index)))
     return mutation_types
+
+def stats_get_tokens(data):
+    n = data[META_N]
+    token_list = []
+    for index in range(1, n + 1):
+        tokens_promt = data.get(_meta_index(index), {}).get(META_PROMPT_TOKENS, -1)
+        tokens_completion = data.get(_meta_index(index), {}).get(META_COMPLETION_TOKENS, -1)
+        if tokens_promt > 0 or tokens_completion > 0:
+            token_list.append(('Promt Tokens', tokens_promt))
+            token_list.append(('Completion Tokens', tokens_completion))
+            token_list.append(('Total Tokens', tokens_promt + tokens_completion))
+    return token_list

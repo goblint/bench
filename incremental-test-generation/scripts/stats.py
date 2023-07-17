@@ -46,6 +46,7 @@ def stats_print(stats_path):
     exception_by_type = []
     exception_by_cause = []
     performance_by_measurement = []
+    tokens = []
 
     for data in stats_data.values():
         # Collect data for each run
@@ -57,10 +58,14 @@ def stats_print(stats_path):
         exception_by_type = _merge_collector_with_type(exception_by_type, stats_get_exception_by_type_subtype(data))
         exception_by_cause = _merge_collector_with_type(exception_by_cause, stats_get_exceptions_by_cause(data))
         performance_by_measurement.extend(stats_get_performance(data))
+        tokens.extend(stats_get_tokens(data))
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
     performance_max = _max_collector_with_type(performance_by_measurement)
     performance_min = _min_collector_with_type(performance_by_measurement)
+    token_avg = _average_collector_with_type(tokens)
+    token_max = _max_collector_with_type(tokens)
+    token_min = _min_collector_with_type(tokens)
 
     # Print results
     input_files = _print_value(len(stats_data.values()), 'Number of input files')
@@ -75,6 +80,10 @@ def stats_print(stats_path):
     _print_collector_with_type(performance_avg, 'Average performance in ms', None)
     _print_collector_with_type(performance_max, 'Worst performance in ms', None)
     _print_collector_with_type(performance_min, 'Best performance in ms', None)
+    if tokens:
+        _print_collector_with_type(token_avg, 'Average tokens', None)
+        _print_collector_with_type(token_max, 'Maximum tokens', None)
+        _print_collector_with_type(token_min, 'Minimum tokens', None)
     print_separator()
 
 
