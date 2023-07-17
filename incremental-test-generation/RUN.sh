@@ -19,5 +19,17 @@ do
     fi
 done
 
+ruby -h &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "ruby is not installed."
+  exit 1
+fi
+
+curl --help &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "curl is not installed."
+  exit 1
+fi
+
 # Run cli
 python3 ./scripts/run_cli.py "$@"
