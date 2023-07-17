@@ -19,8 +19,7 @@ error_counter = 0
 
 
 # generates mutated program by using chat-gpt
-def generate_ai_mutations(program_path, apikey_path, meta_path, ai_count, num_selected_lines, interesting_lines, ai_16k):
-    index = meta_get_n(meta_path)
+def generate_ai_mutations(program_path, apikey_path, meta_path, ai_count, num_selected_lines, interesting_lines, ai_16k, index):
     meta_set_n(meta_path, index + ai_count)
 
     # Read the api key and organisation
@@ -238,4 +237,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    generate_ai_mutations(args.program, args.apikey, None, int(args.ai_count), int(args.num_selected_lines), '[]', args.model_16k)
+    generate_ai_mutations(args.program, args.apikey, None, int(args.ai_count), int(args.num_selected_lines), '[]', args.model_16k, 0)

@@ -32,12 +32,12 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     index = 0
     if enable_clang:
         perf_clang = meta_start_performance(META_PERF_CLANG)
-        index = generate_clang_mutations(program_0_path, clang_tidy_path, meta_path, operators)
+        index = generate_clang_mutations(program_0_path, clang_tidy_path, meta_path, operators, index)
         meta_stop_performance(perf_clang, meta_path)
 
     if enable_ai:
         perf_ai = meta_start_performance(META_PERF_AI)
-        index = generate_ai_mutations(program_0_path, apikey_path, meta_path, ai_count, ai_select, ai_interesting, ai_16k)
+        index = generate_ai_mutations(program_0_path, apikey_path, meta_path, ai_count, ai_select, ai_interesting, ai_16k, index)
         meta_stop_performance(perf_ai, meta_path)
 
     # Add checks with annotations

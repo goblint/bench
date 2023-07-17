@@ -8,8 +8,7 @@ from meta import *
 
 
 # Generates mutations with clang-tidy
-def generate_clang_mutations(program_path, clang_tidy_path, meta_path, mutations):
-    index = meta_get_n(meta_path)
+def generate_clang_mutations(program_path, clang_tidy_path, meta_path, mutations, index):
 
     if mutations.rfb:
         index = _iterative_mutation_generation(program_path, clang_tidy_path, meta_path, mutations.rfb_s, index)
@@ -184,4 +183,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     mutations = get_operators_from_args(args)
-    generate_clang_mutations(args.program, args.clang_tidy, None, mutations)
+    generate_clang_mutations(args.program, args.clang_tidy, None, mutations, 0)
