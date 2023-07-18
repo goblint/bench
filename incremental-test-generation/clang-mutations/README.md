@@ -24,7 +24,7 @@ Additionally, you may need to change the build target. Available targets are: AM
 
  - Move to the directory `llvm-project/`
  - `mkdir build && cd build`
- - `cmake -G "Ninja" -DLLVM_CCACHE_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_LINKER=lld -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_PARALLEL_COMPILE_JOBS=5 -DLLVM_PARALLEL_LINK_JOBS=5 ../llvm`
+ - `cmake -G "Ninja" -DLLVM_CCACHE_BUILD=ON -DCMAKE_BUILD_TYPE=Release -DLLVM_USE_LINKER=lld -DLLVM_ENABLE_PROJECTS="clang;clang-tools-extra" -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_PARALLEL_COMPILE_JOBS=8 -DLLVM_PARALLEL_LINK_JOBS=8 ../llvm`
  - `sudo ninja install`
 
 ## Running Clang-Tidy
