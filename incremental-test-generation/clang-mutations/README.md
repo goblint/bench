@@ -56,8 +56,9 @@ You find more details about the different mutation operators in the [Mutations](
 ## Workflow
 First run the check without the fix flag, but with `--quiet-return` to see where mutations are possible without applying them. Remember the lines where you actually want to apply the mutation. Make a copy of the input file that you will mutate. Then run the check again with `--fix-warnings` and `-line filter=...` on the copied file to apply only specific mutations and not all at ones.
 
-## Develop new matchers
-Use the clang querry tool in the [godbolt compiler](https://godbolt.org/) explorer with for example this input to try out your matchers for the clang-tidy checks.
+## Develop new checks
+Helpfull tutorial: https://www.youtube.com/watch?v=_T-5pWQVxeE
+Use the clang querry tool in the [godbolt compiler explorer](https://godbolt.org/) with for example this input to try out your matchers for the clang-tidy checks:
 ```
 enable output srcloc
 m stmt(ifStmt())
