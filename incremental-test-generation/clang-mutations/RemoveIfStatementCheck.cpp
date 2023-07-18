@@ -12,13 +12,11 @@ void RemoveIfStatementCheck::registerMatchers(MatchFinder *Finder) {
 
 void RemoveIfStatementCheck::check(const MatchFinder::MatchResult &Result) {
   const auto *MatchedDecl = Result.Nodes.getNodeAs<IfStmt>("remove-if-statement");
-  // Get locations
-  SourceLocation Start = MatchedDecl->getBeginLoc();
-  SourceLocation End = MatchedDecl->getEndLoc().getLocWithOffset(1);
-  auto Range = CharSourceRange::getCharRange(Start, End);
+  // Get range
+  auto Range = MatchedDecl->getSourceRange();
   // Remove the if statement
   std::string Replacement = "; /* [MUTATION][RIS] Removed if statement */";
-  diag(Start, "[MUTATION][RIS] If Statement was removed")
+  diag(Range.getBegin(), "[MUTATION][RIS] If Statement was removed")
       << FixItHint::CreateReplacement(Range, Replacement);
 }
 
