@@ -37,3 +37,6 @@ Add patches by changing some benchmark and doing, e.g., `git diff --no-prefix dt
 - [parallel-run.sh](parallel-run.sh) to run the config in that script in parallel and log each program
 - [csv-results.ml](csv-results.ml) to extract some numbers from each log and print a csv of it
 - [precision.sh](precision.sh) to let goblint compare two variants for each program and write the result to a .precision file
+
+## Incremental test generation
+The mutation generator is used for testing the incremental analysis. This is done by generating multiple mutation based on input files (e.g. the regression tests) which can then be used as the incremental program. The detailed documentation can be found [here](./incremental-test-generation/README.md).
