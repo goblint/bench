@@ -7,21 +7,50 @@ from meta import *
 from util import *
 
 
-def stats_append_meta(stats_path, path):
+TOTAL_EXECUTION_TIME_SECONDS = 'total_execution_time_seconds'
+
+
+def stats_merge_meta_directory(stats_path, meta_directory, total_execution_time_seconds):
+    if not os.path.exists(stats_path):
+        with open(stats_path, 'w') as file:
+            yaml.dump({}, file)
+    
+    validate_path(stats_path)
+    validate_path(meta_directory)
+
+    data = {}
+    if total_execution_time_seconds is not None:
+        data[TOTAL_EXECUTION_TIME_SECONDS] = total_execution_time_seconds
+    for filename in os.listdir(meta_directory):
+        if not filename.endswith('.yaml'):
+            continue
+        else:
+            with open(os.path.join(meta_directory, filename), 'r') as file:
+                data[filename[:-5]] = yaml.safe_load(file)
+
+    with open(stats_path, 'w') as file:
+        yaml.safe_dump(data, file)
+
+    shutil.rmtree(meta_directory)
+
+
+def stats_append_meta(stats_path, meta_file, total_execution_time_seconds):
     if not os.path.exists(stats_path):
         with open(stats_path, 'w') as file:
             yaml.dump({}, file)
             
     validate_path(stats_path)
-    validate_path(path)
+    validate_path(meta_file)
     
-    with open(path, 'r') as file:
+    with open(meta_file, 'r') as file:
         new_data = yaml.safe_load(file)
 
     with open(stats_path, 'r') as file:
         stats_data = yaml.safe_load(file)        
     current_time_millis = int(round(time.time() * 1000))
     stats_data[current_time_millis] = new_data
+    if total_execution_time_seconds is not None:
+        stats_data[TOTAL_EXECUTION_TIME_SECONDS] = total_execution_time_seconds
     with open(stats_path, 'w') as file:
         yaml.safe_dump(stats_data, file)
 
@@ -48,6 +77,8 @@ def stats_print(stats_path):
     performance_by_measurement = []
     tokens = []
 
+    total_execution_time_seconds = int(stats_data.pop(TOTAL_EXECUTION_TIME_SECONDS, 0))
+
     for data in stats_data.values():
         # Collect data for each run
         files_failed_tests += stats_get_failed_tests(data)
@@ -68,6 +99,10 @@ def stats_print(stats_path):
     token_min = _min_collector_with_type(tokens)
 
     # Print results
+    if total_execution_time_seconds > 0:
+        hours, remainder = divmod(total_execution_time_seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        print(f'Total execution time: {total_execution_time_seconds} seconds (or {COLOR_YELLOW}{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}{COLOR_RESET} in hh:mm:ss)')
     input_files = _print_value(len(stats_data.values()), 'Number of input files')
     _print_value(files_failed_tests, 'Number of input files with failed test', tab=True)
     _print_value(files_crash, 'Number of input files with crashes', tab=True)
@@ -159,14 +194,20 @@ def _print_value(value: int, title: str, tab=False):
 def main():
     parser = argparse.ArgumentParser(description='Collects meta data of runs and prints statistics')
     parser.add_argument('stats_path', help='Path to the stats file')
+    parser.add_argument('--merge', help='Merges all yaml files in this directory to a stats file.')
     parser.add_argument('--append', action='append', help='Input File to attach to the stats file (Do not print stats, create stats file if not existing)')
+    parser.add_argument('--total-execution-time', help='Store the total execution time in seconds')
 
     args = parser.parse_args()
 
+    if args.merge is not None:
+        stats_merge_meta_directory(args.stats_path, args.merge, args.total_execution_time)
+
     if args.append is not None:
         for path in args.append:
-            stats_append_meta(args.stats_path, path)
-    else:
+            stats_append_meta(args.stats_path, path, args.total_execution_time)
+
+    if args.merge is None and args.append is None:
         stats_print(args.stats_path)
 
 

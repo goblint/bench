@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Start time for duration
+SECONDS=0
+
 # Check if the script is run from the correct location
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CURRENT_DIR=$(pwd)
@@ -54,9 +57,15 @@ if [[ $1 == "--no-print" ]]; then
     shift
 fi
 
+# Get statistics path
+timestamp=$(date "+%Y-%m-%d-%H-%M-%S")
+statistics_temp_dir=./out/stats-${timestamp}-temp-collector
+statistics_path=./out/stats-${timestamp}.yaml
+
 # Check for --statistics option
 if [[ $1 == "--statistics" ]]; then
     statistics=true
+    mkdir -p $statistics_temp_dir
     shift
 fi
 
@@ -66,9 +75,7 @@ while [[ $1 == "--ignore" ]]; do
     shift 2
 done
 
-# Get statistics path
-timestamp=$(date "+%Y-%m-%d-%H-%M-%S")
-statistics_path=./out/stats-${timestamp}.yaml
+
 
 # Normalize paths in ignore files
 ignore_patterns=()
@@ -124,10 +131,12 @@ do
     esac
     printf "${color_reset}\n"
 
-    # Append the meta file to the statistics
-    printf "${color_grey}Update statistics...${color_reset}"
+    # Copy the meta file to the statistics collector directory
+    printf "${color_grey}Copy meta file...${color_reset}"
     if [ "$statistics" = true ]; then
-        python3 ./scripts/stats.py $statistics_path --append ./temp/meta.yaml
+        num_zeros=$(echo -n $files_length | wc -c)
+        format_string="%0${num_zeros}d"
+        cp ./temp/meta.yaml $statistics_temp_dir/input-$(printf "$format_string" $index).yaml
     fi
     printf "\r"
     
@@ -194,7 +203,13 @@ printf "${color}Number of files that experienced an exception during execution: 
 
 printf $color_reset
 
+# Stop time for duration
+duration=$SECONDS
+
 # Print statistics
 if [ "$statistics" = true ]; then
+    printf "${color_grey}Merging statistic...${color_reset}"
+    python3 ./scripts/stats.py $statistics_path --merge $statistics_temp_dir --total-execution-time $duration
+    printf "\r"
     python3 ./scripts/stats.py $statistics_path
 fi
