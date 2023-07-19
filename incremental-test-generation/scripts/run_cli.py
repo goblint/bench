@@ -34,21 +34,26 @@ logo = '''
 
 
 def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
-    perf_overall = meta_start_performance(META_PERF_OVERALL)
-    
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
     input_path = os.path.abspath(os.path.expanduser(input_path))
 
-    # Generate the programs
+    # Create the other paths
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
+
+    # Prepare collection of meta data
+    meta_path = os.path.join(temp_path, META_FILENAME)
+    meta_create_file(meta_path, input_path)
+
+    perf_overall = meta_start_performance(META_PERF_OVERALL)
+
+    # Generate the programs
     generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
 
     # Run tests
-    meta_path = os.path.join(temp_path, META_FILENAME)
     ret = ret_precision = 0
     if is_run_tests:
         test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
@@ -57,24 +62,24 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
             perf_generate_tests = meta_start_performance(META_PERF_GENERATE_TESTS)
             paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True)
-            meta_stop_performance(perf_generate_tests, meta_path)
+            meta_stop_performance(perf_generate_tests)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 perf_run_tests = meta_start_performance(META_PERF_RUN_TESTS)
-                ret_precision = run_tests(path, goblint_path, meta_path, cfg)
-                meta_stop_performance(perf_run_tests, meta_path)
+                ret_precision = run_tests(path, goblint_path, cfg)
+                meta_stop_performance(perf_run_tests)
         else:
             print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
             perf_generate_tests = meta_start_performance(META_PERF_GENERATE_TESTS)
             paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
-            meta_stop_performance(perf_generate_tests, meta_path)
+            meta_stop_performance(perf_generate_tests)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
                 perf_run_tests = meta_start_performance(META_PERF_RUN_TESTS)
-                ret = run_tests(path, goblint_path, meta_path, cfg)
-                meta_stop_performance(perf_run_tests, meta_path)         
+                ret = run_tests(path, goblint_path, cfg)
+                meta_stop_performance(perf_run_tests)         
 
     # Write out custom test files
     if create_tests:
@@ -82,7 +87,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         if enable_precision:
             precision_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', test_name))
             print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{COLOR_RESET} {test_name}:')
-            paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=False, inplace=False)
+            paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=True, inplace=False)
             if len(paths) > 1:
                 print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
             for path in paths:
@@ -96,7 +101,9 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             for path in paths:
                 print(f'{COLOR_GREEN}Test stored in the directory: {path}{COLOR_RESET}')
 
-    meta_stop_performance(perf_overall, meta_path)
+    meta_stop_performance(perf_overall)
+
+    write_meta_file()
 
     if statistics:
         timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")

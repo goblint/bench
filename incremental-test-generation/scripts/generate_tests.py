@@ -14,6 +14,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
     if not inplace and not check_test_dir_name(directory_name):
+        meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_NAME)
         sys.exit(RETURN_ERROR)
 
     if os.path.exists(target_dir):
@@ -21,6 +22,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         if questionary.confirm('Replace the directory?', default=True).ask():
             shutil.rmtree(target_dir)
         else:
+            meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_EXISTS)
             sys.exit(RETURN_ERROR)
     os.makedirs(target_dir)
 
@@ -31,9 +33,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         include_paths_test.append(include_path_new)
         shutil.copy(path, include_path_new)
 
-    # Read the meta.yaml
-    meta_path = os.path.join(temp_dir, META_FILENAME)
-    n = meta_get_n(meta_path)
+    n = meta_get_n()
 
     # store the paths to the test dirs
     inital_target_dir = target_dir
@@ -46,6 +46,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     unchanged_count = 0
     if inplace and int(directory_name[:3]) != 100:
         print(f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
+        meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_NAME)
         sys.exit(RETURN_ERROR)
     elif inplace:
         # For inplace test files store them with dir num 100 and rename them later when running to 99
@@ -60,8 +61,8 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
             # When the dir name is > 99 throw an error
             if not inplace and current_dir_num > 99:
-                print(
-                    f'{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}')
+                print(f'{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}')
+                meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_MAX_EXCEEDED)
                 sys.exit(RETURN_ERROR)
 
             # create the new dir
@@ -73,6 +74,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
                 if questionary.confirm('Replace the directory?', default=True).ask():
                     shutil.rmtree(target_dir)
                 else:
+                    meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_EXISTS)
                     sys.exit(RETURN_ERROR)
             os.mkdir(target_dir)
 
@@ -80,12 +82,12 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             current_test_num = 0
 
         # Skip mutations with exceptions            
-        if meta_exception_exists(meta_path, i):
+        if meta_exception_exists(i):
             print(f"\r{COLOR_YELLOW}Skipped test file {i} as an exception occurred in a previous step{COLOR_RESET}")
             continue
 
         # Get the type and subtype of the mutation
-        (generate_type, generate_sub_type) = meta_get_type_and_subtype(meta_path, i)
+        (generate_type, generate_sub_type) = meta_get_type_and_subtype(i)
 
         # Skip the reference program as it is used for the patch
         if generate_type == GenerateType.INITAL.value:
@@ -99,16 +101,12 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         elif generate_type == GenerateType.AI.value:
             test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
-        # Select depending on generator the start and end file of at test
-        if generate_type == GenerateType.CLANG.value or generate_type == GenerateType.AI.value:
-            inital_program_id = 'p_0'
-            current_program_id = f'p_{i}'
-            start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
-            end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
-            end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
-        else:
-            print(f'\n{COLOR_RED}[ERROR] Trying to generate tests from unknown generator type{COLOR_RESET}')
-            sys.exit(RETURN_ERROR)
+        # Select the start and end file of at test
+        inital_program_id = 'p_0'
+        current_program_id = f'p_{i}'
+        start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
+        end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
+        end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
 
         # Copy mutated code as the inital code
         shutil.copy2(start_program, os.path.join(target_dir, test_name + '.c'))
@@ -129,9 +127,10 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             if result.returncode == 0:
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
-                meta_empty_diff(meta_path, i)
+                meta_empty_diff(i)
         else:
             print(f"Creation of patch failed with return code: {result.returncode}")
+            meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_PATCH)
             sys.exit(RETURN_ERROR)
 
         # Create config file
@@ -184,7 +183,7 @@ def main():
 
     args = parser.parse_args()
 
-    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, args.precision_test, args.inplace)
+    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, [], args.precision_test, args.inplace)
 
 
 if __name__ == '__main__':

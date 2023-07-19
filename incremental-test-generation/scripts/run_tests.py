@@ -9,7 +9,7 @@ from meta import *
 
 # Run the tests
 # The test_dir must be in the format xxx-tmp where xxx is a number >= 100
-def run_tests(test_dir, goblint_repo_dir, meta_path, cfg):
+def run_tests(test_dir, goblint_repo_dir, cfg):
     # Change the number of the test directory to 99 for in place testing
     match = re.match(r'(\d+)-(.*)', os.path.basename(test_dir))
     if match:
@@ -27,6 +27,7 @@ def run_tests(test_dir, goblint_repo_dir, meta_path, cfg):
     test_dir_name = os.path.basename(test_dir)
     if test_dir_name != "99-temp":
         print(f"{COLOR_RED}[ERROR] The test directory name has to be \'99-temp\'{COLOR_RESET}")
+        meta_crash_and_store(META_CRASH_MESSAGE_RUN_TEST_NAME)
         sys.exit(RETURN_ERROR)
 
     # Copy the test file to the incremental tester
@@ -59,8 +60,8 @@ def run_tests(test_dir, goblint_repo_dir, meta_path, cfg):
     shutil.rmtree(test_dir)
     os.chdir(inital_dir)
 
-    if process.returncode != 0 and meta_path != None:
-        meta_test_failed(meta_path, output)
+    if process.returncode != 0:
+        meta_test_failed(output)
 
     return process.returncode
 
@@ -95,4 +96,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    run_tests(args.test_dir, args.goblint_repo_dir, None, args.cfg)
+    run_tests(args.test_dir, args.goblint_repo_dir, args.cfg)

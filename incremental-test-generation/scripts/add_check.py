@@ -13,7 +13,7 @@ from meta import *
 # Removes check which are dead, fail or are unknown
 # Stores the file with the appendix "_check"
 # Write information to the meta.yaml file
-def add_check(file_path, goblint_path, meta_path, params, index):
+def add_check(file_path, goblint_path, params, index):
     file_path_out = file_path.rsplit('.', 1)[0] + '_check.c'
 
     command = f'{goblint_path} {params.strip()} --enable trans.goblint-check --set trans.activated \'[\"assert\"]\' ' \
@@ -25,15 +25,15 @@ def add_check(file_path, goblint_path, meta_path, params, index):
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
-            meta_crash(meta_path, META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
+            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
             sys.exit(RETURN_ERROR)
-        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_CREATE_CHECK, result)
+        meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK, result)
         return False
 
     _prepend_param_line(file_path_out, params)
     # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    success = _annotate_checks(goblint_path, file_path_out, params, meta_path, index)
+    success = _annotate_checks(goblint_path, file_path_out, params, index)
 
     return success
 
@@ -80,7 +80,7 @@ def _preserve_goblint_checks(file_path):
 
 
 # annotates generated checks depending on the goblint analysis result
-def _annotate_checks(goblint_path, file_path, params, meta_path, index):
+def _annotate_checks(goblint_path, file_path, params, index):
     # run the analysis
     command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -91,9 +91,9 @@ def _annotate_checks(goblint_path, file_path, params, meta_path, index):
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
             print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
-            meta_crash(meta_path, META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
+            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
             sys.exit(RETURN_ERROR)
-        meta_exception(meta_path, index, META_EXCEPTION_CAUSE_VERIFY_CHECK, result)
+        meta_exception(index, META_EXCEPTION_CAUSE_VERIFY_CHECK, result)
         return False
 
     # get the json data
@@ -229,4 +229,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Call the process_file function with the provided arguments
-    add_check(args.file, args.goblint, None, args.params, None, False)
+    add_check(args.file, args.goblint, args.params, None, False)

@@ -19,8 +19,8 @@ error_counter = 0
 
 
 # generates mutated program by using chat-gpt
-def generate_ai_mutations(program_path, apikey_path, meta_path, ai_count, num_selected_lines, interesting_lines, ai_16k, index):
-    meta_set_n(meta_path, index + ai_count)
+def generate_ai_mutations(program_path, apikey_path, ai_count, num_selected_lines, interesting_lines, ai_16k, index):
+    meta_set_n(index + ai_count)
 
     # Read the api key and organisation
     with open(apikey_path, 'r') as file:
@@ -49,7 +49,7 @@ def generate_ai_mutations(program_path, apikey_path, meta_path, ai_count, num_se
     file_lock = Lock()
     with ThreadPoolExecutor(max_workers=AI_WORKERS) as executor:
         for i in range(ai_count):
-            executor.submit(_iterative_mutation_generation, program_path, meta_path, interesting_lines, ai_16k,
+            executor.submit(_iterative_mutation_generation, program_path, interesting_lines, ai_16k,
                             num_selected_lines, max_line, index + i + 1, file_lock)
 
     print_separator()
@@ -60,16 +60,16 @@ def generate_ai_mutations(program_path, apikey_path, meta_path, ai_count, num_se
     return index + ai_count
 
 
-def _iterative_mutation_generation(program_path, meta_path, interesting_lines, ai_16k, num_selected_lines, max_line,
+def _iterative_mutation_generation(program_path, interesting_lines, ai_16k, num_selected_lines, max_line,
                                    index, lock):
     try:
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
         (response, selected_lines, prompt_tokens, completion_tokens) = _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index)
-        _write_meta_data(meta_path, selected_lines, remove_ansi_escape_sequences(response),prompt_tokens, completion_tokens, index, lock)
+        _update_meta(selected_lines, remove_ansi_escape_sequences(response),prompt_tokens, completion_tokens, index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
-        _write_meta_data(meta_path, None, '', 0, 0, index, lock, exception=e)
+        _update_meta(None, '', 0, 0, index, lock, exception=e)
     return index
 
 
@@ -127,9 +127,7 @@ def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max
     return response, selected_lines, prompt_tokens, completion_tokens
 
 
-def _write_meta_data(meta_path, selected_lines, response, prompt_tokens, completion_tokens, index, lock, exception=None):
-    if meta_path is None:
-        return False
+def _update_meta(selected_lines, response, prompt_tokens, completion_tokens, index, lock, exception=None):
     lock.acquire()
     global error_counter   
     try:
@@ -139,12 +137,12 @@ def _write_meta_data(meta_path, selected_lines, response, prompt_tokens, complet
             lines = []
         if response is None:
             response = ''
-        meta_create_index(meta_path, index, GenerateType.AI.value, response, lines)
+        meta_create_index(index, GenerateType.AI.value, response, lines)
         if prompt_tokens != 0 or completion_tokens != 0:
-            meta_add_ai_tokens(meta_path, prompt_tokens, completion_tokens, index)
+            meta_add_ai_tokens(prompt_tokens, completion_tokens, index)
         if exception is not None:
             error_counter += 1
-            meta_exception(meta_path, index, META_EXCEPTION_CAUSE_AI, str(exception))
+            meta_exception(index, META_EXCEPTION_CAUSE_AI, str(exception))
     except Exception as e:
         print(e)
         exit(RETURN_ERROR)
@@ -249,4 +247,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    generate_ai_mutations(args.program, args.apikey, None, int(args.ai_count), int(args.num_selected_lines), '[]', args.model_16k, 0)
+    generate_ai_mutations(args.program, args.apikey, int(args.ai_count), int(args.num_selected_lines), '[]', args.model_16k, 0)

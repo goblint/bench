@@ -6,6 +6,7 @@ from util import GenerateType
 
 
 META_FILENAME = 'meta.yaml'
+META_PATH = 'meta_path'
 META_INPUT = 'input'
 META_N = 'n'
 META_COMMAND = 'command'
@@ -33,6 +34,11 @@ META_CRASH_MESSAGE_CLANG_LINE_GROUPS = 'exception_in_clang_line_groups'
 META_CRASH_MESSAGE_CLANG_APPLY = 'exception_in_clang_apply'
 META_CRASH_MESSAGE_CLANG_FUNCTION_NAME = 'exception_in_clang_function_name'
 META_CRASH_MESSAGE_CLANG_WRAP = 'exception_in_clang_wrap'
+META_CRASH_MESSAGE_RUN_TEST_NAME = 'run_test_naming_convention'
+META_CRASH_MESSAGE_CREATE_TEST_NAME = 'create_test_naming_convention'
+META_CRASH_MESSAGE_CREATE_TEST_EXISTS = 'create_test_directory_exists'
+META_CRASH_MESSAGE_CREATE_TEST_MAX_EXCEEDED = 'create_test_max_dir_exceeded'
+META_CRASH_MESSAGE_CREATE_TEST_PATCH = 'create_test_patch_error'
 
 META_PERF_OVERALL = "perf_overall_ns"
 META_PERF_CLANG = "perf_clang_ns"
@@ -42,113 +48,107 @@ META_PERF_CHECKS_VERIFY = "perf_checks_verify_ns"
 META_PERF_GENERATE_TESTS = "perf_write_tests_ns"
 META_PERF_RUN_TESTS = "perf_run_tests_ns"
 
+_DATA = None
+
 def _meta_index(index):
     return f'p_{index}'
-
-def _get_yaml_data(meta_path):
-    if meta_path == None: return
-    with open(meta_path, 'r') as file:
-        return yaml.safe_load(file)
     
-def _write_yaml_data(meta_path, data):
-    if meta_path == None: return
+def write_meta_file():
+    global _DATA
+    if _DATA == None: return
+    meta_path = _DATA.pop(META_PATH, None)
     with open(meta_path, 'w') as file:
-        yaml.safe_dump(data, file)
+        yaml.safe_dump(_DATA, file)
 
 def meta_create_file(meta_path, source_path):
+    global _DATA
     if meta_path == None: return
-    data = {META_N: 0, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}', _meta_index(0): {META_TYPE: GenerateType.INITAL.value}}
-    _write_yaml_data(meta_path, data)
+    _DATA = {META_N: 0, META_PATH: meta_path, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}', _meta_index(0): {META_TYPE: GenerateType.INITAL.value}}
 
-def meta_get_n(meta_path) -> int:
-    if meta_path == None: return 0
-    data = _get_yaml_data(meta_path)
-    return data[META_N]
+def meta_get_n() -> int:
+    global _DATA
+    if _DATA == None: return 0
+    return _DATA[META_N]
 
-def meta_set_n(meta_path, n: int):
-    if meta_path == None: return
-    data =_get_yaml_data(meta_path)
-    data[META_N] = n
-    _write_yaml_data(meta_path, data)
-    return n
+def meta_set_n(n: int):
+    global _DATA
+    if _DATA == None: return
+    _DATA[META_N] = n
 
-def meta_create_index(meta_path, index, type, sub_type, lines):
-    if meta_path == None: return
-    data = _get_yaml_data(meta_path)
-    data[_meta_index(index)] = {
+def meta_create_index(index, type, sub_type, lines):
+    global _DATA
+    if _DATA == None: return
+    _DATA[_meta_index(index)] = {
         META_TYPE: type,
         META_SUB_TYPE: sub_type,
         META_LINES: lines
     }
-    _write_yaml_data(meta_path, data)
 
-def meta_exception(meta_path, index, cause, cmd_result_or_string):
-    if meta_path == None: return
+def meta_exception(index, cause, cmd_result_or_string):
+    global _DATA
+    if _DATA == None: return
     if isinstance(cmd_result_or_string, str):
         stdout = cmd_result_or_string
         stderr = ''
     else:
         stdout = cmd_result_or_string.stdout
         stderr = cmd_result_or_string.stderr
-    data = _get_yaml_data(meta_path)
-    data[_meta_index(index)].update({
+    _DATA[_meta_index(index)].update({
         META_EXCEPTION: True,
         META_EXCEPTION_CAUSE: cause,
         META_EXCEPTION_STD_OUT: stdout,
         META_EXCEPTION_STD_ERR: stderr
     })
-    _write_yaml_data(meta_path, data)
 
-def meta_exception_exists(meta_path, index) -> bool:
-    if meta_path == None: return False
-    data = _get_yaml_data(meta_path)
-    return data.get(_meta_index(index), {}).get(META_EXCEPTION, False)
+def meta_exception_exists(index) -> bool:
+    global _DATA
+    if _DATA == None: return False
+    return _DATA.get(_meta_index(index), {}).get(META_EXCEPTION, False)
 
-def meta_get_type_and_subtype(meta_path, index) -> tuple[str, str]:
-    if meta_path == None: return
-    data = _get_yaml_data(meta_path)
-    type = data.get(_meta_index(index), {}).get(META_TYPE, '')
-    sub_type = data.get(_meta_index(index), {}).get(META_SUB_TYPE, '')
+def meta_get_type_and_subtype(index) -> tuple[str, str]:
+    global _DATA
+    if _DATA == None: return
+    type = _DATA.get(_meta_index(index), {}).get(META_TYPE, '')
+    sub_type = _DATA.get(_meta_index(index), {}).get(META_SUB_TYPE, '')
     return (type, sub_type)
 
-def meta_empty_diff(meta_path, index):
-    if meta_path == None: return
-    data = _get_yaml_data(meta_path)
-    data[_meta_index(index)][META_EMPTY_DIFF] = True
-    _write_yaml_data(meta_path, data)
+def meta_empty_diff(index):
+    global _DATA
+    if _DATA == None: return
+    _DATA[_meta_index(index)][META_EMPTY_DIFF] = True
 
-def meta_crash(meta_path, message):
-    if meta_path == None: return
-    data = _get_yaml_data(meta_path)
-    data[META_CRASH] = True
-    data[META_CRASH_MESSAGE] = message
-    _write_yaml_data(meta_path, data)
+def meta_crash_and_store(message):
+    global _DATA
+    if _DATA == None: return
+    _DATA[META_CRASH] = True
+    _DATA[META_CRASH_MESSAGE] = message
+    write_meta_file()
 
-def meta_test_failed(meta_path, output):
-    if meta_path == None: return
-    data = _get_yaml_data(meta_path)
-    data[META_TEST_FAILED] = True
-    data[META_TEST_OUTPUT] = output
-    _write_yaml_data(meta_path, data)
+def meta_test_failed(output):
+    global _DATA
+    if _DATA == None: return
+    _DATA[META_TEST_FAILED] = True
+    _DATA[META_TEST_OUTPUT] = output
 
 def meta_start_performance(title: str) -> tuple[str, int, float]:
     current_ns = time.perf_counter_ns()
     return (title, current_ns)
 
-def meta_stop_performance(start_performance, meta_path):
+def meta_stop_performance(start_performance):
+    global _DATA
+    if _DATA == None: return
     current_ns = time.perf_counter_ns()
     (title, start_ns) = start_performance
     duration_ns = current_ns - start_ns
-    data = _get_yaml_data(meta_path)
-    data[title] = duration_ns + data.get(title, 0)
-    _write_yaml_data(meta_path, data)
+    _DATA[title] = duration_ns + _DATA.get(title, 0)
 
 
-def meta_add_ai_tokens(meta_path, prompt_tokens, completion_tokens, index):
-    data = _get_yaml_data(meta_path)
-    data[_meta_index(index)][META_PROMPT_TOKENS] = prompt_tokens
-    data[_meta_index(index)][META_COMPLETION_TOKENS] = completion_tokens
-    _write_yaml_data(meta_path, data)
+def meta_add_ai_tokens(prompt_tokens, completion_tokens, index):
+    global _DATA
+    if _DATA == None: return
+    _DATA[_meta_index(index)][META_PROMPT_TOKENS] = prompt_tokens
+    _DATA[_meta_index(index)][META_COMPLETION_TOKENS] = completion_tokens
+    return _DATA
 
 
 # Collection of stats
