@@ -108,7 +108,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
     except Exception as e:
         print(f'{COLOR_RED}An unexpected exception occured:')
         print(e)
-        meta_crash_and_store(e)
+        meta_crash_and_store(str(e))
     finally:
         write_meta_file()
 
