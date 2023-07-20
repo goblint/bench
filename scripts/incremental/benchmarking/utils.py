@@ -185,13 +185,14 @@ def barplot(df, figure_dir, outfile, figsize=None, colors=None):
     outfile = os.path.join(figure_dir, outfile)
     plt.savefig(outfile)
 
-def get_cleaned_filtered_data(result_csv_file, filterRelCLOC=False, filterDetectedChanges=False):
-    df=pandas.read_csv(result_csv_file, index_col='Commit', sep=";")
+def get_cleaned_filtered_data(result_csv_file, changed_loc_filter, filterRelCLOC=False,  filterDetectedChanges=False):
+    df = pandas.read_csv(result_csv_file, index_col='Commit', sep=";")
     df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
 
     # clean dataset (remove all rows for which any of the runtime entries is 0 which means that the respective analysis
     # run failed)
     df = df[(df[runtime_header_parent] != 0)]
+    df = df[changed_loc_filter(df["Relevant changed LOC"])]
     if filterRelCLOC:
         df = df[df["Relevant changed LOC"] > 0]
     if filterDetectedChanges:

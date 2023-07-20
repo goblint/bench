@@ -7,9 +7,9 @@ description_incr = "(2)"
 description_incr_post = "(3)"
 description_incr_rel ="(4)"
 
-def efficiency_bar_plot_all4(results_dir, result_csv_filename, figure_dir):
+def efficiency_bar_plot_all4(results_dir, changed_loc_filter, result_csv_filename, figure_dir):
     outfile_nonincr_vs_incr = "figure_bar.pgf"
-    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
+    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
     data_set = df[["Relevant changed LOC", utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child]]
     data_set = data_set.rename(columns={utils.runtime_header_non_incr_child: description_non_incr, utils.runtime_header_incr_child: description_incr, utils.runtime_header_incr_posts_child: description_incr_post, utils.runtime_header_incr_posts_rel_child: description_incr_rel})
@@ -20,11 +20,11 @@ def efficiency_bar_plot_all4(results_dir, result_csv_filename, figure_dir):
 
     utils.barplot(data_set, figure_dir, outfile_nonincr_vs_incr, size, colors)
 
-def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
+def cummulative_distr_compare2(results_dir, suffix, changed_loc_filter, result_csv_filename, figure_dir):
     num_bins = 2000
     outfile_nonincr_vs_incr = "figure_cum_distr_incr.pdf"
     outfile_incr_vs_incrrel = "figure_cum_distr_rel.pdf"
-    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
+    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_rel_child])
     datanonincr = {"values": data[0], "label": description_non_incr}
@@ -38,10 +38,12 @@ def cummulative_distr_compare2(results_dir, result_csv_filename, figure_dir):
 
     utils.cummulative_distr_plot([dataincr, datarelincr], base, figure_dir, outfile_incr_vs_incrrel, logscale=True)
 
-def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
+
+
+def cummulative_distr_all4_filter(results_dir, suffix, changed_loc_filter, result_csv_filename, figure_dir):
     num_bins = 2000
-    outfile_nonincr_vs_incr = "figure_cum_distr_all3.pdf"
-    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), filterDetectedChanges=True)
+    outfile_nonincr_vs_incr = "figure_cum_distr_all3"+ suffix + ".pdf"
+    df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
     data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child])
     data_non_incr = {"values": data[0], "label": description_non_incr}
@@ -50,8 +52,16 @@ def cummulative_distr_all4(results_dir, result_csv_filename, figure_dir):
     data_incr_rel = {"values": data[3], "label": description_incr_rel}
     utils.cummulative_distr_plot([data_non_incr, data_incr, data_incr_post, data_incr_rel], base, figure_dir, outfile_nonincr_vs_incr, figsize=(6,4), logscale=True)
 
-def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
-    df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
+def cummulative_distr_all4(results_dir, results_csv_filenmane, figure_dir):
+    greater_50 = lambda x : x > 50
+    cummulative_distr_all4_filter(results_dir, "_greater_50_loc_changed", greater_50, results_csv_filenmane, figure_dir)
+
+    leq_50 = lambda x : x <= 50
+    cummulative_distr_all4_filter(results_dir, "_leq_50_loc_changed", leq_50, results_csv_filenmane, figure_dir)
+
+
+def distribution_absdiff_plot(title, changed_loc_filter, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
+    df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
     # plot incremental vs non-incremental
     diff = df.loc[:,utils.runtime_header_non_incr_child] - df.loc[:,utils.runtime_header_incr_child]
@@ -61,8 +71,8 @@ def distribution_absdiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
     diff = df.loc[:,utils.runtime_header_incr_child] - df.loc[:,utils.runtime_header_incr_posts_rel_child]
     utils.hist_plot(diff, 2, title, 'Improvement in s (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_absdiff_distr_rel.pdf"), cutoffs_rel)
 
-def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
-    df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), filterDetectedChanges=True)
+def distribution_reldiff_plot(title, changed_loc_filter, result_csv_filename, outdir, cutoffs_incr=None, cutoffs_rel=None):
+    df = utils.get_cleaned_filtered_data(os.path.join(outdir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
     # plot incremental vs non-incremental
     print(df[utils.runtime_header_incr_child].astype('float'))
@@ -73,8 +83,8 @@ def distribution_reldiff_plot(title, result_csv_filename, outdir, cutoffs_incr=N
     diff = 1 - df.loc[:,utils.runtime_header_incr_posts_rel_child] / df.loc[:,utils.runtime_header_incr_child]
     utils.hist_plot(diff, 0.005, title, 'Relative Improvement (reluctant compared to incremental)', 'Number of Commits', os.path.join(outdir, "figure_reldiff_distr_rel.pdf"), cutoffs_rel)
 
-def paper_efficiency_graphs(dir_results, csv_filename, outdir, filterRelCLOC=False, filterDetectedChanges=False):
-    df = utils.get_cleaned_filtered_data(os.path.join(dir_results,csv_filename), filterRelCLOC=filterRelCLOC, filterDetectedChanges=filterDetectedChanges)
+def paper_efficiency_graphs(dir_results, changed_loc_filter, csv_filename, outdir, filterRelCLOC=False, filterDetectedChanges=False):
+    df = utils.get_cleaned_filtered_data(os.path.join(dir_results,csv_filename), changed_loc_filter, filterRelCLOC=filterRelCLOC, filterDetectedChanges=filterDetectedChanges)
     diff1 = 1 - df[utils.runtime_header_incr_child].astype('float') / df[utils.runtime_header_non_incr_child].astype('float')
     diff2 = 1 - df[utils.runtime_header_incr_posts_child].astype('float') / df[utils.runtime_header_incr_child].astype('float')
     diff3 = 1 - df[utils.runtime_header_incr_posts_rel_child].astype('float') / df[utils.runtime_header_incr_posts_child].astype('float')
@@ -199,9 +209,9 @@ def main():
         if os.path.exists(efficiency_results):
             efficieny_filename = "total_results.csv"
             print("Creating efficiency plots.")
-            cummulative_distr_compare2(efficiency_results, efficieny_filename, figures_dir)
+            # cummulative_distr_compare2(efficiency_results, efficieny_filename, figures_dir)
             cummulative_distr_all4(efficiency_results, efficieny_filename, figures_dir)
-            efficiency_bar_plot_all4(efficiency_results, efficieny_filename, figures_dir)
+            # efficiency_bar_plot_all4(efficiency_results, efficieny_filename, figures_dir)
             # paper_efficiency_graphs(efficiency_results, efficieny_filename, figures_dir, filterRelCLOC=True, filterDetectedChanges=False)
         else:
             print("No efficiency results available.")
