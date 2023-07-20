@@ -61,6 +61,7 @@ solving_header_incr_posts_rel_child = solving_prefix + header_incr_posts_rel_chi
 
 preparelog = "prepare.log"
 analyzerlog = "analyzer.log"
+compare_runs_suffixes = ["incr", "incr_post", "incr_rel_post"]
 
 def comparelog_with_suffix (suffix):
     return "compare_" +suffix + ".log"

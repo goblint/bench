@@ -191,9 +191,9 @@ def analyze_series_in_repo(series):
                     # print('Compare both runs.')
                     out_compare = os.path.join(out_commit, 'compare')
                     os.makedirs(out_compare)
-                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "incr", conf, file_incr_run, file_original_run)
-                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "incr_post", conf, file_incr_post_run, file_original_run)
-                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "inr_rel_post", conf, file_incr_rel_post_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, utils.compare_runs_suffixes[0], conf, file_incr_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, utils.compare_runs_suffixes[1], conf, file_incr_post_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, utils.compare_runs_suffixes[2], conf, file_incr_rel_post_run, file_original_run)
 
 
             except utils.subprocess.CalledProcessError as e:
@@ -264,20 +264,22 @@ def merge_results(outfilename):
         relCLOC = 0
         for i in filter(lambda x: x != "0", commits):
             ith_dir = os.path.join(outdir, i)
-            compare_log_path = os.path.join(ith_dir, "compare", utils.comparelog)
-            with open(os.path.join(outdir, i, "commit_properties.log"), "r") as f:
-                relCLOC += json.load(f)["relCLOC"]
-            if int(i) in compare_commits:
-                if os.path.isdir(ith_dir) and os.path.exists(compare_log_path):
-                    int_prec[i]["precision"] = utils.extract_precision_from_compare_log(compare_log_path)
-                    int_prec[i]["relCLOC"] = relCLOC
-                    if int_prec[i]["precision"]:
-                        result_sums[i]["precpertotal"] = {k: result_sums[i]["precpertotal"].get(k, 0) + (int_prec[i]["precision"].get(k, 0) / int_prec[i]["precision"]["total"]) for k in set(result_sums[i]["precpertotal"])}
-                        result_sums[i]["number_of_commits"] += 1
-                        result_sums[i]["relCLOC"] += relCLOC
-            if int(i) != 0 and int(i) == len(commits) - 1:
-                if os.path.exists(compare_log_path):
-                    final_prec = utils.extract_precision_from_compare_log(compare_log_path)
+            for suffix in utils.compare_runs_suffixes:
+                comparelog = utils.comparelog_with_suffix(suffix)
+                compare_log_path = os.path.join(ith_dir, "compare", comparelog)
+                with open(os.path.join(outdir, i, "commit_properties.log"), "r") as f:
+                    relCLOC += json.load(f)["relCLOC"]
+                if int(i) in compare_commits:
+                    if os.path.isdir(ith_dir) and os.path.exists(compare_log_path):
+                        int_prec[i]["precision"] = utils.extract_precision_from_compare_log(compare_log_path)
+                        int_prec[i]["relCLOC"] = relCLOC
+                        if int_prec[i]["precision"]:
+                            result_sums[i]["precpertotal"] = {k: result_sums[i]["precpertotal"].get(k, 0) + (int_prec[i]["precision"].get(k, 0) / int_prec[i]["precision"]["total"]) for k in set(result_sums[i]["precpertotal"])}
+                            result_sums[i]["number_of_commits"] += 1
+                            result_sums[i]["relCLOC"] += relCLOC
+                if int(i) != 0 and int(i) == len(commits) - 1:
+                    if os.path.exists(compare_log_path):
+                        final_prec = utils.extract_precision_from_compare_log(compare_log_path)
         summary = {"name": os.path.basename(s), "sequence": seq, "length": len(seq), "intermediate precision": int_prec, "final precision": final_prec, "finalRelCLOC": relCLOC}
         seq_summaries.append(summary)
         os.chdir(wd)
