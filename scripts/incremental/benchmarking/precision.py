@@ -262,9 +262,10 @@ def merge_results(outfilename):
         int_prec = {str(i): {"precision": None, "relCLOC": None} for i in compare_commits}
         final_prec = None
         relCLOC = 0
-        for i in filter(lambda x: x != "0", commits):
-            ith_dir = os.path.join(outdir, i)
-            for suffix in utils.compare_runs_suffixes:
+
+        for suffix in utils.compare_runs_suffixes:
+            for i in filter(lambda x: x != "0", commits):
+                ith_dir = os.path.join(outdir, i)
                 comparelog = utils.comparelog_with_suffix(suffix)
                 compare_log_path = os.path.join(ith_dir, "compare", comparelog)
                 with open(os.path.join(outdir, i, "commit_properties.log"), "r") as f:
@@ -280,9 +281,9 @@ def merge_results(outfilename):
                 if int(i) != 0 and int(i) == len(commits) - 1:
                     if os.path.exists(compare_log_path):
                         final_prec = utils.extract_precision_from_compare_log(compare_log_path)
-        summary = {"name": os.path.basename(s), "sequence": seq, "length": len(seq), "intermediate precision": int_prec, "final precision": final_prec, "finalRelCLOC": relCLOC}
-        seq_summaries.append(summary)
-        os.chdir(wd)
+            summary = {"name": os.path.basename(s), "sequence": seq, "length": len(seq), "intermediate precision": int_prec, "final precision": final_prec, "finalRelCLOC": relCLOC}
+            seq_summaries.append(summary)
+            os.chdir(wd)
     result_avgs = {i: None for i in result_sums.keys()}
     for i, ps in result_sums.items():
         if ps["number_of_commits"] != 0:
