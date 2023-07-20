@@ -213,7 +213,7 @@ def create_cum_data(dataFrame, num_bins, relColumns):
     for c in relColumns:
         valuesc, basec = np.histogram(dataFrame.loc[:,c], bins=bins)
         base = basec
-        cum = np.cumsum(valuesc, dtype=np.float)
+        cum = np.cumsum(valuesc, dtype=float)
         cum[cum==0] = np.nan
 
         # If there is a tail of values that are the same, set the ones after its first occurrence to NaN.
