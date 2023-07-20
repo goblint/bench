@@ -105,12 +105,13 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
 
         meta_stop_performance(perf_overall)
 
+        write_meta_file()
+
     except Exception as e:
         print(f'{COLOR_RED}An unexpected exception occured:')
         print(e)
-        meta_crash_and_store(str(e))
-    finally:
-        write_meta_file()
+        print(COLOR_RESET)
+        meta_crash_and_store('Unexpected exception: ' + str(e))
 
     if statistics:
         timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
