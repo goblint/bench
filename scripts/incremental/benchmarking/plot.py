@@ -7,7 +7,8 @@ description_incr = "(2)"
 description_incr_post = "(3)"
 description_incr_rel ="(4)"
 
-def efficiency_bar_plot_all4(results_dir, changed_loc_filter, result_csv_filename, figure_dir):
+def efficiency_bar_plot_all4(results_dir, result_csv_filename, figure_dir):
+    changed_loc_filter = lambda x : x >= 0 # no filtering
     outfile_nonincr_vs_incr = "figure_bar.pgf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
@@ -211,7 +212,7 @@ def main():
             print("Creating efficiency plots.")
             # cummulative_distr_compare2(efficiency_results, efficieny_filename, figures_dir)
             cummulative_distr_all4(efficiency_results, efficieny_filename, figures_dir)
-            # efficiency_bar_plot_all4(efficiency_results, efficieny_filename, figures_dir)
+            efficiency_bar_plot_all4(efficiency_results, efficieny_filename, figures_dir)
             # paper_efficiency_graphs(efficiency_results, efficieny_filename, figures_dir, filterRelCLOC=True, filterDetectedChanges=False)
         else:
             print("No efficiency results available.")
