@@ -47,6 +47,14 @@ runtime_header_incr_child = runtime_prefix + header_incr_child
 runtime_header_incr_posts_child = runtime_prefix + header_incr_posts_child
 runtime_header_incr_posts_rel_child = runtime_prefix + header_incr_posts_rel_child
 
+cpu_prefix = "CPU_"
+
+cpu_runtime_header_parent = cpu_prefix + runtime_header_parent
+cpu_runtime_header_non_incr_child = cpu_prefix + runtime_header_non_incr_child
+cpu_runtime_header_incr_child = cpu_prefix + runtime_header_incr_child
+cpu_runtime_header_incr_posts_child = cpu_prefix + runtime_header_incr_posts_child
+cpu_runtime_header_incr_posts_rel_child = cpu_prefix + runtime_header_incr_posts_rel_child
+
 analysis_header_parent = analysis_prefix + header_parent
 analysis_header_non_incr_child = analysis_prefix + header_non_incr_child
 analysis_header_incr_child = analysis_prefix + header_incr_child

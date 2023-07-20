@@ -12,8 +12,8 @@ def efficiency_bar_plot_all4(results_dir, result_csv_filename, figure_dir):
     outfile_nonincr_vs_incr = "figure_bar.pgf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
-    data_set = df[["Relevant changed LOC", utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child]]
-    data_set = data_set.rename(columns={utils.runtime_header_non_incr_child: description_non_incr, utils.runtime_header_incr_child: description_incr, utils.runtime_header_incr_posts_child: description_incr_post, utils.runtime_header_incr_posts_rel_child: description_incr_rel})
+    data_set = df[["Relevant changed LOC", utils.cpu_runtime_header_non_incr_child, utils.cpu_runtime_header_incr_child, utils.cpu_runtime_header_incr_posts_child, utils.cpu_runtime_header_incr_posts_rel_child]]
+    data_set = data_set.rename(columns={utils.cpu_runtime_header_non_incr_child: description_non_incr, utils.cpu_runtime_header_incr_child: description_incr, utils.cpu_runtime_header_incr_posts_child: description_incr_post, utils.cpu_runtime_header_incr_posts_rel_child: description_incr_rel})
 
     colors = ["tab:olive", "tab:blue", "tab:orange", "tab:green", "tab:red"]
     textwidth = 7
@@ -46,7 +46,7 @@ def cummulative_distr_all4_filter(results_dir, suffix, changed_loc_filter, resul
     outfile_nonincr_vs_incr = "figure_cum_distr_all3"+ suffix + ".pdf"
     df = utils.get_cleaned_filtered_data(os.path.join(results_dir,result_csv_filename), changed_loc_filter, filterDetectedChanges=True)
 
-    data, base = utils.create_cum_data(df, num_bins, [utils.runtime_header_non_incr_child, utils.runtime_header_incr_child, utils.runtime_header_incr_posts_child, utils.runtime_header_incr_posts_rel_child])
+    data, base = utils.create_cum_data(df, num_bins, [utils.cpu_runtime_header_non_incr_child, utils.cpu_runtime_header_incr_child, utils.cpu_runtime_header_incr_posts_child, utils.cpu_runtime_header_incr_posts_rel_child])
     data_non_incr = {"values": data[0], "label": description_non_incr}
     data_incr = {"values": data[1], "label": description_incr}
     data_incr_post = {"values": data[2], "label": description_incr_post}
