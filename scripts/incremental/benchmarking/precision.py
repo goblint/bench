@@ -184,7 +184,7 @@ def analyze_series_in_repo(series):
                 file_incr_run = incremental_analyze(commit, out_commit, 'incr', "compare-data-incr", gr, repo_path, conf, [])
                 file_incr_post_run = incremental_analyze(commit, out_commit, 'incr-post', "compare-data-incr-post", gr, repo_path, conf_incrpost, [])
                 reluctant_option = ['--enable', 'incremental.reluctant.enabled']
-                file_incr_rel_post_run = incremental_analyze(commit, out_commit, 'incr-post-rel', "compare-data-incr-post-rel", gr, repo_path, reluctant_option, [])
+                file_incr_rel_post_run = incremental_analyze(commit, out_commit, 'incr-post-rel', "compare-data-incr-post-rel", gr, repo_path, conf_incrpost, reluctant_option)
 
                 if commit_num in compare_commits or commit_num == len(series) - 1:
                     # compare stored data of original and incremental run
