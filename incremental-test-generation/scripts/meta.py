@@ -57,6 +57,8 @@ def write_meta_file():
     global _DATA
     if _DATA == None: return
     meta_path = _DATA.pop(META_PATH, None)
+    if meta_path is None:
+        raise Exception('The meta file was saved before or was not created!')
     with open(meta_path, 'w') as file:
         yaml.safe_dump(_DATA, file)
 
