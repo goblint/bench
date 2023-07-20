@@ -5,8 +5,8 @@ import shutil
 import sys
 
 
-######################################################################
-##### Classes and Functions for generating new clang tidy checks #####
+#######################################################################
+# Classes and Functions for clang tidy checks (change for new checks) #
 class Operators:
     def __init__(self, rfb=False, uoi=False, ror=False, cr=False, rt=False, lcr=False, ris=False):
         self.rfb = rfb
@@ -86,12 +86,12 @@ def getOperatorDescriptionsForAI():
  return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
 
 
-##### Classes and Functions for generating new clang tidy checks #####
-######################################################################
+# Classes and Functions for clang tidy checks (change for new checks) #
+#######################################################################
 
 
-######################################################################
-############### Regex strings for removing parameters ################
+#######################################################################
+############### Regex strings for removing parameters #################
 REGEX_PARAMETER_REMOVAL = [
     # Do not use witness options as the witness information can not be used for the incremental analysis
     r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*',
@@ -113,15 +113,18 @@ REGEX_PARAMETER_REMOVAL = [
     r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*',
     r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*'
 ]
-############### Regex strings for removing parameters ################
-######################################################################
+############### Regex strings for removing parameters #################
+#######################################################################
 
 
-##### Enums #####
+#######################################################################
+######################## Enums for mutators ###########################
 class GenerateType(Enum):
-    INITAL = 'INITAL'
+    INPUT = 'INPUT'
     CLANG = 'CLANG'
     AI = 'OPENAI'
+######################## Enums for mutators ###########################
+#######################################################################
 
 
 ##### Return Codesconstants #####

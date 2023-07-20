@@ -90,7 +90,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         (generate_type, generate_sub_type) = meta_get_type_and_subtype(i)
 
         # Skip the reference program as it is used for the patch
-        if generate_type == GenerateType.INITAL.value:
+        if generate_type == GenerateType.INPUT.value:
             continue
 
         print(f"\rGenerating test files [{i}/{n}]", end='')

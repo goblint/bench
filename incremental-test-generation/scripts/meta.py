@@ -63,7 +63,7 @@ def write_meta_file():
 def meta_create_file(meta_path, source_path):
     global _DATA
     if meta_path == None: return
-    _DATA = {META_N: 0, META_PATH: meta_path, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}', _meta_index(0): {META_TYPE: GenerateType.INITAL.value}}
+    _DATA = {META_N: 0, META_PATH: meta_path, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}', _meta_index(0): {META_TYPE: GenerateType.INPUT.value}}
 
 def meta_get_n() -> int:
     global _DATA
