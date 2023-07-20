@@ -108,14 +108,16 @@ def find_sequences():
         json.dump(seq_list, outfile, indent=4)
     return seq_list
 
-def incremental_analyze(commit, out_commit, out_dir_name, compare_data_file, gr, repo_path):
+# returns the file where the incremental results are stored for comparison
+def incremental_analyze(commit, out_commit, out_dir_name, compare_data_file, gr, repo_path, conf, add_options):
     # analyze commit incrementally based on the previous commit and save run for comparison
     # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
     out_incr = os.path.join(out_commit, out_dir_name)
     os.makedirs(out_incr)
     file_incremental_run = os.path.join(out_incr, compare_data_file)
-    add_options = ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', 'incremental.reluctant.enabled', '--set', 'save_run', file_incremental_run]
+    add_options = add_options + ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', '--set', 'save_run', file_incremental_run]
     utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
+    return file_incremental_run
 
 def analyze_series_in_repo(series):
     prev_commit = ""
@@ -178,20 +180,21 @@ def analyze_series_in_repo(series):
 
                 # analyze commit incrementally based on the previous commit and save run for comparison
                 # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
-                out_incr = os.path.join(out_commit, 'incr')
-                os.makedirs(out_incr)
-                file_incremental_run = os.path.join(out_incr, "compare-data-incr")
-                add_options = ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', 'incremental.reluctant.enabled', '--set', 'save_run', file_incremental_run]
-                utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
 
-                incremental_analyze(commit, out_commit, 'incr', "compare-data-incr", gr, repo_path)
+                file_incr_run = incremental_analyze(commit, out_commit, 'incr', "compare-data-incr", gr, repo_path, conf, [])
+                file_incr_post_run = incremental_analyze(commit, out_commit, 'incr-post', "compare-data-incr-post", gr, repo_path, conf_incrpost, [])
+                reluctant_option = ['--enable', 'incremental.reluctant.enabled']
+                file_incr_rel_post_run = incremental_analyze(commit, out_commit, 'incr-post-rel', "compare-data-incr-post-rel", gr, repo_path, reluctant_option, [])
 
                 if commit_num in compare_commits or commit_num == len(series) - 1:
                     # compare stored data of original and incremental run
                     # print('Compare both runs.')
                     out_compare = os.path.join(out_commit, 'compare')
                     os.makedirs(out_compare)
-                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, conf, file_incremental_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "incr", conf, file_incr_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "incr_post", conf, file_incr_post_run, file_original_run)
+                    utils.compare_runs(analyzer_dir, dummy_c_file, out_compare, "inr_rel_post", conf, file_incr_rel_post_run, file_original_run)
+
 
             except utils.subprocess.CalledProcessError as e:
                 print('Aborted because command ', e.cmd, 'failed.')

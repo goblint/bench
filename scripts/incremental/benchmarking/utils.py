@@ -61,7 +61,9 @@ solving_header_incr_posts_rel_child = solving_prefix + header_incr_posts_rel_chi
 
 preparelog = "prepare.log"
 analyzerlog = "analyzer.log"
-comparelog = "compare.log"
+
+def comparelog_with_suffix (suffix):
+    return "compare_" +suffix + ".log"
 
 def reset_incremental_data(incr_data_dir):
     if os.path.exists(incr_data_dir) and os.path.isdir(incr_data_dir):
@@ -116,10 +118,10 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
 
-def compare_runs(analyzer_dir, dummy_c_file, outdir, conf, compare_data_1, compare_data_2):
+def compare_runs(analyzer_dir, dummy_c_file, outdir, log_suffix, conf, compare_data_1, compare_data_2):
     options = ['--conf', conf, '--disable', 'warn.warning', '--disable', 'warn.race', '--disable', 'dbg.compare_runs.diff', '--disable', 'dbg.compare_runs.eqsys', '--enable', 'dbg.compare_runs.node', '--compare_runs', compare_data_1, compare_data_2]
     analyze_command = [os.path.join(analyzer_dir, 'goblint'), *options, dummy_c_file]
-    with open(os.path.join(outdir, comparelog), "w+") as outfile:
+    with open(os.path.join(outdir, comparelog_with_suffix(log_suffix)), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
         outfile.close()
 
