@@ -7,7 +7,7 @@ Read [this](clang-mutations/MUTATIONS.md) to find out more about the different t
 # Sample files
 In `samle-files/` you find some examples you can use as input to get started.
 
-# Mutation Generator
+# Incremental Analysis Test Toolchain (IATT)
 Run `./RUN.sh` to start the Command Line Interface. With `./RUN.sh -h` you can see the command line options for skipping the interactive user input.
 
 # Run on regression tests
