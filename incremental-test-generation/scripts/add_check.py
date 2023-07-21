@@ -24,8 +24,8 @@ def add_check(file_path, goblint_path, params, index):
         if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
-            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
+            print(f"{COLOR_RED}Could not generate checks for intial program. Stopping execution!{COLOR_RESET}")
+            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION)
             sys.exit(RETURN_ERROR)
         meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK, result)
         return False
@@ -90,8 +90,8 @@ def _annotate_checks(goblint_path, file_path, params, index):
         if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}The inital program did not compile. Stopping program!{COLOR_RESET}")
-            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_NOT_COMPILE)
+            print(f"{COLOR_RED}Exception in inital program. Stopping program!{COLOR_RESET}")
+            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION)
             sys.exit(RETURN_ERROR)
         meta_exception(index, META_EXCEPTION_CAUSE_VERIFY_CHECK, result)
         return False

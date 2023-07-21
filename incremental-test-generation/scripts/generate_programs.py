@@ -57,10 +57,10 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             continue
         file_path = os.path.join(temp_dir, f"p_{i}.c")
         perf_generate_check = meta_start_performance(META_PERF_CHECKS_GENERATE)
-        compiling = add_check(file_path, goblint_path, params, i)
+        exception = add_check(file_path, goblint_path, params, i)
         meta_stop_performance(perf_generate_check)
-        if not compiling:
-            print(f"\r{COLOR_YELLOW}[{i}/{index}] Program with mutation did not compile{COLOR_RESET}{SPACE}")
+        if not exception:
+            print(f"\r{COLOR_YELLOW}[{i}/{index}] Could not add checks to program with mutation.{COLOR_RESET}{SPACE}")
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
         # For the patched file generate NOFAIL / NOTINPRECISE annotations

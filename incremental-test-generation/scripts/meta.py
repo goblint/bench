@@ -29,7 +29,7 @@ META_EXCEPTION_CAUSE_CREATE_CHECK = 'create_check'
 META_EXCEPTION_CAUSE_VERIFY_CHECK = 'verify_check'
 META_EXCEPTION_CAUSE_AI = 'ai_request'
 
-META_CRASH_MESSAGE_INITAL_NOT_COMPILE = 'inital_program_did_not_compile'
+META_CRASH_MESSAGE_INITAL_EXCEPTION = 'inital_program_exception'
 META_CRASH_MESSAGE_CLANG_LINE_GROUPS = 'exception_in_clang_line_groups'
 META_CRASH_MESSAGE_CLANG_APPLY = 'exception_in_clang_apply'
 META_CRASH_MESSAGE_CLANG_FUNCTION_NAME = 'exception_in_clang_function_name'

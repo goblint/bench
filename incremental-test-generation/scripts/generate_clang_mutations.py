@@ -155,9 +155,9 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
 # generate a wrapper for the thread function
 def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
     if function_name is None:
-        print(
-            f"\r{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided. Hope the program will compile without wrapping{COLOR_RESET}")
-        return
+        print(f"\r{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided.{COLOR_RESET}")
+        meta_crash_and_store('[WRAP FIX] No function name was provided.')
+        sys.exit(RETURN_ERROR)
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
     check_options_json = json.dumps(check_options)
