@@ -125,7 +125,6 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
     # Run the analysis
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
-        print("Started run:\n" + analyze_command)
         outfile.close()
 
 def compare_runs(analyzer_dir, dummy_c_file, outdir, log_suffix, conf, compare_data_1, compare_data_2):
@@ -184,6 +183,10 @@ def extract_precision_from_compare_log(log):
     pattern = "equal: (?P<equal>[0-9]+), more precise: (?P<moreprec>[0-9]+), less precise: (?P<lessprec>[0-9]+), incomparable: (?P<incomp>[0-9]+), total: (?P<total>[0-9]+)"
     precision = find_line(pattern, log)
     return {k: int(v) for k,v in precision.items()} if precision else None
+
+def precision_result_file_name_with_suffix(suffix):
+    result_file_name = "results" + suffix + ".json"
+    return result_file_name
 
 def barplot(df, figure_dir, outfile, figsize=None, colors=None):
     df.plot.bar(rot=0, width=0.7, figsize=figsize, color=colors)

@@ -156,7 +156,7 @@ def paper_precision_graph_box(results_precision, filename, outdir):
     utils.box_plot(data, x, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
 
 
-def paper_precision_graph(results_precision, filename, outdir):
+def paper_precision_graph(results_precision, filename, outdir, suffix):
     df = utils.get_data_from_json(os.path.join(results_precision, filename))
 
     # Plot precision loss after x commits, where x is in {1, 2, 5, 10, 15}
@@ -183,7 +183,8 @@ def paper_precision_graph(results_precision, filename, outdir):
         data.append((x,y))
     halftextwidth = 3.3
     size=(halftextwidth,halftextwidth*2/3)
-    utils.scatter_plot(data, "\# Commits", "Share of less precise program points", os.path.join(outdir, "precision_figure.pgf"), size)
+    outfile = os.path.join(outdir, "precision_figure" + suffix + ".pgf")
+    utils.scatter_plot(data, "\# Commits", "Share of less precise program points", outfile, size)
 
 
 def main():
@@ -219,9 +220,10 @@ def main():
 
         # precision plot
         if os.path.exists(precision_results):
-            precision_filename = "results.json"
-            print("Creating precision plots.")
-            paper_precision_graph(precision_results, precision_filename, figures_dir)
+            for suffix in utils.compare_runs_suffixes:
+                precision_filename = utils.precision_result_file_name_with_suffix(suffix)
+                print("Creating precision plots for configuration:" + suffix)
+                paper_precision_graph(precision_results, precision_filename, figures_dir, suffix)
         else:
             print("No precision results available.")
 
