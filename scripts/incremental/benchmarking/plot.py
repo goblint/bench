@@ -183,7 +183,7 @@ def paper_precision_graph(results_precision, filename, outdir, suffix):
         data.append((x,y))
     halftextwidth = 3.3
     size=(halftextwidth,halftextwidth*2/3)
-    outfile = os.path.join(outdir, "precision_figure" + suffix + ".pgf")
+    outfile = os.path.join(outdir, "precision_figure_" + suffix + ".pgf")
     utils.scatter_plot(data, "\# Commits", "Share of less precise program points", outfile, size)
 
 

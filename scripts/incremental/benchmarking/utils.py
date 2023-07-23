@@ -185,7 +185,7 @@ def extract_precision_from_compare_log(log):
     return {k: int(v) for k,v in precision.items()} if precision else None
 
 def precision_result_file_name_with_suffix(suffix):
-    result_file_name = "results" + suffix + ".json"
+    result_file_name = "results_" + suffix + ".json"
     return result_file_name
 
 def barplot(df, figure_dir, outfile, figsize=None, colors=None):
