@@ -114,6 +114,7 @@ def incremental_analyze(commit, out_commit, out_dir_name, compare_data_file, gr,
     # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
     out_incr = os.path.join(out_commit, out_dir_name)
     os.makedirs(out_incr)
+    print("Creating directory" + out_incr)
     file_incremental_run = os.path.join(out_incr, compare_data_file)
     add_options = add_options + ['--enable', 'incremental.load', '--enable', 'incremental.save', '--enable', '--set', 'save_run', file_incremental_run]
     utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)

@@ -125,6 +125,7 @@ def analyze_commit(analyzer_dir, gr : Git, repo_path, build_compdb, commit_hash,
     # Run the analysis
     with open(os.path.join(outdir, analyzerlog), "w+") as outfile:
         subprocess.run(analyze_command, check=True, stdout=outfile, stderr=subprocess.STDOUT)
+        print("Started run:\n" + analyze_command)
         outfile.close()
 
 def compare_runs(analyzer_dir, dummy_c_file, outdir, log_suffix, conf, compare_data_1, compare_data_2):
