@@ -102,7 +102,7 @@ def stats_print(stats_path):
     if total_execution_time_seconds > 0:
         hours, remainder = divmod(total_execution_time_seconds, 3600)
         minutes, seconds = divmod(remainder, 60)
-        print(f'Total execution time: {total_execution_time_seconds} seconds (or {COLOR_YELLOW}{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}{COLOR_RESET} in hh:mm:ss)')
+        print(f'Total execution time: {COLOR_YELLOW}{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}{COLOR_RESET} (HH:MM:SS) or {total_execution_time_seconds} seconds')
     input_files = _print_value(len(stats_data.values()), 'Number of input files')
     _print_value(files_failed_tests, 'Number of input files with failed test', tab=True)
     _print_value(files_crash, 'Number of input files with crashes', tab=True)

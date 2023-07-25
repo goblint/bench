@@ -31,7 +31,6 @@ ignore_files=()
 # Check for at least one argument
 if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [--no-print] [--statistics] [--ignore <file_path>]* [additional arguments...]\n"
-    printf "Please order the arguments and options as stated above"
     printf "<directory>: path to a directory with the .c files for the batch\n"
     printf "[--no-print]: Do not print the Incremental Analysis Test Toolchain (IATT) output\n"
     printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
@@ -51,29 +50,36 @@ if [ ! -d "$dir" ]; then
     exit 1
 fi
 
-# Check for --no-print option
-if [[ $1 == "--no-print" ]]; then
-    no_print=true
-    shift
-fi
-
-# Get statistics path
-timestamp=$(date "+%Y-%m-%d-%H-%M-%S")
-statistics_temp_dir=./out/stats-${timestamp}-temp-collector
-statistics_path=./out/stats-${timestamp}.yaml
+# Parse options
+goblint_args=()
+while (( "$#" )); do
+  case "$1" in
+    --no-print)
+      no_print=true
+      shift
+      ;;
+    --statistics)
+      statistics=true
+      shift
+      ;;
+    --ignore)
+      ignore_files+=("$2")
+      shift 2
+      ;;
+    *)
+      goblint_args+=("$1")
+      shift
+      ;;
+  esac
+done
 
 # Check for --statistics option
-if [[ $1 == "--statistics" ]]; then
-    statistics=true
+if [ "$statistics" = true ]; then
+    timestamp=$(date "+%Y-%m-%d-%H-%M-%S")
+    statistics_temp_dir=./out/stats-${timestamp}-temp-collector
+    statistics_path=./out/stats-${timestamp}.yaml
     mkdir -p $statistics_temp_dir
-    shift
 fi
-
-# Check for --ignore options and store ignore files in an array
-while [[ $1 == "--ignore" ]]; do
-    ignore_files+=($2)
-    shift 2
-done
 
 
 
@@ -108,10 +114,10 @@ do
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}"
     if [ "$no_print" = true ]; then
-        ./RUN.sh -i "$file" "$@" > /dev/null
+        ./RUN.sh -i "$file" $goblint_args > /dev/null
     else
         printf "\n"
-        ./RUN.sh -i "$file" "$@"
+        ./RUN.sh -i "$file" $goblint_args
     fi
 
     # Check for different return values
@@ -205,6 +211,11 @@ printf $color_reset
 
 # Stop time for duration
 duration=$SECONDS
+
+hours=$((duration / 3600))
+minutes=$((duration / 60 % 60))
+seconds=$((duration % 60))
+printf "\nTotal execution time: ${color_yellow}%02d:%02d:%02d${color_reset} (HH:MM:SS) or %d seconds\n" $hours $minutes $seconds $duration
 
 # Print statistics
 if [ "$statistics" = true ]; then
