@@ -39,4 +39,4 @@ Add patches by changing some benchmark and doing, e.g., `git diff --no-prefix dt
 - [precision.sh](precision.sh) to let goblint compare two variants for each program and write the result to a .precision file
 
 ## Incremental test generation
-The "Incremental Analysis Test Toolchain" is used for testing the incremental analysis. This is done by generating multiple mutation based on input files (e.g. the regression tests). The detailed documentation can be found [here](./incremental-test-generation/README.md).
+The "Incremental Analysis Test Toolchain" is used for testing the incremental analysis. This is done by generating multiple mutation based on input files (e.g. the regression tests). The detailed documentation can be found [here](./incremental-analysis-test-toolchain/README.md).
