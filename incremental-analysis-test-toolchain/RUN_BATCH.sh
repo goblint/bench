@@ -32,7 +32,7 @@ ignore_files=()
 if [ $# -lt 1 ]; then
     printf "Usage: $0 <directory> [--no-print] [--statistics] [--ignore <file_path>]* [additional arguments...]\n"
     printf "<directory>: path to a directory with the .c files for the batch\n"
-    printf "[--no-print]: Do not print the Incremental Analysis Test Toolchain (IATT) output\n"
+    printf "[--no-print]: Do not print the Test Automation for Incremental Analysis (TAIA) output\n"
     printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to Goblint to skip interactive cli.\n"
     printf "    -> Recommended: --enable-clang --disable-precision --enable-running --disable-create-tests --enable-cfg --Goblint-config {}\n"
