@@ -109,13 +109,13 @@ def find_sequences():
     return seq_list
 
 # returns the file where the incremental results are stored for comparison
-def incremental_analyze(commit, out_commit, out_dir_name, compare_data_file, gr, repo_path, conf, add_options):
+def incremental_analyze(commit, out_commit, out_dir_name, incremental_dir, compare_data_file, gr, repo_path, conf, add_options):
     # analyze commit incrementally based on the previous commit and save run for comparison
     # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
     out_incr = os.path.join(out_commit, out_dir_name)
     os.makedirs(out_incr)
     file_incremental_run = os.path.join(out_incr, compare_data_file)
-    add_options = add_options + ['--enable', 'incremental.load', '--enable', 'incremental.save', '--set', 'save_run', file_incremental_run]
+    add_options = add_options + ['--set','incremental.load-dir', incremental_dir, '--set','incremental.save-dir', incremental_dir, '--enable', 'incremental.load', '--enable', 'incremental.save', '--set', 'save_run', file_incremental_run]
     utils.analyze_commit(analyzer_dir, gr, repo_path, build_compdb, commit.hash, out_incr, conf, add_options, files)
     return file_incremental_run
 
@@ -124,6 +124,13 @@ def analyze_series_in_repo(series):
     commit_num = 0
     repo_path = os.path.abspath(repo_name)
     out_dir = os.path.abspath('out')
+
+    incremental_data = "incremental_data_"
+    incr_data_dir = os.path.abspath(incremental_data + "incr")
+    incr_post_data_dir = os.path.abspath(incremental_data + "incr_post")
+    incr_post_rel_data_dir = os.path.abspath(incremental_data + "incr_post_rel")
+
+
     with open('sequence.json', 'w') as outfile:
         json.dump(series, outfile, indent=4)
     dummy_c_file = "file.c"
@@ -181,10 +188,10 @@ def analyze_series_in_repo(series):
                 # analyze commit incrementally based on the previous commit and save run for comparison
                 # print('Analyze', str(commit.hash), 'incrementally (#', commit_num, ').')
 
-                file_incr_run = incremental_analyze(commit, out_commit, 'incr', "compare-data-incr", gr, repo_path, conf, [])
-                file_incr_post_run = incremental_analyze(commit, out_commit, 'incr-post', "compare-data-incr-post", gr, repo_path, conf_incrpost, [])
+                file_incr_run = incremental_analyze(commit, out_commit, 'incr', incr_data_dir, "compare-data-incr", gr, repo_path, conf, [])
+                file_incr_post_run = incremental_analyze(commit, out_commit, 'incr-post', incr_post_data_dir, "compare-data-incr-post", gr, repo_path, conf_incrpost, [])
                 reluctant_option = ['--enable', 'incremental.reluctant.enabled']
-                file_incr_rel_post_run = incremental_analyze(commit, out_commit, 'incr-post-rel', "compare-data-incr-post-rel", gr, repo_path, conf_incrpost, reluctant_option)
+                file_incr_rel_post_run = incremental_analyze(commit, out_commit, 'incr-post-rel', incr_post_rel_data_dir, "compare-data-incr-post-rel", gr, repo_path, conf_incrpost, reluctant_option)
 
                 if commit_num in compare_commits or commit_num == len(series) - 1:
                     # compare stored data of original and incremental run
