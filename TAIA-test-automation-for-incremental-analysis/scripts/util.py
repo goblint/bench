@@ -207,3 +207,6 @@ def validate_path(path):
         print(f"{COLOR_RED}The path {path} does not exist.{COLOR_RESET}")
         sys.exit(RETURN_ERROR)
     return path
+
+def include_options(analyzer_path):
+    return f'-I {analyzer_path}/lib/linux/stub/include -I {analyzer_path}/lib/libc/stub/include -I {analyzer_path}/lib/goblint/runtime/include -I {analyzer_path}/lib/sv-comp/stub/src -I {analyzer_path}/lib/libc/stub/src'
