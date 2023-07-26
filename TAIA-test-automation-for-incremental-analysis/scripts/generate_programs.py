@@ -21,6 +21,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     # ALTERNATIVE _preserve_goblint_check_annotations(program_0_path)
     # ALTERNATIVE To be added: Also preserve _goblint_assert() and assert()
     _remove_goblint_check_and_assertions(program_0_path)
+    _add_goblint_header_include(program_0_path)
 
     # Place include files in temp directory
     for path in include_paths:
@@ -88,6 +89,25 @@ def _remove_goblint_check_and_assertions(program_0_path):
 
     with open(program_0_path, 'w') as f:
         f.writelines(replaced_lines)
+
+
+def _add_goblint_header_include(program_0_path):
+    with open(program_0_path, 'r') as file:
+        lines = file.readlines()
+
+    if any(re.match(r'^\s*#include <goblint.h>', line) for line in lines):
+        return
+    
+    for i, line in enumerate(lines):
+        stripped_line = line.lstrip()
+        if stripped_line.startswith('//'):
+            continue
+        else:
+            lines.insert(i, '#include <goblint.h>\n')
+            break
+
+    with open(program_0_path, 'w') as file:
+        file.writelines(lines)
 
 
 def _fix_params(params):
