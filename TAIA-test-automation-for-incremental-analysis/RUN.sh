@@ -25,6 +25,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+gcc --help &> /dev/null
+if [ $? -ne 0 ]; then
+  echo "gcc is not installed."
+  exit 1
+fi
+
 curl --help &> /dev/null
 if [ $? -ne 0 ]; then
   echo "curl is not installed."
