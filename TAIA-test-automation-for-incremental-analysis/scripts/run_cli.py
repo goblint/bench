@@ -35,7 +35,6 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
     input_path = os.path.abspath(os.path.expanduser(input_path))
 
     # Create the other paths
-    goblint_executable_path = os.path.join(goblint_path, 'goblint')
     clang_tidy_path = os.path.join(llvm_path, 'build', 'bin', 'clang-tidy')
     temp_path = os.path.abspath(os.path.join(os.path.curdir, 'temp'))
 
@@ -43,12 +42,13 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
     meta_path = os.path.join(temp_path, META_FILENAME)
     meta_create_file(meta_path, input_path)
 
+    exception_occured = False
     try:
 
         perf_overall = meta_start_performance(META_PERF_OVERALL)
 
         # Generate the programs
-        generate_programs(input_path, temp_path, clang_tidy_path, goblint_executable_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
+        generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
 
         # Run tests
         ret = ret_precision = 0
@@ -107,6 +107,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         print(e)
         print(COLOR_RESET)
         meta_crash_and_store('Unexpected exception: ' + str(e))
+        exception_occured = True
 
     if statistics:
         timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -114,7 +115,9 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         stats_append_meta(stats_path, meta_path, None)
         stats_print(stats_path)
 
-    if ret != 0 or ret_precision != 0:
+    if exception_occured:
+        sys.exit(RETURN_ERROR)
+    elif ret != 0 or ret_precision != 0:
         sys.exit(RETURN_TEST_FAILED)
     else:
         sys.exit(RETURN_SUCCESS)

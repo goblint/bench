@@ -25,11 +25,15 @@ META_LINES = 'lines'
 META_PROMPT_TOKENS = 'tokens_promt'
 META_COMPLETION_TOKENS = 'tokens_completion'
 
-META_EXCEPTION_CAUSE_CREATE_CHECK = 'create_check'
+META_EXCEPTION_CAUSE_MUTATION_GCC = 'mutation_gcc'
+META_EXCEPTION_CAUSE_CREATE_CHECK_PROCESS= 'create_check_process'
+META_EXCEPTION_CAUSE_CREATE_CHECK_GCC = 'create_check_gcc'
 META_EXCEPTION_CAUSE_VERIFY_CHECK = 'verify_check'
 META_EXCEPTION_CAUSE_AI = 'ai_request'
 
-META_CRASH_MESSAGE_INITAL_EXCEPTION = 'inital_program_exception'
+META_CRASH_MESSAGE_INITAL_EXCEPTION_GCC = 'inital_program_exception_gcc'
+META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_PROCESS = 'inital_program_exception_add_check_process'
+META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_GCC = 'inital_program_exception_add_check_gcc'
 META_CRASH_MESSAGE_CLANG_LINE_GROUPS = 'exception_in_clang_line_groups'
 META_CRASH_MESSAGE_CLANG_APPLY = 'exception_in_clang_apply'
 META_CRASH_MESSAGE_CLANG_FUNCTION_NAME = 'exception_in_clang_function_name'
@@ -43,8 +47,10 @@ META_CRASH_MESSAGE_CREATE_TEST_PATCH = 'create_test_patch_error'
 META_PERF_OVERALL = "perf_overall_ns"
 META_PERF_CLANG = "perf_clang_ns"
 META_PERF_AI = "perf_ai_ns"
+META_PERF_MUTATION_GCC = "perf_mutation_gcc_ns"
 META_PERF_CHECKS_GENERATE = "perf_checks_generate_ns"
 META_PERF_CHECKS_VERIFY = "perf_checks_verify_ns"
+META_PERF_CHECKS_GCC = "perf_checks_verify_ns"
 META_PERF_GENERATE_TESTS = "perf_write_tests_ns"
 META_PERF_RUN_TESTS = "perf_run_tests_ns"
 

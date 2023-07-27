@@ -8,6 +8,8 @@ from meta import *
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, operators, enable_clang,
                       enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths):
+    # Get Goblint executable path
+    goblint_executable_path = os.path.join(goblint_path, 'goblint')
     # Clean working directory
     if os.path.isdir(temp_dir):
         shutil.rmtree(temp_dir)
@@ -51,20 +53,58 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     params = _get_params_from_file(program_0_path)
     params = _fix_params(params)
     for i in range(index + 1):
-        print(f"\r[{i}/{index}] Generating goblint checks...", end='')
-        sys.stdout.flush()
+        file_path = os.path.join(temp_dir, f"p_{i}.c")
+
+        # Check if inital program and programs after mutation can be compiled with gcc
+        perf_mutation_gcc = meta_start_performance(META_PERF_MUTATION_GCC)
+        print(f"\r[{i}/{index}] Check if mutated program compiled with gcc...", end='')
+        cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)}'
+        result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode != 0:
+            if i == 0:
+                print(remove_ansi_escape_sequences(result.stdout))
+                print(remove_ansi_escape_sequences(result.stderr))
+                print(f"{COLOR_RED}Could not generate checks for intial program. Stopping execution!{COLOR_RESET}")
+                meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_GCC)
+                sys.exit(RETURN_ERROR)
+            else:
+                print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc{COLOR_RESET}{SPACE}")
+                meta_exception(index, META_EXCEPTION_CAUSE_MUTATION_GCC, result)
+                continue
+        meta_stop_performance(perf_mutation_gcc)
+        
+        # Add the goblint checks
+        print(f"\r[{i}/{index}] Generating goblint checks...{SPACE}", end='')
         if meta_exception_exists(i):
             print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
             continue
-        file_path = os.path.join(temp_dir, f"p_{i}.c")
         perf_generate_check = meta_start_performance(META_PERF_CHECKS_GENERATE)
-        exception = add_check(file_path, goblint_path, params, i)
+        exception = add_check(file_path, goblint_executable_path, params, i)
         meta_stop_performance(perf_generate_check)
         if not exception:
             print(f"\r{COLOR_YELLOW}[{i}/{index}] Could not add checks to program with mutation.{COLOR_RESET}{SPACE}")
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
-        # For the patched file generate NOFAIL / NOTINPRECISE annotations
+
+        # Check if inital program and programs after mutation can be compiled with gcc
+        perf_checks_gcc = meta_start_performance(META_PERF_CHECKS_GCC)
+        print(f"\r[{i}/{index}] Check if program with checks compiles with gcc...", end='')
+        cmd = f'gcc {file_path} -c -o /dev/null'
+        result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode != 0:
+            if i == 0:
+                print(remove_ansi_escape_sequences(result.stdout))
+                print(remove_ansi_escape_sequences(result.stderr))
+                print(f"{COLOR_RED}Inital Program with checks did not compile. Stopping execution!{COLOR_RESET}")
+                meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_GCC)
+                sys.exit(RETURN_ERROR)
+            else:
+                print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc after generating the checks{COLOR_RESET}{SPACE}")
+                meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK_GCC, result)
+                continue
+        meta_stop_performance(perf_checks_gcc)
+
+        # Annotate the goblint checks for the inital program with NOFAIL / NOTINPRECISE annotations
         perf_annoate_check = meta_start_performance(META_PERF_CHECKS_VERIFY)
         if i == 0:
             if enable_precision:
@@ -72,11 +112,11 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             else:
                 add_check_annotations(file_path, 'NOFAIL')
             
-        # For the inital file generate SUCCESS annotations
+        # For the inital file add SUCCESS annotations
         if i != 0:
             add_check_annotations(file_path, 'SUCCESS')
         meta_stop_performance(perf_annoate_check)
-    print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{COLOR_RESET}")
+    print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{SPACE}{COLOR_RESET}")
 
 
 def _remove_goblint_check_and_assertions(program_0_path):
@@ -155,7 +195,7 @@ def main():
     parser.add_argument('source_path', help='Path to the source program provided by the user')
     parser.add_argument('temp_dir', help='Path to the working directory')
     parser.add_argument('clang_tidy_path', help='Path to the modified clang-tidy executable')
-    parser.add_argument('goblint_path', help='Path to the goblint executable')
+    parser.add_argument('goblint_path', help='Path to the goblint repository')
     parser.add_argument('--apikey-path', help='Path to the API')
     parser.add_argument('--enable-clang', action='store_true', help='Enable Clang Mutations. When no operator is selected all are activated.')
     parser.add_argument('--enable-ai', action='store_true', help='Enable AI')
