@@ -165,8 +165,10 @@ def stats_get_performance(data):
         ('Overall', data.get(META_PERF_OVERALL, 0) // 1000000),
         ('Clang', data.get(META_PERF_CLANG, 0) // 1000000),
         ('AI', data.get(META_PERF_AI, 0) // 1000000),
+        ('Gcc Mutation', data.get(META_PERF_MUTATION_GCC, 0) // 1000000),
         ('Generate Checks', data.get(META_PERF_CHECKS_GENERATE, 0) // 1000000),
         ('Verify Checks', data.get(META_PERF_CHECKS_VERIFY, 0) // 1000000),
+        ('Gcc Checks', data.get(META_PERF_CHECKS_GCC, 0) // 1000000),
         ('Generate Tests', data.get(META_PERF_GENERATE_TESTS, 0) // 1000000),
         ('Run Tests', data.get(META_PERF_RUN_TESTS, 0) // 1000000)
     ]
