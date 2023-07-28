@@ -132,6 +132,8 @@ class GenerateType(Enum):
 ##### Return Codesconstants #####
 RETURN_SUCCESS = 0
 RETURN_ERROR = -1
+RETURN_ERROR_GCC_INPUT = 101
+RETURN_ERROR_GCC_CIL = 102
 RETURN_TEST_FAILED = 100
 
 

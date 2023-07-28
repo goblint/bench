@@ -66,7 +66,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 print(remove_ansi_escape_sequences(result.stderr))
                 print(f"{COLOR_RED}Could not generate checks for intial program. Stopping execution!{COLOR_RESET}")
                 meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_GCC)
-                sys.exit(RETURN_ERROR)
+                sys.exit(RETURN_ERROR_GCC_INPUT)
             else:
                 print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc{COLOR_RESET}{SPACE}")
                 meta_exception(index, META_EXCEPTION_CAUSE_MUTATION_GCC, result)
@@ -97,7 +97,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 print(remove_ansi_escape_sequences(result.stderr))
                 print(f"{COLOR_RED}Inital Program with checks did not compile. Stopping execution!{COLOR_RESET}")
                 meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_GCC)
-                sys.exit(RETURN_ERROR)
+                sys.exit(RETURN_ERROR_GCC_CIL)
             else:
                 print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc after generating the checks{COLOR_RESET}{SPACE}")
                 meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK_GCC, result)

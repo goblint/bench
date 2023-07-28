@@ -123,15 +123,23 @@ do
     # Check for different return values
     case $? in
         0)
-            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded for file $file"
+            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded (${file})"
             success_files+=("$file")
             ;;
         100)
-            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed for file $file"
+            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})"
             failed_files+=("$file")
             ;;
+        101)
+            printf "$\r${color_reset}[BATCH][${index}/${files_length}] The provided file did not compile with gcc (${file})"
+            gcc_error_input+=("$file")
+            ;;
+        102)
+            printf "$\r${color_reset}[BATCH][${index}/${files_length}] The provided file did not compile with gcc after cil transformation (${file})"
+            gcc_error_cil+=("$file")
+            ;;
         *)
-            printf "$\r${color_red}[BATCH][${index}/${files_length}] Exception during execution for file $file"
+            printf "$?$\r${color_red}[BATCH][${index}/${files_length}] Exception during execution (${file})"
             exception_files+=("$file")
             ;;
     esac
@@ -152,6 +160,8 @@ ignored_length=${#ignored_files[@]}
 success_length=${#success_files[@]}
 failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
+error_gcc_input_length=${#gcc_error_input[@]}
+error_gcc_cil_length=${#gcc_error_cil[@]}
 printf "\n\n${color_blue}[BATCH] Batch finished running $files_length input files${color_reset}\n\n"
 
 # Print all ignored files
@@ -172,6 +182,24 @@ if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_reset}\n"
 fi
 
+# Print all files for which an exception occurred during execution
+if [ ${#gcc_error_input[@]} -ne 0 ]; then
+    printf "${color_reset}The following $error_gcc_input_length files did not compile with gcc:\n"
+    for file in "${gcc_error_input[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+# Print all files for which an exception occurred during execution
+if [ ${#gcc_error_cil[@]} -ne 0 ]; then
+    printf "${color_reset}The following $error_gcc_cil_length files did not compile with gcc after cil transformation:\n"
+    for file in "${gcc_error_cil[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
 # Print all files for which the test failed
 if [ ${#failed_files[@]} -ne 0 ]; then
     printf "${color_orange}The following $failed_length files failed the tests:\n"
@@ -180,7 +208,6 @@ if [ ${#failed_files[@]} -ne 0 ]; then
     done
     printf "${color_reset}\n"
 fi
-
 
 # Print all files for which an exception occurred during execution
 if [ ${#exception_files[@]} -ne 0 ]; then
@@ -200,6 +227,12 @@ printf "${color}Number of ignored files: $ignored_length\n"
 
 if [ "$success_length" -eq 0 ]; then color=${color_grey}; else color=${color_green}; fi
 printf "${color}Number of successfully executed files: $success_length\n"
+
+if [ "$error_gcc_input_length" -eq 0 ]; then color=${color_grey}; else color=${color_reset}; fi
+printf "${color}Number of files that did not compile with gcc: $failed_length\n"
+
+if [ "$error_gcc_cil_length" -eq 0 ]; then color=${color_grey}; else color=${color_reset}; fi
+printf "${color}Number of files that did not compile with gcc after cil transformation: $failed_length\n"
 
 if [ "$failed_length" -eq 0 ]; then color=${color_grey}; else color=${color_orange}; fi
 printf "${color}Number of files that failed the tests: $failed_length\n"
