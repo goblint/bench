@@ -161,13 +161,15 @@ def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str
 
 
 def _min_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str, int]]:
-    max_dict = {}
+    min_dict = {}
     for k, v in collector:
-        if k in max_dict:
-            max_dict[k] = min(max_dict[k], v)
+        if v == 0:
+            continue
+        if k in min_dict:
+            min_dict[k] = min(min_dict[k], v)
         else:
-            max_dict[k] = v
-    unsorted_list = [(k, v) for k, v in max_dict.items()]
+            min_dict[k] = v
+    unsorted_list = [(k, v) for k, v in min_dict.items()]
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
