@@ -58,7 +58,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_mutation_gcc = meta_start_performance(META_PERF_MUTATION_GCC)
         print(f"\r[{i}/{index}] Check if mutated program compiled with gcc...", end='')
-        cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)}'
+        cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
             if i == 0:
@@ -89,7 +89,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_checks_gcc = meta_start_performance(META_PERF_CHECKS_GCC)
         print(f"\r[{i}/{index}] Check if program with checks compiles with gcc...", end='')
-        cmd = f'gcc {file_path} -c -o /dev/null'
+        cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
             if i == 0:
