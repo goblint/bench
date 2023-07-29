@@ -8,33 +8,33 @@ from meta import *
 
 
 # Generates mutations with clang-tidy
-def generate_clang_mutations(program_path, clang_tidy_path, mutations, index):
+def generate_clang_mutations(program_path, clang_tidy_path, analyzer_path, mutations, index):
 
     if mutations.rfb:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.rfb_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.rfb_s, index)
     if mutations.uoi:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.uoi_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.uoi_s, index)
     if mutations.ror:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.ror_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.ror_s, index)
     if mutations.cr:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.cr_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.cr_s, index)
     if mutations.rt:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.rt_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.rt_s, index)
     if mutations.lcr:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.lcr_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.lcr_s, index)
     if mutations.ris:
-        index = _iterative_mutation_generation(program_path, clang_tidy_path, mutations.ris_s, index)
+        index = _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutations.ris_s, index)
 
     meta_set_n(index)
 
     return index
 
 
-def _iterative_mutation_generation(program_path, clang_tidy_path, mutation_name, index):
+def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutation_name, index):
     print_separator()
     print(f"[{GenerateType.CLANG.value}] {mutation_name}")
     # get line groups for knowing where the mutation could be applied
-    line_groups = _get_line_groups(clang_tidy_path, mutation_name, program_path)
+    line_groups = _get_line_groups(clang_tidy_path, analyzer_path, mutation_name, program_path)
     # apply only one mutation at a time
     for lines in line_groups:
         index += 1
@@ -45,22 +45,22 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, mutation_name,
                 # Needed to prevent conflicts on generating wrappers
                 print(
                     f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
-            function_name = _get_thread_function_name(clang_tidy_path, lines, new_path, index)
-            _wrap_thread_function(clang_tidy_path, new_path, function_name, index)
-        _apply_mutation(clang_tidy_path, mutation_name, lines, new_path, index)
+            function_name = _get_thread_function_name(clang_tidy_path, analyzer_path, lines, new_path, index)
+            _wrap_thread_function(clang_tidy_path, analyzer_path, new_path, function_name, index)
+        _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, new_path, index)
         meta_create_index(index, GenerateType.CLANG.value, mutation_name, lines)
     return index
 
 
 # Returns a list of lists. The sub lists represent lines at which a single mutation should be applied
 # Per default this is only one line (eg.: [[1], [42]] ). Multiple lines are needed for replacing all Macros
-def _get_line_groups(clang_tidy_path, mutation_name, program_path):
+def _get_line_groups(clang_tidy_path, analyzer_path, mutation_name, program_path):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
 
     # Execute all mutations to get the lines where the mutation is possible
     print(f"[CLANG][CHECK] Check mutation {mutation_name}", end='')
-    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} {program_path_temp} --quiet --quiet-return -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} {program_path_temp} --quiet-return -- -I{os.path.dirname(program_path)} {include_options(analyzer_path, for_clang=True)}'
     result = subprocess.run(command, text=True, shell=True, capture_output=True)
     if result.returncode != 0:
         print('\n')
@@ -103,11 +103,11 @@ def _get_line_groups(clang_tidy_path, mutation_name, program_path):
     return sorted(line_groups, key=lambda x: x[0])
 
 
-def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
+def _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, program_path, index):
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
-    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} --fix-warnings -line-filter="{line_filter_json}" {program_path} -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} --quiet-return --fix-warnings -line-filter="{line_filter_json}" {program_path} -- -I{os.path.dirname(program_path)} {include_options(analyzer_path, for_clang=True)}'
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
     if result.returncode == 0:
         print(f"{COLOR_GREEN}[{index}] Finished mutation:{COLOR_RESET} {mutation_name} on lines {lines}")
@@ -120,14 +120,14 @@ def _apply_mutation(clang_tidy_path, mutation_name, lines, program_path, index):
 
 
 # Execute the check to find the name of the thread function (needed to generate a wrapper)
-def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
+def _get_thread_function_name(clang_tidy_path, analyzer_path, lines, program_path, index):
     program_path_temp = os.path.join(os.path.dirname(program_path), 'p_temp.c')
     shutil.copy(program_path, program_path_temp)
 
     lines_mapped = [[x, x] for x in lines]
     line_filter = [{"name": program_path_temp, "lines": lines_mapped}]
     line_filter_json = json.dumps(line_filter)
-    command = f'{clang_tidy_path} -checks=-*,readability-{Operators().rt_s} -line-filter="{line_filter_json}" {program_path_temp} --quiet-return -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-{Operators().rt_s} -line-filter="{line_filter_json}" {program_path_temp} --quiet-return -- -I{os.path.dirname(program_path)} {include_options(analyzer_path, for_clang=True)}'
     result = subprocess.run(command, text=True, shell=True, capture_output=True)
     print(f'[{index}][WRAP] Check function name for wrapping thread function', end='')
     if result.returncode != 0:
@@ -153,7 +153,7 @@ def _get_thread_function_name(clang_tidy_path, lines, program_path, index):
 
 
 # generate a wrapper for the thread function
-def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
+def _wrap_thread_function(clang_tidy_path, analyzer_path, program_path, function_name, index):
     if function_name is None:
         print(f"\r{COLOR_YELLOW}[{index}][WRAP FIX] No function name was provided.{COLOR_RESET}")
         meta_crash_and_store('[WRAP FIX] No function name was provided.')
@@ -161,7 +161,7 @@ def _wrap_thread_function(clang_tidy_path, program_path, function_name, index):
 
     check_options = {"CheckOptions": {"readability-remove-thread-wrapper.WrapFunctionName": function_name}}
     check_options_json = json.dumps(check_options)
-    command = f'{clang_tidy_path} -checks=-*,readability-remove-thread-wrapper -config=\'{check_options_json}\' --fix-warnings {program_path} -- -I{os.path.dirname(program_path)}'
+    command = f'{clang_tidy_path} -checks=-*,readability-remove-thread-wrapper -config=\'{check_options_json}\' --fix-warnings --quiet-return {program_path} -- -I{os.path.dirname(program_path)} {include_options(analyzer_path, for_clang=True)}'
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
     print(f"\r[{index}][WRAP FIX] Applied the wrapping of the thread function {function_name}{SPACE}")
     if result.returncode != 0:
@@ -176,8 +176,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate all possible mutations of a program.")
     parser.add_argument("program", help="Path to the C program")
     parser.add_argument("clang_tidy", help="Path to the modified clang-tidy executable")
+    parser.add_argument("analyzer_path", help="Path to the Goblint analyzer")
     add_clang_options(parser)
 
     args = parser.parse_args()
     mutations = get_operators_from_args(args)
-    generate_clang_mutations(args.program, args.clang_tidy, mutations, 0)
+    generate_clang_mutations(args.program, args.clang_tidy, args.analyzer_path, mutations, 0)

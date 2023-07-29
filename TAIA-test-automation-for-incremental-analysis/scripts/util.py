@@ -210,5 +210,8 @@ def validate_path(path):
         sys.exit(RETURN_ERROR)
     return path
 
-def include_options(analyzer_path):
-    return f'-I {analyzer_path}/lib/linux/stub/include -I {analyzer_path}/lib/libc/stub/include -I {analyzer_path}/lib/goblint/runtime/include -I {analyzer_path}/lib/sv-comp/stub/src -I {analyzer_path}/lib/libc/stub/src'
+def include_options(analyzer_path, for_clang=False):
+    seperator = ' '
+    if for_clang:
+        seperator = ''
+    return f'-I{seperator}{analyzer_path}/lib/linux/stub/include -I{seperator}{analyzer_path}/lib/libc/stub/include -I{seperator}{analyzer_path}/lib/goblint/runtime/include -I{seperator}{analyzer_path}/lib/sv-comp/stub/src -I{seperator}{analyzer_path}/lib/libc/stub/src'
