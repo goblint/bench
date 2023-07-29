@@ -47,6 +47,7 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path,
                     f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
             function_name = _get_thread_function_name(clang_tidy_path, analyzer_path, lines, new_path, index)
             _wrap_thread_function(clang_tidy_path, analyzer_path, new_path, function_name, index)
+            lines.append(lines[0] + 5) # Add a line shifted by 5 to compensate for the function wrapping that might add lines before the mutation
         _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, new_path, index)
         meta_create_index(index, GenerateType.CLANG.value, mutation_name, lines)
     return index
