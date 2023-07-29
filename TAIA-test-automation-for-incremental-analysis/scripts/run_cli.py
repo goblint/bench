@@ -106,7 +106,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         print(f'{COLOR_RED}An unexpected exception occured:')
         print(e)
         print(COLOR_RESET)
-        meta_crash_and_store('Unexpected exception: ' + str(e))
+        meta_crash_and_store(f'Unexpected exception for input file {input_path}: {e}')
         exception_occured = True
 
     if statistics:
