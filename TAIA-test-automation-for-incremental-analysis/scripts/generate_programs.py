@@ -7,7 +7,7 @@ from meta import *
 
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, operators, enable_clang,
-                      enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths):
+                      enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_evaluations):
     # Get Goblint executable path
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     # Clean working directory
@@ -32,7 +32,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     index = 0
     if enable_clang:
         perf_clang = meta_start_performance(META_PERF_CLANG)
-        index = generate_clang_mutations(program_0_path, clang_tidy_path, operators, index)
+        index = generate_clang_mutations(program_0_path, clang_tidy_path, goblint_path, operators, index)
         meta_stop_performance(perf_clang)
 
     if enable_ai:
@@ -116,6 +116,51 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         if i != 0:
             add_check_annotations(file_path, 'SUCCESS')
         meta_stop_performance(perf_annoate_check)
+
+        # Run incremental procedure to get the number of variables, evaluations and narrow resuses
+        if enable_evaluations and i != 0 and not meta_exception_exists(i):
+            vars = evals = narrow_reuses = -1
+            print(f"\r[{i}/{index}] Check number of evaluations...{SPACE}", end='')
+            command = f'{goblint_executable_path} {os.path.join(temp_dir, f"p_{i}_check.c")} {params.strip()} --enable incremental.save -v'
+            result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if result.returncode == 0:
+                output = remove_ansi_escape_sequences(result.stdout)
+                match = re.search(r"vars = (\d+)", output)
+                if match:
+                    vars = int(match.group(1))
+                match = re.search(r"evals = (\d+)", output)
+                if match:
+                    evals = int(match.group(1))
+                match = re.search(r"narrow_reuses = (\d+)", output)
+                if match:
+                    narrow_reuses = int(match.group(1))
+            else:
+                print(f"\r{COLOR_RED}[{i}/{index}] Error running Goblint analysis (non incremental){COLOR_RESET}{SPACE}")
+            meta_store_evals(vars, evals, narrow_reuses, i)
+
+            vars = evals = narrow_reuses = -1
+            command = f'{goblint_executable_path} {os.path.join(temp_dir, "p_0_check.c")} {params.strip()} --enable incremental.load -v'
+            result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            if result.returncode == 0:
+                output = remove_ansi_escape_sequences(result.stdout)
+
+                match = re.search(r"vars = (\d+)", output)
+                if match:
+                    vars = int(match.group(1))
+                match = re.search(r"evals = (\d+)", output)
+                if match:
+                    evals = int(match.group(1))
+                match = re.search(r"narrow_reuses = (\d+)", output)
+                if match:
+                    narrow_reuses = int(match.group(1))
+            else:
+                print(f"\r{COLOR_RED}[{i}/{index}] Error running Goblint analysis (incremental){COLOR_RESET}{SPACE}")
+                print(result.stdout)
+                print(result.stderr)
+            meta_store_evals_incremental(vars, evals, narrow_reuses, i)
+
+            print(f"\r[{i}/{index}] Checked number of evaluations{SPACE}", end='')
+
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{SPACE}{COLOR_RESET}")
 
 

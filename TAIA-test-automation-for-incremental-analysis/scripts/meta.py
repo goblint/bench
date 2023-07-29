@@ -24,6 +24,12 @@ META_SUB_TYPE = 'subtype'
 META_LINES = 'lines'
 META_PROMPT_TOKENS = 'tokens_promt'
 META_COMPLETION_TOKENS = 'tokens_completion'
+META_VARS = 'vars'
+META_EVALS = 'evals'
+META_NARROW_REUSES = 'narrow_reuses'
+META_VARS_INCREMENTAL = 'vars_incremental'
+META_EVALS_INCREMENTAL = 'evals_incremental'
+META_NARROW_REUSES_INCREMENTAL = 'narrow_reuses_incremental'
 
 META_EXCEPTION_CAUSE_MUTATION_GCC = 'mutation_gcc'
 META_EXCEPTION_CAUSE_CREATE_CHECK_PROCESS= 'create_check_process'
@@ -91,6 +97,22 @@ def meta_create_index(index, type, sub_type, lines):
         META_SUB_TYPE: sub_type,
         META_LINES: lines
     }
+
+def meta_store_evals(vars, evals, narrow_reuses, index):
+    global _DATA
+    _DATA[_meta_index(index)].update({
+        META_VARS: vars,
+        META_EVALS: evals,
+        META_NARROW_REUSES: narrow_reuses
+    })
+
+def meta_store_evals_incremental(vars, evals, narrow_reuses, index):
+    global _DATA
+    _DATA[_meta_index(index)].update({
+        META_VARS_INCREMENTAL: vars,
+        META_EVALS_INCREMENTAL: evals,
+        META_NARROW_REUSES_INCREMENTAL: narrow_reuses
+    })
 
 def meta_exception(index, cause, cmd_result_or_string):
     global _DATA
@@ -187,6 +209,18 @@ def stats_get_exception_by_type_subtype(data):
 
 def stats_get_failed_tests(data):
     return 1 if data.get(META_TEST_FAILED, False) else 0
+
+def stats_get_evals_by_type(data):
+    n = data[META_N]
+    evals_by_type = []
+    for index in range(1, n + 1):
+        evals = data.get(_meta_index(index), {}).get(META_EVALS, -1)
+        evals_inc = data.get(_meta_index(index), {}).get(META_EVALS_INCREMENTAL, -1)
+        if evals >= 0:
+            evals_by_type.append(('Evals (non incremental)', evals))
+        if evals_inc >= 0:
+            evals_by_type.append(('Evals (incremental)', evals_inc))
+    return evals_by_type
 
 def stats_get_crash(data):
     return 1 if data.get(META_CRASH, False) else 0

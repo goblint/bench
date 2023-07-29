@@ -75,6 +75,7 @@ def stats_print(stats_path):
     exception_by_type = []
     exception_by_cause = []
     performance_by_measurement = []
+    evals_by_type = []
     tokens = []
 
     total_execution_time_seconds = int(stats_data.pop(TOTAL_EXECUTION_TIME_SECONDS, 0))
@@ -89,11 +90,15 @@ def stats_print(stats_path):
         exception_by_type = _merge_collector_with_type(exception_by_type, stats_get_exception_by_type_subtype(data))
         exception_by_cause = _merge_collector_with_type(exception_by_cause, stats_get_exceptions_by_cause(data))
         performance_by_measurement.extend(stats_get_performance(data))
+        evals_by_type.extend(stats_get_evals_by_type(data))
         tokens.extend(stats_get_tokens(data))
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
     performance_max = _max_collector_with_type(performance_by_measurement)
     performance_min = _min_collector_with_type(performance_by_measurement)
+    evals_avg = _average_collector_with_type(evals_by_type)
+    evals_max = _max_collector_with_type(evals_by_type)
+    evals_min = _min_collector_with_type(evals_by_type, ignore_zero=False)
     token_avg = _average_collector_with_type(tokens)
     token_max = _max_collector_with_type(tokens)
     token_min = _min_collector_with_type(tokens)
@@ -115,6 +120,10 @@ def stats_print(stats_path):
     _print_collector_with_type(performance_avg, 'Average performance in ms', None)
     _print_collector_with_type(performance_max, 'Worst performance in ms', None)
     _print_collector_with_type(performance_min, 'Best performance in ms', None)
+    if evals_by_type:
+        _print_collector_with_type(evals_avg, 'Average evals', None)
+        _print_collector_with_type(evals_max, 'Maximum evals', None)
+        _print_collector_with_type(evals_min, 'Minimum evals', None)
     if tokens:
         _print_collector_with_type(token_avg, 'Average tokens', None)
         _print_collector_with_type(token_max, 'Maximum tokens', None)
@@ -160,10 +169,10 @@ def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
-def _min_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str, int]]:
+def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True) -> list[tuple[str, int]]:
     min_dict = {}
     for k, v in collector:
-        if v == 0:
+        if v == 0 and ignore_zero:
             continue
         if k in min_dict:
             min_dict[k] = min(min_dict[k], v)

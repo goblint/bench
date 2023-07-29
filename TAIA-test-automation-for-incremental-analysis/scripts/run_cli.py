@@ -28,7 +28,7 @@ logo = f'''
 '''
 
 
-def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
+def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_evaluations):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -48,7 +48,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         perf_overall = meta_start_performance(META_PERF_OVERALL)
 
         # Generate the programs
-        generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
+        generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_evaluations)
 
         # Run tests
         ret = ret_precision = 0
@@ -123,7 +123,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
+def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_evaluations):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -280,7 +280,7 @@ def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_te
     for path in include_paths:
         validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics)
+    run(goblint_path, llvm_path, input_file, enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_evaluations)
 
 
 def main():
@@ -304,6 +304,8 @@ def main():
     parser.add_argument('-t', '--test-name', help='Test name')
     parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
     parser.add_argument('-s', '--statistics', action='store_true', help='Print statistics about the run')
+    parser.add_argument('-e', '--evaluations', action='store_true', help='Store number of vars, evals and narrow_reuses in statistic')
+
 
     # Add clang options
     add_clang_options(parser)
@@ -398,7 +400,7 @@ def main():
     if test_name is not None and not check_test_dir_name(test_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_clang, args.enable_ai, operators, args.goblint_config, test_name, create_tests, precision, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics)
+    cli(args.enable_clang, args.enable_ai, operators, args.goblint_config, test_name, create_tests, precision, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics, args.evaluations)
 
 
 if __name__ == "__main__":

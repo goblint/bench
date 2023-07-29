@@ -114,10 +114,10 @@ do
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Running file $file${color_reset}"
     if [ "$no_print" = true ]; then
-        ./RUN.sh -i "$file" $goblint_args > /dev/null
+        ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
     else
         printf "\n"
-        ./RUN.sh -i "$file" $goblint_args
+        ./RUN.sh -i "$file" ${goblint_args[@]}
     fi
 
     # Check for different return values
