@@ -123,7 +123,7 @@ def stats_print(stats_path):
     if evals_by_type:
         _print_collector_with_type(evals_avg, 'Average evals', None)
         _print_collector_with_type(evals_max, 'Maximum evals', None)
-        _print_collector_with_type(evals_min, 'Minimum evals', None)
+        _print_collector_with_type(evals_min, 'Minimum evals', None,  ignore_zero=False)
     if tokens:
         _print_collector_with_type(token_avg, 'Average tokens', None)
         _print_collector_with_type(token_max, 'Maximum tokens', None)
@@ -182,11 +182,11 @@ def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True)
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
-def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int):
+def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int,  ignore_zero=True):
     print(f'{title}:')
     sum = 0
     for (k,v) in collector:
-        if v == 0: continue
+        if v == 0 and ignore_zero: continue
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
         sum += v
     if avg_sum is not None:

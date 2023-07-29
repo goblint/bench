@@ -229,10 +229,10 @@ if [ "$success_length" -eq 0 ]; then color=${color_grey}; else color=${color_gre
 printf "${color}Number of successfully executed files: $success_length\n"
 
 if [ "$error_gcc_input_length" -eq 0 ]; then color=${color_grey}; else color=${color_reset}; fi
-printf "${color}Number of files that did not compile with gcc: $failed_length\n"
+printf "${color}Number of files that did not compile with gcc: $error_gcc_input_length\n"
 
 if [ "$error_gcc_cil_length" -eq 0 ]; then color=${color_grey}; else color=${color_reset}; fi
-printf "${color}Number of files that did not compile with gcc after cil transformation: $failed_length\n"
+printf "${color}Number of files that did not compile with gcc after cil transformation: $error_gcc_cil_length\n"
 
 if [ "$failed_length" -eq 0 ]; then color=${color_grey}; else color=${color_orange}; fi
 printf "${color}Number of files that failed the tests: $failed_length\n"
