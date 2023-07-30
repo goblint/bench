@@ -165,7 +165,7 @@ def extract_from_analyzer_log(log):
     runtime_pattern = 'Default[ ]+(?P<CPU_runtime>[0-9\.]+)s[ ]+(?P<runtime>[0-9\.]+)s'
     analysis_time_pattern = 'analysis[ ]+(?P<CPU_analysis_time>[0-9\.]+)s[ ]+(?P<analysis_time>[0-9\.]+)s'
     solving_time_pattern = 'solving[ ]+(?P<CPU_solving_time>[0-9\.]+)s[ ]+(?P<solving_time>[0-9\.]+)s'
-    change_info_pattern = 'change_info = { unchanged = (?P<unchanged>[0-9]*); changed = (?P<changed>[0-9]*) \\(with unchangedHeader = (?P<changed_unchanged_header>[0-9]*)\\); added = (?P<added>[0-9]*); removed = (?P<removed>[0-9]*) }'
+    change_info_pattern = 'change_info = { unchanged = (?P<unchanged>[0-9]*); changed = (?P<changed>[0-9]*); added = (?P<added>[0-9]*); removed = (?P<removed>[0-9]*) }'
 
     runtime = find_line(runtime_pattern, log)
 
