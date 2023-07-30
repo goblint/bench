@@ -52,12 +52,13 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     print_separator()
     params = _get_params_from_file(program_0_path)
     params = _fix_params(params)
-    for i in range(index + 1):
+    max_index = index
+    for i in range(max_index + 1):
         file_path = os.path.join(temp_dir, f"p_{i}.c")
 
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_mutation_gcc = meta_start_performance(META_PERF_MUTATION_GCC)
-        print(f"\r[{i}/{index}] Check if mutated program compiled with gcc...", end='')
+        print(f"\r[{i}/{max_index}] Check if mutated program compiled with gcc...", end='')
         cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
@@ -68,27 +69,27 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_GCC)
                 sys.exit(RETURN_ERROR_GCC_INPUT)
             else:
-                print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc{COLOR_RESET}{SPACE}")
-                meta_exception(index, META_EXCEPTION_CAUSE_MUTATION_GCC, result)
+                print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Skipped mutation {i} as it did not compile with gcc{COLOR_RESET}{SPACE}")
+                meta_exception(i, META_EXCEPTION_CAUSE_MUTATION_GCC, result)
                 continue
         meta_stop_performance(perf_mutation_gcc)
         
         # Add the goblint checks
-        print(f"\r[{i}/{index}] Generating goblint checks...{SPACE}", end='')
+        print(f"\r[{i}/{max_index}] Generating goblint checks...{SPACE}", end='')
         if meta_exception_exists(i):
-            print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
+            print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
             continue
         perf_generate_check = meta_start_performance(META_PERF_CHECKS_GENERATE)
         exception = add_check(file_path, goblint_executable_path, params, i)
         meta_stop_performance(perf_generate_check)
         if not exception:
-            print(f"\r{COLOR_YELLOW}[{i}/{index}] Could not add checks to program with mutation.{COLOR_RESET}{SPACE}")
+            print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Could not add checks to program with mutation.{COLOR_RESET}{SPACE}")
             continue
         file_path = os.path.join(temp_dir, f"p_{i}_check.c")
 
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_checks_gcc = meta_start_performance(META_PERF_CHECKS_GCC)
-        print(f"\r[{i}/{index}] Check if program with checks compiles with gcc...", end='')
+        print(f"\r[{i}/{max_index}] Check if program with checks compiles with gcc...", end='')
         cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
@@ -99,8 +100,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_GCC)
                 sys.exit(RETURN_ERROR_GCC_CIL)
             else:
-                print(f"\r{COLOR_YELLOW}[{i}/{index}] Skipped mutation {i} as it did not compile with gcc after generating the checks{COLOR_RESET}{SPACE}")
-                meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK_GCC, result)
+                print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Skipped mutation {i} as it did not compile with gcc after generating the checks{COLOR_RESET}{SPACE}")
+                meta_exception(i, META_EXCEPTION_CAUSE_CREATE_CHECK_GCC, result)
                 continue
         meta_stop_performance(perf_checks_gcc)
 
@@ -120,7 +121,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         # Run incremental procedure to get the number of variables, evaluations and narrow resuses
         if enable_evaluations and i != 0 and not meta_exception_exists(i):
             vars = evals = narrow_reuses = -1
-            print(f"\r[{i}/{index}] Check number of evaluations...{SPACE}", end='')
+            print(f"\r[{i}/{max_index}] Check number of evaluations...{SPACE}", end='')
             command = f'{goblint_executable_path} {os.path.join(temp_dir, f"p_{i}_check.c")} {params.strip()} --enable incremental.save -v'
             result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if result.returncode == 0:
@@ -135,7 +136,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 if match:
                     narrow_reuses = int(match.group(1))
             else:
-                print(f"\r{COLOR_RED}[{i}/{index}] Error running Goblint analysis (non incremental){COLOR_RESET}{SPACE}")
+                print(f"\r{COLOR_RED}[{i}/{max_index}] Error running Goblint analysis (non incremental){COLOR_RESET}{SPACE}")
             meta_store_evals(vars, evals, narrow_reuses, i)
 
             vars = evals = narrow_reuses = -1
@@ -154,12 +155,12 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 if match:
                     narrow_reuses = int(match.group(1))
             else:
-                print(f"\r{COLOR_RED}[{i}/{index}] Error running Goblint analysis (incremental){COLOR_RESET}{SPACE}")
+                print(f"\r{COLOR_RED}[{i}/{max_index}] Error running Goblint analysis (incremental){COLOR_RESET}{SPACE}")
                 print(result.stdout)
                 print(result.stderr)
             meta_store_evals_incremental(vars, evals, narrow_reuses, i)
 
-            print(f"\r[{i}/{index}] Checked number of evaluations{SPACE}", end='')
+            print(f"\r[{i}/{max_index}] Checked number of evaluations{SPACE}", end='')
 
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{SPACE}{COLOR_RESET}")
 
