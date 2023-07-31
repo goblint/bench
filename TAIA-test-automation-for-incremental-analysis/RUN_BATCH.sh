@@ -112,7 +112,7 @@ do
     done
 
     # Run the command with remaining arguments
-    printf "${color_blue}[BATCH][${index}/${files_length}] Processing file $file${color_reset}"
+    printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     if [ "$no_print" = true ]; then
         ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
     else
@@ -123,11 +123,11 @@ do
     # Check for different return values
     case $? in
         0)
-            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded (${file})"
+            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded (${file})  "
             success_files+=("$file")
             ;;
         100)
-            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})   "
+            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})      "
             failed_files+=("$file")
             ;;
         101)
