@@ -91,35 +91,6 @@ def getOperatorDescriptionsForAI():
 
 
 #######################################################################
-############### Regex strings for removing parameters #################
-REGEX_PARAMETER_REMOVAL = [
-    # Do not use witness options as the witness information can not be used for the incremental analysis
-    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*unassume[\'"]*',
-    r'--set [\'"]*witness\.yaml\.validate[\'"]* \S*',
-    r'--set [\'"]*witness\.yaml\.unassume[\'"]* \S*',
-    # Do not use autotune as it might change analyses that must not be changes during incremental analysis
-    r'--enable [\'"]*ana\.autotune\.enabled[\'"]*',
-    # Do not disable warn asserts as then the update_suite ruby script can't check the annotations
-    r'--disable [\'"]*warn\.assert[\'"]*',
-    # Do not use transformation assert as it interferes with the checks generated for the tester
-    r'--set [\'"]*trans\.activated\[\+\][\'"]* [\'"]*assert[\'"]*',
-    # Remove apron and affeq as there is no marshalling for incremental analysis supported
-    # See: https://github.com/goblint/analyzer/issues/558#issuecomment-1479475503
-    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*',
-    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*',
-    # Remove file analysis as these programs usally depend on external files which may not be accesible
-    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*',
-    # Optimisations activate the compiler flags which cause merging problems with GNU inline
-    # See: https://github.com/goblint/cil/issues/149
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*',
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*',
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*'
-]
-############### Regex strings for removing parameters #################
-#######################################################################
-
-
-#######################################################################
 ######################## Enums for mutators ###########################
 class GenerateType(Enum):
     INPUT = 'INPUT'
