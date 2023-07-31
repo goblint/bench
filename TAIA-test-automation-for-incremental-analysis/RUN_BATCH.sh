@@ -114,10 +114,10 @@ do
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     if [ "$no_print" = true ]; then
-        ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
+        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
     else
         printf "\n"
-        ./RUN.sh -i "$file" ${goblint_args[@]}
+        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]}
     fi
 
     # Check for different return values
@@ -138,6 +138,10 @@ do
             printf "$\r${color_reset}[BATCH][${index}/${files_length}] The provided file did not compile with gcc after cil transformation (${file})"
             gcc_error_cil+=("$file")
             ;;
+        124)
+            printf "$\r${color_yellow}[BATCH][${index}/${files_length}] Execution timed out after 5 minutes (${file})"
+            timeout_files+=("$file")
+            ;;
         *)
             printf "$?$\r${color_red}[BATCH][${index}/${files_length}] Exception during execution (${file})"
             exception_files+=("$file")
@@ -150,7 +154,7 @@ do
     if [ "$statistics" = true ]; then
         num_zeros=$(echo -n $files_length | wc -c)
         format_string="%0${num_zeros}d"
-        cp ./temp/meta.yaml $statistics_temp_dir/input-$(printf "$format_string" $index).yaml
+        cp ./temp/meta.yaml $statistics_temp_dir/input-$(printf "$format_string" $index).yaml 2> /dev/null
     fi
     printf "\r"
     
@@ -162,6 +166,7 @@ failed_length=${#failed_files[@]}
 exception_length=${#exception_files[@]}
 error_gcc_input_length=${#gcc_error_input[@]}
 error_gcc_cil_length=${#gcc_error_cil[@]}
+timeout_length=${#timeout_files[@]}
 printf "\n\n${color_blue}[BATCH] Batch finished running $files_length input files${color_reset}\n\n"
 
 # Print all ignored files
@@ -182,7 +187,7 @@ if [ ${#success_files[@]} -ne 0 ]; then
     printf "${color_reset}\n"
 fi
 
-# Print all files for which an exception occurred during execution
+# Print all files with gcc error
 if [ ${#gcc_error_input[@]} -ne 0 ]; then
     printf "${color_reset}The following $error_gcc_input_length files did not compile with gcc:\n"
     for file in "${gcc_error_input[@]}"; do
@@ -191,10 +196,19 @@ if [ ${#gcc_error_input[@]} -ne 0 ]; then
     printf "${color_reset}\n"
 fi
 
-# Print all files for which an exception occurred during execution
+# Print all files with gcc cil error
 if [ ${#gcc_error_cil[@]} -ne 0 ]; then
     printf "${color_reset}The following $error_gcc_cil_length files did not compile with gcc after cil transformation:\n"
     for file in "${gcc_error_cil[@]}"; do
+        printf "$file\n"
+    done
+    printf "${color_reset}\n"
+fi
+
+# Print all files with timeout
+if [ ${#timeout_files[@]} -ne 0 ]; then
+    printf "${color_yellow}The following $timeout_length files timed out:\n"
+    for file in "${timeout_files[@]}"; do
         printf "$file\n"
     done
     printf "${color_reset}\n"
@@ -233,6 +247,9 @@ printf "${color}Number of files that did not compile with gcc: $error_gcc_input_
 
 if [ "$error_gcc_cil_length" -eq 0 ]; then color=${color_grey}; else color=${color_reset}; fi
 printf "${color}Number of files that did not compile with gcc after cil transformation: $error_gcc_cil_length\n"
+
+if [ "$timeout_length" -eq 0 ]; then color=${color_grey}; else color=${color_yellow}; fi
+printf "${color}Number of timed out files: $timeout_length\n"
 
 if [ "$failed_length" -eq 0 ]; then color=${color_grey}; else color=${color_orange}; fi
 printf "${color}Number of files that failed the tests: $failed_length\n"
