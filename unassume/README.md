@@ -15,8 +15,8 @@ Goblint: d480bbcf3e17488e9ea0504730183c49701aef59
 * solving cputime: 2.237s → 1.604s = 28.3%
 
 Goblint: f5a1641ef64a4b6d5242098c3dbcc0340f63e557
-* evals: 7932 → 5575 = 29.7%
-* solving cputime: 2.435s → 1.942s = 20.4%
+* evals: 7932 → 4683 = 41.0%
+* solving cputime: 2.590 → 1.689s = 34.8%
 
 Evals bisect:
 * master: 8022
