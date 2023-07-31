@@ -114,10 +114,10 @@ do
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     if [ "$no_print" = true ]; then
-        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
+        timeout 1 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
     else
         printf "\n"
-        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]}
+        timeout 1 ./RUN.sh -i "$file" ${goblint_args[@]}
     fi
 
     # Check for different return values
@@ -141,6 +141,7 @@ do
         124)
             printf "$\r${color_yellow}[BATCH][${index}/${files_length}] Execution timed out after 5 minutes (${file})"
             timeout_files+=("$file")
+            printf "command: \"-\"\ninput: $file\nn: 0\ncrash: true\ncrash_message: \"Timeout\"" > ./temp/meta.yaml
             ;;
         *)
             printf "$?$\r${color_red}[BATCH][${index}/${files_length}] Exception during execution (${file})"
@@ -150,11 +151,10 @@ do
     printf "${color_reset}\n"
 
     # Copy the meta file to the statistics collector directory
-    printf "${color_grey}Copy meta file...${color_reset}"
     if [ "$statistics" = true ]; then
         num_zeros=$(echo -n $files_length | wc -c)
         format_string="%0${num_zeros}d"
-        cp ./temp/meta.yaml $statistics_temp_dir/input-$(printf "$format_string" $index).yaml 2> /dev/null
+        cp ./temp/meta.yaml $statistics_temp_dir/input-$(printf "$format_string" $index).yaml
     fi
     printf "\r"
     
