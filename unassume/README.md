@@ -18,6 +18,14 @@ Goblint: f5a1641ef64a4b6d5242098c3dbcc0340f63e557
 * evals: 7932 → 5575 = 29.7%
 * solving cputime: 2.435s → 1.942s = 20.4%
 
+Evals bisect:
+* master: 8022
+* regression e94b0cce9a15ebbd5a20f063dcf08ba8a17289da
+* 7c365ba98: 5735
+* orig: 7138
+
+
+
 ### pfscan
 ```console
 goblint --conf bench-yaml.json ../pthread/pfscan_comb.c -v
