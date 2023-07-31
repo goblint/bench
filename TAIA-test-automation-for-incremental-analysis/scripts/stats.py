@@ -183,13 +183,15 @@ def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True)
 
 
 def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int,  ignore_zero=True):
+    if not collector:
+        return
     print(f'{title}:')
     sum = 0
     for (k,v) in collector:
         if v == 0 and ignore_zero: continue
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
         sum += v
-    if avg_sum is not None:
+    if avg_sum is not None and avg_sum != 0:
         print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
         print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
     return sum
