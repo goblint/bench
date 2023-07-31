@@ -29,6 +29,72 @@ def generate_clang_mutations(program_path, clang_tidy_path, analyzer_path, mutat
 
     return index
 
+#######################################################################
+####### Functions for clang tidy checks (change for new checks) #######
+
+def get_default_operators():
+    return Operators(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
+
+
+def add_clang_options(parser):
+    parser.add_argument("-rfb", "--remove-function-body", action="store_true",
+                        help="Option for \"remove function body\" operator")
+    parser.add_argument("-uoi", "--unary-operator-inversion", action="store_true",
+                        help="Option for \"unary operator inversion\" operator")
+    parser.add_argument("-ror", "--relational-operator-replacement", action="store_true",
+                        help="Option for \"relational operator replacement\" operator")
+    parser.add_argument("-cr", "--constant-replacement", action="store_true",
+                        help="Option for \"constant replacement\" operator")
+    parser.add_argument("-rt", "--remove-thread", action="store_true", help="Option for \"remove thread\" operator")
+    parser.add_argument("-lcr", "--logical-connector-replacement", action="store_true",
+                        help="Option for \"logical connector replacement\" operator")
+    parser.add_argument("-ris", "--remove-if-statement", action="store_true",
+                        help="Option for \"remove if statement\" operator")
+    
+
+def get_operators_from_args(args):
+    return Operators(args.remove_function_body, args.unary_operator_inversion,
+                     args.relational_operator_replacement, args.constant_replacement,
+                     args.remove_thread, args.logical_connector_replacement, args.remove_if_statement)
+
+
+def check_for_operator_selection_without_enabling_clang(parser, args):
+    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
+                or args.constant_replacement or args.remove_thread or args.logical_connector_replacement or args.remove_if_statement) \
+                and not args.enable_clang:
+            parser.error("Setting single mutation operator only takes affect when also the clang mutation was enabled by the command line (-m)!")
+
+
+def interactively_ask_for_operators(questionary):
+    selected_operators = questionary.checkbox(
+        'Select the mutation operators:',
+        choices=[
+            questionary.Choice('remove-function-body (RFB)', checked=True),
+            questionary.Choice('unary-operator-inversion (UOI)', checked=True),
+            questionary.Choice('relational-operator-replacement (ROR)', checked=True),
+            questionary.Choice('constant-replacement (CR)', checked=True),
+            questionary.Choice('remove-thread (RT)', checked=True),
+            questionary.Choice('logical-connector-replacement (LCR)', checked=True),
+            questionary.Choice('remove-if-statement (RIS)', checked=True)
+        ]).ask()
+    operators = Operators(
+        rfb='remove-function-body (RFB)' in selected_operators,
+        uoi='unary-operator-inversion (UOI)' in selected_operators,
+        ror='relational-operator-replacement (ROR)' in selected_operators,
+        cr='constant-replacement (CR)' in selected_operators,
+        rt='remove-thread (RT)' in selected_operators,
+        lcr='logical-connector-replacement (LCR)' in selected_operators,
+        ris='remove-if-statement (RIS)' in selected_operators
+    )
+    return operators
+
+
+def get_operator_descriptions_for_ai():
+ return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
+
+####### Functions for clang tidy checks (change for new checks) #######
+#######################################################################
+
 
 def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutation_name, index):
     print_separator()

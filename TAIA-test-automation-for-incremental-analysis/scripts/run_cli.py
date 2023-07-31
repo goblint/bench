@@ -9,6 +9,7 @@ from generate_clang_mutations import add_clang_options
 from generate_programs import generate_programs
 from generate_tests import generate_tests
 from run_tests import run_tests
+from generate_clang_mutations import get_default_operators, interactively_ask_for_operators, get_operators_from_args, check_for_operator_selection_without_enabling_clang
 from util import *
 from meta import META_FILENAME
 from stats import *
@@ -159,7 +160,7 @@ def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_te
         enable_ai = 'AI (OpenAI)' in generators
 
         if enable_clang:
-            operators = interactivelyAskForOperators(questionary)
+            operators = interactively_ask_for_operators(questionary)
 
     # Check for API Key
     if enable_ai:
