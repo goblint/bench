@@ -26,3 +26,7 @@ RUN git clone https://github.com/goblint/analyzer.git goblint && \
     cd goblint && \
     make setup && \
     make
+
+RUN mkdir results
+
+COPY --chown=opam eval-prec /home/opam/eval-prec
