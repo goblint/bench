@@ -127,7 +127,7 @@ do
             success_files+=("$file")
             ;;
         100)
-            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})"
+            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})   "
             failed_files+=("$file")
             ;;
         101)
