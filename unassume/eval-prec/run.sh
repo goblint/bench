@@ -5,78 +5,76 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-GOBLINTPARALLEL=1
-CPACHECKERPARALLEL=1
-ULTIMATEPARALLEL=1
-VALIDATEPARALLEL=1
+GOBLINT_PARALLEL=1
+CPACHECKER_PARALLEL=1
+ULTIMATE_PARALLEL=1
+
+# read-only and overlay dirs for Value too large for defined data type workaround
+BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR"
 
 mkdir $RESULTSDIR || true
 
 # Run verification
 cd $MYBENCHDIR/../goblint
-# read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $GOBLINTPARALLEL $MYBENCHDIR/goblint.xml
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
 cd $MYBENCHDIR/../CPAchecker-2.2-unix
-# read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/cpachecker.xml
+$BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
 
 cd $MYBENCHDIR/../UAutomizer-linux
-# read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $ULTIMATEPARALLEL $MYBENCHDIR/uautomizer.xml
+$BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
 
 # Extract witness directory
 cd $RESULTSDIR
-LOGDIR=`echo goblint.*.files`
-echo $LOGDIR
-LOGDIR2=`echo cpachecker.*.files`
-echo $LOGDIR2
-LOGDIR4=`echo uautomizer.*.files`
-echo $LOGDIR4
+GOBLINT_FILES=`echo goblint.*.files`
+echo $GOBLINT_FILES
+CPACHECKER_FILES=`echo cpachecker.*.files`
+echo $CPACHECKER_FILES
+ULTIMATE_FILES=`echo uautomizer.*.files`
+echo $ULTIMATE_FILES
 
 # Construct conversion XMLs
 cd $MYBENCHDIR
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR4/$LOGDIR4/" -e "s/LOGDIR2/$LOGDIR2/" -e "s/LOGDIR/$LOGDIR/" convert.xml > convert-tmp.xml
+sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/ULTIMATE_FILES/$ULTIMATE_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" witness2invariant.xml > witness2invariant-tmp.xml
 
 # Run conversion
 cd $MYBENCHDIR/../CPAchecker-2.2-unix
-benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/convert-tmp.xml
+$BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/witness2invariant-tmp.xml
 
 cd $RESULTSDIR
-LOGDIR3=`echo convert-tmp.*.files`
-echo $LOGDIR3
+WITNESS2INVARIANT_FILES=`echo witness2invariant-tmp.*.files`
+echo $WITNESS2INVARIANT_FILES
 
-for dir in $LOGDIR3/cpachecker/* ; do
+for dir in $WITNESS2INVARIANT_FILES/cpachecker/* ; do
     echo $dir
     cat $dir/output/invariantWitnesses/*.yaml | sed -e 's|loop_invariant|location_invariant|g' > $dir/witness.yml
 done
-for dir in $LOGDIR3/uautomizer/* ; do
+for dir in $WITNESS2INVARIANT_FILES/uautomizer/* ; do
     echo $dir
     cat $dir/output/invariantWitnesses/*.yaml | sed -e 's|loop_invariant|location_invariant|g' > $dir/witness.yml
 done
 
 # Construct validation XMLs
 cd $MYBENCHDIR
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR3/$LOGDIR3/" -e "s/LOGDIR2/$LOGDIR2/" -e "s/LOGDIR/$LOGDIR/" goblint-validate.xml > goblint-validate-tmp.xml
+sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-validate.xml > goblint-validate-tmp.xml
+sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-guided.xml > goblint-guided-tmp.xml
 
 # Run validation
 cd $MYBENCHDIR/../goblint
-benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
-
-# Merge witness validation results
-cd $RESULTSDIR
-python3 $MYBENCHDIR/../../../benchexec/contrib/mergeBenchmarkSets.py -o . goblint.*.results.goblint.Prec.xml.bz2 goblint-validate-tmp.*.results.goblint.Prec.xml.bz2
-python3 $MYBENCHDIR/../../../benchexec/contrib/mergeBenchmarkSets.py -o . cpachecker.*.results.cpachecker.Prec.xml.bz2 goblint-validate-tmp.*.results.cpachecker.Prec.xml.bz2
-python3 $MYBENCHDIR/../../../benchexec/contrib/mergeBenchmarkSets.py -o . uautomizer.*.results.uautomizer.Prec.xml.bz2 goblint-validate-tmp.*.results.uautomizer.Prec.xml.bz2
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-guided-tmp.xml
 
 # Generate table with merged results and witness validation results
-sed -e "s/LOGDIR3/$LOGDIR3/" -e "s/LOGDIR2/$LOGDIR2/" -e "s/LOGDIR/$LOGDIR/" $MYBENCHDIR/table-generator.xml > table-generator.xml
+cd $RESULTSDIR
+cp $MYBENCHDIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
-table-generator -x table-generator.xml --correct-only -n correct
+cp $MYBENCHDIR/table-generator-full.xml table-generator-full.xml
+table-generator -x table-generator-full.xml -n full
 
 # Decompress all tool outputs for table HTML links
 unzip -o goblint.*.logfiles.zip
 unzip -o cpachecker.*.logfiles.zip
 unzip -o uautomizer.*.logfiles.zip
-unzip -o convert-tmp.*.logfiles.zip
+unzip -o witness2invariant-tmp.*.logfiles.zip
+unzip -o goblint-guided-tmp.*.logfiles.zip
 unzip -o goblint-validate-tmp.*.logfiles.zip
