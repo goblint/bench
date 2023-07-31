@@ -15,15 +15,15 @@ mkdir $RESULTSDIR || true
 # Run verification
 cd $MYBENCHDIR/../goblint
 # read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --no-container --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $GOBLINTPARALLEL $MYBENCHDIR/goblint.xml
+benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $GOBLINTPARALLEL $MYBENCHDIR/goblint.xml
 
 cd $MYBENCHDIR/../CPAchecker-2.2-unix
 # read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --no-container --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/cpachecker.xml
+benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/cpachecker.xml
 
 cd $MYBENCHDIR/../UAutomizer-linux
 # read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --no-container --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $ULTIMATEPARALLEL $MYBENCHDIR/uautomizer.xml
+benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $ULTIMATEPARALLEL $MYBENCHDIR/uautomizer.xml
 
 # Extract witness directory
 cd $RESULTSDIR
@@ -40,7 +40,7 @@ sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR4/$LOGDIR4/" -e "s/LOGDIR2/$LOGDI
 
 # Run conversion
 cd $MYBENCHDIR/../CPAchecker-2.2-unix
-benchexec --no-container --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/convert-tmp.xml
+benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $CPACHECKERPARALLEL $MYBENCHDIR/convert-tmp.xml
 
 cd $RESULTSDIR
 LOGDIR3=`echo convert-tmp.*.files`
@@ -61,7 +61,7 @@ sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR3/$LOGDIR3/" -e "s/LOGDIR2/$LOGDI
 
 # Run validation
 cd $MYBENCHDIR/../goblint
-benchexec --no-container --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
+benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
 
 # Merge witness validation results
 cd $RESULTSDIR
