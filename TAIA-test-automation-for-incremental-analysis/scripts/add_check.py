@@ -33,7 +33,7 @@ def add_check(file_path, goblint_path, params, index):
     _prepend_param_line(file_path_out, params)
     # ALTERNATIVE _preserve_goblint_checks(file_path_out)
     _annotate_extern_check_definitions(file_path_out)
-    success = _annotate_checks(goblint_path, file_path_out, params, index)
+    success = _remove_problematic_checks(goblint_path, file_path_out, params, index)
 
     return success
 
@@ -80,7 +80,7 @@ def _preserve_goblint_checks(file_path):
 
 
 # annotates generated checks depending on the goblint analysis result
-def _annotate_checks(goblint_path, file_path, params, index):
+def _remove_problematic_checks(goblint_path, file_path, params, index):
     # run the analysis
     command = f'{goblint_path} {params.strip()} --set result json-messages {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
