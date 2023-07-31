@@ -58,7 +58,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
 
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_mutation_gcc = meta_start_performance(META_PERF_MUTATION_GCC)
-        print(f"\r[{i}/{max_index}] Check if mutated program compiled with gcc...", end='')
+        print(f"\r[{i}/{max_index}] Step 1) Check if mutated program compiled with gcc...", end='')
         cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
@@ -75,7 +75,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         meta_stop_performance(perf_mutation_gcc)
         
         # Add the goblint checks
-        print(f"\r[{i}/{max_index}] Generating goblint checks...{SPACE}", end='')
+        print(f"\r{SPACE}{SPACE}{SPACE}{SPACE}", end='')
+        print(f"\r[{i}/{max_index}] Step 2) Generating goblint checks...", end='')
         if meta_exception_exists(i):
             print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
             continue
@@ -89,7 +90,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
 
         # Check if inital program and programs after mutation can be compiled with gcc
         perf_checks_gcc = meta_start_performance(META_PERF_CHECKS_GCC)
-        print(f"\r[{i}/{max_index}] Check if program with checks compiles with gcc...", end='')
+        print(f"\r{SPACE}{SPACE}{SPACE}{SPACE}", end='')
+        print(f"\r[{i}/{max_index}] Step 3) Check if program with checks compiles with gcc...", end='')
         cmd = f'gcc {file_path} -c -o /dev/null {include_options(goblint_path)} -I {temp_dir}'
         result = subprocess.run(cmd, shell=True, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode != 0:
@@ -121,7 +123,8 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         # Run incremental procedure to get the number of variables, evaluations and narrow resuses
         if enable_evaluations and i != 0 and not meta_exception_exists(i):
             vars = evals = narrow_reuses = -1
-            print(f"\r[{i}/{max_index}] Check number of evaluations...{SPACE}", end='')
+            print(f"\r{SPACE}{SPACE}{SPACE}{SPACE}", end='')
+            print(f"\r[{i}/{max_index}] Step 4) Check number of evaluations...", end='')
             command = f'{goblint_executable_path} {os.path.join(temp_dir, f"p_{i}_check.c")} {params.strip()} --enable incremental.save -v'
             result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             if result.returncode == 0:
@@ -159,8 +162,6 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                 print(result.stdout)
                 print(result.stderr)
             meta_store_evals_incremental(vars, evals, narrow_reuses, i)
-
-            print(f"\r[{i}/{max_index}] Checked number of evaluations{SPACE}", end='')
 
     print(f"\r{COLOR_GREEN}Generating goblint checks [DONE]{SPACE}{SPACE}{COLOR_RESET}")
 
