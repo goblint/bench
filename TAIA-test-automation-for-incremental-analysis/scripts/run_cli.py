@@ -133,7 +133,7 @@ def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_te
         goblint_path = questionary.text('Enter the path to the goblint repository: ', default="~/Goblint-Repo/analyzer").ask()
         llvm_path = questionary.text('Enter the path to the llvm repository with the modified clang-tidy: ', default="~/Clang-Repo/llvm-project").ask()
         config.update({CONFIG_GOBLINT: goblint_path, CONFIG_LLVM: llvm_path, CONFIG_LAST_INPUT_MUTATION: ''})
-        last_input_mutation = ''
+        last_input_mutation = 'sample-files/threads.c'
         with open(config_path, 'w') as outfile:
             yaml.dump(config, outfile)
     else:
