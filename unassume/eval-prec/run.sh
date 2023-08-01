@@ -5,9 +5,9 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-GOBLINT_PARALLEL=1
-CPACHECKER_PARALLEL=1
-ULTIMATE_PARALLEL=1
+GOBLINT_PARALLEL=2
+CPACHECKER_PARALLEL=2
+ULTIMATE_PARALLEL=2
 
 # read-only and overlay dirs for Value too large for defined data type workaround
 BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR"
@@ -56,13 +56,13 @@ done
 
 # Construct validation XMLs
 cd $MYBENCHDIR
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-validate.xml > goblint-validate-tmp.xml
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-guided.xml > goblint-guided-tmp.xml
+sed -e "s|MYBENCHDIR|$MYBENCHDIR|" -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-guided.xml > goblint-guided-tmp.xml
+sed -e "s|MYBENCHDIR|$MYBENCHDIR|" -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/WITNESS2INVARIANT_FILES/$WITNESS2INVARIANT_FILES/" -e "s/CPACHECKER_FILES/$CPACHECKER_FILES/" -e "s/GOBLINT_FILES/$GOBLINT_FILES/" goblint-validate.xml > goblint-validate-tmp.xml
 
 # Run validation
 cd $MYBENCHDIR/../goblint
-$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
 $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-guided-tmp.xml
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
 
 # Generate table with merged results and witness validation results
 cd $RESULTSDIR

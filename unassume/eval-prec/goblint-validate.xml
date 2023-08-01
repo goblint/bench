@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
-<benchmark tool="goblint" timelimit="900 s" hardtimelimit="960 s" memlimit="6 GB" cpuCores="1">
+<benchmark tool="goblint" timelimit="900 s" hardtimelimit="960 s" memlimit="4 GB" cpuCores="1">
 
   <resultfiles></resultfiles>
 
@@ -8,6 +8,13 @@
   <option name="--enable">dbg.timing.enabled</option>
   <option name="--set">ana.activated[+]</option><option>apron</option>
   <option name="--set">ana.apron.domain</option><option>polyhedra</option>
+  <option name="--enable">ana.apron.strengthening</option>
+
+  <rundefinition name="manual">
+    <requiredfiles>MYBENCHDIR/${rundefinition_name}/${taskdef_name}</requiredfiles>
+    <option name="--witness.yaml.unassume">MYBENCHDIR/${rundefinition_name}/${taskdef_name}</option>
+    <option name="--witness.yaml.validate">MYBENCHDIR/${rundefinition_name}/${taskdef_name}</option>
+  </rundefinition>
 
   <rundefinition name="goblint">
     <requiredfiles>RESULTSDIR/GOBLINT_FILES/${rundefinition_name}/${taskdef_name}/witness.yml</requiredfiles>
