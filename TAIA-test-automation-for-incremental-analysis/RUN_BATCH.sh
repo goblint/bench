@@ -117,7 +117,6 @@ do
     if [ "$no_print" = true ]; then
         timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
         ret_code=$?
-        echo "Return code: $ret_code"  # Add this line for debugging
     else
         printf "\n"
         timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]}
