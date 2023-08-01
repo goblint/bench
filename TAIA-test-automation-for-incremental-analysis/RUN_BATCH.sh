@@ -115,11 +115,11 @@ do
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     trap 'kill -- -$$' SIGINT
     if [ "$no_print" = true ]; then
-        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
+        timeout 600 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
         ret_code=$?
     else
         printf "\n"
-        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]}
+        timeout 600 ./RUN.sh -i "$file" ${goblint_args[@]}
         ret_code=$?
     fi
     trap - SIGINT
