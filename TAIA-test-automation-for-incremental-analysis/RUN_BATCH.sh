@@ -114,10 +114,10 @@ do
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     if [ "$no_print" = true ]; then
-        timeout 1 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
+        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
     else
         printf "\n"
-        timeout 1 ./RUN.sh -i "$file" ${goblint_args[@]}
+        timeout 300 ./RUN.sh -i "$file" ${goblint_args[@]}
     fi
 
     # Check for different return values
