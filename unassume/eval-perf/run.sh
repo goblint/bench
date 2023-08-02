@@ -18,12 +18,10 @@ $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
 # Construct validation XMLs
 cd $MYBENCHDIR
-sed -e "s|MYBENCHDIR|$MYBENCHDIR|" goblint-guided.xml > goblint-guided-tmp.xml
 sed -e "s|MYBENCHDIR|$MYBENCHDIR|" goblint-validate.xml > goblint-validate-tmp.xml
 
 # Run validation
 cd $MYBENCHDIR/../goblint
-$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-guided-tmp.xml
 $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
 
 # Generate table with merged results and witness validation results
@@ -33,5 +31,4 @@ table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
 unzip -o goblint.*.logfiles.zip
-unzip -o goblint-guided-tmp.*.logfiles.zip
 unzip -o goblint-validate-tmp.*.logfiles.zip
