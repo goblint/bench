@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="goblint" timelimit="900 s" hardtimelimit="960 s" memlimit="6 GB" cpuCores="1">
+
+  <resultfiles>**.yml</resultfiles>
+
+  <option name="--conf">conf/svcomp-yaml.json</option>
+  <option name="--enable">dbg.timing.enabled</option>
+  <option name="--set">ana.activated[+]</option><option>apron</option>
+  <option name="--set">ana.apron.domain</option><option>polyhedra</option>
+
+  <rundefinition name="loop-head">
+    <option name="--enable">witness.invariant.loop-head</option>
+    <option name="--disable">witness.invariant.other</option>
+    <option name="--disable">witness.invariant.accessed</option>
+  </rundefinition>
+
+  <tasks name="ReachSafety-Loops">
+    <includesfile>../../../sv-benchmarks/c/ReachSafety-Loops.set</includesfile>
+    <propertyfile expectedverdict="true">../../../sv-benchmarks/c/properties/unreach-call.prp</propertyfile>
+  </tasks>
+
+</benchmark>
