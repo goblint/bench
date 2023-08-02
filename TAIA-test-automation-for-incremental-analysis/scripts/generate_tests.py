@@ -10,7 +10,7 @@ from meta import *
 
 
 # Generate test directory based on previously generated directory with mutated files
-def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precision_test, inplace: bool):
+def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precision_test, inplace: bool, enable_patch_stats):
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
     if not inplace and not check_test_dir_name(directory_name):
@@ -127,7 +127,19 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             if result.returncode == 0:
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
-                meta_empty_diff(i)
+                meta_diff_empty(i)
+            elif enable_patch_stats:
+                added_count = 0
+                removed_count = 0
+                with open(patch_path, 'r') as f:
+                    for line in f:
+                        if line[1:].lstrip().startswith('__goblint_check(') or line.startswith('+++') or line.startswith('---'):
+                            continue
+                        if line.startswith('+'):
+                            added_count += 1
+                        elif line.startswith('-'):
+                            removed_count += 1
+                meta_diff(added_count, removed_count, i)
         else:
             print(f"Creation of patch failed with return code: {result.returncode}")
             meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_PATCH)
@@ -183,7 +195,7 @@ def main():
 
     args = parser.parse_args()
 
-    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, [], args.precision_test, args.inplace)
+    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, [], args.precision_test, args.inplace, None)
 
 
 if __name__ == '__main__':

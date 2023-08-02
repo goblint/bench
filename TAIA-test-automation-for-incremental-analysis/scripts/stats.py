@@ -78,6 +78,8 @@ def stats_print(stats_path):
     evals_by_type = []
     vars_by_type = []
     tokens = []
+    patch_changes = []
+    removed_patch_lines = []
 
     total_execution_time_seconds = int(stats_data.pop(TOTAL_EXECUTION_TIME_SECONDS, 0))
 
@@ -94,6 +96,7 @@ def stats_print(stats_path):
         evals_by_type.extend(stats_get_evals_by_type(data))
         vars_by_type.extend(stats_get_vars_by_type(data))
         tokens.extend(stats_get_tokens(data))
+        patch_changes.extend(stats_get_patch_changes(data))
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
     performance_max = _max_collector_with_type(performance_by_measurement)
@@ -107,6 +110,9 @@ def stats_print(stats_path):
     token_avg = _average_collector_with_type(tokens)
     token_max = _max_collector_with_type(tokens)
     token_min = _min_collector_with_type(tokens)
+    patch_changes_avg = _average_collector_with_type(patch_changes)
+    patch_changes_max = _max_collector_with_type(patch_changes)
+    patch_changes_min = _min_collector_with_type(patch_changes)
 
     # Print results
     if total_execution_time_seconds > 0:
@@ -137,6 +143,10 @@ def stats_print(stats_path):
         _print_collector_with_type(token_avg, 'Average tokens', None)
         _print_collector_with_type(token_max, 'Maximum tokens', None)
         _print_collector_with_type(token_min, 'Minimum tokens', None)
+    if patch_changes:
+        _print_collector_with_type(patch_changes_avg, 'Average changed lines in patch', None)
+        _print_collector_with_type(patch_changes_max, 'Maximum changed lines in patch', None)
+        _print_collector_with_type(patch_changes_min, 'Minimum changed lines in patch', None)
     print_separator()
 
 

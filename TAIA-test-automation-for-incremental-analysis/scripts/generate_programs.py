@@ -7,7 +7,7 @@ from meta import *
 
 # generates programs in the temp_dir
 def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apikey_path, operators, enable_clang,
-                      enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_evaluations):
+                      enable_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_eval_stats):
     # Get Goblint executable path
     goblint_executable_path = os.path.join(goblint_path, 'goblint')
     # Clean working directory
@@ -125,7 +125,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
         meta_stop_performance(perf_annoate_check)
 
         # Run incremental procedure to get the number of variables, evaluations and narrow resuses
-        if enable_evaluations and i != 0 and not meta_exception_exists(i):
+        if enable_eval_stats and i != 0 and not meta_exception_exists(i):
             vars = evals = narrow_reuses = -1
             print(f"\r{SPACE}{SPACE}{SPACE}{SPACE}", end='')
             print(f"\r[{i}/{max_index}] Step 4) Check number of evaluations...", end='')

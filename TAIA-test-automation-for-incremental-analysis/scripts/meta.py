@@ -18,7 +18,9 @@ META_EXCEPTION = 'exception'
 META_EXCEPTION_CAUSE = 'exception_cause'
 META_EXCEPTION_STD_OUT = 'exception_stdout'
 META_EXCEPTION_STD_ERR = 'exception_stderr'
-META_EMPTY_DIFF = 'empty_diff'
+META_DIFF_EMTPY = 'diff_empty'
+META_DIFF_ADDED = 'diff_added'
+META_DIFF_REMOVED = 'diff_removed'
 META_TYPE = 'type'
 META_SUB_TYPE = 'subtype'
 META_LINES = 'lines'
@@ -143,10 +145,16 @@ def meta_get_type_and_subtype(index) -> tuple[str, str]:
     sub_type = _DATA.get(_meta_index(index), {}).get(META_SUB_TYPE, '')
     return (type, sub_type)
 
-def meta_empty_diff(index):
+def meta_diff_empty(index):
     global _DATA
     if _DATA == None: return
-    _DATA[_meta_index(index)][META_EMPTY_DIFF] = True
+    _DATA[_meta_index(index)][META_DIFF_EMTPY] = True
+
+def meta_diff(added_count, removed_count, index):
+    global _DATA
+    if _DATA == None: return
+    _DATA[_meta_index(index)][META_DIFF_ADDED] = added_count
+    _DATA[_meta_index(index)][META_DIFF_REMOVED] = removed_count
 
 def meta_crash_and_store(message):
     global _DATA
@@ -186,7 +194,7 @@ def meta_add_ai_tokens(prompt_tokens, completion_tokens, index):
 def stats_get_performance(data):
     return [
         ('Overall', data.get(META_PERF_OVERALL, 0) // 1000000),
-        ('Pre-processing', data.get(META_PERF_PREP_PROGRAM, 0) // 1000000)
+        ('Pre-processing', data.get(META_PERF_PREP_PROGRAM, 0) // 1000000),
         ('Clang', data.get(META_PERF_CLANG, 0) // 1000000),
         ('AI', data.get(META_PERF_AI, 0) // 1000000),
         ('Gcc Mutation', data.get(META_PERF_MUTATION_GCC, 0) // 1000000),
@@ -202,7 +210,7 @@ def stats_get_mutation_by_type_subtype(data):
 
 
 def stats_get_empty_diff_by_type_subtype(data):
-    return _stats_get_by_type_subtype(data, (lambda index: 1 if data.get(_meta_index(index), {}).get(META_EMPTY_DIFF, False) else 0))
+    return _stats_get_by_type_subtype(data, (lambda index: 1 if data.get(_meta_index(index), {}).get(META_DIFF_EMTPY, False) else 0))
 
 
 def stats_get_exception_by_type_subtype(data):
@@ -276,3 +284,14 @@ def stats_get_tokens(data):
             token_list.append(('Completion Tokens', tokens_completion))
             token_list.append(('Total Tokens', tokens_promt + tokens_completion))
     return token_list
+
+def stats_get_patch_changes(data):
+    n = data[META_N]
+    changes_list = []
+    for index in range(1, n + 1):
+        added = data.get(_meta_index(index), {}).get(META_DIFF_ADDED, -1)
+        removed = data.get(_meta_index(index), {}).get(META_DIFF_REMOVED, -1)
+        if added >= 0 and removed >= 0:
+            changes_list.append(('Added lines', added))
+            changes_list.append(('Removed lines', removed))
+    return changes_list
