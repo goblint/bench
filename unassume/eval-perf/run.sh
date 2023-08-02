@@ -1,41 +1,37 @@
 #!/bin/bash
 
 shopt -s extglob
+set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RESULTSDIR=$MYBENCHDIR/../../../results/st-same
-OURTOOLPARALLEL=4
-VALIDATEPARALLEL=4
+RESULTSDIR=$MYBENCHDIR/../results/eval-perf
+GOBLINT_PARALLEL=2
 
-mkdir $RESULTSDIR
+# read-only and overlay dirs for Value too large for defined data type workaround
+BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTSDIR"
+
+mkdir $RESULTSDIR || true
 
 # Run verification
-cd $MYBENCHDIR/../../../ourtool
-# read-only and overlay dirs for Value too large for defined data type workaround
-benchexec --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $OURTOOLPARALLEL $MYBENCHDIR/ourtool.xml
-
-# Extract witness directory
-cd $RESULTSDIR
-LOGDIR=`echo ourtool.*.files`
-echo $LOGDIR
+cd $MYBENCHDIR/../goblint
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
 # Construct validation XMLs
 cd $MYBENCHDIR
-sed -e "s|RESULTSDIR|$RESULTSDIR|" -e "s/LOGDIR/$LOGDIR/" ourtool-validate.xml > ourtool-validate-tmp.xml
+sed -e "s|MYBENCHDIR|$MYBENCHDIR|" goblint-guided.xml > goblint-guided-tmp.xml
+sed -e "s|MYBENCHDIR|$MYBENCHDIR|" goblint-validate.xml > goblint-validate-tmp.xml
 
 # Run validation
-cd $MYBENCHDIR/../../../ourtool
-benchexec --read-only-dir / --overlay-dir . --hidden-dir /home --outputpath $RESULTSDIR --numOfThreads $VALIDATEPARALLEL $MYBENCHDIR/ourtool-validate-tmp.xml
-
-# Merge witness validation results
-cd $RESULTSDIR
-python3 $MYBENCHDIR/../../../benchexec/contrib/mergeBenchmarkSets.py -o . ourtool.*.results.loop-head.ReachSafety-Loops.xml.bz2 ourtool-validate-tmp.*.results.loop-head.ReachSafety-Loops.xml.bz2
+cd $MYBENCHDIR/../goblint
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-guided-tmp.xml
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint-validate-tmp.xml
 
 # Generate table with merged results and witness validation results
-sed -e "s/LOGDIR/$LOGDIR/" $MYBENCHDIR/table-generator.xml > table-generator.xml
+cd $RESULTSDIR
+cp $MYBENCHDIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
-table-generator -x table-generator.xml --correct-only -n correct
 
 # Decompress all tool outputs for table HTML links
-unzip -o ourtool.*.logfiles.zip
-unzip -o ourtool-validate-tmp.*.logfiles.zip
+unzip -o goblint.*.logfiles.zip
+unzip -o goblint-guided-tmp.*.logfiles.zip
+unzip -o goblint-validate-tmp.*.logfiles.zip
