@@ -149,7 +149,6 @@ def stats_print(stats_path):
     print_separator()
 
 
-
 def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tuples: list[tuple[str, int]]) -> list[tuple[str, int]]:
     current_dict = {k: v for k, v in current_collector}
     for k, v in new_tuples:
@@ -200,19 +199,19 @@ def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True)
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
-def _print_collector_with_type(collector: list[tuple[str, int]], title: str, avg_sum: int,  ignore_zero=True):
+def _print_collector_with_type(collector: list[tuple[str, int]] | list[tuple[str, float]], title: str, avg_sum: int | None,  ignore_zero=True):
     if not collector:
         return
     print(f'{title}:')
-    sum = 0
-    for (k,v) in collector:
+    total = 0
+    for (k, v) in collector:
         if v == 0 and ignore_zero: continue
         print(f'\t{COLOR_YELLOW}{v}{COLOR_RESET} for {k}')
-        sum += v
+        total += v
     if avg_sum is not None and avg_sum != 0:
-        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{sum}{COLOR_RESET} in sum')
-        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{(sum/avg_sum):.4f}{COLOR_RESET} in average')
-    return sum
+        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{total}{COLOR_RESET} in sum')
+        print(f'\t{COLOR_GREY}-> {COLOR_YELLOW}{(total/avg_sum):.4f}{COLOR_RESET} in average')
+    return total
 
 
 def _print_value(value: int, title: str, tab=False):

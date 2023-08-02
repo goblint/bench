@@ -43,7 +43,8 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
     meta_path = os.path.join(temp_path, META_FILENAME)
     meta_create_file(meta_path, input_path)
 
-    exception_occured = False
+    exception_occurred = False
+    ret = ret_precision = 0
     try:
 
         perf_overall = meta_start_performance(META_PERF_OVERALL)
@@ -52,7 +53,6 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_eval_stats)
 
         # Run tests
-        ret = ret_precision = 0
         if is_run_tests:
             test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
             print_separator()
@@ -104,11 +104,11 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         write_meta_file()
 
     except Exception as e:
-        print(f'{COLOR_RED}An unexpected exception occured:')
+        print(f'{COLOR_RED}An unexpected exception occurred:')
         print(e)
         print(COLOR_RESET)
         meta_crash_and_store(f'Unexpected exception for input file {input_path}: {e}')
-        exception_occured = True
+        exception_occurred = True
 
     if statistics:
         timestamp = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
@@ -116,7 +116,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         stats_append_meta(stats_path, meta_path, None)
         stats_print(stats_path)
 
-    if exception_occured:
+    if exception_occurred:
         sys.exit(RETURN_ERROR)
     elif ret != 0 or ret_precision != 0:
         sys.exit(RETURN_TEST_FAILED)
@@ -271,7 +271,6 @@ def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_te
             break
     input_file = validate_path(input_file)
 
-    # add files to include path that are named as the input file but with different ending
     if include_paths is None:
         include_paths = []
     if include_paths:
@@ -296,7 +295,7 @@ def main():
     parser.add_argument('-c', '--goblint-config', help='Path to a goblint config file used to create tests (passing "{}" as argument creates an empty config file)')
     parser.add_argument('-ep', '--enable-precision', action='store_true', help='Run Precision Tests')
     parser.add_argument('-dp', '--disable-precision', action='store_true', help='Do not run Precision Tests')
-    parser.add_argument('-er', '--enable-running', action='store_true', help='Enable ru1nning tests')
+    parser.add_argument('-er', '--enable-running', action='store_true', help='Enable running tests')
     parser.add_argument('-dr', '--disable-running', action='store_true', help='Disable running tests')
     parser.add_argument('-et', '--enable-create-tests', action='store_true', help='Enable creating test files')
     parser.add_argument('-dt', '--disable-create-tests', action='store_true', help='Disable creating test files')
@@ -307,7 +306,6 @@ def main():
     parser.add_argument('-s', '--statistics', action='store_true', help='Print statistics about the run')
     parser.add_argument('-se', '--stats-evaluations', action='store_true', help='Store number of vars, evals and narrow_reuses in statistic')
     parser.add_argument('-sp', '--stats-patches', action='store_true', help='Store number added and removed lines in the patches for statistics')
-
 
     # Add clang options
     add_clang_options(parser)

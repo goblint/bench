@@ -1,15 +1,14 @@
 import argparse
 import ast
 import random
-import time
 from concurrent.futures import ThreadPoolExecutor
 from multiprocessing import Lock
-from generate_clang_mutations import get_operator_descriptions_for_ai
 
 import openai
 
-from util import *
+from generate_clang_mutations import get_operator_descriptions_for_ai
 from meta import *
+from util import *
 
 SEPARATOR_EXPLANATION_START = '<EXPLANATION>'
 SEPARATOR_EXPLANATION_END = '</EXPLANATION>'
@@ -23,7 +22,7 @@ error_counter = 0
 def generate_ai_mutations(program_path, apikey_path, ai_count, num_selected_lines, interesting_lines, ai_16k, index):
     meta_set_n(index + ai_count)
 
-    # Read the api key and organisation
+    # Read the api key and organization
     with open(apikey_path, 'r') as file:
         data = yaml.safe_load(file)
     organisation = data.get('organisation')
@@ -67,7 +66,7 @@ def _iterative_mutation_generation(program_path, interesting_lines, ai_16k, num_
         time.sleep((index * 50) / 1000)  # Sleep depending on index to print the start messages in the right order
         new_path = make_program_copy(program_path, index)
         (response, selected_lines, prompt_tokens, completion_tokens) = _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index)
-        _update_meta(selected_lines, remove_ansi_escape_sequences(response),prompt_tokens, completion_tokens, index, lock)
+        _update_meta(selected_lines, remove_ansi_escape_sequences(response), prompt_tokens, completion_tokens, index, lock)
     except Exception as e:
         print(f"{COLOR_RED}[{index}] Error for request {index}:{COLOR_RESET} {e}")
         _update_meta(None, '', 0, 0, index, lock, exception=e)
@@ -76,7 +75,7 @@ def _iterative_mutation_generation(program_path, interesting_lines, ai_16k, num_
 
 # Makes a gpt request and places the result in the program
 def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max_line, index):
-    # Get the inital lines
+    # Get the initial lines
     with open(new_path, "r") as file:
         lines = file.readlines()
 
@@ -103,7 +102,7 @@ def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max
     new_code_lines = code.splitlines()
     new_code_lines = [line for line in new_code_lines if line != '```' and line != '```c' and line != '``']
 
-    # Comment out the inital lines
+    # Comment out the initial lines
     for i in selected_lines:
         lines[i] = '// ' + lines[i]
 
@@ -123,7 +122,7 @@ def _apply_mutation(new_path, interesting_lines, ai_16k, num_selected_lines, max
 
     explanation_lines = explanation.splitlines()
     limited_explanation = "\n".join(explanation_lines[:4])
-    print(f'{COLOR_GREEN}[{index}] Finished request with {prompt_tokens} promt tokens and {completion_tokens} completion tokens ({prompt_tokens + completion_tokens} total):{COLOR_RESET} {limited_explanation}')
+    print(f'{COLOR_GREEN}[{index}] Finished request with {prompt_tokens} prompt tokens and {completion_tokens} completion tokens ({prompt_tokens + completion_tokens} total):{COLOR_RESET} {limited_explanation}')
 
     return response, selected_lines, prompt_tokens, completion_tokens
 

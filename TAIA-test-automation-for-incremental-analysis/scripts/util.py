@@ -38,7 +38,7 @@ class GenerateType(Enum):
 #######################################################################
 
 
-##### Return Codesconstants #####
+##### Return Codes Constants #####
 RETURN_SUCCESS = 0
 RETURN_ERROR = -1
 RETURN_ERROR_GCC_INPUT = 101

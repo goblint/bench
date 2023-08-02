@@ -11,7 +11,7 @@ For building Clang you need to install some dependencies:
 ## Cloning the repository
  - There are two alternatives for getting the repository
 
-RECOMENDED: You can clone the **Fork** with all the additional checks and options ready:
+RECOMMENDED: You can clone the **Fork** with all the additional checks and options ready:
 `git clone https://github.com/J2000A/llvm-project.git`
 
 For creating all the checks and options by yourself clone the **Official Clang Repository**:
@@ -41,7 +41,7 @@ We will use the **>>check-name<<** again as defined in "Creating the checks".
  `-checks=-*,readability->>check-name<<` Deactivating all checks except >>check-name<<.
 `-fix` Applying the mutations and fail in case of found compiler errors.
 `--fix-warnings` Apply the mutation to warnings and ignore found compiler errors.
-`--quiet-return` Return 0 instad of 1 in case of found compiler warnings and do quiet printing.
+`--quiet-return` Return 0 instead of 1 in case of found compiler warnings and do quiet printing.
 `-line filter='[{"name":"test.c","lines":[[4,4],[14,14]]}]'` Apply the mutations only on line 4 and 14.
 
  - Special Options
@@ -57,8 +57,8 @@ You find more details about the different mutation operators in the [Mutations](
 First run the check without the fix flag, but with `--quiet-return` to see where mutations are possible without applying them. Remember the lines where you actually want to apply the mutation. Make a copy of the input file that you will mutate. Then run the check again with `--fix-warnings` and `-line filter=...` on the copied file to apply only specific mutations and not all at ones.
 
 ## Develop new checks
-Helpfull tutorial: https://www.youtube.com/watch?v=_T-5pWQVxeE
-Use the clang querry tool in the [godbolt compiler explorer](https://godbolt.org/) with for example this input to try out your matchers for the clang-tidy checks:
+Helpfully tutorial: https://www.youtube.com/watch?v=_T-5pWQVxeE
+Use the clang query tool in the [Godbolt compiler explorer](https://godbolt.org/) with for example this input to try out your matchers for the clang-tidy checks:
 ```
 enable output srcloc
 m stmt(ifStmt())

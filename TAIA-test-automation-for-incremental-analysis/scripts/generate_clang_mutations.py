@@ -1,10 +1,9 @@
 import argparse
 import json
 import subprocess
-import sys
 
-from util import *
 from meta import *
+from util import *
 
 
 # Generates mutations with clang-tidy
@@ -31,6 +30,7 @@ def generate_clang_mutations(program_path, clang_tidy_path, analyzer_path, mutat
 
 #######################################################################
 ####### Functions for clang tidy checks (change for new checks) #######
+
 
 def get_default_operators():
     return Operators(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
@@ -59,8 +59,8 @@ def get_operators_from_args(args):
 
 
 def check_for_operator_selection_without_enabling_clang(parser, args):
-    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement \
-                or args.constant_replacement or args.remove_thread or args.logical_connector_replacement or args.remove_if_statement) \
+    if (args.remove_function_body or args.unary_operator_inversion or args.relational_operator_replacement
+        or args.constant_replacement or args.remove_thread or args.logical_connector_replacement or args.remove_if_statement) \
                 and not args.enable_clang:
             parser.error("Setting single mutation operator only takes affect when also the clang mutation was enabled by the command line (-m)!")
 
@@ -90,7 +90,7 @@ def interactively_ask_for_operators(questionary):
 
 
 def get_operator_descriptions_for_ai():
- return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
+    return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
 
 ####### Functions for clang tidy checks (change for new checks) #######
 #######################################################################
@@ -106,14 +106,14 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path,
         index += 1
         new_path = make_program_copy(program_path, index)
         if mutation_name == Operators().rt_s:
-            # When Remove-Thread create wrapper for the thread function and then apply the mutations
+            # When Remove-Thread: Create wrapper for the thread function and then apply the mutations
             if len(lines) != 1:
                 # Needed to prevent conflicts on generating wrappers
                 print(
                     f"{COLOR_RED}ERROR When applying remove_thread there always should be exactly one line{COLOR_RESET}")
             function_name = _get_thread_function_name(clang_tidy_path, analyzer_path, lines, new_path, index)
             _wrap_thread_function(clang_tidy_path, analyzer_path, new_path, function_name, index)
-            lines.append(lines[0] + 5) # Add a line shifted by 5 to compensate for the function wrapping that might add lines before the mutation
+            lines.append(lines[0] + 5)  # Add a line shifted by 5 to compensate for the function wrapping that might add lines before the mutation
         _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, new_path, index)
         meta_create_index(index, GenerateType.CLANG.value, mutation_name, lines)
     return index
@@ -147,7 +147,7 @@ def _get_line_groups(clang_tidy_path, analyzer_path, mutation_name, program_path
         if match:
             macro_match = re.search(macro_pattern, line)
             if macro_match:
-                # for macros add all macro occurrences to the line group
+                # for macros, add all macro occurrences to the line group
                 macro_name = macro_match.group(1)
                 line_number = int(match.group(1))
                 if macro_name not in macro_lines:

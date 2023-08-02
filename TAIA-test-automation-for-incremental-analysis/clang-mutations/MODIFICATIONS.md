@@ -17,4 +17,4 @@ Now you have added all the check we need for the mutations.
 - Replace `./clang-tools-extra/clang-tidy/ClangTidy.cpp`
 - Replace `./clang-tools-extra/clang-tidy/ClangTidy.h`
 - Replace `./clang-tools-extra/clang-tidy/tool/ClangTidyMain.cpp`
-- Replcae `./clang-tools-extra/docs/clang-tidy/index.rst`
+- Replace `./clang-tools-extra/docs/clang-tidy/index.rst`

@@ -1,16 +1,15 @@
 import argparse
 import json
 import subprocess
-import sys
 
-from util import *
 from meta import *
+from util import *
 
 
 # Takes a file and generates the goblint checks
 # Adds a PARAM line
 # Annotates extern goblint checks and dead code goblint checks with // NOWARN
-# Removes check which are dead, fail or are unknown
+# Removes check which is dead, fails or is unknown
 # Stores the file with the appendix "_check"
 # Write information to the meta.yaml file
 def add_check(file_path, goblint_path, params, index):
@@ -20,12 +19,12 @@ def add_check(file_path, goblint_path, params, index):
               f'--set trans.output {file_path_out} {file_path}'
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
-        # Check if program should be stopped
+        # Check if the program should be stopped
         if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}Could not generate checks for intial program. Stopping execution!{COLOR_RESET}")
-            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_PROCESS)
+            print(f"{COLOR_RED}Could not generate checks for initial program. Stopping execution!{COLOR_RESET}")
+            meta_crash_and_store(META_CRASH_MESSAGE_INITIAL_EXCEPTION_ADD_CHECK_PROCESS)
             sys.exit(RETURN_ERROR)
         meta_exception(index, META_EXCEPTION_CAUSE_CREATE_CHECK_PROCESS, result)
         return False
@@ -86,12 +85,12 @@ def _remove_problematic_checks(goblint_path, file_path, params, index):
     result = subprocess.run(command, text=True, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode != 0:
         print(f"\r{COLOR_YELLOW}Error annotating checks for program with index {index}.{COLOR_RESET}")
-        # Check if program should be stopped
+        # Check if the program should be stopped
         if index == 0:
             print(remove_ansi_escape_sequences(result.stdout))
             print(remove_ansi_escape_sequences(result.stderr))
-            print(f"{COLOR_RED}Exception in inital program. Stopping program!{COLOR_RESET}")
-            meta_crash_and_store(META_CRASH_MESSAGE_INITAL_EXCEPTION_ADD_CHECK_PROCESS)
+            print(f"{COLOR_RED}Exception in initial program. Stopping program!{COLOR_RESET}")
+            meta_crash_and_store(META_CRASH_MESSAGE_INITIAL_EXCEPTION_ADD_CHECK_PROCESS)
             sys.exit(RETURN_ERROR)
         meta_exception(index, META_EXCEPTION_CAUSE_VERIFY_CHECK, result)
         return False
@@ -229,4 +228,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Call the process_file function with the provided arguments
-    add_check(args.file, args.goblint, args.params, None, False)
+    add_check(args.file, args.goblint, args.params, None)

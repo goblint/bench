@@ -1,12 +1,11 @@
 import argparse
 import json
 import subprocess
-import sys
 
 import questionary
 
-from util import *
 from meta import *
+from util import *
 
 
 # Generate test directory based on previously generated directory with mutated files
@@ -26,7 +25,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             sys.exit(RETURN_ERROR)
     os.makedirs(target_dir)
 
-    # Place include files in temp directory
+    # Places include files in temp directory
     include_paths_test = []
     for path in include_paths:
         include_path_new = os.path.join(target_dir, os.path.basename(path))
@@ -36,7 +35,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     n = meta_get_n()
 
     # store the paths to the test dirs
-    inital_target_dir = target_dir
+    initial_target_dir = target_dir
     test_paths = [target_dir]
     # count the tests to know when to create a new directory [0; 99]
     current_test_num = 1  # Skip num 0 to align program index with test number
@@ -51,7 +50,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     elif inplace:
         # For inplace test files store them with dir num 100 and rename them later when running to 99
         current_dir_num = 100
-        inital_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
+        initial_target_dir = os.path.join(os.path.dirname(target_dir), '99' + os.path.basename(target_dir)[3:])
 
     # loop threw all generated mutations
     for i in range(n + 1):
@@ -102,13 +101,13 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             test_name = f'{_format_number(current_test_num)}-{generate_type}_p_{_format_number(i)}'
 
         # Select the start and end file of at test
-        inital_program_id = 'p_0'
+        initial_program_id = 'p_0'
         current_program_id = f'p_{i}'
         start_program = os.path.join(temp_dir, current_program_id + '_check_success.c')
-        end_program = os.path.join(temp_dir, inital_program_id + '_check_nofail.c')
-        end_program_precision = os.path.join(temp_dir, inital_program_id + '_check_notinprecise.c')
+        end_program = os.path.join(temp_dir, initial_program_id + '_check_nofail.c')
+        end_program_precision = os.path.join(temp_dir, initial_program_id + '_check_notinprecise.c')
 
-        # Copy mutated code as the inital code
+        # Copy mutated code as the initial code
         shutil.copy2(start_program, os.path.join(target_dir, test_name + '.c'))
         # Create a patch file
         patch_path = os.path.join(target_dir, test_name + '.patch')
@@ -120,7 +119,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         result = subprocess.run(command, shell=True)
         if inplace:
             # For patch files keep the 99 for running inplace after renaming folder
-            _fix_patch_file(patch_path, os.path.basename(inital_target_dir), test_name + '.c')
+            _fix_patch_file(patch_path, os.path.basename(initial_target_dir), test_name + '.c')
         else:
             _fix_patch_file(patch_path, os.path.basename(target_dir), test_name + '.c')
         if result.returncode in [0, 1]:
