@@ -22,8 +22,10 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     # ALTERNATIVE Preserve the __goblint_check() annotations
     # ALTERNATIVE _preserve_goblint_check_annotations(program_0_path)
     # ALTERNATIVE To be added: Also preserve _goblint_assert() and assert()
+    perf_prep = meta_start_performance(META_PERF_PREP_PROGRAM)
     _remove_goblint_check_and_assertions(program_0_path)
     _add_goblint_header_include(program_0_path)
+    meta_stop_performance(perf_prep)
 
     # Place include files in temp directory
     for path in include_paths:
@@ -50,8 +52,10 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
 
     # Add checks with annotations
     print_separator()
+    perf_prep = meta_start_performance(META_PERF_PREP_PROGRAM)
     params = _get_params_from_file(program_0_path)
     params = _fix_params(params)
+    meta_stop_performance(perf_prep)
     max_index = index
     for i in range(max_index + 1):
         file_path = os.path.join(temp_dir, f"p_{i}.c")

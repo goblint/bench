@@ -51,12 +51,13 @@ META_CRASH_MESSAGE_CREATE_TEST_MAX_EXCEEDED = 'create_test_max_dir_exceeded'
 META_CRASH_MESSAGE_CREATE_TEST_PATCH = 'create_test_patch_error'
 
 META_PERF_OVERALL = "perf_overall_ns"
+META_PERF_PREP_PROGRAM = "perf_prepare_program_ns"
 META_PERF_CLANG = "perf_clang_ns"
 META_PERF_AI = "perf_ai_ns"
 META_PERF_MUTATION_GCC = "perf_mutation_gcc_ns"
 META_PERF_CHECKS_GENERATE = "perf_checks_generate_ns"
 META_PERF_CHECKS_VERIFY = "perf_checks_verify_ns"
-META_PERF_CHECKS_GCC = "perf_checks_verify_ns"
+META_PERF_CHECKS_GCC = "perf_checks_gcc_ns"
 META_PERF_GENERATE_TESTS = "perf_write_tests_ns"
 META_PERF_RUN_TESTS = "perf_run_tests_ns"
 
@@ -185,6 +186,7 @@ def meta_add_ai_tokens(prompt_tokens, completion_tokens, index):
 def stats_get_performance(data):
     return [
         ('Overall', data.get(META_PERF_OVERALL, 0) // 1000000),
+        ('Pre-processing', data.get(META_PERF_PREP_PROGRAM, 0) // 1000000)
         ('Clang', data.get(META_PERF_CLANG, 0) // 1000000),
         ('AI', data.get(META_PERF_AI, 0) // 1000000),
         ('Gcc Mutation', data.get(META_PERF_MUTATION_GCC, 0) // 1000000),
