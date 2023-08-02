@@ -25,7 +25,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             sys.exit(RETURN_ERROR)
     os.makedirs(target_dir)
 
-    # Places include files in temp directory
+    # Places include files in test directory
     include_paths_test = []
     for path in include_paths:
         include_path_new = os.path.join(target_dir, os.path.basename(path))
