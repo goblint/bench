@@ -83,12 +83,16 @@ fi
 
 
 
-# Normalize paths in ignore files
+# Get ignore patters from ignore files
 ignore_patterns=()
 for ignore_file in "${ignore_files[@]}"; do
     while IFS= read -r line; do
-        ignore_patterns+=("$(realpath "$line" 2>/dev/null)")
-    done < "$ignore_file"
+        line=$(echo "$line" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')
+        # if line is non-empty and does not start with #
+        if [[ -n "$line" ]] && [[ "$line" != \#* ]]; then
+            ignore_patterns+=("$line")
+        fi
+    done < <(cat "$ignore_file"; printf '\n') # Add newline to end of file
 done
 
 # Find .c files in subdirectories of the specified directory
@@ -104,10 +108,17 @@ do
     # Check if the file should be ignored
     file_realpath=$(realpath "$file")
     for pattern in "${ignore_patterns[@]}"; do
-        if [[ "$file_realpath" == $pattern ]]; then
-            printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file${color_reset}\n"
+        if [[ "$pattern" == *\/\* ]]; then
+            pattern="${pattern%%\/\*}"
+            if [[ "$file_realpath" == *"$pattern"* ]]; then
+                printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file with ignore pattern ${pattern}/*${color_reset}\n"
+                ignored_files+=("$file")
+                continue 2
+            fi
+        elif [[ "$file_realpath" == *"$pattern" ]]; then
+            printf "${color_grey}[BATCH][${index}/${files_length}] Ignoring file $file with ignore pattern ${pattern}${color_reset}\n"
             ignored_files+=("$file")
-            continue 2
+                continue 2
         fi
     done
 
