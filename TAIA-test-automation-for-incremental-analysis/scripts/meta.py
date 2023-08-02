@@ -99,7 +99,7 @@ def meta_create_index(index, type, sub_type, lines):
         META_LINES: lines
     }
 
-def meta_store_evals(vars, evals, narrow_reuses, index):
+def meta_store_incremental_stats(vars, evals, narrow_reuses, index):
     global _DATA
     _DATA[_meta_index(index)].update({
         META_VARS: vars,
@@ -223,6 +223,18 @@ def stats_get_evals_by_type(data):
         if evals_inc >= 0:
             evals_by_type.append(('Evals (incremental)', evals_inc))
     return evals_by_type
+
+def stats_get_vars_by_type(data):
+    n = data[META_N]
+    vars_by_type = []
+    for index in range(1, n + 1):
+        vars = data.get(_meta_index(index), {}).get(META_VARS, -1)
+        vars_inc = data.get(_meta_index(index), {}).get(META_VARS_INCREMENTAL, -1)
+        if vars >= 0:
+            vars_by_type.append(('Vars (non incremental)', vars))
+        if vars_inc >= 0:
+            vars_by_type.append(('Vars (incremental)', vars_inc))
+    return vars_by_type
 
 def stats_get_crash(data):
     return 1 if data.get(META_CRASH, False) else 0

@@ -144,7 +144,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
                     narrow_reuses = int(match.group(1))
             else:
                 print(f"\r{COLOR_RED}[{i}/{max_index}] Error running Goblint analysis (non incremental){COLOR_RESET}{SPACE}")
-            meta_store_evals(vars, evals, narrow_reuses, i)
+            meta_store_incremental_stats(vars, evals, narrow_reuses, i)
 
             vars = evals = narrow_reuses = -1
             command = f'{goblint_executable_path} {os.path.join(temp_dir, "p_0_check.c")} {params.strip()} --enable incremental.load -v'

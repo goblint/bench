@@ -76,6 +76,7 @@ def stats_print(stats_path):
     exception_by_cause = []
     performance_by_measurement = []
     evals_by_type = []
+    vars_by_type = []
     tokens = []
 
     total_execution_time_seconds = int(stats_data.pop(TOTAL_EXECUTION_TIME_SECONDS, 0))
@@ -91,6 +92,7 @@ def stats_print(stats_path):
         exception_by_cause = _merge_collector_with_type(exception_by_cause, stats_get_exceptions_by_cause(data))
         performance_by_measurement.extend(stats_get_performance(data))
         evals_by_type.extend(stats_get_evals_by_type(data))
+        vars_by_type.extend(stats_get_vars_by_type(data))
         tokens.extend(stats_get_tokens(data))
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
@@ -99,6 +101,9 @@ def stats_print(stats_path):
     evals_avg = _average_collector_with_type(evals_by_type)
     evals_max = _max_collector_with_type(evals_by_type)
     evals_min = _min_collector_with_type(evals_by_type, ignore_zero=False)
+    vars_avg = _average_collector_with_type(vars_by_type)
+    vars_max = _max_collector_with_type(vars_by_type)
+    vars_min = _min_collector_with_type(vars_by_type, ignore_zero=False)
     token_avg = _average_collector_with_type(tokens)
     token_max = _max_collector_with_type(tokens)
     token_min = _min_collector_with_type(tokens)
@@ -124,6 +129,10 @@ def stats_print(stats_path):
         _print_collector_with_type(evals_avg, 'Average evals', None)
         _print_collector_with_type(evals_max, 'Maximum evals', None)
         _print_collector_with_type(evals_min, 'Minimum evals', None,  ignore_zero=False)
+    if vars_by_type:
+        _print_collector_with_type(vars_avg, 'Average vars', None)
+        _print_collector_with_type(vars_max, 'Maximum vars', None)
+        _print_collector_with_type(vars_min, 'Minimum vars', None,  ignore_zero=False)
     if tokens:
         _print_collector_with_type(token_avg, 'Average tokens', None)
         _print_collector_with_type(token_max, 'Maximum tokens', None)
