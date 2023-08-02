@@ -75,7 +75,7 @@ result = pthread_create(&thread, &attr, thread_function, NULL);
 ```
 `clang-tidy -checks=-*,readability-remove-thread -fix pthread.c --`
 ```
-result = 0; thread_function(NULL) /* [MUTATION][RT][FUNCTION_NAME][thread_function] Thread creation was substituted with function call */;
+result = threadFunction_wrap(NULL) /* [MUTATION][RT][FUNCTION_NAME][thread_function] Thread creation was substituted with function call */;
 ```
 
 ### Remove Thread Wrapper - RTW
