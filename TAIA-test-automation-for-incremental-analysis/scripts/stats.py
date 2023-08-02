@@ -79,7 +79,6 @@ def stats_print(stats_path):
     vars_by_type = []
     tokens = []
     patch_changes = []
-    removed_patch_lines = []
 
     total_execution_time_seconds = int(stats_data.pop(TOTAL_EXECUTION_TIME_SECONDS, 0))
 
