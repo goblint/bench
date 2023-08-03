@@ -49,5 +49,6 @@ goblint --conf bench-yaml-validate.json ./eval-perf/pthread/smtprc_comb.c --set 
 ```
 
 Goblint: 22f6061df7d2c7bd3584c000389b9f0a7abf010e
-* evals: 48559 → 41285
-* solving cputime:  16.246s → 
+* evals: 48559 → 24091 = 50.4%
+* solving cputime: 18.566s → 9.720s = 47.6%
+
