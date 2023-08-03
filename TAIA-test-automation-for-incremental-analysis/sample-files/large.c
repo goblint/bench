@@ -1,11 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 
 int main() {
     int x;
-    srand(time(NULL));
-    x = rand() % 250; // Generate random number between 0 and 249
+    x = time(NULL) % 250; // Generate random number between 0 and 249
     
     printf("%d\n", x);
 
