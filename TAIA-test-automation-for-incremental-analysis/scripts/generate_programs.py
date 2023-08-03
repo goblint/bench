@@ -219,12 +219,7 @@ REGEX_PARAMETER_REMOVAL = [
     r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*apron[\'"]*',
     r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*affeq[\'"]*',
     # Remove file analysis as these programs usually depend on external files which may not be accessible
-    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*',
-    # Optimisations activate the compiler flags which cause merging problems with GNU inline
-    # See: https://github.com/goblint/cil/issues/149
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O1[\'"]*',
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O2[\'"]*',
-    r'--set [\'"]*pre\.cppflags\[\+\][\'"]* [\'"]*-O3[\'"]*'
+    r'--set [\'"]*ana\.activated\[\+\][\'"]* [\'"]*file[\'"]*'
 ]
 ############### Regex strings for removing parameters #################
 #######################################################################
