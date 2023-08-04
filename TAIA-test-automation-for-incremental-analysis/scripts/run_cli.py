@@ -54,7 +54,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
 
         # Run tests
         if is_run_tests:
-            test_path = os.path.abspath(os.path.join(temp_path, '100-temp'))
+            test_path = os.path.abspath(os.path.join(temp_path, '100-TMP'))
             print_separator()
             if enable_precision:
                 print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')

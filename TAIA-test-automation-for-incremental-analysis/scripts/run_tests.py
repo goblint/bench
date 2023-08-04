@@ -18,20 +18,19 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
         if number > 99:
             number = 99
         new_name = f'{number}-{text}'
-        os.rename(test_dir, os.path.join(os.path.dirname(test_dir), new_name))
-        test_dir = os.path.join(os.path.dirname(test_dir), new_name)
     else:
         print(f"{COLOR_RED}[ERROR] The test directory had not the format number-text{COLOR_RESET}")
+        meta_crash_and_store(META_CRASH_MESSAGE_RUN_TEST_NAME)
+        sys.exit(RETURN_ERROR)
 
     # Check the group name of the test_dir
-    test_dir_name = os.path.basename(test_dir)
-    if test_dir_name != "99-temp":
-        print(f"{COLOR_RED}[ERROR] The test directory name has to be \'99-temp\'{COLOR_RESET}")
+    if new_name != "99-TMP":
+        print(f"{COLOR_RED}[ERROR] The test directory name has to be \'99-TMP\'{COLOR_RESET}")
         meta_crash_and_store(META_CRASH_MESSAGE_RUN_TEST_NAME)
         sys.exit(RETURN_ERROR)
 
     # Copy the test file to the incremental tester
-    incremental_tests_dir_abs = os.path.abspath(os.path.join(goblint_repo_dir, "tests", "incremental", test_dir_name))
+    incremental_tests_dir_abs = os.path.abspath(os.path.join(goblint_repo_dir, "tests", "incremental", new_name))
     if os.path.exists(incremental_tests_dir_abs):
         shutil.rmtree(incremental_tests_dir_abs)
     shutil.copytree(test_dir, incremental_tests_dir_abs)
@@ -40,7 +39,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
     ruby_path_abs = os.path.abspath(os.path.join(goblint_repo_dir, "scripts", "update_suite.rb"))
     initial_dir = os.getcwd()
     os.chdir(goblint_repo_dir)
-    command = f"{ruby_path_abs} group temp -i"
+    command = f"{ruby_path_abs} group TMP -i"
     if cfg:
         command += " -c"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
@@ -57,7 +56,6 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
 
     # Cleanup
     shutil.rmtree(incremental_tests_dir_abs)
-    shutil.rmtree(test_dir)
     os.chdir(initial_dir)
 
     if process.returncode != 0:
