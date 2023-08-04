@@ -9,6 +9,7 @@ from util import GenerateType
 META_FILENAME = 'meta.yaml'
 META_PATH = 'meta_path'
 META_INPUT = 'input'
+META_FILESIZE = 'filesize_bytes'
 META_N = 'n'
 META_COMMAND = 'command'
 META_TEST_FAILED = 'test_failed'
@@ -86,6 +87,12 @@ def meta_create_file(meta_path, source_path):
     if meta_path is None: return
     _DATA = {META_N: 0, META_PATH: meta_path, META_INPUT: source_path, META_COMMAND: f'python3 {" ".join(sys.argv)}',
              _meta_index(0): {META_TYPE: GenerateType.INPUT.value}}
+
+
+def meta_add_filesize(file_bytes):
+    global _DATA
+    if _DATA is None: return
+    _DATA[META_FILESIZE] = file_bytes
 
 
 def meta_get_n() -> int:

@@ -19,6 +19,9 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
+    # Store filesize in meta data
+    meta_add_filesize(os.path.getsize(program_0_path))
+    # Prepare Program
     perf_prep = meta_start_performance(META_PERF_PREP_PROGRAM)
     _remove_goblint_check_and_assertions(program_0_path)
     _add_goblint_header_include(program_0_path)
