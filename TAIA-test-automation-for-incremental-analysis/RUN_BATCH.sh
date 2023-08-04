@@ -101,6 +101,7 @@ files_length=$(find "$dir" -type f -name "*.c" | wc -l)
 
 # Iterate over the found files
 index=0
+total_time=0
 for file in $files
 do
     ((index=index+1))
@@ -123,6 +124,7 @@ do
     done
 
     # Run the command with remaining arguments
+    start_time=$(date +%s)
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
     trap 'kill -- -$$' SIGINT
     if [ "$no_print" = true ]; then
@@ -138,11 +140,11 @@ do
     # Check for different return values
     case $ret_code in
         0)
-            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded (${file})  "
+            printf "$\r${color_green}[BATCH][${index}/${files_length}] Test succeeded (${file})"
             success_files+=("$file")
             ;;
         100)
-            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})      "
+            printf "$\r${color_orange}[BATCH][${index}/${files_length}] Test failed (${file})"
             failed_files+=("$file")
             ;;
         101)
@@ -163,7 +165,12 @@ do
             exception_files+=("$file")
             ;;
     esac
-    printf "${color_reset}\n"
+    end_time=$(date +%s)
+    total_time=$((total_time + (end_time - start_time)))
+    avg_time=$((total_time / index))
+    remaining_files=$((files_length - index))
+    remaining_time=$((avg_time * remaining_files))
+    printf " ${color_grey}Remaining Time ~%02dh:%02dm:%02ds${color_reset}\n" $((remaining_time/3600)) $((remaining_time%3600/60)) $((remaining_time%60))
 
     # Copy the meta file to the statistics collector directory
     if [ "$statistics" = true ]; then
