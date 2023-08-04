@@ -29,7 +29,7 @@ logo = f'''
 '''
 
 
-def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_eval_stats, enable_patch_stats):
+def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint_config, test_name, create_tests, enable_precision, is_run_tests, api_key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Make paths absolute
     goblint_path = os.path.abspath(os.path.expanduser(goblint_path))
     llvm_path = os.path.abspath(os.path.expanduser(llvm_path))
@@ -50,7 +50,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         perf_overall = meta_start_performance(META_PERF_OVERALL)
 
         # Generate the programs
-        generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths, enable_eval_stats)
+        generate_programs(input_path, temp_path, clang_tidy_path, goblint_path, api_key_path, operators, is_clang, is_ai, enable_precision, ai_count, ai_select, ai_interesting, ai_16k, include_paths)
 
         # Run tests
         if is_run_tests:
@@ -59,7 +59,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             if enable_precision:
                 print(f'Running {COLOR_BLUE}PRECISION TEST{COLOR_RESET}:')
                 perf_generate_tests = meta_start_performance(META_PERF_GENERATE_TESTS)
-                paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True, enable_patch_stats=enable_patch_stats)
+                paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=True, inplace=True)
                 meta_stop_performance(perf_generate_tests)
                 if len(paths) > 1:
                     print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
@@ -70,7 +70,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             else:
                 print(f'Running {COLOR_BLUE}CORRECTNESS TEST{COLOR_RESET}:')
                 perf_generate_tests = meta_start_performance(META_PERF_GENERATE_TESTS)
-                paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True, enable_patch_stats=enable_patch_stats)
+                paths = generate_tests(temp_path, test_path, goblint_config, include_paths, precision_test=False, inplace=True)
                 meta_stop_performance(perf_generate_tests)
                 if len(paths) > 1:
                     print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
@@ -85,7 +85,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             if enable_precision:
                 precision_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', test_name))
                 print(f'Writing out {COLOR_BLUE}PRECISION TEST FILES{COLOR_RESET} {test_name}:')
-                paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=True, inplace=False, enable_patch_stats=enable_patch_stats)
+                paths = generate_tests(temp_path, precision_path, goblint_config, include_paths, precision_test=True, inplace=False)
                 if len(paths) > 1:
                     print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
                 for path in paths:
@@ -93,7 +93,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
             else:
                 correctness_path = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', test_name))
                 print(f'Writing out {COLOR_BLUE}CORRECTNESS TEST FILES{COLOR_RESET} {test_name}:')
-                paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False, enable_patch_stats=enable_patch_stats)
+                paths = generate_tests(temp_path, correctness_path, goblint_config, include_paths, precision_test=False, inplace=False)
                 if len(paths) > 1:
                     print(f"{COLOR_YELLOW}[INFO] There were more than 99 programs generated, so the tests had to be spitted into multiple directories{COLOR_RESET}")
                 for path in paths:
@@ -124,7 +124,7 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
         sys.exit(RETURN_SUCCESS)
 
 
-def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_eval_stats, enable_patch_stats):
+def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, input_file, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics):
     # Check config file
     config_path = Path(CONFIG_FILENAME)
     config = {}
@@ -280,7 +280,7 @@ def cli(enable_clang, enable_ai, operators, goblint_config, test_name, create_te
     for path in include_paths:
         validate_path(path)
 
-    run(goblint_path, llvm_path, input_file, enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics, enable_eval_stats, enable_patch_stats)
+    run(goblint_path, llvm_path, input_file, enable_clang, enable_ai, operators, goblint_config, test_name, create_tests, enable_precision, running, key_path, ai_count, ai_select, ai_interesting, ai_16k, cfg, include_paths, statistics)
 
 
 def main():
@@ -304,8 +304,6 @@ def main():
     parser.add_argument('-t', '--test-name', help='Test name')
     parser.add_argument('-I', '--include', action='append', required=False, help='Include a file into the test directory (e.g. a ".h" file)')
     parser.add_argument('-s', '--statistics', action='store_true', help='Print statistics about the run')
-    parser.add_argument('-se', '--stats-evaluations', action='store_true', help='Store number of vars, evals and narrow_reuses in statistic')
-    parser.add_argument('-sp', '--stats-patches', action='store_true', help='Store number added and removed lines in the patches for statistics')
 
     # Add clang options
     add_clang_options(parser)
@@ -400,7 +398,7 @@ def main():
     if test_name is not None and not check_test_dir_name(test_name):
         sys.exit(RETURN_ERROR)
 
-    cli(args.enable_clang, args.enable_ai, operators, args.goblint_config, test_name, create_tests, precision, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics, args.stats_evaluations, args.stats_patches)
+    cli(args.enable_clang, args.enable_ai, operators, args.goblint_config, test_name, create_tests, precision, running, args.input, ai_count, ai_select, args.ai_interesting, ai_16k, cfg, args.include, args.statistics)
 
 
 if __name__ == "__main__":

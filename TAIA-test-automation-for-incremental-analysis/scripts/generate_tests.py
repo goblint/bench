@@ -9,7 +9,7 @@ from util import *
 
 
 # Generate test directory based on previously generated directory with mutated files
-def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precision_test, inplace: bool, enable_patch_stats):
+def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precision_test, inplace: bool):
     # Check the name of the target_dir
     directory_name = os.path.basename(target_dir)
     if not inplace and not check_test_dir_name(directory_name):
@@ -127,7 +127,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
                 meta_diff_empty(i)
-            elif enable_patch_stats:
+            else:
                 added_count = 0
                 removed_count = 0
                 with open(patch_path, 'r') as f:
@@ -194,7 +194,7 @@ def main():
 
     args = parser.parse_args()
 
-    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, [], args.precision_test, args.inplace, None)
+    generate_tests(args.temp_dir, args.target_dir, args.goblint_config, [], args.precision_test, args.inplace)
 
 
 if __name__ == '__main__':
