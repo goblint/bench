@@ -52,3 +52,6 @@ Goblint: 22f6061df7d2c7bd3584c000389b9f0a7abf010e
 * evals: 48559 → 24091 = 50.4%
 * solving cputime: 18.566s → 9.720s = 47.6%
 
+
+### knot
+* evals: 29588 → 21461 = 27.5%
