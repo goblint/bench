@@ -19,9 +19,6 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     shutil.copy2(source_path, program_path)
     program_0_path = os.path.join(temp_dir, 'p_0.c')
     shutil.copy2(source_path, program_0_path)
-    # ALTERNATIVE Preserve the __goblint_check() annotations
-    # ALTERNATIVE _preserve_goblint_check_annotations(program_0_path)
-    # ALTERNATIVE To be added: Also preserve _goblint_assert() and assert()
     perf_prep = meta_start_performance(META_PERF_PREP_PROGRAM)
     _remove_goblint_check_and_assertions(program_0_path)
     _add_goblint_header_include(program_0_path)
@@ -252,17 +249,6 @@ def _get_params_from_file(filename):
                 params = match.group(1).strip()
                 return params
     return ""
-
-
-# ALTERNATIVE Transform __goblint_check to __my_check_annotation
-def _preserve_goblint_check_annotations(file_path):
-    with open(file_path, 'r') as file:
-        content = file.read()
-    transformed_content = re.sub(r'(__goblint_check\((.*?)\);) // (.*?)\n', r'__my_check_annotation(\2, "\3 was in the source program");\n', content)
-    if transformed_content != content:
-        transformed_content += '\n\nvoid __my_check_annotation(void* exp, const char* comment) {}\n'
-        with open(file_path, 'w') as file:
-            file.write(transformed_content)
 
 
 def main():

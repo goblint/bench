@@ -30,8 +30,6 @@ def add_check(file_path, goblint_path, params, index):
         return False
 
     _prepend_param_line(file_path_out, params)
-    # ALTERNATIVE _preserve_goblint_checks(file_path_out)
-    _annotate_extern_check_definitions(file_path_out)
     success = _remove_problematic_checks(goblint_path, file_path_out, params, index)
 
     return success
@@ -44,38 +42,6 @@ def _prepend_param_line(file_path, params):
     with open(file_path, 'w') as f:
         f.write(f'//PARAM: {params}\n')
         f.writelines(lines)
-
-
-# annotate extern void __goblint_check __goblint_assert with // NOWARN!
-def _annotate_extern_check_definitions(file_path):
-    with open(file_path, 'r') as file:
-        contents = file.read()
-
-    pattern = r'(extern void __goblint_(?:check|assert)\(.*\) ;)'
-    matches = re.findall(pattern, contents)
-    for match in matches:
-        contents = contents.replace(match, match + ' // NOWARN! for extern definitions')
-
-    pattern = r'(extern int \(.*__goblint_(?:check|assert)\)\(\) ;)'
-    matches = re.findall(pattern, contents)
-    for match in matches:
-        contents = contents.replace(match, match + ' // NOWARN! for extern definitions')
-
-    with open(file_path, 'w') as file:
-        file.write(contents)
-
-
-# transform __my_check_annotation to __goblint_check
-def _preserve_goblint_checks(file_path):
-    with open(file_path, 'r') as file:
-        content = file.read()
-
-    pattern = r'__my_check_annotation\((.*?), "(.*?)"\);'
-    replacement = r'__goblint_check(\1); // \2'
-    updated_content = re.sub(pattern, replacement, content)
-
-    with open(file_path, 'w') as file:
-        file.write(updated_content)
 
 
 # annotates generated checks depending on the goblint analysis result
