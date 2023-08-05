@@ -35,7 +35,7 @@ if [ $# -lt 1 ]; then
     printf "[--no-print]: Do not print the Test Automation for Incremental Analysis (TAIA) output\n"
     printf "[--ignore <file_path>]* : paths to files containing paths to be ignored, separated by newlines\n"
     printf "[additional arguments...]: Arguments passed to Goblint to skip interactive cli.\n"
-    printf "    -> Recommended: --enable-clang --disable-precision --enable-running --disable-create-tests --enable-cfg --Goblint-config {}\n"
+    printf "    -> Recommended: --enable-clang --disable-precision --enable-running --disable-create-tests --enable-cfg --goblint-config {}\n"
     printf "       or in short: --default\n"
     exit 1
 fi
