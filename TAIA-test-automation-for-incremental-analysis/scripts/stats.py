@@ -74,6 +74,7 @@ def stats_print(stats_path):
     empty_diff_by_type = []
     exception_by_type = []
     exception_by_cause = []
+    tokens_by_type = []
     performance_by_measurement = []
     evals_by_type = []
     vars_by_type = []
@@ -95,6 +96,7 @@ def stats_print(stats_path):
         evals_by_type.extend(stats_get_evals_by_type(data))
         vars_by_type.extend(stats_get_vars_by_type(data))
         tokens.extend(stats_get_tokens(data))
+        tokens_by_type = _merge_collector_with_type(tokens_by_type, stats_get_tokens(data))
         patch_changes.extend(stats_get_patch_changes(data))
 
     performance_avg = _average_collector_with_type(performance_by_measurement)
@@ -142,6 +144,7 @@ def stats_print(stats_path):
         _print_collector_with_type(token_avg, 'Average tokens', None)
         _print_collector_with_type(token_max, 'Maximum tokens', None)
         _print_collector_with_type(token_min, 'Minimum tokens', None)
+        _print_collector_with_type(tokens_by_type, 'Total number of tokens by type', input_files)
     if patch_changes:
         _print_collector_with_type(patch_changes_avg, 'Average changed lines in patch', None)
         _print_collector_with_type(patch_changes_max, 'Maximum changed lines in patch', None)
