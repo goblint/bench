@@ -40,6 +40,7 @@ META_EXCEPTION_CAUSE_CREATE_CHECK_PROCESS = 'create_check_process'
 META_EXCEPTION_CAUSE_CREATE_CHECK_GCC = 'create_check_gcc'
 META_EXCEPTION_CAUSE_VERIFY_CHECK = 'verify_check'
 META_EXCEPTION_CAUSE_AI = 'ai_request'
+META_EXCEPTION_CAUSE_MUATION_NOT_APPLIED = 'mutation_not_applied'
 
 META_CRASH_MESSAGE_INITIAL_EXCEPTION_GCC = 'initial_program_exception_gcc'
 META_CRASH_MESSAGE_INITIAL_EXCEPTION_ADD_CHECK_PROCESS = 'initial_program_exception_add_check_process'

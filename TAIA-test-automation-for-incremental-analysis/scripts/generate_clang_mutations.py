@@ -114,8 +114,8 @@ def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path,
             function_name = _get_thread_function_name(clang_tidy_path, analyzer_path, lines, new_path, index)
             _wrap_thread_function(clang_tidy_path, analyzer_path, new_path, function_name, index)
             lines[0] = lines[0] + 5 # Shift the line by 5 to compensate for the function wrapping
-        _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, new_path, index)
         meta_create_index(index, GenerateType.CLANG.value, mutation_name, lines)
+        _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, new_path, index)
     return index
 
 
@@ -177,7 +177,17 @@ def _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, progra
     command = f'{clang_tidy_path} -checks=-*,readability-{mutation_name} --quiet-return --fix-warnings -line-filter="{line_filter_json}" {program_path} -- -I{os.path.dirname(program_path)} {include_options(analyzer_path, for_clang=True)}'
     result = subprocess.run(command, shell=True, text=True, capture_output=True)
     if result.returncode == 0:
-        print(f"{COLOR_GREEN}[{index}] Finished mutation:{COLOR_RESET} {mutation_name} on lines {lines}")
+        # Check if mutation was really succesfully applied (Some clang compiler errors prevent fixing of warnings, but do still return 0)
+        command = 'diff -u {} {}'.format(
+            os.path.join(os.path.dirname(program_path), 'p_0.c'),
+            program_path
+        )
+        result_diff = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result_diff.returncode == 0:
+            print(f"{COLOR_RED}[{index}] Could not apply mutation:{COLOR_RESET} {mutation_name} could not be applied due to clang compiler errors. It will be ignored.")
+            meta_exception(index, META_EXCEPTION_CAUSE_MUATION_NOT_APPLIED, result.stdout)
+        else:
+            print(f"{COLOR_GREEN}[{index}] Finished mutation:{COLOR_RESET} {mutation_name} on lines {lines}")
     else:
         print(result.stdout)
         print(result.stderr)
