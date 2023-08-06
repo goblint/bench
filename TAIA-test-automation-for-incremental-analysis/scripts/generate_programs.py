@@ -60,6 +60,10 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
     for i in range(max_index + 1):
         file_path = os.path.join(temp_dir, f"p_{i}.c")
 
+        if meta_exception_exists(i):
+            print(f"\r{COLOR_YELLOW}[{i}/{max_index}] Skipped mutation {i} as an exception occurred in a previous step{COLOR_RESET}{SPACE}")
+            continue
+
         # Check if initial program and programs after mutation can be compiled with gcc
         perf_mutation_gcc = meta_start_performance(META_PERF_MUTATION_GCC)
         print(f"\r[{i}/{max_index}] Step 1) Check if mutated program compiled with gcc...", end='')
