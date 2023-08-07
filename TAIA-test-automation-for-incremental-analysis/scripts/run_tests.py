@@ -19,13 +19,13 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
             number = 99
         new_name = f'{number}-{text}'
     else:
-        print(f"{COLOR_RED}[ERROR] The test directory had not the format number-text{COLOR_RESET}")
+        print(f"\n{COLOR_RED}[ERROR] The test directory had not the format number-text{COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_RUN_TEST_NAME)
         sys.exit(RETURN_ERROR)
 
     # Check the group name of the test_dir
     if new_name != "99-TMP":
-        print(f"{COLOR_RED}[ERROR] The test directory name has to be \'99-TMP\'{COLOR_RESET}")
+        print(f"\n{COLOR_RED}[ERROR] The test directory name has to be \'99-TMP\'{COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_RUN_TEST_NAME)
         sys.exit(RETURN_ERROR)
 

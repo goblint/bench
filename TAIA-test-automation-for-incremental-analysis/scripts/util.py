@@ -115,7 +115,7 @@ def check_test_dir_name(directory_name):
 def validate_path(path):
     path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
     if not os.path.exists(path):
-        print(f"{COLOR_RED}The path {path} does not exist.{COLOR_RESET}")
+        print(f"\n{COLOR_RED}The path {path} does not exist.{COLOR_RESET}", file=sys.stderr)
         sys.exit(RETURN_ERROR)
     return path
 

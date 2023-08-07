@@ -44,7 +44,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
     # get the current values
     unchanged_count = 0
     if inplace and int(directory_name[:3]) != 100:
-        print(f'{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}')
+        print(f'\n{COLOR_RED}[ERROR] The directory number for temp files must be 100 but was {directory_name}{COLOR_RESET}', file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_NAME)
         sys.exit(RETURN_ERROR)
     elif inplace:
@@ -60,7 +60,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
 
             # When the dir name is > 99 throw an error
             if not inplace and current_dir_num > 99:
-                print(f'{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}')
+                print(f'\n{COLOR_RED}[ERROR] The directory number 100 is out of range. Consider starting with a lower than {directory_name} {COLOR_RESET}', file=sys.stderr)
                 meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_MAX_EXCEEDED)
                 sys.exit(RETURN_ERROR)
 
@@ -140,7 +140,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
                             removed_count += 1
                 meta_diff(added_count, removed_count, i)
         else:
-            print(f"Creation of patch failed with return code: {result.returncode}")
+            print(f"\nCreation of patch failed with return code: {result.returncode}", file=sys.stderr)
             meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_PATCH)
             sys.exit(RETURN_ERROR)
 

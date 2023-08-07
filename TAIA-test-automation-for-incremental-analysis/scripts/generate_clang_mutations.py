@@ -133,7 +133,7 @@ def _get_line_groups(clang_tidy_path, analyzer_path, mutation_name, program_path
         print('\n')
         print(result.stdout)
         print(result.stderr)
-        print(f"{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}")
+        print(f"\n{COLOR_RED}ERROR Running Clang (Line Groups){COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_CLANG_LINE_GROUPS)
         sys.exit(RETURN_ERROR)
 
@@ -191,7 +191,7 @@ def _apply_mutation(clang_tidy_path, analyzer_path, mutation_name, lines, progra
     else:
         print(result.stdout)
         print(result.stderr)
-        print(f"{COLOR_RED}ERROR Running Clang (Apply){COLOR_RESET}")
+        print(f"\n{COLOR_RED}ERROR Running Clang (Apply){COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_CLANG_APPLY)
         sys.exit(RETURN_ERROR)
 
@@ -210,7 +210,7 @@ def _get_thread_function_name(clang_tidy_path, analyzer_path, lines, program_pat
     if result.returncode != 0:
         print(result.stdout)
         print(result.stderr)
-        print(f"{COLOR_RED}ERROR Running Clang (Get Function Name){COLOR_RESET}")
+        print(f"\n{COLOR_RED}ERROR Running Clang (Get Function Name){COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_CLANG_FUNCTION_NAME)
         sys.exit(RETURN_ERROR)
 
@@ -244,7 +244,7 @@ def _wrap_thread_function(clang_tidy_path, analyzer_path, program_path, function
     if result.returncode != 0:
         print(result.stdout)
         print(result.stderr)
-        print(f"{COLOR_RED}ERROR Running Clang (Wrap){COLOR_RESET}")
+        print(f"\n{COLOR_RED}ERROR Running Clang (Wrap){COLOR_RESET}", file=sys.stderr)
         meta_crash_and_store(META_CRASH_MESSAGE_CLANG_WRAP)
         sys.exit(RETURN_ERROR)    
 
