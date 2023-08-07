@@ -73,7 +73,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             if i == 0:
                 print(remove_ansi_escape_sequences(result.stdout))
                 print(remove_ansi_escape_sequences(result.stderr))
-                print(f"\n{COLOR_RED}Could not compile initial program with gcc. Stopping execution!{COLOR_RESET}", file=sys.stderr)
+                print(f"{COLOR_RED}Could not compile initial program with gcc. Stopping execution!{COLOR_RESET}")
                 meta_crash_and_store(META_CRASH_MESSAGE_INITIAL_EXCEPTION_GCC)
                 sys.exit(RETURN_ERROR_GCC_INPUT)
             else:
@@ -106,7 +106,7 @@ def generate_programs(source_path, temp_dir, clang_tidy_path, goblint_path, apik
             if i == 0:
                 print(remove_ansi_escape_sequences(result.stdout))
                 print(remove_ansi_escape_sequences(result.stderr))
-                print(f"\n{COLOR_RED}Could not compile initial program with gcc after cil transformation. Stopping execution!{COLOR_RESET}", file=sys.stderr)
+                print(f"{COLOR_RED}Could not compile initial program with gcc after cil transformation. Stopping execution!{COLOR_RESET}")
                 meta_crash_and_store(META_CRASH_MESSAGE_INITIAL_EXCEPTION_ADD_CHECK_GCC)
                 sys.exit(RETURN_ERROR_GCC_CIL)
             else:
