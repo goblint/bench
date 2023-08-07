@@ -691,11 +691,11 @@ int clangTidyMain(int argc, const char **argv) {
                            : FixWarningsIgnoreErrors    ? FB_FixWarningsIgnoreErrors
                                                         : FB_NoFix;
 
-  const bool DisableFixes = FoundErrors && (!FixErrors || !FixWarningsIgnoreErrors);
+  const bool DisableFixes = FoundErrors && !(FixErrors || FixWarningsIgnoreErrors);
 
   unsigned WErrorCount = 0;
 
-  handleErrors(Errors, Context, DisableFixes ? FB_NoFix : Behaviour,
+  handleErrors(Errors, Context, DisableFixes ? FB_NoFix : Behaviour, Behaviour == FB_FixWarningsIgnoreErrors,
                WErrorCount, BaseFS);
 
   if (!ExportFixes.empty() && !Errors.empty()) {
@@ -710,7 +710,7 @@ int clangTidyMain(int argc, const char **argv) {
 
   if (!Quiet) {
     printStats(Context.getStats());
-    if (DisableFixes && (Behaviour != FB_NoFix || Behaviour != FB_FixWarningsIgnoreErrors))
+    if (DisableFixes && !(Behaviour == FB_NoFix || Behaviour == FB_FixWarningsIgnoreErrors))
       llvm::errs()
           << "Found compiler errors, but -fix-errors was not specified.\n"
              "Fixes have NOT been applied.\n\n";

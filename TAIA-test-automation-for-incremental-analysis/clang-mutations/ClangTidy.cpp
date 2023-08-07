@@ -113,7 +113,7 @@ public:
 
   SourceManager &getSourceManager() { return SourceMgr; }
 
-  void reportDiagnostic(const ClangTidyError &Error) {
+  void reportDiagnostic(const ClangTidyError &Error, const bool ignoreDiagnosticsError) {
     const tooling::DiagnosticMessage &Message = Error.Message;
     SourceLocation Loc = getLocation(Message.FilePath, Message.FileOffset);
     // Contains a pair for each attempted fix: location and whether the fix was
@@ -129,8 +129,10 @@ public:
         Level = DiagnosticsEngine::Error;
         WarningsAsErrors++;
       }
+      if (Level == DiagnosticsEngine::Error && ignoreDiagnosticsError)
+        return;
       auto Diag = Diags.Report(Loc, Diags.getCustomDiagID(Level, "%0 [%1]"))
-                  << Message.Message << Name;
+                  << Message.Message << Name << AppliedFixes;
       for (const FileByteRange &FBR : Error.Message.Ranges)
         Diag << getRange(FBR);
       // FIXME: explore options to support interactive fix selection.
@@ -150,15 +152,15 @@ public:
                                    Repl.getLength(), Repl.getReplacementText());
             Replacements &Replacements = FileReplacements[R.getFilePath()];
             llvm::Error Err = Replacements.add(R);
-            if (Err && ApplyFixes != FB_FixWarningsIgnoreErrors) {
+            if (Err) {
               // FIXME: Implement better conflict handling.
               llvm::errs() << "Trying to resolve conflict: "
-                          << llvm::toString(std::move(Err)) << "\n";
+                           << llvm::toString(std::move(Err)) << "\n";
               unsigned NewOffset =
                   Replacements.getShiftedCodePosition(R.getOffset());
               unsigned NewLength = Replacements.getShiftedCodePosition(
-                                      R.getOffset() + R.getLength()) -
-                                  NewOffset;
+                                       R.getOffset() + R.getLength()) -
+                                   NewOffset;
               if (NewLength == R.getLength()) {
                 R = Replacement(R.getFilePath(), NewOffset, NewLength,
                                 R.getReplacementText());
@@ -169,9 +171,6 @@ public:
                 llvm::errs()
                     << "Can't resolve conflict, skipping the replacement.\n";
               }
-            } else if (Err && ApplyFixes == FB_FixWarningsIgnoreErrors) {
-              llvm::errs()
-                    << "Ignoring conflict, skipping the replacement.\n";
             } else {
               CanBeApplied = true;
               ++AppliedFixes;
@@ -591,6 +590,7 @@ runClangTidy(clang::tidy::ClangTidyContext &Context,
 
 void handleErrors(llvm::ArrayRef<ClangTidyError> Errors,
                   ClangTidyContext &Context, FixBehaviour Fix,
+                  const bool ignoreDiagnosticsError,
                   unsigned &WarningsAsErrorsCount,
                   llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> BaseFS) {
   ErrorReporter Reporter(Context, Fix, std::move(BaseFS));
@@ -608,7 +608,7 @@ void handleErrors(llvm::ArrayRef<ClangTidyError> Errors,
       // Change the directory to the one used during the analysis.
       FileSystem.setCurrentWorkingDirectory(Error.BuildDirectory);
     }
-    Reporter.reportDiagnostic(Error);
+    Reporter.reportDiagnostic(Error, ignoreDiagnosticsError);
     // Return to the initial directory to correctly resolve next Error.
     FileSystem.setCurrentWorkingDirectory(InitialWorkingDir.get());
   }

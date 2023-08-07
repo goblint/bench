@@ -112,6 +112,7 @@ enum FixBehaviour {
 /// FormatStyle is used.
 void handleErrors(llvm::ArrayRef<ClangTidyError> Errors,
                   ClangTidyContext &Context, FixBehaviour Fix,
+                  const bool ignoreDiagnosticsError,
                   unsigned &WarningsAsErrorsCount,
                   llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> BaseFS);
 
