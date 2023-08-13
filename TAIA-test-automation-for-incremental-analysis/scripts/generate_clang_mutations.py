@@ -29,9 +29,7 @@ def generate_clang_mutations(program_path, clang_tidy_path, analyzer_path, mutat
     return index
 
 #######################################################################
-####### Functions for clang tidy checks (change for new checks) #######
-
-
+####### Functions for clang tidy checks (adopt for new checks) #######
 def get_default_operators():
     return Operators(rfb=True, uoi=True, ror=True, cr=True, rt=True, lcr=True, ris=True)
 
@@ -91,11 +89,11 @@ def interactively_ask_for_operators(questionary):
 
 def get_operator_descriptions_for_ai():
     return "Removal of function bodies, Inversion of if statements, Switching <= with < and >= with >, Replacing constants unequal 0 with 1, Replace pthread calls with function calls, Switching && with ||, Removal of if statements with no else part"
-
 ####### Functions for clang tidy checks (change for new checks) #######
 #######################################################################
 
 
+# Called for each new mutation
 def _iterative_mutation_generation(program_path, clang_tidy_path, analyzer_path, mutation_name, index):
     print_separator()
     print(f"[{GenerateType.CLANG.value}] {mutation_name}")

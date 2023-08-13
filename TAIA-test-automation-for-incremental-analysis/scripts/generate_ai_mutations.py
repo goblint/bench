@@ -60,6 +60,7 @@ def generate_ai_mutations(program_path, apikey_path, ai_count, num_selected_line
     return index + ai_count
 
 
+# Call for each mutation
 def _iterative_mutation_generation(program_path, interesting_lines, ai_16k, num_selected_lines, max_line,
                                    index, lock):
     try:
@@ -188,6 +189,7 @@ def _make_gpt_request(snippet, ai_16k):
     return response_message, prompt_tokens, completion_tokens
 
 
+# Adjust interesing lines when they are exceeding the max file size
 def _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line):
     for i in range(len(interesting_lines)):
         interesting_lines[i] = int(interesting_lines[i])
@@ -199,6 +201,7 @@ def _reformat_interesting_lines(num_selected_lines, interesting_lines, max_line)
     return interesting_lines
 
 
+# select random start line
 def _select_lines(interesting_lines, num_selected_lines, max_line):
     if not interesting_lines:
         selected_line = random.randint(0, max_line - num_selected_lines)
@@ -207,6 +210,7 @@ def _select_lines(interesting_lines, num_selected_lines, max_line):
     return range(selected_line, selected_line + num_selected_lines)
 
 
+# check if passed interesting lines are correctly formatted
 def validate_interesting_lines(interesting_lines_string: str, program_path):
     if program_path is not None:
         with open(program_path, "r") as file:

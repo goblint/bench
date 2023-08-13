@@ -16,6 +16,7 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
         meta_crash_and_store(META_CRASH_MESSAGE_CREATE_TEST_NAME)
         sys.exit(RETURN_ERROR)
 
+    # Ask in case directory would be replaced
     if os.path.exists(target_dir):
         print(f'{COLOR_RED}The test directory {target_dir} already exists.{COLOR_RESET}')
         if questionary.confirm('Replace the directory?', default=True).ask():
@@ -122,12 +123,13 @@ def generate_tests(temp_dir, target_dir, goblint_config, include_paths, precisio
             _fix_patch_file(patch_path, os.path.basename(initial_target_dir), test_name + '.c')
         else:
             _fix_patch_file(patch_path, os.path.basename(target_dir), test_name + '.c')
-        if result.returncode in [0, 1]:
+        if result.returncode in [0, 1]: # 0 means no changes and 1 means success
             if result.returncode == 0:
                 print(f"\r{COLOR_YELLOW}[WARNING] There were no changes in the patch for test {i}{COLOR_RESET}")
                 unchanged_count += 1
                 meta_diff_empty(i)
             else:
+                # Count for statistics the added and removed lines without considering the lines that were changes by goblint checks
                 added_count = 0
                 removed_count = 0
                 with open(patch_path, 'r') as f:

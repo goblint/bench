@@ -46,7 +46,6 @@ def run(goblint_path, llvm_path, input_path, is_clang, is_ai, operators, goblint
     exception_occurred = False
     ret = ret_precision = 0
     try:
-
         perf_overall = meta_start_performance(META_PERF_OVERALL)
 
         # Generate the programs

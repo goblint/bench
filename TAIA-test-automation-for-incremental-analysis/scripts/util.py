@@ -93,12 +93,14 @@ def remove_ansi_escape_sequences(s):
     return ansi_escape.sub('', s)
 
 
+# Copy program into the temp directory with given index
 def make_program_copy(program_path, index):
     new_path = os.path.join(os.path.dirname(program_path), 'p_' + str(index) + '.c')
     shutil.copy2(program_path, new_path)
     return new_path
 
 
+# Check if directory name follows the naming convention of the Goblint Test Script
 def check_test_dir_name(directory_name):
     if directory_name is None or not isinstance(directory_name, str):
         print(f"{COLOR_RED}[ERROR] Target Directory name {directory_name} is not a string{COLOR_RESET}")
@@ -112,6 +114,7 @@ def check_test_dir_name(directory_name):
     return True
 
 
+# Check if the path exists. When not stop the program.
 def validate_path(path):
     path = os.path.abspath(os.path.expanduser(os.path.expandvars(path)))
     if not os.path.exists(path):
@@ -120,6 +123,7 @@ def validate_path(path):
     return path
 
 
+# Get the default includes used by the Goblint Test Script for gcc and clang
 def include_options(analyzer_path, for_clang=False):
     seperator = ' '
     if for_clang:

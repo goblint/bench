@@ -19,6 +19,7 @@ do
     fi
 done
 
+# Check for other programs needed
 ruby -h &> /dev/null
 if [ $? -ne 0 ]; then
   echo "ruby is not installed."

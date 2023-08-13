@@ -44,7 +44,7 @@ def run_tests(test_dir, goblint_repo_dir, cfg):
         command += " -c"
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
 
-    # Handle the output in a thread
+    # Handle the output in a thread (Needed to correctly print the carriage return used by the ruby script)
     output_lines = []
     thread = threading.Thread(target=handle_output, args=(process, output_lines))
     thread.start()

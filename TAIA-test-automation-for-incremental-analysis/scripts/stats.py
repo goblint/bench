@@ -10,6 +10,7 @@ from util import *
 TOTAL_EXECUTION_TIME_SECONDS = 'total_execution_time_seconds'
 
 
+# Merge multiple meta files in the directory into one single stats file
 def stats_merge_meta_directory(stats_path, meta_directory, total_execution_time_seconds):
     if not os.path.exists(stats_path):
         with open(stats_path, 'w') as file:
@@ -20,7 +21,7 @@ def stats_merge_meta_directory(stats_path, meta_directory, total_execution_time_
 
     data = {}
     if total_execution_time_seconds is not None:
-        data[TOTAL_EXECUTION_TIME_SECONDS] = total_execution_time_seconds
+        data[TOTAL_EXECUTION_TIME_SECONDS] = total_execution_time_seconds # Store total execution time for a batch
     for filename in os.listdir(meta_directory):
         if not filename.endswith('.yaml'):
             continue
@@ -34,6 +35,7 @@ def stats_merge_meta_directory(stats_path, meta_directory, total_execution_time_
     shutil.rmtree(meta_directory)
 
 
+# Append a meta data file to a existing stats file
 def stats_append_meta(stats_path, meta_file, total_execution_time_seconds):
     if not os.path.exists(stats_path):
         with open(stats_path, 'w') as file:
@@ -55,6 +57,7 @@ def stats_append_meta(stats_path, meta_file, total_execution_time_seconds):
         yaml.safe_dump(stats_data, file)
 
 
+# Collect and print statistics from a stats file
 def stats_print(stats_path):
     validate_path(stats_path)
     print("\rLoading stats. Please wait...", end='')
@@ -152,6 +155,7 @@ def stats_print(stats_path):
     print_separator()
 
 
+# Merge tuples (k, v) with same k to the same k by adding the v together
 def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tuples: list[tuple[str, int]]) -> list[tuple[str, int]]:
     current_dict = {k: v for k, v in current_collector}
     for k, v in new_tuples:
@@ -163,6 +167,7 @@ def _merge_collector_with_type(current_collector: list[tuple[str, int]], new_tup
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
+# Calculate the average v for each k for the tuples (k, v) in the list
 def _average_collector_with_type(collector: list[tuple[str, float]]) -> list[tuple[str, float]]:
     sum_dict = {}
     count_dict = {}
@@ -178,6 +183,7 @@ def _average_collector_with_type(collector: list[tuple[str, float]]) -> list[tup
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
+# Calculate the max v for each k for the tuples (k, v) in the list
 def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str, int]]:
     max_dict = {}
     for k, v in collector:
@@ -189,6 +195,7 @@ def _max_collector_with_type(collector: list[tuple[str, int]]) -> list[tuple[str
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
+# Calculate the min v for each k for the tuples (k, v) in the list
 def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True) -> list[tuple[str, int]]:
     min_dict = {}
     for k, v in collector:
@@ -202,6 +209,7 @@ def _min_collector_with_type(collector: list[tuple[str, int]], ignore_zero=True)
     return sorted(unsorted_list, key=lambda x: x[1], reverse=True)
 
 
+# Print eachg (k, v) contained in the list. Optionally calculate the average v over all k
 def _print_collector_with_type(collector: list[tuple[str, int]] | list[tuple[str, float]], title: str, avg_sum: int | None,  ignore_zero=True):
     if not collector:
         return
@@ -217,6 +225,7 @@ def _print_collector_with_type(collector: list[tuple[str, int]] | list[tuple[str
     return total
 
 
+# Print single value
 def _print_value(value: int, title: str, tab=False):
     if tab:
         print('\t', end='')

@@ -69,6 +69,7 @@ META_PERF_RUN_TESTS = "perf_run_tests_ns"
 _DATA = None
 
 
+# Get index used for storing information about each muatation
 def _meta_index(index):
     return f'p_{index}'
 
@@ -83,6 +84,7 @@ def write_meta_file():
         yaml.safe_dump(_DATA, file)
 
 
+# Create file that will be stored in the global variable _DATA and will be at the end of execution written to the disk. 
 def meta_create_file(meta_path, source_path):
     global _DATA
     if meta_path is None: return

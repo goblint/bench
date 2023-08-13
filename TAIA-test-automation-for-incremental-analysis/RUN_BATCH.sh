@@ -124,7 +124,7 @@ do
 
     # Run the command with remaining arguments
     printf "${color_blue}[BATCH][${index}/${files_length}] Processing file ($file)${color_reset}"
-    trap 'kill -- -$$' SIGINT
+    trap 'kill -- -$$' SIGINT # Allow user to use ctrl + c
     if [ "$no_print" = true ]; then
         timeout 600 ./RUN.sh -i "$file" ${goblint_args[@]} > /dev/null
         ret_code=$?
