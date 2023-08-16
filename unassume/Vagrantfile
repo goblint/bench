@@ -58,12 +58,13 @@ Vagrant.configure("2") do |config|
   #
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
-    # vb.gui = true
+    vb.gui = true
   
     # Customize the amount of memory on the VM:
     vb.memory = "8000"
 
     vb.cpus = "2"
+    vb.name = "unassume"
   end
   #
   # View the documentation for the provider you are using for more
@@ -84,6 +85,11 @@ Vagrant.configure("2") do |config|
     adduser vagrant benchexec
     echo 'GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} systemd.unified_cgroup_hierarchy=0"' | tee /etc/default/grub.d/cgroupsv1-for-benchexec.cfg
     update-grub
+    # GUI
+    apt install -y --no-install-recommends xubuntu-core firefox
+    # Cleanup
+    apt autoremove
+    apt clean
   SHELL
 
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
@@ -111,5 +117,8 @@ Vagrant.configure("2") do |config|
 
     # Results
     mkdir results
+
+    # Cleanup
+    opam clean
   SHELL
 end

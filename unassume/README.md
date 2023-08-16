@@ -1,57 +1,58 @@
-## Precision evaluation
+# Correctness Witness Validation by Abstract Interpretation
+## Artifact
 
-TODO move from thread-witnesses.
+## Requirements
+* VirtualBox.
+* 2 CPU cores.
+* 8 GB RAM.
+* TODO GB disk space.
+* TODO time.
+
+## Layout
+* `eval-prec/` — precision evaluation (script, benchmarks, witnesses).
+* `eval-perf/` — performance evaluation (script, benchmarks, witnesses).
+* `unassume.ova` — VirtualBox virtual machine.
+
+  In `/home/vagrant` contains:
+  * `goblint/` ­— Goblint with unassume support, including source code.
+  * `CPAchecker-2.2-unix/` — CPAchecker from SV-COMP 2023 archives.
+  * `UAutomizer-linux/` — Ultimate Automizer from SV-COMP 2023 archives.
+  * `eval-prec/` — precision evaluation (same as above).
+  * `eval-perf/` — performance evaluation (same as above).
+  * `results/` — results (initially empty).
+
+* `results/` — evaluation results tables with data used for the paper.
+* `Vagrantfile` — Vagrant file used for generating above virtual machine.
+
+## Reproduction
+1. Import the virtual machine into VirtualBox.
+2. Start the virtual machine and log in with username `vagrant` and password `vagrant`.
+3. Run `startx` to start the graphical environment.
+4. Open a terminal emulator, e.g. from dock at the bottom of the screen.
+
+### Precision evaluation
+1. Run `./eval-prec/run.sh` in the terminal emulator. This takes TODO time.
+2. Run `firefox results/eval-prec/table-generator.table.html` to view the results.
+
+   The HTML table contains the following status columns (cputime, walltime and memory can be ignored):
+   1. Goblint w/o witness (true means verified).
+   2. Goblint w/ manual witness (true means witness validated).
+   3. Goblint w/ witness from CPAchecker (true means program verified with witness-guidance).
+   4. Goblint w/ witness from CPAchecker (true means witness validated).
+   5. Goblint w/ witness from UAutomizer (true means program verified with witness-guidance).
+   6. Goblint w/ witness from UAutomizer (true means witness validated).
+
+   Table 1 in the paper presents these results, except the rows are likely in a different order.
+
 
 ## Performance evaluation
+1. Run `./eval-perf/run.sh` in the terminal emulator. This takes TODO time.
+2. Run `firefox results/eval-perf/table-generator.table.html` to view the results.
 
-### aget
-```console
-goblint --conf bench-yaml.json ../pthread/aget_comb.c -v
-goblint --conf bench-yaml-validate.json ../pthread/aget_comb.c --set witness.yaml.unassume ../pthread/aget_comb.witness.manual.yml -v --enable witness.invariant.other
-```
+   The HTML table contains the following relevant columns (others can be ignored):
+   1. Goblint w/o witness, evals.
+   2. Goblint w/o witness, cputime.
+   3. Goblint w/ manual witness, evals.
+   4. Goblint w/ manual witness, cputime.
 
-Goblint: d480bbcf3e17488e9ea0504730183c49701aef59
-* evals: 7138 → 4683 = 34.4%
-* solving cputime: 2.237s → 1.604s = 28.3%
-
-Goblint: f5a1641ef64a4b6d5242098c3dbcc0340f63e557
-* evals: 7932 → 4683 = 41.0%
-* solving cputime: 2.590 → 1.689s = 34.8%
-
-Evals bisect:
-* master: 8022
-* regression e94b0cce9a15ebbd5a20f063dcf08ba8a17289da
-* 7c365ba98: 5735
-* orig: 7138
-
-
-
-### pfscan
-```console
-goblint --conf bench-yaml.json ../pthread/pfscan_comb.c -v
-goblint --conf bench-yaml-validate.json ../pthread/pfscan_comb.c --set witness.yaml.unassume ../pthread/pfscan_comb.witness.manual.yml -v --enable witness.invariant.other
-```
-
-Goblint: d480bbcf3e17488e9ea0504730183c49701aef59
-* evals: 4194 → 2919 = 30.4%
-* solving cputime: 0.823s → 0.681s = 17.3%
-
-Goblint: f5a1641ef64a4b6d5242098c3dbcc0340f63e557
-* evals: 4194 → 2919 = 30.4%
-* solving cputime: 1.024s → 0.651s = 36.4%
-
-
-
-### smtprc
-```console
-goblint --conf bench-yaml.json ./eval-perf/pthread/smtprc_comb.c -v
-goblint --conf bench-yaml-validate.json ./eval-perf/pthread/smtprc_comb.c --set witness.yaml.unassume ./eval-perf/manual/smtprc_comb.yml -v --enable witness.invariant.other
-```
-
-Goblint: 22f6061df7d2c7bd3584c000389b9f0a7abf010e
-* evals: 48559 → 24091 = 50.4%
-* solving cputime: 18.566s → 9.720s = 47.6%
-
-
-### knot
-* evals: 29588 → 21432 = 27.5%
+   Table 2 in the paper presents these results, except the rows are likely in a different order.
