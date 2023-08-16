@@ -33,6 +33,113 @@ instead of one CFG with a separate duplicate path per each call of the function.
   read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (char ** __restrict  )__lineptr) (/usr/include/x86_64-linux-gnu/bits/stdio.h:120:3-120:53)
 ```
 
+### `lib.activated = default + "pcre"`
+
+Removes 2 race warnings and some accesses that happen due to the missing library function definitions from `pcre`.
+In addition, removes some `[Error][Imprecise][Unsound] Function definition missing ...` warnings if `warn.unsound` and `warn.error` were set to `true`.
+
+```
+[Warning][Race] Memory location (struct real_pcre) (race with conf. 80):
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.ackmate_dir_filter) (src/ignore.c:205:5-205:94)
+  write with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  write with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.file_search_regex) (src/search.c:630:17-631:55)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.ackmate_dir_filter) (src/ignore.c:205:5-205:94)
+  read with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  read with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.file_search_regex) (src/search.c:630:17-631:55)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.ackmate_dir_filter) (src/ignore.c:205:5-205:94)
+  spawn with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:118:20-119:107)
+  spawn with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.re) (src/search.c:147:25-147:113)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre const   *)opts.file_search_regex) (src/search.c:630:17-631:55)
+[Warning][Race] Memory location (struct pcre_extra) (race with conf. 80):
+  write with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  write with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+  read with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  read with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+  spawn with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:118:20-119:107)
+  spawn with mhp:{tid=search_file_worker; created=All Threads} (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+  spawn with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 80)  (exp: (pcre_extra const   *)opts.re_extra) (src/search.c:147:25-147:113)
+[Error][Imprecise][Unsound] Function definition missing for pcre_compile (src/util.c:320:5-320:71)
+[Error][Imprecise][Unsound] Function definition missing for pcre_study (src/util.c:326:5-326:55)
+[Error][Imprecise][Unsound] Function definition missing for pcre_version (src/main.c:60:5-60:50)
+[Error][Imprecise][Unsound] Function definition missing for pcre_config (src/main.c:68:5-68:42)
+[Error][Imprecise][Unsound] Function definition missing for pcre_exec (src/search.c:118:20-119:107)
+[Error][Imprecise][Unsound] Function definition missing for pcre_exec (src/search.c:147:25-147:113)
+```
+
+### `#define HAVE_FOPENCOOKIE 0` instead of `#define HAVE_FOPENCOOKIE 1` in `src/config.h`
+
+So that the cookie is not used. This helps get rid of many type-based accesses that arise due to an uknown pointer.
+
+```
+[Warning][Race] Memory location (alloc@sid:502@tid:main(#top)) (race with conf. 100): (src/ignore.c:73:9-73:47)
+  ...
+[Warning][Race] Memory location (alloc@sid:3343@tid:main(#top)) (race with conf. 100): (src/search.c:371:9-371:31)
+  ...
+[Warning][Race] Memory location (alloc@sid:3343@tid:main(#top))[?] (race with conf. 100): (src/search.c:371:9-371:31)
+  ...
+[Warning][Race] Memory location (alloc@sid:3343@tid:search_file_worker(#top)) (race with conf. 100): (src/search.c:371:9-371:31)
+  ...
+[Warning][Race] Memory location (alloc@sid:3343@tid:search_file_worker(#top))[?] (race with conf. 100): (src/search.c:371:9-371:31)
+...
+```
+
+### `pre.cppflags: ["-D_FORTIFY_SOURCE=0"]`
+
+Removes the accesses to `string_fortified.h` and thus removes some race warnings.
+
+```
+[Warning][Race] Memory location (alloc@sid:6218@tid:zfile_seek(#top)) (race with conf. 110): (src/zfile.c:366:9-366:26)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 50)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  write with [mhp:{tid=main; created=All Threads; must_joined={search_file_worker}}, thread:main] (conf. 50)  (exp: (void * __restrict  )((void *)0)) (src/main.c:212:9-212:45)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 50)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:297:3-297:54)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:297:3-297:54)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:287:7-287:54)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:287:7-287:54)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 110)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 110)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+[Warning][Race] Memory location (alloc@sid:6218@tid:zfile_seek(#top))[?] (race with conf. 110): (src/zfile.c:366:9-366:26)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 50)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  write with [mhp:{tid=main; created=All Threads; must_joined={search_file_worker}}, thread:main] (conf. 50)  (exp: (void * __restrict  )((void *)0)) (src/main.c:212:9-212:45)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 50)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  write with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:297:3-297:54)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: (void * __restrict  )__ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:297:3-297:54)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  write with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:287:7-287:54)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:287:7-287:54)
+  read with mhp:{tid=zfile_read; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __ptr) (/usr/include/x86_64-linux-gnu/bits/stdio2.h:292:2-292:85)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  read with [mhp:{tid=main; created=All Threads}, thread:main] (conf. 100)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:71:3-71:89)
+  write with mhp:{tid=zfile_seek; created=All Threads} (conf. 110)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+  read with mhp:{tid=zfile_seek; created=All Threads} (conf. 110)  (exp: __dest) (/usr/include/x86_64-linux-gnu/bits/string_fortified.h:34:3-34:90)
+```
+
+### Add `decompress_zlib` and `decompress_lzma` to `ana.malloc.wrappers`
 
 ## Annotating
 
