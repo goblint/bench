@@ -81,7 +81,7 @@ In addition, removes some `[Error][Imprecise][Unsound] Function definition missi
 
 ### `#define HAVE_FOPENCOOKIE 0` instead of `#define HAVE_FOPENCOOKIE 1` in `src/config.h`
 
-So that the cookie is not used. This helps get rid of many type-based accesses that arise due to an uknown pointer.
+So that the cookie is not used. This helps get rid of many type-based accesses that arise due to an unknown pointer.
 
 ```
 [Warning][Race] Memory location (alloc@sid:502@tid:main(#top)) (race with conf. 100): (src/ignore.c:73:9-73:47)
