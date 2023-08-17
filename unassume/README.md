@@ -67,6 +67,7 @@ As a framework, it also allows new ones to be easily added.
 For more details, refer to the linked GitHub repository and related documentation.
 
 Key parts of the code related to this paper are the following:
+
 1. `src/analyses/unassumeAnalysis.ml`: analysis, which emits unassume operation events to other analyses for YAML-witness–guided verification.
 2. `src/analyses/base.ml` lines 2551–2641: propagating unassume for non-relational domains of the `base` analysis.
 3. `src/analyses/apron/relationAnalysis.apron.ml` lines 668–693: strengthening-based dual-narrowing unassume for relational Apron domains of the `apron` analysis.
