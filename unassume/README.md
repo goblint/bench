@@ -1,6 +1,10 @@
 # Correctness Witness Validation by Abstract Interpretation
 ## Artifact
 
+This artifact contains everything mentioned in the evaluation section of the paper: Goblint implementation, scripts, benchmarks, manual witnesses and other tools.
+
+**Note to artifact reviewers:** in the smoke test phase, try to only run the performance evaluation since it is very quick compared to the precision evaluation.
+
 ## Requirements
 * VirtualBox.
 * 2 CPU cores.
