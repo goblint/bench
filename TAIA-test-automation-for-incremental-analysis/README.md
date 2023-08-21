@@ -25,4 +25,4 @@ Run `python3 scripts/stats.py stats.yaml` to reprint the statistics collected in
 To find out more about the implementation check out the `./scripts` directory and its [readme](./scripts/README.md) file.
 
 # Thesis Automatic Generation of Test Cases for Incremental Static Analysis
-The thesis about "Automatic Generation of Test Cases for Incremental Static Analysis" that resulted in the implementation of TAIA can be found [here](./Thesis-Automatic-Generation-of-Test-Cases-for-Incremental-Static-Analysis.pdf).
+The thesis about "Automatic Generation of Test Cases for Incremental Static Analysis" that describes the implementation of TAIA can be found [here](./Thesis-Automatic-Generation-of-Test-Cases-for-Incremental-Static-Analysis.pdf). The presentation can be found [here](./Presentation.pdf).
