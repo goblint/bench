@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="cpachecker" timelimit="900 s" hardtimelimit="960 s" memlimit="4 GB" cpuCores="1">
+
+  <option name="-heap">4000M</option>
+  <option name="-timelimit">900s</option>
+
+  <resultfiles>**/invariantWitnesses/*</resultfiles>
+  <option name="-witness2invariant"/>
+  <option name="-skipRecursion"/>
+
+  <rundefinition name="cpachecker">
+    <requiredfiles>RESULTSDIR/CPACHECKER_FILES/${rundefinition_name}/${taskdef_name}/output/witness.graphml</requiredfiles>
+    <option name="-setprop">invariantStore.witness=RESULTSDIR/CPACHECKER_FILES/${rundefinition_name}/${taskdef_name}/output/witness.graphml</option>
+  </rundefinition>
+
+  <rundefinition name="uautomizer">
+    <requiredfiles>RESULTSDIR/ULTIMATE_FILES/${rundefinition_name}/${taskdef_name}/witness.graphml</requiredfiles>
+    <option name="-setprop">invariantStore.witness=RESULTSDIR/ULTIMATE_FILES/${rundefinition_name}/${taskdef_name}/witness.graphml</option>
+  </rundefinition>
+
+  <tasks name="Prec">
+    <includesfile>./Prec.set</includesfile>
+    <propertyfile expectedverdict="true">./properties/unreach-call.prp</propertyfile>
+  </tasks>
+
+</benchmark>
