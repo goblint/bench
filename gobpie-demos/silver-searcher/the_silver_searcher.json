@@ -1,10 +1,25 @@
 {
-  "files": ["the_silver_searcher"],
+  "files": [
+    "the_silver_searcher"
+  ],
+  "allglobs": true,
   "ana": {
     "activated": [
-      "expRelation", "base", "threadid", "threadflag", "threadreturn",
-      "escape", "mutexEvents", "mutex", "access", "race", "mallocWrapper", "mhp",
-      "mallocFresh"
+      "expRelation",
+      "base",
+      "threadid",
+      "threadflag",
+      "threadreturn",
+      "threadJoins",
+      "escape",
+      "mutexEvents",
+      "mutex",
+      "access",
+      "race",
+      "mallocWrapper",
+      "mhp",
+      "mallocFresh",
+      "expsplit"
     ],
     "base": {
       "privatization": "none",
@@ -29,7 +44,7 @@
   },
   "sem": {
     "unknown_function": {
-      "spawn": false,
+      "spawn": true,
       "invalidate": {
         "globals": false
       }
@@ -38,10 +53,34 @@
   "exp": {
     "earlyglobs": true
   },
+  "cil": {
+    "merge": {
+      "inlines": true
+    }
+  },
   "dbg": {
     "timing": {
       "enabled": true
     }
+  },
+  "pre": {
+    "keep": true,
+    "cppflags": ["-D_FORTIFY_SOURCE=0"]
+  },
+  "lib": {
+    "activated": [
+      "c",
+      "posix",
+      "pthread",
+      "gcc",
+      "glibc",
+      "linux-userspace",
+      "goblint",
+      "ncurses",
+      "pcre",
+      "zlib",
+      "liblzma"
+    ]
   },
   "warn": {
     "assert": false,
@@ -49,15 +88,16 @@
     "integer": false,
     "cast": false,
     "race": true,
-    "deadcode": true,
+    "deadcode": false,
     "analyzer": false,
     "unsound": false,
+    "program": false,
     "imprecise": false,
     "unknown": false,
     "error": false,
     "warning": true,
     "info": false,
     "debug": false,
-    "success": true
+    "success": false
   }
 }
