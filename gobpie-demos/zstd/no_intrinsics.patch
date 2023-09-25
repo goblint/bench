@@ -1,0 +1,11 @@
+--- zstd-1.5.5/programs/Makefile
++++ zstd-1.5.5/programs/Makefile
+@@ -138,7 +138,7 @@ allVariants: all zstd-frugal zstd-nolegacy zstd-dictBuilder
+ zstd : CPPFLAGS += $(THREAD_CPP) $(ZLIBCPP) $(LZMACPP) $(LZ4CPP)
+ zstd : LDFLAGS += $(THREAD_LD) $(DEBUGFLAGS_LD)
+ zstd : LDLIBS += $(ZLIBLD) $(LZMALD) $(LZ4LD)
+-zstd : CPPFLAGS += -DZSTD_LEGACY_SUPPORT=$(ZSTD_LEGACY_SUPPORT)
++zstd : CPPFLAGS += -DZSTD_LEGACY_SUPPORT=$(ZSTD_LEGACY_SUPPORT) -DZSTD_NO_INTRINSICS
+ ifneq (,$(filter Windows%,$(OS)))
+ zstd : $(RES_FILE)
+ endif
