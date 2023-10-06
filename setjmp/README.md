@@ -64,6 +64,33 @@ setjmp/longjmp are produced.
 - The three warnings about longjmps leading to potentially invalid targets start with `[Warning][Behavior > Undefined > Other] Longjmp to potentially invalid target [...]` or `[Warning][Imprecise] Longjmp to potentially invalid target [...]`.
 - The warning about jumping to a jump buffer that may receive its value by copying memory is `[Warning][Behavior > Undefined > Other] The jump buffer *(png_ptr->jmp_buf_ptr) contains values that were copied here instead of being set by setjmp. This is Undefined Behavior.`.
 
+## Exhibiting the Memory Leak
+
+The potential clobbering of `row_buf` can lead to a memory leak; however,
+the program as currently implemented reads and writes single lines using the libpng function:
+```c 
+png_read_rows(read_ptr, (png_bytepp)&row_buf, NULL, 1);
+```
+
+The address of `row_buf` is given to an external function, so the compiler *most likely* treats it as volatile.
+This is dangerous because an innocuous change will result in a real memory leak, namely,
+if one uses the more natural method of reading/writing single lines:
+```c
+png_read_row(read_ptr, row_buf, NULL);
+```
+
+We can then witness a memory leak, similar to [this issue](https://github.com/glennrp/libpng/issues/265), where the freeing of `row_buf` was missing. This has been [fixed](https://github.com/pnggroup/libpng/commit/8439534daa1d3a5705ba92e653eda9251246dd61#diff-71224f3104c9fad7ed296177dd09ee5ce90a3604b61e8edbb84eab5d33eea43dR960), but the same leak happens if the pointer is clobbered. To replicate this, execute the following commands in our `libpng` directory (or copy the referenced files):
+```bash
+git clone https://github.com/glennrp/libpng.git
+cd libpng
+git checkout v1.6.39
+patch -p1 < ../no-escape.patch
+export CC=/usr/bin/clang CFLAGS="-g -O2  -fsanitize=address"
+./configure
+make
+./pngtest ../leak_30925
+```
+
 ## Bug Injection
 
 We have also injected a bug akin to the one in ImageMagick described in
@@ -76,8 +103,6 @@ Goblint can be run on it in the same way as the unmodified program.
 
 The inserted bug is that the variable `png_pixels` is accessed when it has indeterminate value.
 This is reflected in the extra warnings `[Warning][Unknown] accessing poisonous variable png_pixels`.
-
-
 
 # Helpful Links
 

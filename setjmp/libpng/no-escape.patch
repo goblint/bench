@@ -1,0 +1,22 @@
+diff --git a/pngtest.c b/pngtest.c
+index 542ee9593..ad04a52d7 100644
+--- a/pngtest.c
++++ b/pngtest.c
+@@ -1496,7 +1496,7 @@ test_one_file(const char *inname, const char *outname)
+              (unsigned long)png_get_rowbytes(read_ptr, read_info_ptr));
+ 
+ #endif /* !SINGLE_ROWBUF_ALLOC */
+-         png_read_rows(read_ptr, (png_bytepp)&row_buf, NULL, 1);
++         png_read_row(read_ptr, row_buf, NULL);
+ 
+ #ifdef PNG_WRITE_SUPPORTED
+ #ifdef PNGTEST_TIMING
+@@ -1504,7 +1504,7 @@ test_one_file(const char *inname, const char *outname)
+          t_decode += (t_stop - t_start);
+          t_start = t_stop;
+ #endif
+-         png_write_rows(write_ptr, (png_bytepp)&row_buf, 1);
++         png_write_row(write_ptr, row_buf);
+ #ifdef PNGTEST_TIMING
+          t_stop = (float)clock();
+          t_encode += (t_stop - t_start);
