@@ -8535,7 +8535,7 @@ mm_idx_t *mm_idx_build(char const   *fn , int w , int k , int flag , int n_threa
   if ((unsigned long )fp == (unsigned long )((mm_bseq_file_t *)0)) {
     return ((mm_idx_t *)0);
   }
-  mi = mm_idx_gen(fp, w, k, 14, flag, 1 << 18, n_threads, 18446744073709551615);
+  mi = mm_idx_gen(fp, w, k, 14, flag, 1 << 18, n_threads, 18446744073709551615ULL);
   mm_bseq_close(fp);
   return (mi);
 }
@@ -13421,12 +13421,12 @@ static mm128_t *collect_seed_hits_heap(void *km , mm_mapopt_t const   *opt , int
         tmp___1 = n_for;
         n_for ++;
         p = a + tmp___1;
-        p->x = (uint64_t )(((unsigned long long )r & 18446744069414584320) | (unsigned long long )rpos);
+        p->x = (uint64_t )(((unsigned long long )r & 18446744069414584320ULL) | (unsigned long long )rpos);
         p->y = ((uint64_t )q->q_span << 32) | (unsigned long )(q->q_pos >> 1);
       } else {
         n_rev ++;
         p = a + (*n_a - n_rev);
-        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )r & 18446744069414584320)) | (unsigned long long )rpos);
+        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )r & 18446744069414584320ULL)) | (unsigned long long )rpos);
         p->y = ((uint64_t )q->q_span << 32) | (unsigned long )(((uint32_t )qlen - (((q->q_pos >> 1) + 1U) - q->q_span)) - 1U);
       }
       p->y |= (uint64_t )q->seg_id << 48;
@@ -13504,15 +13504,15 @@ static mm128_t *collect_seed_hits(void *km , mm_mapopt_t const   *opt , int max_
       (*n_a) ++;
       p = a + tmp___1;
       if ((*(r + k) & 1UL) == (unsigned long const   )(q->q_pos & 1U)) {
-        p->x = (uint64_t )(((unsigned long long )*(r + k) & 18446744069414584320) | (unsigned long long )rpos);
+        p->x = (uint64_t )(((unsigned long long )*(r + k) & 18446744069414584320ULL) | (unsigned long long )rpos);
         p->y = ((uint64_t )q->q_span << 32) | (unsigned long )(q->q_pos >> 1);
       } else
       if (! ((long long )opt->flag & 4294967296LL)) {
-        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )*(r + k) & 18446744069414584320)) | (unsigned long long )rpos);
+        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )*(r + k) & 18446744069414584320ULL)) | (unsigned long long )rpos);
         p->y = ((uint64_t )q->q_span << 32) | (unsigned long )(((uint32_t )qlen - (((q->q_pos >> 1) + 1U) - q->q_span)) - 1U);
       } else {
         len = (int32_t )(mi->seq + (*(r + k) >> 32))->len;
-        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )*(r + k) & 18446744069414584320)) | (unsigned long long )(((uint32_t )len - ((uint32_t )(rpos + 1) - q->q_span)) - 1U));
+        p->x = (uint64_t )(((1ULL << 63) | ((unsigned long long )*(r + k) & 18446744069414584320ULL)) | (unsigned long long )(((uint32_t )len - ((uint32_t )(rpos + 1) - q->q_span)) - 1U));
         p->y = ((uint64_t )q->q_span << 32) | (unsigned long )(q->q_pos >> 1);
       }
       p->y |= (uint64_t )q->seg_id << 48;
@@ -17153,8 +17153,8 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
   kmer[0] = (uint64_t )0;
   kmer[1] = (uint64_t )0;
   kmer_span = 0;
-  min.x = 18446744073709551615;
-  min.y = 18446744073709551615;
+  min.x = 18446744073709551615ULL;
+  min.y = 18446744073709551615ULL;
   if (len > 0) {
     if (w > 0) {
       if (w < 256) {
@@ -17202,8 +17202,8 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
   i = l;
   while (i < len) {
     c = (int )seq_nt4_table[(uint8_t )*(str + i)];
-    info.x = 18446744073709551615;
-    info.y = 18446744073709551615;
+    info.x = 18446744073709551615ULL;
+    info.y = 18446744073709551615ULL;
     if (c < 4) {
       if (is_hpc) {
         skip_len = 1;
@@ -17257,7 +17257,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
     }
     buf[buf_pos] = info;
     if (l == (w + k) - 1) {
-      if (min.x != 18446744073709551615) {
+      if (min.x != 18446744073709551615ULL) {
         j = buf_pos + 1;
         while (j < w) {
           if (min.x == buf[j].x) {
@@ -17308,7 +17308,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
     }
     if (info.x <= min.x) {
       if (l >= w + k) {
-        if (min.x != 18446744073709551615) {
+        if (min.x != 18446744073709551615ULL) {
           while (1) {
             if (p->n == p->m) {
               if (p->m) {
@@ -17331,7 +17331,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
     } else
     if (buf_pos == min_pos) {
       if (l >= (w + k) - 1) {
-        if (min.x != 18446744073709551615) {
+        if (min.x != 18446744073709551615ULL) {
           while (1) {
             if (p->n == p->m) {
               if (p->m) {
@@ -17350,7 +17350,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
         }
       }
       j = buf_pos + 1;
-      min.x = 18446744073709551615;
+      min.x = 18446744073709551615ULL;
       while (j < w) {
         if (min.x >= buf[j].x) {
           min = buf[j];
@@ -17367,7 +17367,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
         j ++;
       }
       if (l >= (w + k) - 1) {
-        if (min.x != 18446744073709551615) {
+        if (min.x != 18446744073709551615ULL) {
           j = buf_pos + 1;
           while (j < w) {
             if (min.x == buf[j].x) {
@@ -17424,7 +17424,7 @@ void mm_sketch(void *km , char const   *str , int len , int w , int k , uint32_t
     __Cont: /* CIL Label */ 
     i ++;
   }
-  if (min.x != 18446744073709551615) {
+  if (min.x != 18446744073709551615ULL) {
     while (1) {
       if (p->n == p->m) {
         if (p->m) {

@@ -2455,7 +2455,7 @@ static rmtU64 rmtHashTable_Find(rmtHashTable *table , rmtU32 key )
     }
     index___0 = (index___0 + 1U) & index_mask;
   }
-  return ((rmtU64 )18446744073709551615);
+  return ((rmtU64 )18446744073709551615ULL);
 }
 }
 static rmtError StringTable_Constructor(StringTable *table ) 

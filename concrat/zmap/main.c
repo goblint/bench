@@ -2124,7 +2124,7 @@ __inline extern int ( __attribute__((__gnu_inline__)) __gmpz_fits_ulong_p)(mpz_s
     tmp = 1;
   } else
   if (__gmp_n == 1L) {
-    if (*(__gmp_p + 0) <= 18446744073709551615) {
+    if (*(__gmp_p + 0) <= 18446744073709551615ULL) {
       tmp = 1;
     } else {
       tmp = 0;
@@ -2346,7 +2346,7 @@ __inline extern mp_limb_t ( __attribute__((__gnu_inline__)) __gmpn_add)(mp_ptr _
           __gmp_x = (mp_limb_t )*(__gmp_xp + __gmp_i);
           tmp = __gmp_i;
           __gmp_i ++;
-          tmp___0 = (__gmp_x + 1UL) & 18446744073709551615;
+          tmp___0 = (__gmp_x + 1UL) & 18446744073709551615ULL;
           *(__gmp_wp + tmp) = tmp___0;
           if (! (tmp___0 == 0UL)) {
             break;
@@ -2513,7 +2513,7 @@ __inline extern mp_limb_t ( __attribute__((__gnu_inline__)) __gmpn_sub)(mp_ptr _
           __gmp_x = (mp_limb_t )*(__gmp_xp + __gmp_i);
           tmp = __gmp_i;
           __gmp_i ++;
-          *(__gmp_wp + tmp) = (__gmp_x - 1UL) & 18446744073709551615;
+          *(__gmp_wp + tmp) = (__gmp_x - 1UL) & 18446744073709551615ULL;
           if (! (__gmp_x == 0UL)) {
             break;
           }

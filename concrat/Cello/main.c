@@ -4856,7 +4856,7 @@ uint64_t hash_data(void const   *data , size_t size___0 )
   unsigned char const   *data2 ;
 
   {
-  m = 14313749767032793493;
+  m = 14313749767032793493ULL;
   r = 47;
   d = (uint64_t const   *)data;
   end = d + size___0 / 8UL;
@@ -18933,7 +18933,7 @@ static void GC_New(var self , var args )
   bt = (struct Ref *)tmp___3;
   gc->bottom = bt->val;
   gc->maxptr = (uintptr_t )0;
-  gc->minptr = 18446744073709551615;
+  gc->minptr = 18446744073709551615ULL;
   gc->running = (_Bool)1;
   gc->freelist = (var *)((void *)0);
   gc->freenum = (uintptr_t )0;

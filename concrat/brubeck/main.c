@@ -5370,9 +5370,9 @@ int brubeck_ftoa(char *outbuf , float f )
     goto END;
   }
   safe_shift = - ((int )exp2___0 + 1);
-  safe_mask = (uint64_t )(18446744073709551615 >> (40 - safe_shift));
+  safe_mask = (uint64_t )(18446744073709551615ULL >> (40 - safe_shift));
   if ((int )exp2___0 >= 64) {
-    int_part = 18446744073709551615;
+    int_part = 18446744073709551615ULL;
   } else
   if ((int )exp2___0 >= 23) {
     int_part = mantissa << ((int )exp2___0 - 23);

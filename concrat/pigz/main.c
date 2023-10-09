@@ -595,7 +595,7 @@ __inline static size_t grow(size_t size )
     size = (size_t )16;
   }
   if (size <= was) {
-    size = 18446744073709551615;
+    size = 18446744073709551615ULL;
   }
   return (size);
 }
@@ -8018,7 +8018,7 @@ static size_t num(char *arg )
       try_throw_(22, (char *)"invalid numeric parameter: %s", arg, (void *)0);
     } else
     if (val) {
-      if ((18446744073709551615 - (size_t )((int )*str - 48)) / val < 10UL) {
+      if ((18446744073709551615ULL - (size_t )((int )*str - 48)) / val < 10UL) {
         try_throw_(22, (char *)"invalid numeric parameter: %s", arg, (void *)0);
       }
     }

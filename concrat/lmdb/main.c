@@ -1009,7 +1009,7 @@ static int mdb_pages_xkeep(MDB_cursor *mc , unsigned int pflags , int all )
     while (i < txn->mt_numdbs) {
       if ((int )*(txn->mt_dbflags + i) & 1) {
         pgno = (txn->mt_dbs + i)->md_root;
-        if (pgno == 18446744073709551615) {
+        if (pgno == 18446744073709551615ULL) {
           goto __Cont;
         }
         rc = mdb_page_get(m0, pgno, & dp, & level);
@@ -4565,7 +4565,7 @@ static int mdb_page_search(MDB_cursor *mc , MDB_val *key , int flags )
       *(mc->mc_dbflag) = (unsigned char )((int )*(mc->mc_dbflag) & -3);
     }
     root = (mc->mc_db)->md_root;
-    if (root == 18446744073709551615) {
+    if (root == 18446744073709551615ULL) {
       return (-30798);
     }
   }
@@ -5724,7 +5724,7 @@ int mdb_cursor_put(MDB_cursor *mc , MDB_val *key , MDB_val *data , unsigned int 
     }
     rc = 0;
   } else
-  if ((mc->mc_db)->md_root == 18446744073709551615) {
+  if ((mc->mc_db)->md_root == 18446744073709551615ULL) {
     mc->mc_snum = (unsigned short)0;
     mc->mc_top = (unsigned short)0;
     mc->mc_flags &= 4294967294U;
@@ -5895,7 +5895,7 @@ int mdb_cursor_put(MDB_cursor *mc , MDB_val *key , MDB_val *data , unsigned int 
         switch (flags) {
         default: 
         if (! ((int )(mc->mc_db)->md_flags & 16)) {
-          offset = (unsigned int )(((((unsigned long )(& ((MDB_node *)0)->mn_data) + sizeof(indx_t )) + data->mv_size) + 1UL) & 18446744073709551614);
+          offset = (unsigned int )(((((unsigned long )(& ((MDB_node *)0)->mn_data) + sizeof(indx_t )) + data->mv_size) + 1UL) & 18446744073709551614ULL);
           break;
         }
         offset = (unsigned int )fp->mp_pad;
@@ -6425,7 +6425,7 @@ static size_t mdb_leaf_size(MDB_env *env , MDB_val *key , MDB_val *data )
   if (sz > (size_t )env->me_nodemax) {
     sz -= data->mv_size - sizeof(pgno_t );
   }
-  return (((sz + sizeof(indx_t )) + 1UL) & 18446744073709551614);
+  return (((sz + sizeof(indx_t )) + 1UL) & 18446744073709551614ULL);
 }
 }
 static size_t mdb_branch_size(MDB_env *env , MDB_val *key ) 
@@ -6499,7 +6499,7 @@ static int mdb_node_add(MDB_cursor *mc , indx_t indx , MDB_val *key , MDB_val *d
     } else
     if (node_size + data->mv_size > (size_t )((mc->mc_txn)->mt_env)->me_nodemax) {
       ovpages = (int )(((size_t )((unsigned int )((unsigned long )(& ((MDB_page *)0)->mp_ptrs)) - 1U) + data->mv_size) / (size_t )((mc->mc_txn)->mt_env)->me_psize + 1UL);
-      node_size = ((node_size + sizeof(pgno_t )) + 1UL) & 18446744073709551614;
+      node_size = ((node_size + sizeof(pgno_t )) + 1UL) & 18446744073709551614ULL;
       if ((ssize_t )node_size > room) {
         goto full;
       }
@@ -6513,7 +6513,7 @@ static int mdb_node_add(MDB_cursor *mc , indx_t indx , MDB_val *key , MDB_val *d
       node_size += data->mv_size;
     }
   }
-  node_size = (node_size + 1UL) & 18446744073709551614;
+  node_size = (node_size + 1UL) & 18446744073709551614ULL;
   if ((ssize_t )node_size > room) {
     goto full;
   }
@@ -7022,7 +7022,7 @@ static int mdb_update_key(MDB_cursor *mc , MDB_val *key )
   mp = mc->mc_pg[mc->mc_top];
   node = (MDB_node *)(((char *)mp + (int )mp->mp_ptrs[indx]) + 0U);
   ptr = mp->mp_ptrs[indx];
-  ksize = (int )((key->mv_size + 1UL) & 18446744073709551614);
+  ksize = (int )((key->mv_size + 1UL) & 18446744073709551614ULL);
   oksize = (int )(((unsigned int )node->mn_ksize + 1U) & 4294967294U);
   delta = ksize - oksize;
   if (delta) {
@@ -8735,7 +8735,7 @@ static int mdb_env_cwalk(mdb_copy *my , pgno_t *pg , int flags )
   mc.mc_ki[29] = (unsigned short)0;
   mc.mc_ki[30] = (unsigned short)0;
   mc.mc_ki[31] = (unsigned short)0;
-  if (*pg == 18446744073709551615) {
+  if (*pg == 18446744073709551615ULL) {
     return (0);
   }
   mc.mc_snum = (unsigned short)1;
@@ -8982,7 +8982,7 @@ static int mdb_env_copyfd1(MDB_env *env , int fd )
   mm = (MDB_meta *)((void *)((char *)mp + (unsigned int )((unsigned long )(& ((MDB_page *)0)->mp_ptrs))));
   new_root = (txn->mt_dbs + 1)->md_root;
   root = new_root;
-  if (root != 18446744073709551615) {
+  if (root != 18446744073709551615ULL) {
     freecount = (MDB_ID )0;
     mdb_cursor_init(& mc, txn, (MDB_dbi )0, (MDB_xcursor *)((void *)0));
     while (1) {
@@ -9003,7 +9003,7 @@ static int mdb_env_copyfd1(MDB_env *env , int fd )
   } else {
     mm->mm_dbs[1].md_flags = (txn->mt_dbs + 1)->md_flags;
   }
-  if (root != 18446744073709551615) {
+  if (root != 18446744073709551615ULL) {
     mm->mm_txnid = (txnid_t volatile   )1;
   } else
   if (mm->mm_dbs[1].md_flags) {

@@ -3524,7 +3524,7 @@ void sb_timer_reset(sb_timer_t *t )
 
 
   {
-  t->min_time = 18446744073709551615;
+  t->min_time = 18446744073709551615ULL;
   t->max_time = (uint64_t )0;
   t->sum_time = (uint64_t )0;
   t->events = (uint64_t )0;

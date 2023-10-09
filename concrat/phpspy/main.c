@@ -8038,7 +8038,7 @@ uint64_t phpspy_zend_inline_hash_func(char const   *str , size_t len )
   case 0UL: 
   break;
   }
-  return (hash | 9223372036854775808);
+  return (hash | 9223372036854775808ULL);
 }
 }
 void log_error(char const   *fmt  , ...) 
