@@ -5,7 +5,7 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-05-goblint
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-07-goblint-large-program-libfuns
 # GOBLINTDIR=$MYBENCHDIR/../goblint
 GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=7
@@ -33,8 +33,8 @@ mkdir $RESULTSDIR || true
 cd $GOBLINTDIR
 $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
-cd $GOBLINT23DIR
-$BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
+# cd $GOBLINT23DIR
+# $BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
 
 # cd $CPACHECKER_DIR
 # $BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
@@ -61,7 +61,7 @@ table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
 unzip -o goblint.*.logfiles.zip
-unzip -o goblint23.*.logfiles.zip
+# unzip -o goblint23.*.logfiles.zip
 # unzip -o cpachecker.*.logfiles.zip
 # unzip -o dartagnan.*.logfiles.zip
 # unzip -o deagle.*.logfiles.zip
