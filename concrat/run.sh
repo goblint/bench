@@ -5,10 +5,12 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-03-svcomp23-tools
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-05-goblint
 # GOBLINTDIR=$MYBENCHDIR/../goblint
-# GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
-# GOBLINT_PARALLEL=7
+GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
+GOBLINT_PARALLEL=7
+GOBLINT23DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/goblint
+GOBLINT23_PARALLEL=7
 CPACHECKER_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/CPAchecker-2.2-unix
 CPACHECKER_PARALLEL=7
 DARTAGNAN_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/dartagnan
@@ -28,26 +30,29 @@ BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --out
 mkdir $RESULTSDIR || true
 
 # Run verification
-# cd $GOBLINTDIR
-# $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
+cd $GOBLINTDIR
+$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
-cd $CPACHECKER_DIR
-$BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
+cd $GOBLINT23DIR
+$BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
 
-cd $DARTAGNAN_DIR
-$BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
+# cd $CPACHECKER_DIR
+# $BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
 
-cd $DEAGLE_DIR
-$BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
+# cd $DARTAGNAN_DIR
+# $BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
 
-cd $LOCKSMITH_DIR
-$BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
+# cd $DEAGLE_DIR
+# $BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
 
-cd $THETA_DIR
-$BENCHEXEC --numOfThreads $THETA_PARALLEL $MYBENCHDIR/theta.xml
+# cd $LOCKSMITH_DIR
+# $BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
 
-cd $ULTIMATE_DIR
-$BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
+# cd $THETA_DIR
+# $BENCHEXEC --numOfThreads $THETA_PARALLEL $MYBENCHDIR/theta.xml
+
+# cd $ULTIMATE_DIR
+# $BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
 
 # Generate table with merged results
 cd $RESULTSDIR
@@ -55,10 +60,11 @@ cp $MYBENCHDIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
-# unzip -o goblint.*.logfiles.zip
-unzip -o cpachecker.*.logfiles.zip
-unzip -o dartagnan.*.logfiles.zip
-unzip -o deagle.*.logfiles.zip
-unzip -o locksmith.*.logfiles.zip
-unzip -o theta.*.logfiles.zip
-unzip -o uautomizer.*.logfiles.zip
+unzip -o goblint.*.logfiles.zip
+unzip -o goblint23.*.logfiles.zip
+# unzip -o cpachecker.*.logfiles.zip
+# unzip -o dartagnan.*.logfiles.zip
+# unzip -o deagle.*.logfiles.zip
+# unzip -o locksmith.*.logfiles.zip
+# unzip -o theta.*.logfiles.zip
+# unzip -o uautomizer.*.logfiles.zip
