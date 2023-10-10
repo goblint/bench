@@ -14918,7 +14918,7 @@ static I isescape(UC c )
   return ((I )tmp);
 }
 }
-extern int ( /* missing proto */  __builtin_isnan)() ;
+// extern int ( /* missing proto */  __builtin_isnan)() ;
 static C b[512]  ;
 static I needspt0(F f ) 
 { 
@@ -31647,7 +31647,7 @@ K max_or(K a , K b___1 )
   return (z);
 }
 }
-extern int ( /* missing proto */  __builtin_isinf_sign)() ;
+// extern int ( /* missing proto */  __builtin_isinf_sign)() ;
 K floor_ceil(K a , F (*g)(F  ) ) 
 { 
   int tmp ;
@@ -34751,7 +34751,7 @@ static F tround(F f )
   return (tmp___4);
 }
 }
-extern int ( /* missing proto */  __builtin_signbit)() ;
+// extern int ( /* missing proto */  __builtin_signbit)() ;
 K dollar(K a , K b___1 ) 
 { 
   I at___0 ;

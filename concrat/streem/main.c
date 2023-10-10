@@ -6712,7 +6712,7 @@ strm_value strm_int_value(int i )
   return (18442803424035602432ULL | ((uint64_t )i & ~ (65535UL << 48)));
 }
 }
-extern int ( /* missing proto */  __builtin_isnan)() ;
+// extern int ( /* missing proto */  __builtin_isnan)() ;
 strm_value strm_float_value(double f )
 {
   union __anonunion_u_274369385 u ;
