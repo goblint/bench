@@ -5,7 +5,7 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-07-goblint-large-program-libfuns
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-08-large-int
 # GOBLINTDIR=$MYBENCHDIR/../goblint
 GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=7
@@ -33,26 +33,26 @@ mkdir $RESULTSDIR || true
 cd $GOBLINTDIR
 $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
-# cd $GOBLINT23DIR
-# $BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
+cd $GOBLINT23DIR
+$BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
 
-# cd $CPACHECKER_DIR
-# $BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
+cd $CPACHECKER_DIR
+$BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
 
-# cd $DARTAGNAN_DIR
-# $BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
+cd $DARTAGNAN_DIR
+$BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
 
-# cd $DEAGLE_DIR
-# $BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
+cd $DEAGLE_DIR
+$BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
 
-# cd $LOCKSMITH_DIR
-# $BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
+cd $LOCKSMITH_DIR
+$BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
 
-# cd $THETA_DIR
-# $BENCHEXEC --numOfThreads $THETA_PARALLEL $MYBENCHDIR/theta.xml
+cd $THETA_DIR
+$BENCHEXEC --numOfThreads $THETA_PARALLEL $MYBENCHDIR/theta.xml
 
-# cd $ULTIMATE_DIR
-# $BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
+cd $ULTIMATE_DIR
+$BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
 
 # Generate table with merged results
 cd $RESULTSDIR
@@ -61,10 +61,10 @@ table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
 unzip -o goblint.*.logfiles.zip
-# unzip -o goblint23.*.logfiles.zip
-# unzip -o cpachecker.*.logfiles.zip
-# unzip -o dartagnan.*.logfiles.zip
-# unzip -o deagle.*.logfiles.zip
-# unzip -o locksmith.*.logfiles.zip
-# unzip -o theta.*.logfiles.zip
-# unzip -o uautomizer.*.logfiles.zip
+unzip -o goblint23.*.logfiles.zip
+unzip -o cpachecker.*.logfiles.zip
+unzip -o dartagnan.*.logfiles.zip
+unzip -o deagle.*.logfiles.zip
+unzip -o locksmith.*.logfiles.zip
+unzip -o theta.*.logfiles.zip
+unzip -o uautomizer.*.logfiles.zip
