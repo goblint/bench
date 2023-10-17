@@ -5,7 +5,7 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-08-large-int
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-11-deagle-pure-svcomp
 # GOBLINTDIR=$MYBENCHDIR/../goblint
 GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=7
@@ -17,6 +17,8 @@ DARTAGNAN_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/dartagnan
 DARTAGNAN_PARALLEL=7
 DEAGLE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle
 DEAGLE_PARALLEL=7
+DEAGLE_PURE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle-pure
+DEAGLE_PURE_PARALLEL=7
 LOCKSMITH_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/locksmith
 LOCKSMITH_PARALLEL=7
 THETA_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/theta
@@ -45,6 +47,9 @@ $BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
 cd $DEAGLE_DIR
 $BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
 
+# cd $DEAGLE_PURE_DIR
+# $BENCHEXEC --numOfThreads $DEAGLE_PURE_PARALLEL $MYBENCHDIR/deagle-pure.xml
+
 cd $LOCKSMITH_DIR
 $BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
 
@@ -65,6 +70,7 @@ unzip -o goblint23.*.logfiles.zip
 unzip -o cpachecker.*.logfiles.zip
 unzip -o dartagnan.*.logfiles.zip
 unzip -o deagle.*.logfiles.zip
+# unzip -o deagle-pure.*.logfiles.zip
 unzip -o locksmith.*.logfiles.zip
 unzip -o theta.*.logfiles.zip
 unzip -o uautomizer.*.logfiles.zip
