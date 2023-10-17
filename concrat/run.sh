@@ -5,7 +5,7 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-11-deagle-pure-svcomp
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-12-race-challenges
 # GOBLINTDIR=$MYBENCHDIR/../goblint
 GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=7
