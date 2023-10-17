@@ -6,7 +6,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
-#include <goblint.h>
+extern void abort(void);
+void assume_abort_if_not(int cond) {
+  if(!cond) {abort();}
+}
 extern int __VERIFIER_nondet_int();
 
 int threads_total;
@@ -46,7 +49,7 @@ void *cleaner(void *arg) {
 
 int main() {
   threads_total = __VERIFIER_nondet_int();
-  __goblint_assume(threads_total >= 1);
+  assume_abort_if_not(threads_total >= 1);
 
   tids = malloc(threads_total * sizeof(pthread_t));
   datas = calloc(threads_total, sizeof(bool));

@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <strings.h>
-#include <goblint.h>
+extern void abort(void);
+void assume_abort_if_not(int cond) {
+  if(!cond) {abort();}
+}
 extern int __VERIFIER_nondet_int();
 
 int threads_mask = -1; // all bits 1
@@ -24,8 +27,8 @@ void *thread(void *arg) {
 
 int main() {
   int threads_total = __VERIFIER_nondet_int();
-  __goblint_assume(threads_total >= 0);
-  __goblint_assume(threads_total < 32); // can't have more threads than bits in mask
+  assume_abort_if_not(threads_total >= 0);
+  assume_abort_if_not(threads_total < 32); // can't have more threads than bits in mask
 
   pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
   datas = malloc(threads_total * sizeof(int));

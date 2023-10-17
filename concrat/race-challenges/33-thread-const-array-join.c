@@ -1,7 +1,6 @@
 // Thread pool constant array sequential joining.
 // Extracted from concrat/level-ip.
 #include <pthread.h>
-#include <goblint.h>
 
 int data = 0;
 pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;

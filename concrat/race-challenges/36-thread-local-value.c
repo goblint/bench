@@ -2,22 +2,33 @@
 // Extracted from silver searcher.
 #include <stdlib.h>
 #include <pthread.h>
-#include <goblint.h>
+extern void abort(void);
+void assume_abort_if_not(int cond) {
+  if(!cond) {abort();}
+}
+#include <assert.h>
+void reach_error() { assert(0); }
+void __VERIFIER_assert(int cond) {
+  if (!(cond)) {
+    ERROR: {reach_error();abort();}
+  }
+  return;
+}
 extern int __VERIFIER_nondet_int();
 
 __thread int data = 0;
 
 void *thread(void *arg) {
-  __goblint_check(data == 0); // NORACE
+  __VERIFIER_assert(data == 0); // NORACE
   data = 1; // NORACE
-  __goblint_check(data == 1); // NORACE
-  __goblint_check(data != 0); // NORACE
+  __VERIFIER_assert(data == 1); // NORACE
+  __VERIFIER_assert(data != 0); // NORACE
   return NULL;
 }
 
 int main() {
   int threads_total = __VERIFIER_nondet_int();
-  __goblint_assume(threads_total >= 0);
+  assume_abort_if_not(threads_total >= 0);
 
   pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
 

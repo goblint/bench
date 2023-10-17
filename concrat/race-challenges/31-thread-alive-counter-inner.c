@@ -2,7 +2,10 @@
 // Extracted from concrat/C-Thread-Pool.
 #include <stdbool.h>
 #include <pthread.h>
-#include <goblint.h>
+extern void abort(void);
+void assume_abort_if_not(int cond) {
+  if(!cond) {abort();}
+}
 extern int __VERIFIER_nondet_int();
 
 int threads_alive = 0;
@@ -42,7 +45,7 @@ void *thread(void *arg) {
 
 int main() {
   int threads_total = __VERIFIER_nondet_int();
-  __goblint_assume(threads_total >= 0);
+  assume_abort_if_not(threads_total >= 0);
 
   // create threads
   for (int i = 0; i < threads_total; i++) {
