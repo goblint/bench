@@ -1005,38 +1005,53 @@ extern int pthread_atfork (void (*__prepare) (void),
       void (*__parent) (void),
       void (*__child) (void)) __attribute__ ((__nothrow__ , __leaf__));
 
+typedef union
+{
+  char __size[16];
+  long int __align;
+} sem_t;
+
+extern int sem_init (sem_t *__sem, int __pshared, unsigned int __value)
+  __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_destroy (sem_t *__sem) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern sem_t *sem_open (const char *__name, int __oflag, ...)
+  __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_close (sem_t *__sem) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_unlink (const char *__name) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_wait (sem_t *__sem) __attribute__ ((__nonnull__ (1)));
+extern int sem_timedwait (sem_t *__restrict __sem,
+     const struct timespec *__restrict __abstime)
+  __attribute__ ((__nonnull__ (1, 2)));
+extern int sem_trywait (sem_t *__sem) __attribute__ ((__nothrow__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_post (sem_t *__sem) __attribute__ ((__nothrow__)) __attribute__ ((__nonnull__ (1)));
+extern int sem_getvalue (sem_t *__restrict __sem, int *__restrict __sval)
+  __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+
 extern void abort(void);
 void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-int threads_total;
-pthread_t *tids;
 int data = 0;
-pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
+sem_t data_sem;
 void *thread(void *arg) {
-  int i = arg;
-  pthread_mutex_lock(&data_mutex);
+  sem_wait(&data_sem);
   data = __VERIFIER_nondet_int();
-  pthread_mutex_unlock(&data_mutex);
-  for(unsigned int step = 0;; step++) {
-    if (i % (2 << step))
-      break;
-    unsigned int next_worker = i | (1 << step);
-    if (next_worker >= threads_total)
-      break;
-    pthread_join(tids[next_worker], ((void *)0));
-  }
+  sem_post(&data_sem);
   return ((void *)0);
 }
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = threads_total; i >= 0; i--) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+  sem_init(&data_sem, 0, 1);
+  int threads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(threads_total >= 0);
+  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
+  for (int i = 0; i < threads_total; i++) {
+    pthread_create(&tids[i], ((void *)0), &thread, ((void *)0));
   }
-  pthread_join(tids[0], ((void *)0));
+  sem_post(&data_sem);
+  for (int i = 0; i < threads_total; i++) {
+    pthread_join(tids[i], ((void *)0));
+  }
   free(tids);
-  return data;
+  return 0;
 }

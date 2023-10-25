@@ -1020,7 +1020,7 @@ void *thread(void *arg) {
   data = __VERIFIER_nondet_int();
   pthread_mutex_unlock(&data_mutex);
   for(unsigned int step = 0;; step++) {
-    if (i % (2 << step))
+    if (i % (4 << step))
       break;
     unsigned int next_worker = i | (1 << step);
     if (next_worker >= threads_total)

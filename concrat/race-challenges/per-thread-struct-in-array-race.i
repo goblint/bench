@@ -1010,33 +1010,26 @@ void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-int threads_total;
-pthread_t *tids;
-int data = 0;
-pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
+struct thread {
+  int data;
+};
 void *thread(void *arg) {
-  int i = arg;
-  pthread_mutex_lock(&data_mutex);
-  data = __VERIFIER_nondet_int();
-  pthread_mutex_unlock(&data_mutex);
-  for(unsigned int step = 0;; step++) {
-    if (i % (2 << step))
-      break;
-    unsigned int next_worker = i | (1 << step);
-    if (next_worker >= threads_total)
-      break;
-    pthread_join(tids[next_worker], ((void *)0));
-  }
+  struct thread *t = arg;
+  t->data = __VERIFIER_nondet_int();
   return ((void *)0);
 }
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = threads_total; i >= 0; i--) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+  int threads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(threads_total >= 0);
+  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
+  struct thread *ts = malloc(threads_total * sizeof(struct thread));
+  for (int i = 0; i < threads_total; i++) {
+    pthread_create(&tids[i], ((void *)0), &thread, &ts[i / 2]);
   }
-  pthread_join(tids[0], ((void *)0));
+  for (int i = 0; i < threads_total; i++) {
+    pthread_join(tids[i], ((void *)0));
+  }
   free(tids);
-  return data;
+  free(ts);
+  return 0;
 }

@@ -1005,38 +1005,58 @@ extern int pthread_atfork (void (*__prepare) (void),
       void (*__parent) (void),
       void (*__child) (void)) __attribute__ ((__nothrow__ , __leaf__));
 
+
+extern int bcmp (const void *__s1, const void *__s2, size_t __n)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern void bcopy (const void *__src, void *__dest, size_t __n)
+  __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1, 2)));
+extern void bzero (void *__s, size_t __n) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__nonnull__ (1)));
+extern char *index (const char *__s, int __c)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern char *rindex (const char *__s, int __c)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1)));
+extern int ffs (int __i) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+extern int ffsl (long int __l) __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+__extension__ extern int ffsll (long long int __ll)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__const__));
+extern int strcasecmp (const char *__s1, const char *__s2)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern int strncasecmp (const char *__s1, const char *__s2, size_t __n)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2)));
+extern int strcasecmp_l (const char *__s1, const char *__s2, locale_t __loc)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 3)));
+extern int strncasecmp_l (const char *__s1, const char *__s2,
+     size_t __n, locale_t __loc)
+     __attribute__ ((__nothrow__ , __leaf__)) __attribute__ ((__pure__)) __attribute__ ((__nonnull__ (1, 2, 4)));
+
 extern void abort(void);
 void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-int threads_total;
-pthread_t *tids;
-int data = 0;
-pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
+int threads_mask = -1;
+int *datas;
 void *thread(void *arg) {
-  int i = arg;
-  pthread_mutex_lock(&data_mutex);
-  data = __VERIFIER_nondet_int();
-  pthread_mutex_unlock(&data_mutex);
-  for(unsigned int step = 0;; step++) {
-    if (i % (2 << step))
-      break;
-    unsigned int next_worker = i | (1 << step);
-    if (next_worker >= threads_total)
-      break;
-    pthread_join(tids[next_worker], ((void *)0));
-  }
+  int j = arg;
+  datas[j] = __VERIFIER_nondet_int();
+  threads_mask |= 1 << j;
   return ((void *)0);
 }
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = threads_total; i >= 0; i--) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+  int threads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(threads_total >= 0);
+  assume_abort_if_not(threads_total < 32);
+  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
+  datas = malloc(threads_total * sizeof(int));
+  for (int i = 0; i < threads_total; i++) {
+    int j = ffs(threads_mask) - 1;
+    threads_mask &= ~(1 << j);
+    pthread_create(&tids[i], ((void *)0), &thread, j);
   }
-  pthread_join(tids[0], ((void *)0));
+  for (int i = 0; i < threads_total; i++) {
+    pthread_join(tids[i], ((void *)0));
+  }
   free(tids);
-  return data;
+  free(datas);
+  return 0;
 }
