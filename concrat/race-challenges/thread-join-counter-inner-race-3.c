@@ -8,7 +8,7 @@ void assume_abort_if_not(int cond) {
 }
 extern int __VERIFIER_nondet_int();
 
-int threads_alive = 0;
+int threads_alive = -1;
 pthread_mutex_t threads_alive_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t threads_alive_cond = PTHREAD_COND_INITIALIZER;
 
@@ -29,7 +29,7 @@ void *thread(void *arg) {
     pthread_mutex_unlock(&keep_alive_mutex);
 
     pthread_mutex_lock(&data_mutex);
-    data = __VERIFIER_nondet_int(); // NORACE
+    data = __VERIFIER_nondet_int(); // RACE!
     pthread_mutex_unlock(&data_mutex);
 
     pthread_mutex_lock(&keep_alive_mutex);
@@ -56,10 +56,10 @@ int main() {
 
   // wait for all threads to come alive
   pthread_mutex_lock(&threads_alive_mutex);
-  while (threads_alive != threads_total) // NORACE
+  while (threads_alive != threads_total - 1) // NORACE
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
-  // TODO: why both needed?
+
   // stop threads
   pthread_mutex_lock(&keep_alive_mutex);
   keep_alive = false; // NORACE
@@ -71,5 +71,5 @@ int main() {
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
 
-  return data; // NORACE (all threads stopped)
+  return data; // RACE! (all threads stopped)
 }

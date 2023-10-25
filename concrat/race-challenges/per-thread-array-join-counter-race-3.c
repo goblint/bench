@@ -24,7 +24,7 @@ pthread_mutex_t *datas_mutex;
 void *thread(void *arg) {
   int i = arg;
   pthread_mutex_lock(&datas_mutex[i]);
-  datas[i] = true; // NORACE
+  datas[i] = true; // RACE!
   pthread_mutex_unlock(&datas_mutex[i]);
   return NULL;
 }
@@ -36,7 +36,7 @@ void *cleaner(void *arg) {
       if (datas[i]) { // NORACE
         pthread_join(tids[i], NULL); // NORACE
         pthread_mutex_lock(&threads_alive_mutex);
-        threads_alive--; // NORACE
+        threads_alive -= 2; // NORACE
         pthread_cond_signal(&threads_alive_cond);
         pthread_mutex_unlock(&threads_alive_mutex);
         datas[i] = false; // NORACE
@@ -79,5 +79,5 @@ int main() {
   // TODO: need to join cleaner? doesn't terminate
   free(tids);
 
-  return datas[0]; // NORACE (all threads stopped)
+  return datas[0]; // RACE! (all threads stopped)
 }

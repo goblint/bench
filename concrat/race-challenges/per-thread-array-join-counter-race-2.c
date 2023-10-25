@@ -13,7 +13,7 @@ void assume_abort_if_not(int cond) {
 extern int __VERIFIER_nondet_int();
 
 int threads_total;
-int threads_alive = 0;
+int threads_alive = -1;
 pthread_mutex_t threads_alive_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t threads_alive_cond = PTHREAD_COND_INITIALIZER;
 
@@ -24,7 +24,7 @@ pthread_mutex_t *datas_mutex;
 void *thread(void *arg) {
   int i = arg;
   pthread_mutex_lock(&datas_mutex[i]);
-  datas[i] = true; // NORACE
+  datas[i] = true; // RACE!
   pthread_mutex_unlock(&datas_mutex[i]);
   return NULL;
 }
@@ -76,8 +76,8 @@ int main() {
   while (threads_alive) // NORACE
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
-  // TODO: need to join cleaner? doesn't terminate
+
   free(tids);
 
-  return datas[0]; // NORACE (all threads stopped)
+  return datas[0]; // RACE! (all threads stopped)
 }

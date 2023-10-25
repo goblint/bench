@@ -29,7 +29,7 @@ void *thread(void *arg) {
     pthread_mutex_unlock(&keep_alive_mutex);
 
     pthread_mutex_lock(&data_mutex);
-    data = __VERIFIER_nondet_int(); // NORACE
+    data = __VERIFIER_nondet_int(); // RACE!
     pthread_mutex_unlock(&data_mutex);
 
     pthread_mutex_lock(&keep_alive_mutex);
@@ -37,7 +37,7 @@ void *thread(void *arg) {
   pthread_mutex_unlock(&keep_alive_mutex);
 
   pthread_mutex_lock(&threads_alive_mutex);
-  threads_alive--; // NORACE
+  threads_alive -= 2; // NORACE
   pthread_cond_signal(&threads_alive_cond);
   pthread_mutex_unlock(&threads_alive_mutex);
   return NULL;
@@ -59,7 +59,7 @@ int main() {
   while (threads_alive != threads_total) // NORACE
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
-  // TODO: why both needed?
+
   // stop threads
   pthread_mutex_lock(&keep_alive_mutex);
   keep_alive = false; // NORACE
@@ -71,5 +71,5 @@ int main() {
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
 
-  return data; // NORACE (all threads stopped)
+  return data; // RACE! (all threads stopped)
 }

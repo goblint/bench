@@ -31,13 +31,13 @@ pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 void *thread(void *arg) {
   int i = arg;
   pthread_mutex_lock(&data_mutex);
-  data = __VERIFIER_nondet_int(); // NORACE
+  data = __VERIFIER_nondet_int(); // RACE!
   pthread_mutex_unlock(&data_mutex);
 
   // join threads thread-recursively like binomial heap
   // From original fzy: Fan-in, merging results
   for(unsigned int step = 0;; step++) {
-    if (i % (2 << step))
+    if (i % (4 << step))
       break;
 
     unsigned int next_worker = i | (1 << step);
@@ -66,5 +66,5 @@ int main() {
 
   free(tids);
 
-  return data; // NORACE (all threads joined)
+  return data; // RACE! (all threads joined)
 }
