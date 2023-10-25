@@ -16,12 +16,12 @@ int *datas;
 
 void *thread(void *arg) {
   int j = arg;
-  datas[j] = __VERIFIER_nondet_int(); // NORACE
-
   pthread_mutex_lock(&threads_mask_mutex);
   // change j-th bit back to 1
   threads_mask |= 1 << j; // NORACE
   pthread_mutex_unlock(&threads_mask_mutex);
+
+  datas[j] = __VERIFIER_nondet_int(); // RACE!
   return NULL;
 }
 

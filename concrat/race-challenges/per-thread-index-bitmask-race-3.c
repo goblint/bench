@@ -16,7 +16,7 @@ int *datas;
 
 void *thread(void *arg) {
   int j = arg;
-  datas[j] = __VERIFIER_nondet_int(); // NORACE
+  datas[j] = __VERIFIER_nondet_int(); // RACE!
 
   pthread_mutex_lock(&threads_mask_mutex);
   // change j-th bit back to 1
@@ -37,7 +37,7 @@ int main() {
   for (int i = 0; i < threads_total; i++) {
     pthread_mutex_lock(&threads_mask_mutex);
     // find first 1 bit index
-    int j = ffs(threads_mask) - 1; // NORACE
+    int j = (ffs(threads_mask) - 1) / 2; // NORACE
     // change j-th bit to 0
     threads_mask &= ~(1 << j); // NORACE
     pthread_mutex_unlock(&threads_mask_mutex);

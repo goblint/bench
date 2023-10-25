@@ -10,18 +10,15 @@ void assume_abort_if_not(int cond) {
 extern int __VERIFIER_nondet_int();
 
 int threads_mask = -1; // all bits 1
-pthread_mutex_t threads_mask_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 int *datas;
 
 void *thread(void *arg) {
   int j = arg;
-  datas[j] = __VERIFIER_nondet_int(); // NORACE
+  datas[j] = __VERIFIER_nondet_int(); // RACE!
 
-  pthread_mutex_lock(&threads_mask_mutex);
   // change j-th bit back to 1
-  threads_mask |= 1 << j; // NORACE
-  pthread_mutex_unlock(&threads_mask_mutex);
+  threads_mask |= 1 << j; // RACE!
   return NULL;
 }
 
@@ -35,12 +32,10 @@ int main() {
 
   // create threads
   for (int i = 0; i < threads_total; i++) {
-    pthread_mutex_lock(&threads_mask_mutex);
     // find first 1 bit index
-    int j = ffs(threads_mask) - 1; // NORACE
+    int j = ffs(threads_mask) - 1; // RACE!
     // change j-th bit to 0
-    threads_mask &= ~(1 << j); // NORACE
-    pthread_mutex_unlock(&threads_mask_mutex);
+    threads_mask &= ~(1 << j); // RACE!
 
     pthread_create(&tids[i], NULL, &thread, j); // may fail but doesn't matter
   }
