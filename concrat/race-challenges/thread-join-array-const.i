@@ -670,6 +670,7 @@ extern int pthread_atfork (void (*__prepare) (void),
       void (*__parent) (void),
       void (*__child) (void)) __attribute__ ((__nothrow__ , __leaf__));
 
+extern int __VERIFIER_nondet_int();
 int data = 0;
 pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 void *thread(void *arg) {
