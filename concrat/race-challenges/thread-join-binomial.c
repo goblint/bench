@@ -66,5 +66,5 @@ int main() {
 
   free(tids);
 
-  return data; // NORACE (all threads joined)
+  return data; // NORACE (each thread misses one join)
 }

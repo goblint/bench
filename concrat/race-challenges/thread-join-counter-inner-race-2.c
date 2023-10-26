@@ -71,5 +71,5 @@ int main() {
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
 
-  return data; // RACE! (all threads stopped)
+  return data; // RACE! (threads still run after decrementing threads_alive)
 }

@@ -27,5 +27,5 @@ int main() {
     pthread_join(tids[i], NULL);
   }
 
-  return data; // RACE! (all threads joined)
+  return data; // RACE! (tids 1 and 3 not joined)
 }

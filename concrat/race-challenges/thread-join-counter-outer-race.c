@@ -37,5 +37,5 @@ int main() {
   // wait for all threads to stop
   while (threads_alive); // RACE!
 
-  return data; // RACE! (all threads stopped)
+  return data; // RACE! (all threads may not have stopped due to lost increments)
 }

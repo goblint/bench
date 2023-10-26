@@ -66,5 +66,5 @@ int main() {
 
   free(tids);
 
-  return data; // RACE! (all threads joined)
+  return data; // RACE! (threads leave their last "child" unjoined)
 }

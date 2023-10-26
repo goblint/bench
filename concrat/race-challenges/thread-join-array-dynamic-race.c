@@ -37,5 +37,5 @@ int main() {
 
   free(tids);
 
-  return data; // RACE! (all threads joined)
+  return data; // RACE! (last thread not joined)
 }

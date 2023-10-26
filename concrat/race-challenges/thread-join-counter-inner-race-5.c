@@ -49,5 +49,5 @@ int main() {
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
 
-  return data; // NORACE (all threads stopped)
+  return data; // RACE (can get here before all threads are created)
 }
