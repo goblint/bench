@@ -2,7 +2,7 @@
 
 This suite contains extracted kernels of programs aimed to demonstrate the most important challenges to solve in order to be able to achieve good results on real-world programs.
 
-## Thread Joining
+## Thread Creation and Joining Schemes
 
 ### [thread-join-array-const.c](thread-join-array-const.c)
 
@@ -62,6 +62,65 @@ False Variations: [1](thread-join-counter-outer-race.c), [2](thread-join-counter
 
 *Extracted from: [nnn](../nnn)*
 
+---
+
+## Per-Thread Data Segmentation
+
+### [per-thread-array-index.c](per-thread-array-index.c) and [join-counter](per-thread-array-join-counter.c)
+
+Classic scheme of having thread `i` storing information at `data[i]` in a global data array. Creates are created in a loop and the index is given as parameter to the thread. In the end, the threads are joined as [above](#thread-join-array-dynamicc), allowing the main thread to process the data.
+
+False Variations:
+1. [race.c](per-thread-array-index-race.c) writes to `data[i/2]`, causing conflicting updates.
+2. [race-2.c](per-thread-array-index-race-2.c) passes `i/2` as argument when creating the thread.
+
+The original program joins using an [outside counter](#thread-join-counter-outerc) and joins within a dedicated cleanup thread.
+This combination is available as [per-thread-array-join-counter.c](per-thread-array-join-counter.c) with false variations.
+
+*Extracted from: smtprc.c.*
+
+
+---
+
+### [per-thread-array-ptr.c](per-thread-array-ptr.c)
+
+As the previous, but the main thread creates the data array. Threads are created in a for loop, and the address `&data[i]` is given as argument to the thread.
+
+False Variation: [race.c](per-thread-array-ptr-race.c) passes `&data[i/2]` as argument.
+
+A variation of this, [per-thread-array-init.c](per-thread-array-init.c) also initializes the array element with the thread index.
+
+TODO: Is the thread index used for anything?
+
+*Extracted from: [minimap2](../minimap2/), [klib](../klib); [the_silver_searcher](../the_silver_searcher)*
+
+---
+
+### [per-thread-index-inc.c](per-thread-index-inc.c)
+
+In these scheme, the main thread creates the array, but a global counter is used to assign the segment of the data that each thread works on. In the more advanced version, [per-thread-index-bitmask.c](per-thread-index-bitmask.c), a bitmap is used to track live threads and the first "free" index is reused by newly created threads.
+
+*Extracted from [ProcDump-for-Linux](../ProcDump-for-Linux); [nnn](../nnn/).*
+
+### [per-thread-struct.c](per-thread-struct.c)
+
+Each thread is given a dynamically allocated struct by the main thread. As a variation,
+[per-thread-struct-in-array.c](per-thread-struct-in-array.c) allocates and stores these in an array `ts` of per-thread structs and gives the corresponding pointer `&ts[i]` to the thread.
+
+*Extracted from [C-Thread-Pool](../C-Thread-Pool/), [snoopy](../snoopy); [ProcDump-for-Linux](../ProcDump-for-Linux/)*
+
+### [per-thread-struct-tid.c](per-thread-struct-tid.c)
+
+TODO: Would make more sense to verify join scheme.
 
 
 
+## Other Synchronization Mechanisms
+
+### [semaphore-posix.c](semaphore-posix.c)
+
+### [value-barrier.c](value-barrier.c)
+
+### [thread-local-value.c](thread-local-value.c)
+
+### [atomic-gcc.c](atomic-gcc.c)
