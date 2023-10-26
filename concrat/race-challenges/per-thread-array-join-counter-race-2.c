@@ -79,5 +79,5 @@ int main() {
 
   free(tids);
 
-  return datas[0]; // RACE! (all threads stopped)
+  return datas[0]; // RACE! (all threads not stopped)
 }

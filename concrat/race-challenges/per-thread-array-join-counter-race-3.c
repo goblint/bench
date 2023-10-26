@@ -79,5 +79,5 @@ int main() {
   // TODO: need to join cleaner? doesn't terminate
   free(tids);
 
-  return datas[0]; // RACE! (all threads stopped)
+  return datas[0]; // RACE! (all threads not stopped)
 }

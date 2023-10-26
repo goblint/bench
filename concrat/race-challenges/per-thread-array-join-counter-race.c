@@ -22,7 +22,7 @@ pthread_mutex_t *datas_mutex;
 void *thread(void *arg) {
   int i = arg;
   pthread_mutex_lock(&datas_mutex[i]);
-  datas[i] = true; // NORACE
+  datas[i] = true; // RACE!
   pthread_mutex_unlock(&datas_mutex[i]);
   return NULL;
 }
@@ -68,5 +68,5 @@ int main() {
 
   free(tids);
 
-  return datas[0]; // NORACE (all threads stopped)
+  return datas[0]; // RACE! (could still be alive due to lost increments of threads_alive)
 }
