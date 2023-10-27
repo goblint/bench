@@ -1,4 +1,4 @@
-// Thread-local variable flow-sensitive value analysis.
+// Thread-local pthread variable flow-sensitive value analysis.
 // Variation that checks if thread-local values are handled by race detectors.
 #include <stdlib.h>
 #include <pthread.h>
@@ -8,24 +8,28 @@ void assume_abort_if_not(int cond) {
 }
 extern int __VERIFIER_nondet_int();
 
-__thread int data = 0;
+pthread_key_t key;
 
 int shared = 0;
 pthread_mutex_t shared_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread(void *arg) {
-  data = 1;
-  if (data == 1) {
+  int x, y;
+  pthread_setspecific(key, &x);
+  pthread_setspecific(key, &y);
+  if (pthread_getspecific(key) == &y) {
     pthread_mutex_lock(&shared_mutex);
   }
   shared++; // NORACE
-  if (data == 1) {
+  if (pthread_getspecific(key) == &y) {
     pthread_mutex_unlock(&shared_mutex);
   }
   return NULL;
 }
 
 int main() {
+  pthread_key_create(&key, NULL);
+
   int threads_total = __VERIFIER_nondet_int();
   assume_abort_if_not(threads_total >= 0);
 

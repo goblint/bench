@@ -1010,21 +1010,24 @@ void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-__thread int data = 0;
+pthread_key_t key;
 int shared = 0;
 pthread_mutex_t shared_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 void *thread(void *arg) {
-  data = 1;
-  if (data == 1) {
+  int x, y;
+  pthread_setspecific(key, &x);
+  pthread_setspecific(key, &y);
+  if (pthread_getspecific(key) == &y) {
     pthread_mutex_lock(&shared_mutex);
   }
   shared++;
-  if (data == 1) {
+  if (pthread_getspecific(key) == &y) {
     pthread_mutex_unlock(&shared_mutex);
   }
   return ((void *)0);
 }
 int main() {
+  pthread_key_create(&key, ((void *)0));
   int threads_total = __VERIFIER_nondet_int();
   assume_abort_if_not(threads_total >= 0);
   pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
