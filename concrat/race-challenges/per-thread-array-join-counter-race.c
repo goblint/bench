@@ -15,27 +15,35 @@ int threads_total;
 int threads_alive = 0;
 
 pthread_t *tids;
-bool *datas;
-pthread_mutex_t *datas_mutex;
+bool *flags;
+pthread_mutex_t *flags_mutex;
+
+int data = 0;
+pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread(void *arg) {
   int i = arg;
-  pthread_mutex_lock(&datas_mutex[i]);
-  datas[i] = true; // RACE!
-  pthread_mutex_unlock(&datas_mutex[i]);
+
+  pthread_mutex_lock(&data_mutex);
+  data = __VERIFIER_nondet_int(); // RACE!
+  pthread_mutex_unlock(&data_mutex);
+
+  pthread_mutex_lock(&flags_mutex[i]);
+  flags[i] = true; // NORACE
+  pthread_mutex_unlock(&flags_mutex[i]);
   return NULL;
 }
 
 void *cleaner(void *arg) {
   while (1) {
     for (int i = 0; i < threads_total; i++) {
-      pthread_mutex_lock(&datas_mutex[i]);
-      if (datas[i]) { // NORACE
+      pthread_mutex_lock(&flags_mutex[i]);
+      if (flags[i]) { // NORACE
         pthread_join(tids[i], NULL); // NORACE
         threads_alive--; // RACE!
-        datas[i] = false; // NORACE
+        flags[i] = false; // NORACE
       }
-      pthread_mutex_unlock(&datas_mutex[i]);
+      pthread_mutex_unlock(&flags_mutex[i]);
     }
   }
   return NULL;
@@ -43,14 +51,14 @@ void *cleaner(void *arg) {
 
 int main() {
   threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
+  assume_abort_if_not(threads_total >= 0);
 
   tids = malloc(threads_total * sizeof(pthread_t));
-  datas = calloc(threads_total, sizeof(bool));
-  datas_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
+  flags = calloc(threads_total, sizeof(bool));
+  flags_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
 
   for (int i = 0; i < threads_total; i++)
-    pthread_mutex_init(&datas_mutex[i], NULL);
+    pthread_mutex_init(&flags_mutex[i], NULL);
 
   // create threads
   pthread_t cleaner_tid;
@@ -67,5 +75,5 @@ int main() {
 
   free(tids);
 
-  return datas[0]; // RACE! (could still be alive due to lost increments of threads_alive)
+  return data; // RACE! (could still be alive due to lost increments of threads_alive)
 }

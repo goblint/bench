@@ -17,38 +17,30 @@ pthread_mutex_t threads_alive_mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t threads_alive_cond = PTHREAD_COND_INITIALIZER;
 
 pthread_t *tids;
-bool *flags;
-pthread_mutex_t *flags_mutex;
-
-int data = 0;
-pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
+bool *datas;
+pthread_mutex_t *datas_mutex;
 
 void *thread(void *arg) {
   int i = arg;
-
-  pthread_mutex_lock(&data_mutex);
-  data = __VERIFIER_nondet_int(); // NORACE
-  pthread_mutex_unlock(&data_mutex);
-
-  pthread_mutex_lock(&flags_mutex[i]);
-  flags[i] = true; // NORACE
-  pthread_mutex_unlock(&flags_mutex[i]);
+  pthread_mutex_lock(&datas_mutex[i]);
+  datas[i] = true; // NORACE
+  pthread_mutex_unlock(&datas_mutex[i]);
   return NULL;
 }
 
 void *cleaner(void *arg) {
   while (1) {
     for (int i = 0; i < threads_total; i++) {
-      pthread_mutex_lock(&flags_mutex[i]);
-      if (flags[i]) { // NORACE
+      pthread_mutex_lock(&datas_mutex[i]);
+      if (datas[i]) { // NORACE
+        datas[i] = false; // NORACE
         pthread_join(tids[i], NULL); // NORACE
         pthread_mutex_lock(&threads_alive_mutex);
         threads_alive--; // NORACE
         pthread_cond_signal(&threads_alive_cond);
         pthread_mutex_unlock(&threads_alive_mutex);
-        flags[i] = false; // NORACE
       }
-      pthread_mutex_unlock(&flags_mutex[i]);
+      pthread_mutex_unlock(&datas_mutex[i]);
     }
   }
   return NULL;
@@ -56,14 +48,14 @@ void *cleaner(void *arg) {
 
 int main() {
   threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
+  assume_abort_if_not(threads_total >= 1);
 
   tids = malloc(threads_total * sizeof(pthread_t));
-  flags = calloc(threads_total, sizeof(bool));
-  flags_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
+  datas = calloc(threads_total, sizeof(bool));
+  datas_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
 
   for (int i = 0; i < threads_total; i++)
-    pthread_mutex_init(&flags_mutex[i], NULL);
+    pthread_mutex_init(&datas_mutex[i], NULL);
 
   // create threads
   pthread_t cleaner_tid;
@@ -86,5 +78,5 @@ int main() {
 
   free(tids);
 
-  return data; // NORACE (all threads stopped)
+  return datas[0]; // NORACE (all threads stopped, cleaner doesn't write)
 }

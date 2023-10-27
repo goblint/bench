@@ -1015,40 +1015,45 @@ int threads_alive = 0;
 pthread_mutex_t threads_alive_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 pthread_cond_t threads_alive_cond = { { {0}, {0}, {0, 0}, {0, 0}, 0, 0, {0, 0} } };
 pthread_t *tids;
-_Bool *datas;
-pthread_mutex_t *datas_mutex;
+_Bool *flags;
+pthread_mutex_t *flags_mutex;
+int data = 0;
+pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 void *thread(void *arg) {
   int i = arg;
-  pthread_mutex_lock(&datas_mutex[i]);
-  datas[i] = 1;
-  pthread_mutex_unlock(&datas_mutex[i]);
+  pthread_mutex_lock(&data_mutex);
+  data = __VERIFIER_nondet_int();
+  pthread_mutex_unlock(&data_mutex);
+  pthread_mutex_lock(&flags_mutex[i]);
+  flags[i] = 1;
+  pthread_mutex_unlock(&flags_mutex[i]);
   return ((void *)0);
 }
 void *cleaner(void *arg) {
   while (1) {
     for (int i = 0; i < threads_total; i++) {
-      pthread_mutex_lock(&datas_mutex[i]);
-      if (datas[i]) {
+      pthread_mutex_lock(&flags_mutex[i]);
+      if (flags[i]) {
         pthread_join(tids[i], ((void *)0));
         pthread_mutex_lock(&threads_alive_mutex);
         threads_alive--;
         pthread_cond_signal(&threads_alive_cond);
         pthread_mutex_unlock(&threads_alive_mutex);
-        datas[i] = 0;
+        flags[i] = 0;
       }
-      pthread_mutex_unlock(&datas_mutex[i]);
+      pthread_mutex_unlock(&flags_mutex[i]);
     }
   }
   return ((void *)0);
 }
 int main() {
   threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
+  assume_abort_if_not(threads_total >= 0);
   tids = malloc(threads_total * sizeof(pthread_t));
-  datas = calloc(threads_total, sizeof(_Bool));
-  datas_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
+  flags = calloc(threads_total, sizeof(_Bool));
+  flags_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
   for (int i = 0; i < threads_total; i++)
-    pthread_mutex_init(&datas_mutex[i], ((void *)0));
+    pthread_mutex_init(&flags_mutex[i], ((void *)0));
   pthread_t cleaner_tid;
   pthread_create(&cleaner_tid, ((void *)0), &cleaner, ((void *)0));
   for (int i = 0; i < threads_total; i++) {
@@ -1063,5 +1068,5 @@ int main() {
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
   free(tids);
-  return datas[0];
+  return data;
 }
