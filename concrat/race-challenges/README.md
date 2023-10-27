@@ -109,7 +109,7 @@ Each thread is given a dynamically allocated struct by the main thread. As a var
 
 ### [per-thread-struct-tid.c](per-thread-struct-tid.c)
 
-TODO: Would make more sense to verify join scheme.
+TODO: mention per-thread-struct-tid-join
 
 
 
