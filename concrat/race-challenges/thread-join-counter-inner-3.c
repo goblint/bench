@@ -54,12 +54,6 @@ int main() {
     pthread_detach(tid);
   }
 
-  // wait for all threads to come alive
-  pthread_mutex_lock(&threads_alive_mutex);
-  while (threads_alive != threads_total) // NORACE
-    pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
-  pthread_mutex_unlock(&threads_alive_mutex);
-
   // stop threads
   pthread_mutex_lock(&keep_alive_mutex);
   keep_alive = false; // NORACE
