@@ -90,8 +90,6 @@ False Variation: [race.c](per-thread-array-ptr-race.c) passes `&data[i/2]` as ar
 
 A variation of this, [per-thread-array-init.c](per-thread-array-init.c) also initializes the array element with the thread index.
 
-TODO: Is the thread index used for anything?
-
 *Extracted from: [minimap2](../minimap2/), [klib](../klib); [the_silver_searcher](../the_silver_searcher)*
 
 ---

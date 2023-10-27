@@ -2,7 +2,6 @@
 // Per-thread array index passed via argument.
 // Thread pool joining via threads alive counter decremented based on thread array values.
 // Extracted from smtprc.
-// TODO: symb_locks doesn't work for datas and datas_mutex here
 #include <stdlib.h>
 #include <stdbool.h>
 #include <pthread.h>
