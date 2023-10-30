@@ -29,7 +29,7 @@ int data = 0;
 pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   pthread_mutex_lock(&data_mutex);
   data = __VERIFIER_nondet_int(); // RACE!
   pthread_mutex_unlock(&data_mutex);
@@ -58,7 +58,7 @@ int main() {
   // create threads
   // From original fzy: These must be created last-to-first to avoid a race condition when fanning in
   for (int i = threads_total; i >= 0; i--) {
-    pthread_create(&tids[i], NULL, &thread, i); // may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)i); // may fail but doesn't matter
   }
 
   // join threads thread-recursively like binomial heap

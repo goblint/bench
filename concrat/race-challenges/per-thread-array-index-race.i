@@ -1012,7 +1012,7 @@ void assume_abort_if_not(int cond) {
 extern int __VERIFIER_nondet_int();
 int *datas;
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   i /= 2;
   datas[i] = __VERIFIER_nondet_int();
   return ((void *)0);
@@ -1023,7 +1023,7 @@ int main() {
   pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
   datas = malloc(threads_total * sizeof(int));
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
   }
   for (int i = 0; i < threads_total; i++) {
     pthread_join(tids[i], ((void *)0));

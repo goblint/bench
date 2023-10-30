@@ -1015,7 +1015,7 @@ pthread_t *tids;
 int data = 0;
 pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   pthread_mutex_lock(&data_mutex);
   data = __VERIFIER_nondet_int();
   pthread_mutex_unlock(&data_mutex);
@@ -1034,7 +1034,7 @@ int main() {
   assume_abort_if_not(threads_total >= 1);
   tids = malloc(threads_total * sizeof(pthread_t));
   for (int i = threads_total; i >= 0; i--) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
   }
   pthread_join(tids[0], ((void *)0));
   free(tids);

@@ -1037,7 +1037,7 @@ extern int __VERIFIER_nondet_int();
 int threads_mask = -1;
 int *datas;
 void *thread(void *arg) {
-  int j = arg;
+  int j = (int)arg;
   datas[j] = __VERIFIER_nondet_int();
   threads_mask |= 1 << j;
   return ((void *)0);
@@ -1051,7 +1051,7 @@ int main() {
   for (int i = 0; i < threads_total; i++) {
     int j = ffs(threads_mask) - 1;
     threads_mask &= ~(1 << j);
-    pthread_create(&tids[i], ((void *)0), &thread, j);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)j);
   }
   for (int i = 0; i < threads_total; i++) {
     pthread_join(tids[i], ((void *)0));

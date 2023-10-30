@@ -1018,7 +1018,7 @@ pthread_mutex_t *flags_mutex;
 int data = 0;
 pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   pthread_mutex_lock(&data_mutex);
   data = __VERIFIER_nondet_int();
   pthread_mutex_unlock(&data_mutex);
@@ -1052,7 +1052,7 @@ int main() {
   pthread_t cleaner_tid;
   pthread_create(&cleaner_tid, ((void *)0), &cleaner, ((void *)0));
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
     threads_alive++;
   }
   while (threads_alive);

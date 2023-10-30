@@ -21,7 +21,7 @@ bool *datas;
 pthread_mutex_t *datas_mutex;
 
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   pthread_mutex_lock(&datas_mutex[i]);
   datas[i] = true; // NORACE
   pthread_mutex_unlock(&datas_mutex[i]);
@@ -62,7 +62,7 @@ int main() {
   pthread_create(&cleaner_tid, NULL, &cleaner, NULL);
 
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], NULL, &thread, i); // NORACE may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)i); // NORACE may fail but doesn't matter
 
     pthread_mutex_lock(&threads_alive_mutex);
     threads_alive++; // NORACE

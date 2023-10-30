@@ -1018,7 +1018,7 @@ pthread_t *tids;
 _Bool *datas;
 pthread_mutex_t *datas_mutex;
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   pthread_mutex_lock(&datas_mutex[i]);
   datas[i] = 1;
   pthread_mutex_unlock(&datas_mutex[i]);
@@ -1052,7 +1052,7 @@ int main() {
   pthread_t cleaner_tid;
   pthread_create(&cleaner_tid, ((void *)0), &cleaner, ((void *)0));
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], ((void *)0), &thread, i);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
     pthread_mutex_lock(&threads_alive_mutex);
     threads_alive++;
     pthread_cond_signal(&threads_alive_cond);
