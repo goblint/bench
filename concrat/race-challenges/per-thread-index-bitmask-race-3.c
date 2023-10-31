@@ -15,7 +15,7 @@ pthread_mutex_t threads_mask_mutex = PTHREAD_MUTEX_INITIALIZER;
 int *datas;
 
 void *thread(void *arg) {
-  int j = arg;
+  int j = (int)arg;
   datas[j] = __VERIFIER_nondet_int(); // RACE!
 
   pthread_mutex_lock(&threads_mask_mutex);
@@ -42,7 +42,7 @@ int main() {
     threads_mask &= ~(1 << j); // NORACE
     pthread_mutex_unlock(&threads_mask_mutex);
 
-    pthread_create(&tids[i], NULL, &thread, j); // may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)j); // may fail but doesn't matter
   }
 
   // join threads

@@ -14,7 +14,7 @@ int threads_mask = -1; // all bits 1
 int *datas;
 
 void *thread(void *arg) {
-  int j = arg;
+  int j = (int)arg;
   datas[j] = __VERIFIER_nondet_int(); // RACE!
 
   // change j-th bit back to 1
@@ -37,7 +37,7 @@ int main() {
     // change j-th bit to 0
     threads_mask &= ~(1 << j); // RACE!
 
-    pthread_create(&tids[i], NULL, &thread, j); // may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)j); // may fail but doesn't matter
   }
 
   // join threads

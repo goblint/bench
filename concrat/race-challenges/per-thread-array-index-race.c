@@ -10,7 +10,7 @@ extern int __VERIFIER_nondet_int();
 int *datas;
 
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
   i /= 2;
   datas[i] = __VERIFIER_nondet_int(); // RACE!
   return NULL;
@@ -25,7 +25,7 @@ int main() {
 
   // create threads
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], NULL, &thread, i); // may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)i); // may fail but doesn't matter
   }
 
   // join threads

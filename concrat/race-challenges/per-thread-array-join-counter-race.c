@@ -22,7 +22,7 @@ int data = 0;
 pthread_mutex_t data_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread(void *arg) {
-  int i = arg;
+  int i = (int)arg;
 
   pthread_mutex_lock(&data_mutex);
   data = __VERIFIER_nondet_int(); // RACE!
@@ -65,7 +65,7 @@ int main() {
   pthread_create(&cleaner_tid, NULL, &cleaner, NULL);
 
   for (int i = 0; i < threads_total; i++) {
-    pthread_create(&tids[i], NULL, &thread, i); // NORACE may fail but doesn't matter
+    pthread_create(&tids[i], NULL, &thread, (void*)i); // NORACE may fail but doesn't matter
 
     threads_alive++; // RACE!
   }

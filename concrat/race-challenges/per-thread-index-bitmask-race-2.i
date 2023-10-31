@@ -1038,7 +1038,7 @@ int threads_mask = -1;
 pthread_mutex_t threads_mask_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 int *datas;
 void *thread(void *arg) {
-  int j = arg;
+  int j = (int)arg;
   pthread_mutex_lock(&threads_mask_mutex);
   threads_mask |= 1 << j;
   pthread_mutex_unlock(&threads_mask_mutex);
@@ -1056,7 +1056,7 @@ int main() {
     int j = ffs(threads_mask) - 1;
     threads_mask &= ~(1 << j);
     pthread_mutex_unlock(&threads_mask_mutex);
-    pthread_create(&tids[i], ((void *)0), &thread, j);
+    pthread_create(&tids[i], ((void *)0), &thread, (void*)j);
   }
   for (int i = 0; i < threads_total; i++) {
     pthread_join(tids[i], ((void *)0));
