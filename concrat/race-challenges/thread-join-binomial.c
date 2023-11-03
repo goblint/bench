@@ -57,7 +57,7 @@ int main() {
 
   // create threads
   // From original fzy: These must be created last-to-first to avoid a race condition when fanning in
-  for (int i = threads_total; i >= 0; i--) {
+  for (int i = threads_total - 1; i >= 0; i--) {
     pthread_create(&tids[i], NULL, &thread, (void*)i); // may fail but doesn't matter
   }
 
@@ -66,5 +66,5 @@ int main() {
 
   free(tids);
 
-  return data; // NORACE (each thread misses one join)
+  return data; // NORACE (all threads stopped)
 }

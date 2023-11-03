@@ -1020,7 +1020,7 @@ void *thread(void *arg) {
   data = __VERIFIER_nondet_int();
   pthread_mutex_unlock(&data_mutex);
   for(unsigned int step = 0;; step++) {
-    if (i % (4 << step))
+    if (i % (2 << step))
       break;
     unsigned int next_worker = i | (1 << step);
     if (next_worker >= threads_total)
@@ -1032,8 +1032,8 @@ void *thread(void *arg) {
 int main() {
   threads_total = __VERIFIER_nondet_int();
   assume_abort_if_not(threads_total >= 1);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = threads_total - 1; i >= 0; i--) {
+  tids = malloc((threads_total + 1) * sizeof(pthread_t));
+  for (int i = threads_total; i >= 0; i--) {
     pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
   }
   pthread_join(tids[0], ((void *)0));

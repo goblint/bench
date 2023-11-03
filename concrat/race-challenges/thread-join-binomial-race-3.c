@@ -37,7 +37,7 @@ void *thread(void *arg) {
   // join threads thread-recursively like binomial heap
   // From original fzy: Fan-in, merging results
   for(unsigned int step = 0;; step++) {
-    if (i % (4 << step))
+    if (i % (2 << step))
       break;
 
     unsigned int next_worker = i | (1 << step);
@@ -53,11 +53,11 @@ int main() {
   threads_total = __VERIFIER_nondet_int();
   assume_abort_if_not(threads_total >= 1);
 
-  tids = malloc(threads_total * sizeof(pthread_t));
+  tids = malloc((threads_total + 1) * sizeof(pthread_t));
 
   // create threads
   // From original fzy: These must be created last-to-first to avoid a race condition when fanning in
-  for (int i = threads_total - 1; i >= 0; i--) {
+  for (int i = threads_total; i >= 0; i--) {
     pthread_create(&tids[i], NULL, &thread, (void*)i); // may fail but doesn't matter
   }
 
@@ -66,5 +66,5 @@ int main() {
 
   free(tids);
 
-  return data; // RACE! (threads leave their last "child" unjoined)
+  return data; // RACE! (last thread unjoined, off-by-one in creation loop)
 }
