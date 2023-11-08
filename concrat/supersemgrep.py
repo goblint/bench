@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import os
 import re
 import csv
@@ -7,13 +9,21 @@ regex_patterns = {
     'create': r'pthread_create',
     'join': r'pthread_join',
     'join-arrow': r'pthread_join(.*->.*)',
-    'join-idx': r'pthread_join(.*\[.*\])',
+    'join-idx': r'pthread_join(.*(\[.*\]|\+).*)',
     'detach': r'pthread_detach',
-    'inc': r'.*thread.*\+\+',
-    'lock': r'pthread_mutex_lock',
-    'lock-arrow': r'pthread_mutex_lock(.*->.*)',
-    'lock-idx': r'pthread_mutex_lock(.*\[.*\])'
+    'inc': r'.*thread.*(\+\+|\+=)',
+    'lock': r'pthread_(mutex|spin)_lock',
+    'lock-arrow': r'pthread_(mutex|spin)_lock(.*->.*)',
+    'lock-idx': r'pthread_(mutex|spin)_lock(.*(\[.*\]|\+).*)',
+    'semaphore': r'sem_wait',
+    'cond': r'pthread_cond_wait',
+    'local-annot': r'\b__thread\b',
+    'local-key': r'pthread_key_create',
+    'atomics-old': r'\b__sync_',
+    'atomics-new': r'\b__atomic_(.*fetch|store|load|exchange)',
 }
+
+print("SuperSemgrep: Code scanning at reasonable speed.")
 
 def count_pthread_functions(file_path):
     # Initialize a dictionary to store the counts
@@ -39,7 +49,7 @@ def analyze_projects(root_dir):
                 counts = count_pthread_functions(file_path)
                 results.append([project_name] + [counts[func] for func in regex_patterns])
 
-    sorted_results = sorted(results, key=lambda x: x[0])            
+    sorted_results = sorted(results, key=lambda x: x[0].lower())
     return sorted_results
 
 # Write the results to a CSV file
