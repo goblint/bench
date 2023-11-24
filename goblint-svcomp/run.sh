@@ -37,7 +37,7 @@ $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $RESULTS_DIR/goblint-validate.xml
 
 # Generate table with merged results and witness validation results
 cd $RESULTS_DIR
-sed -e "s|WITNESS_DIR|$WITNESS_DIR|" $BENCH_DIR/table-generator.xml > table-generator.xml
+cp $BENCH_DIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
