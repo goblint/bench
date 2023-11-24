@@ -5,9 +5,10 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/139
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/140
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint-clean/goblint
-GOBLINT_PARALLEL=14
+GOBLINT_PARALLEL=2
+GOBLINT_VALIDATE_PARALLEL=4
 
 # read-only and overlay dirs for Value too large for defined data type workaround
 BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTS_DIR"
@@ -33,7 +34,7 @@ sed -e "s|SV_BENCHMARKS_DIR|$SV_BENCHMARKS_DIR|" -e "s|RESULTS_DIR|$RESULTS_DIR|
 
 # Run validation
 cd $GOBLINT_DIR
-$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $RESULTS_DIR/goblint-validate.xml
+$BENCHEXEC --numOfThreads $GOBLINT_VALIDATE_PARALLEL $RESULTS_DIR/goblint-validate.xml
 
 # Generate table with merged results and witness validation results
 cd $RESULTS_DIR
