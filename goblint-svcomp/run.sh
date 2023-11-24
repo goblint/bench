@@ -37,6 +37,11 @@ $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $RESULTS_DIR/goblint-validate.xml
 
 # Generate table with merged results and witness validation results
 cd $RESULTS_DIR
+
+for i in goblint.*.results.*.xml.bz2; do
+    $BENCH_DIR/adjust_results_verifiers.py $i goblint-validate.*.${i#*.results.}
+done
+
 cp $BENCH_DIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
 
