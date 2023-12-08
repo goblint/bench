@@ -2347,7 +2347,7 @@ stats *stats_alloc(uint64_t max )
   tmp = zcalloc(sizeof(stats ) + sizeof(uint64_t ) * limit);
   s = (stats *)tmp;
   s->limit = limit;
-  s->min = 18446744073709551615;
+  s->min = 18446744073709551615ULL;
   return (s);
 }
 }
@@ -5485,7 +5485,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
       break;
     }
     parser->flags = 0U;
-    parser->content_length = (uint64_t )18446744073709551615;
+    parser->content_length = (uint64_t )18446744073709551615ULL;
     if ((int )ch == 72) {
       p_state = (enum state )3;
       while (1) {
@@ -5545,7 +5545,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
     break;
     case 4U: 
     parser->flags = 0U;
-    parser->content_length = (uint64_t )18446744073709551615;
+    parser->content_length = (uint64_t )18446744073709551615ULL;
     switch ((int )ch) {
     case 72: 
     p_state = (enum state )5;
@@ -5875,7 +5875,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
       break;
     }
     parser->flags = 0U;
-    parser->content_length = (uint64_t )18446744073709551615;
+    parser->content_length = (uint64_t )18446744073709551615ULL;
     if ((int )((unsigned char )((int )ch | 32)) >= 97) {
       if ((int )((unsigned char )((int )ch | 32)) <= 122) {
         tmp___35 = 0;
@@ -7230,7 +7230,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
       tmp___106 = 1;
     } else
     if (parser->content_length > 0UL) {
-      if ((unsigned long long )parser->content_length != 18446744073709551615) {
+      if ((unsigned long long )parser->content_length != 18446744073709551615ULL) {
         tmp___106 = 1;
       } else {
         tmp___106 = 0;
@@ -7391,7 +7391,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
         break;
       }
     } else
-    if ((unsigned long long )parser->content_length != 18446744073709551615) {
+    if ((unsigned long long )parser->content_length != 18446744073709551615ULL) {
       p_state = (enum state )60;
     } else {
       tmp___143 = http_message_needs_eof((http_parser const   *)parser);
@@ -7452,7 +7452,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
     }
     to_read = tmp___144;
     if (parser->content_length != 0UL) {
-      if (! ((unsigned long long )parser->content_length != 18446744073709551615)) {
+      if (! ((unsigned long long )parser->content_length != 18446744073709551615ULL)) {
         __assert_fail("parser->content_length != 0 && parser->content_length != ULLONG_MAX",
                       "src/http_parser.c", 1826U, "http_parser_execute");
       }
@@ -7695,7 +7695,7 @@ size_t http_parser_execute(http_parser *parser , http_parser_settings const   *s
       __assert_fail("parser->flags & F_CHUNKED", "src/http_parser.c", 1958U, "http_parser_execute");
     }
     if (parser->content_length != 0UL) {
-      if (! ((unsigned long long )parser->content_length != 18446744073709551615)) {
+      if (! ((unsigned long long )parser->content_length != 18446744073709551615ULL)) {
         __assert_fail("parser->content_length != 0 && parser->content_length != ULLONG_MAX",
                       "src/http_parser.c", 1960U, "http_parser_execute");
       }
@@ -8061,7 +8061,7 @@ int http_message_needs_eof(http_parser const   *parser )
   if (parser->flags & 1U) {
     return (0);
   } else
-  if ((unsigned long long )parser->content_length != 18446744073709551615) {
+  if ((unsigned long long )parser->content_length != 18446744073709551615ULL) {
     return (0);
   }
   return (1);

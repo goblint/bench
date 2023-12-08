@@ -1995,7 +1995,7 @@ __inline extern int ( __attribute__((__gnu_inline__, __always_inline__)) poll)(s
 
   {
   tmp___4 = __builtin_object_size((void *)__fds, 1);
-  if (tmp___4 != 18446744073709551615) {
+  if (tmp___4 != 18446744073709551615ULL) {
     tmp = __builtin_object_size((void *)__fds, 1);
     tmp___0 = __poll_chk(__fds, __nfds, __timeout, tmp);
     return (tmp___0);
@@ -2020,7 +2020,7 @@ __inline extern int ( __attribute__((__gnu_inline__, __always_inline__)) ppoll)(
 
   {
   tmp___4 = __builtin_object_size((void *)__fds, 1);
-  if (tmp___4 != 18446744073709551615) {
+  if (tmp___4 != 18446744073709551615ULL) {
     tmp = __builtin_object_size((void *)__fds, 1);
     tmp___0 = __ppoll_chk(__fds, __nfds, __timeout, __ss, tmp);
     return (tmp___0);
@@ -5032,7 +5032,7 @@ _Bool parse_uint64(char const   *value , uint64 *result )
   {
   tmp = strcmp(value, "INFINITE");
   if (tmp == 0) {
-    *result = 18446744073709551615;
+    *result = 18446744073709551615ULL;
     return ((_Bool)1);
   }
   tmp___0 = __errno_location();

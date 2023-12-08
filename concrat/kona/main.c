@@ -5711,7 +5711,7 @@ __inline static __uint64_t __bswap_64(__uint64_t __bsx )
 
 
   {
-  return ((__uint64_t )((((((((((unsigned long long )__bsx & 18374686479671623680) >> 56) | (((unsigned long long )__bsx & 71776119061217280ULL) >> 40)) | (((unsigned long long )__bsx & 280375465082880ULL) >> 24)) | (((unsigned long long )__bsx & 1095216660480ULL) >> 8)) | (((unsigned long long )__bsx & 4278190080ULL) << 8)) | (((unsigned long long )__bsx & 16711680ULL) << 24)) | (((unsigned long long )__bsx & 65280ULL) << 40)) | (((unsigned long long )__bsx & 255ULL) << 56)));
+  return ((__uint64_t )((((((((((unsigned long long )__bsx & 18374686479671623680ULL) >> 56) | (((unsigned long long )__bsx & 71776119061217280ULL) >> 40)) | (((unsigned long long )__bsx & 280375465082880ULL) >> 24)) | (((unsigned long long )__bsx & 1095216660480ULL) >> 8)) | (((unsigned long long )__bsx & 4278190080ULL) << 8)) | (((unsigned long long )__bsx & 16711680ULL) << 24)) | (((unsigned long long )__bsx & 65280ULL) << 40)) | (((unsigned long long )__bsx & 255ULL) << 56)));
 }
 }
 V membswp32(V d___0 , V s , I n ) 
@@ -6905,7 +6905,7 @@ void init_genrand64(unsigned long long seed )
 }
 }
 unsigned long long genrand64_int64(void) ;
-static unsigned long long mag01[2]  = {      0ULL,      13043109905998158313};
+static unsigned long long mag01[2]  = {      0ULL,      13043109905998158313ULL};
 unsigned long long genrand64_int64(void) 
 { 
   int i ;
@@ -6919,16 +6919,16 @@ unsigned long long genrand64_int64(void)
     }
     i = 0;
     while (i < 156) {
-      x___0 = (mt[i] & 18446744071562067968) | (mt[i + 1] & 2147483647ULL);
+      x___0 = (mt[i] & 18446744071562067968ULL) | (mt[i + 1] & 2147483647ULL);
       mt[i] = (mt[i + 156] ^ (x___0 >> 1)) ^ mag01[(int )(x___0 & 1ULL)];
       i ++;
     }
     while (i < 311) {
-      x___0 = (mt[i] & 18446744071562067968) | (mt[i + 1] & 2147483647ULL);
+      x___0 = (mt[i] & 18446744071562067968ULL) | (mt[i + 1] & 2147483647ULL);
       mt[i] = (mt[i + -156] ^ (x___0 >> 1)) ^ mag01[(int )(x___0 & 1ULL)];
       i ++;
     }
-    x___0 = (mt[311] & 18446744071562067968) | (mt[0] & 2147483647ULL);
+    x___0 = (mt[311] & 18446744071562067968ULL) | (mt[0] & 2147483647ULL);
     mt[311] = (mt[155] ^ (x___0 >> 1)) ^ mag01[(int )(x___0 & 1ULL)];
     mti = 0;
   }
@@ -6937,7 +6937,7 @@ unsigned long long genrand64_int64(void)
   x___0 = mt[tmp];
   x___0 ^= (x___0 >> 29) & 6148914691236517205ULL;
   x___0 ^= (x___0 << 17) & 8202884508482404352ULL;
-  x___0 ^= (x___0 << 37) & 18444473444759240704;
+  x___0 ^= (x___0 << 37) & 18444473444759240704ULL;
   x___0 ^= x___0 >> 43;
   return (x___0);
 }
@@ -14918,7 +14918,7 @@ static I isescape(UC c )
   return ((I )tmp);
 }
 }
-extern int ( /* missing proto */  __builtin_isnan)() ;
+// extern int ( /* missing proto */  __builtin_isnan)() ;
 static C b[512]  ;
 static I needspt0(F f ) 
 { 
@@ -23953,7 +23953,7 @@ static K slsz(K x___0 , I r )
 
 
   {
-  x___0->_c = (I )((unsigned long long )x___0->_c & 18446744073709551360);
+  x___0->_c = (I )((unsigned long long )x___0->_c & 18446744073709551360ULL);
   x___0->_c |= r;
   return (x___0);
 }
@@ -31647,7 +31647,7 @@ K max_or(K a , K b___1 )
   return (z);
 }
 }
-extern int ( /* missing proto */  __builtin_isinf_sign)() ;
+// extern int ( /* missing proto */  __builtin_isinf_sign)() ;
 K floor_ceil(K a , F (*g)(F  ) ) 
 { 
   int tmp ;
@@ -34751,7 +34751,7 @@ static F tround(F f )
   return (tmp___4);
 }
 }
-extern int ( /* missing proto */  __builtin_signbit)() ;
+// extern int ( /* missing proto */  __builtin_signbit)() ;
 K dollar(K a , K b___1 ) 
 { 
   I at___0 ;
@@ -35062,7 +35062,7 @@ static uI ItoU(I a )
 
 
   {
-  return (9223372036854775808 ^ (uI )a);
+  return (9223372036854775808ULL ^ (uI )a);
 }
 }
 K grade_updown(K a , I r ) 

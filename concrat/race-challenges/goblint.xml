@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="goblint" timelimit="900 s" hardtimelimit="960 s" memlimit="15 GB" cpuCores="8">
+
+  <resultfiles></resultfiles>
+
+  <rundefinition name="large-program">
+    <option name="--conf">conf/examples/large-program.json</option>
+    <option name="--enable">ana.sv-comp.enabled</option>
+    <option name="--enable">ana.sv-comp.functions</option>
+    <option name="--disable">witness.graphml.enabled</option>
+
+    <option name="--set">lib.activated[+]</option>
+    <option>zlib</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>pcre</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>liblzma</option>
+  </rundefinition>
+
+  <rundefinition name="concrat-libs">
+    <option name="--conf">/mnt/goblint-svcomp/goblint-bench/bench/index/conf/concrat.json</option>
+    <option name="--enable">ana.sv-comp.enabled</option>
+    <option name="--enable">ana.sv-comp.functions</option>
+    <option name="--disable">witness.graphml.enabled</option>
+
+    <option name="--set">lib.activated[+]</option>
+    <option>zlib</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>pcre</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>liblzma</option>
+  </rundefinition>
+
+  <rundefinition name="concrat">
+    <option name="--conf">/mnt/goblint-svcomp/goblint-bench/bench/index/conf/concrat.json</option>
+    <option name="--enable">ana.sv-comp.enabled</option>
+    <option name="--enable">ana.sv-comp.functions</option>
+    <option name="--disable">witness.graphml.enabled</option>
+  </rundefinition>
+
+  <rundefinition name="svcomp">
+    <option name="--conf">conf/svcomp.json</option>
+  </rundefinition>
+
+  <tasks name="Race-Challenges">
+    <includesfile>./Race-Challenges.set</includesfile>
+    <propertyfile>../properties/no-data-race.prp</propertyfile>
+  </tasks>
+
+</benchmark>

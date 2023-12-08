@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 1.9//EN" "https://www.sosy-lab.org/benchexec/benchmark-1.9.dtd">
+<benchmark tool="goblint" timelimit="7200 s" hardtimelimit="7300 s" memlimit="24 GB" cpuCores="8">
+
+  <resultfiles></resultfiles>
+
+  <rundefinition name="large-program">
+    <option name="--conf">conf/examples/large-program.json</option>
+    <option name="--enable">ana.sv-comp.enabled</option>
+    <option name="--enable">ana.sv-comp.functions</option>
+    <option name="--disable">witness.graphml.enabled</option>
+
+    <option name="--set">lib.activated[+]</option>
+    <option>zlib</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>pcre</option>
+    <option name="--set">lib.activated[+]</option>
+    <option>liblzma</option>
+  </rundefinition>
+
+  <rundefinition name="svcomp">
+    <option name="--conf">conf/svcomp.json</option>
+  </rundefinition>
+
+  <tasks name="Concrat">
+    <includesfile>./Concrat.set</includesfile>
+    <propertyfile>./properties/no-data-race.prp</propertyfile>
+  </tasks>
+
+</benchmark>

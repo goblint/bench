@@ -3524,7 +3524,7 @@ void sb_timer_reset(sb_timer_t *t )
 
 
   {
-  t->min_time = 18446744073709551615;
+  t->min_time = 18446744073709551615ULL;
   t->max_time = (uint64_t )0;
   t->sum_time = (uint64_t )0;
   t->events = (uint64_t )0;
@@ -6256,19 +6256,6 @@ sb_histogram_t sb_latency_histogram  __attribute__((__aligned__(64)))  ;
 sb_histogram_t *sb_histogram_new(size_t size , double range_min , double range_max ) ;
 void sb_histogram_delete(sb_histogram_t *h___0 ) ;
 double sb_histogram_get_pct_cumulative(sb_histogram_t *h___0 , double percentile ) ;
-__inline double sb_rand_uniform_double(void)
-{
-  uint64_t x ;
-  uint64_t tmp ;
-  union __anonunion_u_858940928___0 u ;
-
-  {
-  tmp = sb_rand_uniform_uint64();
-  x = tmp;
-  u.i = (1023UL << 52) | (x >> 12);
-  return (u.d - 1.0);
-}
-}
 int sb_histogram_init(sb_histogram_t *h___0 , size_t size , double range_min , double range_max )
 {
   size_t i ;
@@ -6569,19 +6556,6 @@ extern  __attribute__((__nothrow__)) double log1p(double __x ) ;
 extern  __attribute__((__nothrow__)) double pow(double __x , double __y ) ;
 int sb_rand_seed  ;
 sb_rng_state_t sb_rng_state  __attribute__((__aligned__(64)))  ;
-__inline double sb_rand_uniform_double(void)
-{
-  uint64_t x ;
-  uint64_t tmp ;
-  union __anonunion_u_858940928___1 u ;
-
-  {
-  tmp = sb_rand_uniform_uint64();
-  x = tmp;
-  u.i = (1023UL << 52) | (x >> 12);
-  return (u.d - 1.0);
-}
-}
 uint32_t sb_rand_default(uint32_t a , uint32_t b ) ;
 uint32_t sb_rand_uniform(uint32_t a , uint32_t b ) ;
 uint32_t sb_rand_gaussian(uint32_t a , uint32_t b ) ;
@@ -7038,19 +7012,6 @@ extern  __attribute__((__nothrow__)) int ( __attribute__((__nonnull__(1))) pthre
                                                                                                       size_t __stacksize ) ;
 extern int pthread_cancel(pthread_t __th ) ;
 pthread_attr_t sb_thread_attr  ;
-__inline double sb_rand_uniform_double(void)
-{
-  uint64_t x ;
-  uint64_t tmp ;
-  union __anonunion_u_858940928___2 u ;
-
-  {
-  tmp = sb_rand_uniform_uint64();
-  x = tmp;
-  u.i = (1023UL << 52) | (x >> 12);
-  return (u.d - 1.0);
-}
-}
 __inline static void ck_pr_dec_uint(unsigned int *target )  __attribute__((__unused__)) ;
 __inline static void ck_pr_dec_uint(unsigned int *target )
 {
@@ -7319,19 +7280,6 @@ void sb_counter_inc(int thread_id , sb_counter_type_t type )
   {
   sb_counter_add(thread_id, type, (uint64_t )1);
   return;
-}
-}
-__inline double sb_rand_uniform_double(void)
-{
-  uint64_t x ;
-  uint64_t tmp ;
-  union __anonunion_u_858940928___3 u ;
-
-  {
-  tmp = sb_rand_uniform_uint64();
-  x = tmp;
-  u.i = (1023UL << 52) | (x >> 12);
-  return (u.d - 1.0);
 }
 }
 unsigned char sysbench_lua[5464]  =

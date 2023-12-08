@@ -1667,7 +1667,7 @@ void *loader(void *threadCount )
   close(epollFD);
 }
 }
-extern int ( /* missing proto */  ceil)() ;
+// extern int ( /* missing proto */  ceil)() ;
 int load_binary(char *path )
 {
   int fd ;

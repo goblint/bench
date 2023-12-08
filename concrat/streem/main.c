@@ -1743,14 +1743,14 @@ int strm_funcall(strm_stream *strm , strm_value func , int argc , strm_value *ar
 
   {
   switch (func & (65535UL << 48)) {
-  case 18445336698825998336:
+  case 18445336698825998336ULL:
   tmp = strm_value_cfunc(func);
   tmp___0 = (*tmp)(strm, argc, argv, ret);
   return (tmp___0);
-  case 18443366373989023744:
+  case 18443366373989023744ULL:
   tmp___1 = ary_get(strm, func, argc, argv, ret);
   return (tmp___1);
-  case 18445899648779419648:
+  case 18445899648779419648ULL:
   tmp___5 = strm_ptr_tag_p(func, (enum strm_ptr_type )2);
   if (tmp___5) {
     gf = (struct strm_genfunc *)((void *)((intptr_t )(func & ~ (65535UL << 48))));
@@ -5574,7 +5574,7 @@ int strm_time_p(strm_value val )
   struct strm_misc *p ;
 
   {
-  if ((val & (65535UL << 48)) != 18445899648779419648) {
+  if ((val & (65535UL << 48)) != 18445899648779419648ULL) {
     return (0);
   } else {
     p = (struct strm_misc *)((void *)((intptr_t )(val & ~ (65535UL << 48))));
@@ -6684,7 +6684,7 @@ strm_value strm_ptr_value(void *p )
 
 
   {
-  return (18445899648779419648 | ((strm_value )((intptr_t )p) & ~ (65535UL << 48)));
+  return (18445899648779419648ULL | ((strm_value )((intptr_t )p) & ~ (65535UL << 48)));
 }
 }
 strm_value strm_cfunc_value(int (*f)(struct strm_stream * , int  , strm_value * ,
@@ -6693,7 +6693,7 @@ strm_value strm_cfunc_value(int (*f)(struct strm_stream * , int  , strm_value * 
 
 
   {
-  return (18445336698825998336 | ((strm_value )((intptr_t )f) & ~ (65535UL << 48)));
+  return (18445336698825998336ULL | ((strm_value )((intptr_t )f) & ~ (65535UL << 48)));
 }
 }
 strm_value strm_bool_value(int i )
@@ -6701,7 +6701,7 @@ strm_value strm_bool_value(int i )
 
 
   {
-  return (18442521949058891776 | (unsigned long )(! (! i)));
+  return (18442521949058891776ULL | (unsigned long )(! (! i)));
 }
 }
 strm_value strm_int_value(int i )
@@ -6709,10 +6709,10 @@ strm_value strm_int_value(int i )
 
 
   {
-  return (18442803424035602432 | ((uint64_t )i & ~ (65535UL << 48)));
+  return (18442803424035602432ULL | ((uint64_t )i & ~ (65535UL << 48)));
 }
 }
-extern int ( /* missing proto */  __builtin_isnan)() ;
+// extern int ( /* missing proto */  __builtin_isnan)() ;
 strm_value strm_float_value(double f )
 {
   union __anonunion_u_274369385 u ;
@@ -6721,7 +6721,7 @@ strm_value strm_float_value(double f )
   {
   tmp = __builtin_isnan(f);
   if (tmp) {
-    return (18442240474082181120);
+    return (18442240474082181120ULL);
   }
   u.f = f;
   return (u.i);
@@ -6732,7 +6732,7 @@ strm_value strm_foreign_value(void *p )
 
 
   {
-  return (18446462598732840960 | ((strm_value )((intptr_t )p) & ~ (65535UL << 48)));
+  return (18446462598732840960ULL | ((strm_value )((intptr_t )p) & ~ (65535UL << 48)));
 }
 }
 static void *strm_ptr(strm_value v )
@@ -6758,7 +6758,7 @@ void *strm_value_ptr(strm_value v , enum strm_ptr_type e )
   enum strm_ptr_type tmp___3 ;
 
   {
-  if (! ((v & (65535UL << 48)) == 18445899648779419648)) {
+  if (! ((v & (65535UL << 48)) == 18445899648779419648ULL)) {
     __assert_fail("strm_value_tag(v) == STRM_TAG_PTR", "value.c", 72U, "strm_value_ptr");
   }
   p = strm_ptr(v);
@@ -6778,7 +6778,7 @@ void *strm_value_foreign(strm_value v )
   void *tmp___0 ;
 
   {
-  if (! ((v & (65535UL << 48)) == 18446462598732840960)) {
+  if (! ((v & (65535UL << 48)) == 18446462598732840960ULL)) {
     __assert_fail("strm_value_tag(v) == STRM_TAG_FOREIGN", "value.c", 81U, "strm_value_foreign");
   }
   tmp___0 = strm_ptr(v);
@@ -6793,11 +6793,11 @@ int strm_value_bool(strm_value v )
   i = v & ~ (65535UL << 48);
   if (i == 0UL) {
     switch (v & (65535UL << 48)) {
-    case 18445899648779419648:
-    case 18442521949058891776:
+    case 18445899648779419648ULL:
+    case 18442521949058891776ULL:
     break;
     default:
-    if (! ((v & (65535UL << 48)) == 18442521949058891776)) {
+    if (! ((v & (65535UL << 48)) == 18442521949058891776ULL)) {
       __assert_fail("strm_value_tag(v) == STRM_TAG_BOOL", "value.c", 96U, "strm_value_bool");
     }
     break;
@@ -6813,7 +6813,7 @@ int strm_int_p(strm_value v )
 
 
   {
-  return ((v & (65535UL << 48)) == 18442803424035602432);
+  return ((v & (65535UL << 48)) == 18442803424035602432ULL);
 }
 }
 __inline static int32_t strm_to_int(strm_value v )
@@ -6829,10 +6829,10 @@ int strm_float_p(strm_value v )
   int tmp ;
 
   {
-  if (v == 18442240474082181120) {
+  if (v == 18442240474082181120ULL) {
     tmp = 1;
   } else
-  if ((v & 18442240474082181120) != 18442240474082181120) {
+  if ((v & 18442240474082181120ULL) != 18442240474082181120ULL) {
     tmp = 1;
   } else {
     tmp = 0;
@@ -6857,7 +6857,7 @@ int strm_value_int(strm_value v )
 
   {
   switch (v & (65535UL << 48)) {
-  case 18442803424035602432:
+  case 18442803424035602432ULL:
   tmp = strm_to_int(v);
   return (tmp);
   default:
@@ -6866,7 +6866,7 @@ int strm_value_int(strm_value v )
     tmp___0 = strm_to_float(v);
     return ((int )tmp___0);
   }
-  if (! ((v & (65535UL << 48)) == 18442803424035602432)) {
+  if (! ((v & (65535UL << 48)) == 18442803424035602432ULL)) {
     __assert_fail("strm_value_tag(v) == STRM_TAG_INT", "value.c", 146U, "strm_value_int");
   }
   break;
@@ -6907,7 +6907,7 @@ strm_cfunc strm_value_cfunc(strm_value v )
 
 
   {
-  if (! ((v & (65535UL << 48)) == 18445336698825998336)) {
+  if (! ((v & (65535UL << 48)) == 18445336698825998336ULL)) {
     __assert_fail("strm_value_tag(v) == STRM_TAG_CFUNC", "value.c", 173U, "strm_value_cfunc");
   }
   return ((int (*)(struct strm_stream * , int  , strm_value * , strm_value * ))((intptr_t )(v & ~ (65535UL << 48))));
@@ -6937,7 +6937,7 @@ int strm_bool_p(strm_value v )
   int tmp ;
 
   {
-  if ((v & (65535UL << 48)) == 18442521949058891776) {
+  if ((v & (65535UL << 48)) == 18442521949058891776ULL) {
     tmp = 1;
   } else {
     tmp = 0;
@@ -6950,7 +6950,7 @@ int strm_nil_p(strm_value v )
 
 
   {
-  if ((v & (65535UL << 48)) != 18445899648779419648) {
+  if ((v & (65535UL << 48)) != 18445899648779419648ULL) {
     return (0);
   }
   return ((v & ~ (65535UL << 48)) == 0UL);
@@ -6961,7 +6961,7 @@ int strm_cfunc_p(strm_value v )
 
 
   {
-  return ((v & (65535UL << 48)) == 18445336698825998336);
+  return ((v & (65535UL << 48)) == 18445336698825998336ULL);
 }
 }
 int strm_ptr_tag_p(strm_value v , enum strm_ptr_type e )
@@ -6971,7 +6971,7 @@ int strm_ptr_tag_p(strm_value v , enum strm_ptr_type e )
   enum strm_ptr_type tmp___0 ;
 
   {
-  if ((v & (65535UL << 48)) == 18445899648779419648) {
+  if ((v & (65535UL << 48)) == 18445899648779419648ULL) {
     tmp = strm_ptr(v);
     p = tmp;
     tmp___0 = strm_ptr_type(p);
@@ -6997,20 +6997,20 @@ int strm_value_eq(strm_value a , strm_value b )
     goto typediff;
   }
   switch (a & (65535UL << 48)) {
-  case 18443647848965734400:
-  case 18443366373989023744:
+  case 18443647848965734400ULL:
+  case 18443366373989023744ULL:
   tmp = strm_ary_eq(a, b);
   return (tmp);
-  case 18445055223849287680:
-  case 18444773748872577024:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
   tmp___0 = strm_str_eq(a, b);
   return (tmp___0);
-  case 18445336698825998336:
+  case 18445336698825998336ULL:
   return ((unsigned long )((int (*)(struct strm_stream * , int  , strm_value * , strm_value * ))((intptr_t )(a & ~ (65535UL << 48)))) == (unsigned long )((int (*)(struct strm_stream * ,
                                                                                                                                                                    int  ,
                                                                                                                                                                    strm_value * ,
                                                                                                                                                                    strm_value * ))((intptr_t )(b & ~ (65535UL << 48)))));
-  case 18445899648779419648:
+  case 18445899648779419648ULL:
   return ((unsigned long )((void *)((intptr_t )(a & ~ (65535UL << 48)))) == (unsigned long )((void *)((intptr_t )(b & ~ (65535UL << 48)))));
   typediff:
   default:
@@ -7455,12 +7455,12 @@ strm_string strm_to_str(strm_value v )
     }
   }
   switch (v & (65535UL << 48)) {
-  case 18442803424035602432:
+  case 18442803424035602432ULL:
   tmp___2 = strm_to_int(v);
   n = sprintf((char * __restrict  )(buf), (char const   * __restrict  )"%d", tmp___2);
   tmp___3 = strm_str_new((char const   *)(buf), n);
   return (tmp___3);
-  case 18442521949058891776:
+  case 18442521949058891776ULL:
   tmp___6 = strm_to_int(v);
   if (tmp___6) {
     tmp___5 = "true";
@@ -7470,22 +7470,22 @@ strm_string strm_to_str(strm_value v )
   n = sprintf((char * __restrict  )(buf), (char const   * __restrict  )tmp___5);
   tmp___7 = strm_str_new((char const   *)(buf), n);
   return (tmp___7);
-  case 18445336698825998336:
+  case 18445336698825998336ULL:
   tmp___8 = strm_value_cfunc(v);
   n = sprintf((char * __restrict  )(buf), (char const   * __restrict  )"<cfunc:%p>",
               (void *)tmp___8);
   tmp___9 = strm_str_new((char const   *)(buf), n);
   return (tmp___9);
-  case 18445055223849287680:
-  case 18444773748872577024:
-  case 18444492273895866368:
-  case 18444210798919155712:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
+  case 18444492273895866368ULL:
+  case 18444210798919155712ULL:
   return (v);
-  case 18443647848965734400:
-  case 18443366373989023744:
+  case 18443647848965734400ULL:
+  case 18443366373989023744ULL:
   tmp___10 = strm_inspect(v);
   return (tmp___10);
-  case 18445899648779419648:
+  case 18445899648779419648ULL:
   if ((v & ~ (65535UL << 48)) == 0UL) {
     tmp___11 = strm_str_static("nil", (strm_int )(sizeof("nil") - 1UL));
     return (tmp___11);
@@ -7574,7 +7574,7 @@ strm_value strm_nil_value(void)
 
 
   {
-  return (18445899648779419648);
+  return (18445899648779419648ULL);
 }
 }
 strm_state *strm_value_ns(strm_value val )
@@ -7606,7 +7606,7 @@ strm_state *strm_value_ns(strm_value val )
   if (tmp___2) {
     return (strm_ns_number);
   }
-  if ((val & (65535UL << 48)) == 18445899648779419648) {
+  if ((val & (65535UL << 48)) == 18445899648779419648ULL) {
     tmp___3 = strm_ptr(val);
     p = (struct strm_misc *)tmp___3;
     if (! p) {
@@ -15850,28 +15850,28 @@ static strm_string str_new(char const   *p , strm_int len , int foreign )
     goto mkbuf;
   }
   if (len < 6) {
-    tag = 18444210798919155712;
+    tag = 18444210798919155712ULL;
     val = (strm_value )0;
     s = (char *)(& val) + 1;
     memcpy((void * __restrict  )s, (void const   * __restrict  )p, (size_t )len);
     *(s + -1) = (char )len;
   } else
   if (len == 6) {
-    tag = 18444492273895866368;
+    tag = 18444492273895866368ULL;
     val = (strm_value )0;
     s = (char *)(& val);
     memcpy((void * __restrict  )s, (void const   * __restrict  )p, (size_t )len);
   } else {
     if (p) {
       if (foreign) {
-        tag = 18445055223849287680;
+        tag = 18445055223849287680ULL;
         tmp = malloc(sizeof(struct strm_string ));
         str = (struct strm_string *)tmp;
         str->ptr = p;
       } else {
         tmp___1 = readonly_data_p(p);
         if (tmp___1) {
-          tag = 18445055223849287680;
+          tag = 18445055223849287680ULL;
           tmp = malloc(sizeof(struct strm_string ));
           str = (struct strm_string *)tmp;
           str->ptr = p;
@@ -15881,7 +15881,7 @@ static strm_string str_new(char const   *p , strm_int len , int foreign )
       }
     } else {
       mkbuf:
-      tag = 18444773748872577024;
+      tag = 18444773748872577024ULL;
       tmp___0 = malloc((sizeof(struct strm_string ) + (unsigned long )len) + 1UL);
       str = (struct strm_string *)tmp___0;
       buf = (char *)(str + 1);
@@ -16023,9 +16023,9 @@ int strm_str_intern_p(strm_string s )
 
   {
   switch (s & (65535UL << 48)) {
-  case 18445055223849287680:
-  case 18444492273895866368:
-  case 18444210798919155712:
+  case 18445055223849287680ULL:
+  case 18444492273895866368ULL:
+  case 18444210798919155712ULL:
   return (1);
   default:
   return (0);
@@ -16045,8 +16045,8 @@ int strm_str_eq(strm_string a , strm_string b )
   if (a == b) {
     return (1);
   }
-  if ((a & (65535UL << 48)) == 18445055223849287680) {
-    if ((b & (65535UL << 48)) == 18445055223849287680) {
+  if ((a & (65535UL << 48)) == 18445055223849287680ULL) {
+    if ((b & (65535UL << 48)) == 18445055223849287680ULL) {
       return (0);
     }
   }
@@ -16071,10 +16071,10 @@ int strm_str_p(strm_value v )
 
   {
   switch (v & (65535UL << 48)) {
-  case 18444773748872577024:
-  case 18445055223849287680:
-  case 18444492273895866368:
-  case 18444210798919155712:
+  case 18444773748872577024ULL:
+  case 18445055223849287680ULL:
+  case 18444492273895866368ULL:
+  case 18444210798919155712ULL:
   return (1);
   default:
   return (0);
@@ -16087,12 +16087,12 @@ char const   *strm_strp_ptr(strm_string *s )
 
   {
   switch (*s & (65535UL << 48)) {
-  case 18444210798919155712:
+  case 18444210798919155712ULL:
   return ((char const   *)((char *)s + 1));
-  case 18444492273895866368:
+  case 18444492273895866368ULL:
   return ((char const   *)((char *)s));
-  case 18445055223849287680:
-  case 18444773748872577024:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
   str = (struct strm_string *)((void *)((intptr_t )(*s & ~ (65535UL << 48))));
   return (str->ptr);
   default:
@@ -16107,18 +16107,18 @@ char const   *strm_str_cstr(strm_string s , char *buf )
 
   {
   switch (s & (65535UL << 48)) {
-  case 18444210798919155712:
+  case 18444210798919155712ULL:
   len = (strm_int )*((char *)(& s) + 0);
   memcpy((void * __restrict  )buf, (void const   * __restrict  )((char *)(& s) + 1),
          (size_t )len);
   *(buf + len) = (char )'\000';
   return ((char const   *)buf);
-  case 18444492273895866368:
+  case 18444492273895866368ULL:
   memcpy((void * __restrict  )buf, (void const   * __restrict  )((char *)(& s)), (size_t )6);
   *(buf + 6) = (char )'\000';
   return ((char const   *)buf);
-  case 18445055223849287680:
-  case 18444773748872577024:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
   str = (struct strm_string *)((void *)((intptr_t )(s & ~ (65535UL << 48))));
   return (str->ptr);
   default:
@@ -16132,12 +16132,12 @@ strm_int strm_str_len(strm_string s )
 
   {
   switch (s & (65535UL << 48)) {
-  case 18444210798919155712:
+  case 18444210798919155712ULL:
   return ((strm_int )*((char *)(& s) + 0));
-  case 18444492273895866368:
+  case 18444492273895866368ULL:
   return (6);
-  case 18445055223849287680:
-  case 18444773748872577024:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
   str = (struct strm_string *)((void *)((intptr_t )(s & ~ (65535UL << 48))));
   return (str->len);
   default:
@@ -16151,10 +16151,10 @@ int strm_string_p(unsigned long s )
 
   {
   switch (s & (65535UL << 48)) {
-  case 18445055223849287680:
-  case 18444773748872577024:
-  case 18444492273895866368:
-  case 18444210798919155712:
+  case 18445055223849287680ULL:
+  case 18444773748872577024ULL:
+  case 18444492273895866368ULL:
+  case 18444210798919155712ULL:
   return (1);
   default:
   return (0);
@@ -16486,8 +16486,8 @@ int strm_array_p(strm_value v )
 
   {
   switch (v & (65535UL << 48)) {
-  case 18443647848965734400:
-  case 18443366373989023744:
+  case 18443647848965734400ULL:
+  case 18443366373989023744ULL:
   return (1);
   default:
   return (0);
@@ -16513,7 +16513,7 @@ strm_array strm_ary_new(strm_value const   *p , strm_int len )
   ary->len = len;
   ary->ns = (struct strm_state *)((void *)0);
   ary->headers = (strm_array )0;
-  return (18443366373989023744 | ((unsigned long )((intptr_t )ary) & ~ (65535UL << 48)));
+  return (18443366373989023744ULL | ((unsigned long )((intptr_t )ary) & ~ (65535UL << 48)));
 }
 }
 int strm_ary_eq(strm_array a , strm_array b )

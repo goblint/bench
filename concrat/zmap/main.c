@@ -2124,7 +2124,7 @@ __inline extern int ( __attribute__((__gnu_inline__)) __gmpz_fits_ulong_p)(mpz_s
     tmp = 1;
   } else
   if (__gmp_n == 1L) {
-    if (*(__gmp_p + 0) <= 18446744073709551615) {
+    if (*(__gmp_p + 0) <= 18446744073709551615ULL) {
       tmp = 1;
     } else {
       tmp = 0;
@@ -2346,7 +2346,7 @@ __inline extern mp_limb_t ( __attribute__((__gnu_inline__)) __gmpn_add)(mp_ptr _
           __gmp_x = (mp_limb_t )*(__gmp_xp + __gmp_i);
           tmp = __gmp_i;
           __gmp_i ++;
-          tmp___0 = (__gmp_x + 1UL) & 18446744073709551615;
+          tmp___0 = (__gmp_x + 1UL) & 18446744073709551615ULL;
           *(__gmp_wp + tmp) = tmp___0;
           if (! (tmp___0 == 0UL)) {
             break;
@@ -2513,7 +2513,7 @@ __inline extern mp_limb_t ( __attribute__((__gnu_inline__)) __gmpn_sub)(mp_ptr _
           __gmp_x = (mp_limb_t )*(__gmp_xp + __gmp_i);
           tmp = __gmp_i;
           __gmp_i ++;
-          *(__gmp_wp + tmp) = (__gmp_x - 1UL) & 18446744073709551615;
+          *(__gmp_wp + tmp) = (__gmp_x - 1UL) & 18446744073709551615ULL;
           if (! (__gmp_x == 0UL)) {
             break;
           }
@@ -2698,38 +2698,6 @@ extern ssize_t __recvfrom_alias(int __fd , void * __restrict  __buf , size_t __n
 extern ssize_t __recvfrom_chk_warn(int __fd , void * __restrict  __buf , size_t __n ,
                                    size_t __buflen , int __flags , struct sockaddr * __restrict  __addr ,
                                    socklen_t * __restrict  __addr_len )  __asm__("__recvfrom_chk")  ;
-__inline extern ssize_t ( __attribute__((__gnu_inline__, __always_inline__)) recvfrom)(int __fd ,
-                                                                                       void * __restrict  __buf ,
-                                                                                       size_t __n ,
-                                                                                       int __flags ,
-                                                                                       struct sockaddr * __restrict  __cil_tmp14 ,
-                                                                                       socklen_t * __restrict  __addr_len )
-{
-  unsigned long tmp ;
-  ssize_t tmp___0 ;
-  unsigned long tmp___1 ;
-  ssize_t tmp___2 ;
-  unsigned long tmp___3 ;
-  unsigned long tmp___4 ;
-  ssize_t tmp___5 ;
-
-  {
-  tmp___4 = __builtin_object_size((void *)__buf, 0);
-  if (tmp___4 != 0xffffffffffffffffUL) {
-    tmp = __builtin_object_size((void *)__buf, 0);
-    tmp___0 = __recvfrom_chk(__fd, __buf, __n, tmp, __flags, __addr, __addr_len);
-    return (tmp___0);
-    tmp___3 = __builtin_object_size((void *)__buf, 0);
-    if (__n > tmp___3) {
-      tmp___1 = __builtin_object_size((void *)__buf, 0);
-      tmp___2 = __recvfrom_chk_warn(__fd, __buf, __n, tmp___1, __flags, __addr, __addr_len);
-      return (tmp___2);
-    }
-  }
-  tmp___5 = __recvfrom_alias(__fd, __buf, __n, __flags, __addr, __addr_len);
-  return (tmp___5);
-}
-}
 extern int log_debug(char const   *loggerName , char const   *logMessage  , ...) ;
 static cyclic_group_t groups[5]  = {      {(uint64_t )257, (uint64_t )3, (size_t )1, {(uint64_t )2}},
         {(uint64_t )65537, (uint64_t )3, (size_t )1, {(uint64_t )2}},

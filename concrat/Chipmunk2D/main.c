@@ -13380,7 +13380,7 @@ cpCollisionHandler *cpSpaceAddWildcardHandler(cpSpace *space , cpCollisionType t
 
   {
   cpSpaceUseWildcardDefaultHandler(space);
-  hash = type * 3344921057UL ^ 18446744070364630559;
+  hash = type * 3344921057UL ^ 18446744070364630559ULL;
   handler.typeA = type;
   handler.typeB = ~ ((cpCollisionType )0);
   handler.beginFunc = & AlwaysCollide;
