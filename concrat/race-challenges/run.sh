@@ -5,26 +5,40 @@ set -e
 
 MYBENCHDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # RESULTSDIR=$MYBENCHDIR/../results/eval-prec
-RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/pldi-23-race-challenges-relay
+RESULTSDIR=/mnt/goblint-svcomp/benchexec/results/oopsla-2-race-challenges
 # GOBLINTDIR=$MYBENCHDIR/../goblint
 GOBLINTDIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 GOBLINT23DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/goblint
 GOBLINT23_PARALLEL=2
-CPACHECKER_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/CPAchecker-2.2-unix
-CPACHECKER_PARALLEL=2
-DARTAGNAN_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/dartagnan
-DARTAGNAN_PARALLEL=2
-DEAGLE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle
-DEAGLE_PARALLEL=2
-DEAGLE_PURE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle-pure
-DEAGLE_PURE_PARALLEL=2
+GOBLINT24DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/goblint
+GOBLINT24_PARALLEL=2
+CPACHECKER23_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/CPAchecker-2.2-unix
+CPACHECKER23_PARALLEL=2
+CPACHECKER24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/CPAchecker-2.3-unix
+CPACHECKER24_PARALLEL=2
+DARTAGNAN23_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/dartagnan
+DARTAGNAN23_PARALLEL=2
+DARTAGNAN24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/dartagnan
+DARTAGNAN24_PARALLEL=2
+DEAGLE23_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle
+DEAGLE23_PARALLEL=2
+DEAGLE23_PURE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/deagle-pure
+DEAGLE23_PURE_PARALLEL=2
+DEAGLE24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/deagle
+DEAGLE24_PARALLEL=2
+ESBMC_KIND24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/esbmc-kind
+ESBMC_KIND24_PARALLEL=2
 LOCKSMITH_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/locksmith
 LOCKSMITH_PARALLEL=2
-THETA_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/theta
-THETA_PARALLEL=2
-ULTIMATE_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/UAutomizer-linux
-ULTIMATE_PARALLEL=2
+THETA23_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/theta
+THETA23_PARALLEL=2
+THETA24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/Theta
+THETA24_PARALLEL=2
+ULTIMATE23_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/UAutomizer-linux
+ULTIMATE23_PARALLEL=2
+ULTIMATE24_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi24/UAutomizer-linux
+ULTIMATE24_PARALLEL=2
 RELAY_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/relay-sv
 RELAY_PARALLEL=2
 TSAN_DIR=/mnt/goblint-svcomp/benchexec/tools-pldi/sv-sanitizers
@@ -39,32 +53,46 @@ mkdir $RESULTSDIR || true
 # cd $GOBLINTDIR
 # $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $MYBENCHDIR/goblint.xml
 
-# cd $GOBLINT23DIR
-# $BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
+cd $GOBLINT23DIR
+$BENCHEXEC --numOfThreads $GOBLINT23_PARALLEL $MYBENCHDIR/goblint23.xml
+cd $GOBLINT24DIR
+$BENCHEXEC --numOfThreads $GOBLINT24_PARALLEL $MYBENCHDIR/goblint24.xml
 
-# cd $CPACHECKER_DIR
-# $BENCHEXEC --numOfThreads $CPACHECKER_PARALLEL $MYBENCHDIR/cpachecker.xml
+cd $CPACHECKER23_DIR
+$BENCHEXEC --numOfThreads $CPACHECKER23_PARALLEL $MYBENCHDIR/cpachecker23.xml
+cd $CPACHECKER24_DIR
+$BENCHEXEC --numOfThreads $CPACHECKER24_PARALLEL $MYBENCHDIR/cpachecker24.xml
 
-# cd $DARTAGNAN_DIR
-# $BENCHEXEC --numOfThreads $DARTAGNAN_PARALLEL $MYBENCHDIR/dartagnan.xml
+cd $DARTAGNAN23_DIR
+$BENCHEXEC --numOfThreads $DARTAGNAN23_PARALLEL $MYBENCHDIR/dartagnan23.xml
+cd $DARTAGNAN24_DIR
+$BENCHEXEC --numOfThreads $DARTAGNAN24_PARALLEL $MYBENCHDIR/dartagnan24.xml
 
-# cd $DEAGLE_DIR
-# $BENCHEXEC --numOfThreads $DEAGLE_PARALLEL $MYBENCHDIR/deagle.xml
+cd $DEAGLE23_DIR
+$BENCHEXEC --numOfThreads $DEAGLE23_PARALLEL $MYBENCHDIR/deagle23.xml
+# cd $DEAGLE23_PURE_DIR
+# $BENCHEXEC --numOfThreads $DEAGLE23_PURE_PARALLEL $MYBENCHDIR/deagle23-pure.xml
+cd $DEAGLE24_DIR
+$BENCHEXEC --numOfThreads $DEAGLE24_PARALLEL $MYBENCHDIR/deagle24.xml
 
-# cd $DEAGLE_PURE_DIR
-# $BENCHEXEC --numOfThreads $DEAGLE_PURE_PARALLEL $MYBENCHDIR/deagle-pure.xml
+cd $ESBMC_KIND24_DIR
+$BENCHEXEC --numOfThreads $ESBMC_KIND24_PARALLEL $MYBENCHDIR/esbmc-kind24.xml
 
-# cd $LOCKSMITH_DIR
-# $BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
+cd $LOCKSMITH_DIR
+$BENCHEXEC --numOfThreads $LOCKSMITH_PARALLEL $MYBENCHDIR/locksmith.xml
 
-# cd $THETA_DIR
-# $BENCHEXEC --numOfThreads $THETA_PARALLEL $MYBENCHDIR/theta.xml
+cd $THETA23_DIR
+$BENCHEXEC --numOfThreads $THETA23_PARALLEL $MYBENCHDIR/theta23.xml
+cd $THETA24_DIR
+$BENCHEXEC --numOfThreads $THETA24_PARALLEL $MYBENCHDIR/theta24.xml
 
-# cd $ULTIMATE_DIR
-# $BENCHEXEC --numOfThreads $ULTIMATE_PARALLEL $MYBENCHDIR/uautomizer.xml
+cd $ULTIMATE23_DIR
+$BENCHEXEC --numOfThreads $ULTIMATE23_PARALLEL $MYBENCHDIR/uautomizer23.xml
+cd $ULTIMATE24_DIR
+$BENCHEXEC --numOfThreads $ULTIMATE24_PARALLEL $MYBENCHDIR/uautomizer24.xml
 
-cd $RELAY_DIR
-$BENCHEXEC --numOfThreads $RELAY_PARALLEL $MYBENCHDIR/relay.xml
+# cd $RELAY_DIR
+# $BENCHEXEC --numOfThreads $RELAY_PARALLEL $MYBENCHDIR/relay.xml
 
 # cd $TSAN_DIR
 # $BENCHEXEC --numOfThreads $TSAN_PARALLEL $MYBENCHDIR/tsan.xml
@@ -76,13 +104,20 @@ table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
 # unzip -o goblint.*.logfiles.zip
-# unzip -o goblint23.*.logfiles.zip
-# unzip -o cpachecker.*.logfiles.zip
-# unzip -o dartagnan.*.logfiles.zip
-# unzip -o deagle.*.logfiles.zip
-# unzip -o deagle-pure.*.logfiles.zip
-# unzip -o locksmith.*.logfiles.zip
-# unzip -o theta.*.logfiles.zip
-# unzip -o uautomizer.*.logfiles.zip
-unzip -o relay.*.logfiles.zip
+unzip -o goblint23.*.logfiles.zip
+unzip -o goblint24.*.logfiles.zip
+unzip -o cpachecker23.*.logfiles.zip
+unzip -o cpachecker24.*.logfiles.zip
+unzip -o dartagnan23.*.logfiles.zip
+unzip -o dartagnan24.*.logfiles.zip
+unzip -o deagle23.*.logfiles.zip
+# unzip -o deagle23-pure.*.logfiles.zip
+unzip -o deagle24.*.logfiles.zip
+unzip -o esbmc-kind24.*.logfiles.zip
+unzip -o locksmith.*.logfiles.zip
+unzip -o theta23.*.logfiles.zip
+unzip -o theta24.*.logfiles.zip
+unzip -o uautomizer23.*.logfiles.zip
+unzip -o uautomizer24.*.logfiles.zip
+# unzip -o relay.*.logfiles.zip
 # unzip -o tsan.*.logfiles.zip
