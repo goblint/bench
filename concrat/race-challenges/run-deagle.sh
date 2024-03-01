@@ -44,7 +44,7 @@ $BENCHEXEC --numOfThreads $DEAGLE24_UNSUPP_PARALLEL $MYBENCHDIR/deagle24-no-unsu
 cd $DEAGLE24_PARTIAL_DIR
 $BENCHEXEC --numOfThreads $DEAGLE24_PARTIAL_PARALLEL $MYBENCHDIR/deagle24-no-partial.xml
 cd $DEAGLE24_UNWIND_DIR
-$BENCHEXEC --numOfThreads $DEAGLE24_IUNWIND_PARALLEL $MYBENCHDIR/deagle24-no-unwind.xml
+$BENCHEXEC --numOfThreads $DEAGLE24_UNWIND_PARALLEL $MYBENCHDIR/deagle24-no-unwind.xml
 
 # Generate table with merged results
 cd $RESULTSDIR
