@@ -36,7 +36,7 @@ $BENCHEXEC --numOfThreads $DEAGLE24_PARALLEL $MYBENCHDIR/deagle24.xml
 
 # Generate table with merged results
 cd $RESULTSDIR
-cp $MYBENCHDIR/table-generator.xml table-generator.xml
+cp $MYBENCHDIR/table-generator-deagle.xml table-generator.xml
 table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
