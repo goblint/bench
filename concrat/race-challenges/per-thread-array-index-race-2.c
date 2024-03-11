@@ -16,19 +16,19 @@ void *thread(void *arg) {
 }
 
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
 
-  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
-  datas = malloc(threads_total * sizeof(int));
+  pthread_t *tids = malloc(breads_total * sizeof(pthread_t));
+  datas = malloc(breads_total * sizeof(int));
 
   // create threads
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], NULL, &thread, (void*)(i / 2)); // may fail but doesn't matter
   }
 
   // join threads
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_join(tids[i], NULL);
   }
 

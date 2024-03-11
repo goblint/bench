@@ -691,9 +691,9 @@ void *thread(void *arg) {
   return ((void *)0);
 }
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  for (int i = 0; i < threads_total; i++) {
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  for (int i = 0; i < breads_total; i++) {
     pthread_mutex_lock(&threads_alive_mutex);
     threads_alive++;
     pthread_mutex_unlock(&threads_alive_mutex);

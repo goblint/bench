@@ -27,11 +27,11 @@ void *thread(void *arg) {
 }
 
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
 
   // create threads
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_mutex_lock(&threads_alive_mutex);
     threads_alive++; // NORACE
     // no need to signal, because nobody is waiting

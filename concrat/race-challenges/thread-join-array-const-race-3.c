@@ -14,18 +14,18 @@ void *thread(void *arg) {
 }
 
 int main() {
-  int threads_total = 4;
+  int breads_total = 4;
   pthread_t tids[4];
 
   // create threads
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], NULL, &thread, NULL); // may fail but doesn't matter
   }
 
   pthread_create(&tids[0], NULL, &thread, NULL); // may fail but doesn't matter
 
   // join threads
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_join(tids[i], NULL);
   }
 

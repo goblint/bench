@@ -22,7 +22,7 @@ void assume_abort_if_not(int cond) {
 }
 extern int __VERIFIER_nondet_int();
 
-int threads_total;
+int breads_total;
 pthread_t *tids;
 
 int data = 0;
@@ -41,7 +41,7 @@ void *thread(void *arg) {
       break;
 
     unsigned int next_worker = i | (1 << step);
-    if (next_worker >= threads_total)
+    if (next_worker >= breads_total)
       break;
 
     pthread_join(tids[next_worker], NULL);
@@ -50,14 +50,14 @@ void *thread(void *arg) {
 }
 
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 1);
+  breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 1);
 
-  tids = malloc((threads_total + 1) * sizeof(pthread_t));
+  tids = malloc((breads_total + 1) * sizeof(pthread_t));
 
   // create threads
   // From original fzy: These must be created last-to-first to avoid a race condition when fanning in
-  for (int i = threads_total; i >= 0; i--) {
+  for (int i = breads_total; i >= 0; i--) {
     pthread_create(&tids[i], NULL, &thread, (void*)i); // may fail but doesn't matter
   }
 

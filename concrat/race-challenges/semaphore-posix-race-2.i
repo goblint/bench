@@ -1041,13 +1041,13 @@ void *thread(void *arg) {
 }
 int main() {
   sem_init(&data_sem, 0, 2);
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = 0; i < threads_total; i++) {
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  pthread_t *tids = malloc(breads_total * sizeof(pthread_t));
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], ((void *)0), &thread, ((void *)0));
   }
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_join(tids[i], ((void *)0));
   }
   free(tids);

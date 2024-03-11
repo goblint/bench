@@ -1021,15 +1021,15 @@ void *thread(void *arg) {
   return ((void *)0);
 }
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  struct thread **ts = malloc(threads_total * sizeof(struct thread *));
-  for (int i = 0; i < threads_total; i++) {
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  struct thread **ts = malloc(breads_total * sizeof(struct thread *));
+  for (int i = 0; i < breads_total; i++) {
     struct thread *t = malloc(sizeof(struct thread));
     ts[i] = t;
     pthread_create(&t->tid, ((void *)0), &thread, t);
   }
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_join(ts[i]->tid, ((void *)0));
     free(ts[i]);
   }

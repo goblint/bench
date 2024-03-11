@@ -703,15 +703,15 @@ void *thread(void *arg) {
   return ((void *)0);
 }
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  for (int i = 0; i < threads_total; i++) {
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  for (int i = 0; i < breads_total; i++) {
     pthread_t tid;
     pthread_create(&tid, ((void *)0), &thread, ((void *)0));
     pthread_detach(tid);
   }
   pthread_mutex_lock(&threads_alive_mutex);
-  while (threads_alive != threads_total)
+  while (threads_alive != breads_total)
     pthread_cond_wait(&threads_alive_cond, &threads_alive_mutex);
   pthread_mutex_unlock(&threads_alive_mutex);
   pthread_mutex_lock(&keep_alive_mutex);

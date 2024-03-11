@@ -1015,14 +1015,14 @@ void *thread(void *arg) {
   return ((void *)0);
 }
 int main() {
-  int threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  pthread_t *tids = malloc(threads_total * sizeof(pthread_t));
-  int *datas = malloc(threads_total * sizeof(int));
-  for (int i = 0; i < threads_total; i++) {
+  int breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  pthread_t *tids = malloc(breads_total * sizeof(pthread_t));
+  int *datas = malloc(breads_total * sizeof(int));
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], ((void *)0), &thread, &datas[i / 2]);
   }
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_join(tids[i], ((void *)0));
   }
   free(tids);

@@ -1009,7 +1009,7 @@ void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-int threads_total;
+int breads_total;
 pthread_t *tids;
 int data = 0;
 pthread_mutex_t data_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
@@ -1022,17 +1022,17 @@ void *thread(void *arg) {
     if (i % (2 << step))
       break;
     unsigned int next_worker = i | (1 << step);
-    if (next_worker >= threads_total)
+    if (next_worker >= breads_total)
       break;
     pthread_join(tids[next_worker], ((void *)0));
   }
   return ((void *)0);
 }
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 2);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  for (int i = threads_total - 1; i >= 0; i--) {
+  breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 2);
+  tids = malloc(breads_total * sizeof(pthread_t));
+  for (int i = breads_total - 1; i >= 0; i--) {
     pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
   }
   pthread_join(tids[1], ((void *)0));

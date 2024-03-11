@@ -1009,7 +1009,7 @@ void assume_abort_if_not(int cond) {
   if(!cond) {abort();}
 }
 extern int __VERIFIER_nondet_int();
-int threads_total;
+int breads_total;
 int threads_alive = 0;
 pthread_mutex_t threads_alive_mutex = { { 0, 0, 0, PTHREAD_MUTEX_TIMED_NP, 0, { { 0, 0 } } } };
 pthread_cond_t threads_alive_cond = { { {0}, {0}, {0, 0}, {0, 0}, 0, 0, {0, 0} } };
@@ -1030,7 +1030,7 @@ void *thread(void *arg) {
 }
 void *cleaner(void *arg) {
   while (1) {
-    for (int i = 0; i < threads_total; i++) {
+    for (int i = 0; i < breads_total; i++) {
       pthread_mutex_lock(&flags_mutex[i]);
       if (flags[i]) {
         pthread_join(tids[i], ((void *)0));
@@ -1046,16 +1046,16 @@ void *cleaner(void *arg) {
   return ((void *)0);
 }
 int main() {
-  threads_total = __VERIFIER_nondet_int();
-  assume_abort_if_not(threads_total >= 0);
-  tids = malloc(threads_total * sizeof(pthread_t));
-  flags = calloc(threads_total, sizeof(_Bool));
-  flags_mutex = malloc(threads_total * sizeof(pthread_mutex_t));
-  for (int i = 0; i < threads_total; i++)
+  breads_total = __VERIFIER_nondet_int();
+  assume_abort_if_not(breads_total >= 0);
+  tids = malloc(breads_total * sizeof(pthread_t));
+  flags = calloc(breads_total, sizeof(_Bool));
+  flags_mutex = malloc(breads_total * sizeof(pthread_mutex_t));
+  for (int i = 0; i < breads_total; i++)
     pthread_mutex_init(&flags_mutex[i], ((void *)0));
   pthread_t cleaner_tid;
   pthread_create(&cleaner_tid, ((void *)0), &cleaner, ((void *)0));
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], ((void *)0), &thread, (void*)i);
     pthread_mutex_lock(&threads_alive_mutex);
     threads_alive++;

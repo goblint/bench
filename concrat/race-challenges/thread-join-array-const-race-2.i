@@ -680,12 +680,12 @@ void *thread(void *arg) {
   return ((void *)0);
 }
 int main() {
-  int threads_total = 4;
+  int breads_total = 4;
   pthread_t tids[4];
-  for (int i = 0; i < threads_total; i++) {
+  for (int i = 0; i < breads_total; i++) {
     pthread_create(&tids[i], ((void *)0), &thread, ((void *)0));
   }
-  for (int i = 0; i < threads_total; i += 2) {
+  for (int i = 0; i < breads_total; i += 2) {
     pthread_join(tids[i], ((void *)0));
   }
   return data;
