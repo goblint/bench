@@ -85,6 +85,7 @@ def print_res (i)
           f.puts "<th>#{aname}</th>"
         end
         f.puts "<th>compare</th>"
+        f.puts "<th>details</th>"
       end
       f.puts "<tr>"
       f.puts p.to_html
@@ -127,7 +128,9 @@ def print_res (i)
         end
       end
       comparefile = File.basename(p.path,".c") + ".compare.txt"
+      comparedetailsfile = $testresults + File.basename(filename,".c") + ".compare.details.txt"
       f.puts "<td><a href=\"#{comparefile}\">compare</a></td>"
+      f.puts "<td><a href=\"#{comparedetailsfile}\">details</a></td>"
       f.puts "</tr>"
     end
     f.puts "</table>"
