@@ -286,7 +286,8 @@ $projects.each do |p|
 
   puts "Comparing..."
   comparefile = $testresults + File.basename(filename,".c") + ".compare.txt"
-  system("#{compare} #{precfiles.join(" ")} 2>&1 1> #{comparefile}")
+  comparedetailsfile = $testresults + File.basename(filename,".c") + ".compare.details.txt"
+  system("#{compare} #{precfiles.join(" ")} 2> #{comparedetailsfile} 1> #{comparefile}")
 end
 print_res nil
 puts ("Results: " + $theresultfile)
