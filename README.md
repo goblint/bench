@@ -28,7 +28,7 @@ make messagesCompare
 
 1. Create a setup definition, such as `index/defs/incremental.yaml`, to specify the different analyses and parameters to run. Do not add the incremental save and load commands since these are added by some ugly mechanisms.
 2. If necessary, edit the benchmark sets, such as `index/sets/posix.yaml`. 
-3. Run script with parameters for timeout, conf, and list of benchmark sets, e.g., `./update_bench_incremental.rb 60 index/defs/interactive.yaml index/sets/examples.yaml index/sets/posix.yaml`
+3. Run script with parameters for timeout, conf, and list of benchmark sets, e.g., `./update_bench_incremental.rb 60 index/defs/incremental.yaml index/sets/synthetic.yaml index/sets/posix.yaml`
 
 Add patches by changing some benchmark and doing, e.g., `git diff --no-prefix dtlk.c > dtlk04.patch`, and then of course restore the file. 
 
