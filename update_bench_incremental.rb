@@ -291,7 +291,7 @@ def analyze_project(p, save)
       end
     else
       system("#{$goblint} --conf #{$goblint_conf} -v --enable dbg.compare_runs.diff --compare_runs original increment #{filename} #{p.params} 2>&1 | sed '2000,/comparison summary/{/comparison summary/!d;}' > #{outfile}.compare.txt") if $compare and not first
-      system("#{$messagesCompare} --no-colors original.messages.json increment.messages.json > #{outfile}.compare.messages.txt") if $compare and not first
+      system("#{$messagesCompare} --no-colors original.messages.json increment.messages.json > #{outfile}.compare.messages.txt 2>&1") if $compare and not first
       puts '-- Done!'
     end
     first = false
