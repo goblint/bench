@@ -141,7 +141,7 @@ def print_res (i)
                 # thenumbers << "<b title=\"live lines\">#{live}</b>="
                 thenumbers << "<span title=\"total (logical) lines\">#{total}</span>"
                 thenumbers << ";<b title=\"threads(unique)\">T: #{threads} (#{uniques})</b>"
-                thenumbers << ";<b title=\"mutexes(max_protected;sum_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
+                thenumbers << ";<b title=\"mutexes(max_protected;sum_protected;avg_protected)\">M: #{mutexes} (#{max_protected};#{sum_protected};#{avg_protected})</b>"
                 f.puts "<td><a href=\"#{outfile}.html\">#{"%.2f" % dur} s</a> (#{thenumbers})</td>"
               else
                 f.puts "<td><a href=\"#{outfile}\">failed (code: #{cod.first.to_s})</a></td>"
