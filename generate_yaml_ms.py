@@ -1,7 +1,7 @@
 # Generate asserts, as well as corresponding *.i, and *.yml files for sv-comp for the programs in bench/coreutils/.
 
 # Execute with:
-# python3 scripts/generate_yaml_ms.py
+# python3 generate_yaml_ms.py
 import os
 
 
