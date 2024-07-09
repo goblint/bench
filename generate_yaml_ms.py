@@ -58,6 +58,9 @@ tasks = [
     (concrat_dir + "wrk","wrk.c","","../../..")
 ]
 
+def really_run_configuration(task):
+    run_configuration(*task)
+
 if __name__ == '__main__':
     with Pool(10) as p:
-        p.map(run_configuration, tasks)
+        p.map(really_run_configuration, tasks)
