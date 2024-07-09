@@ -15,7 +15,7 @@ def run_configuration(cwd,infile,outfile,uplevel,extraconf=""):
         else:
             raise ValueError("outfile must be specified for non-c files")
 
-    cmd = goblint + " --conf " + uplevel + "/analyzer/conf/traces-rel.json " + extraconf +  " --set dbg.timeout 1200 --set ana.activated[+] apron --set ana.path_sens[+] threadflag --set ana.relation.privatization mutex-meet-tid-cluster12 --enable allglobs -v  --enable witness.yaml.enabled "
+    cmd = goblint + "--enable pre.keep --conf " + uplevel + "/analyzer/conf/traces-rel.json " + extraconf +  " --set dbg.timeout 1200 --set ana.activated[+] apron --set ana.path_sens[+] threadflag --set ana.relation.privatization mutex-meet-tid-cluster12 --enable allglobs -v  --enable witness.yaml.enabled "
 
     # --set witness.yaml.path ./aget_comb_traces_rel.yml
     command = cmd + " " + infile + " --set witness.yaml.path  " + outfile
