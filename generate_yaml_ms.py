@@ -3,10 +3,10 @@
 # Execute with:
 # python3 generate_yaml_ms.py
 import os
+from multiprocessing import Pool
 
-
-
-def run_configuration(infile,outfile,uplevel,extraconf=""):
+def run_configuration(cwd,infile,outfile,uplevel,extraconf=""):
+    os.chdir(cwd)
     goblint = uplevel + "/analyzer/goblint"
 
     if outfile == "":
@@ -22,55 +22,42 @@ def run_configuration(infile,outfile,uplevel,extraconf=""):
     print("Executing command: " + command)
     os.system(command)
 
-# posix
-os.chdir("/home/michael/Documents/goblint-cil/bench/pthread")
-run_configuration("pfscan_comb.c pfscan_ftw.c","pfscan_comb_traces_rel.yml","../..")
-run_configuration("aget_comb.c","aget_comb_traces_rel.yml","../..")
-run_configuration("ctrace_comb.c","ctrace_comb_traces_rel.yml","../..")
-run_configuration("knot_comb.c","knot_comb_traces_rel.yml","../..")
-run_configuration("ypbind_comb.c","ypbind_comb_traces_rel.yml","../..")
-run_configuration("smptprc_comb.c","smptprc_comb_traces_rel.yml","../..")
+bench_dir = "/home/goblint/michael-schwarz-dissertation/bench/"
+posix_dir = bench_dir + "pthread"
+svcomp_dir = bench_dir + "svcomp"
+concrat_dir = bench_dir + "concrat/"
+tasks = [
+    (posix_dir,"pfscan_comb.c pfscan_ftw.c","pfscan_comb_traces_rel.yml","../.."),
+    (posix_dir,"aget_comb.c","aget_comb_traces_rel.yml","../.."),
+    (posix_dir,"ctrace_comb.c","ctrace_comb_traces_rel.yml","../.."),
+    (posix_dir,"knot_comb.c","knot_comb_traces_rel.yml","../.."),
+    (posix_dir,"ypbind_comb.c","ypbind_comb_traces_rel.yml","../.."),
+    (posix_dir,"smptprc_comb.c","smptprc_comb_traces_rel.yml","../.."),
+    (svcomp_dir,"linux-3.14--drivers--usb--misc--iowarrior.ko.cil.i","linux-3.14--drivers--usb--misc--iowarrior.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--usb--misc--adutux.ko.cil.i","linux-3.14--drivers--usb--misc--adutux.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--net--irda--w83977af_ir.ko.cil.i","linux-3.14--drivers--net--irda--w83977af_ir.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--spi--spi-tegra20-slink.ko.cil.i","linux-3.14--drivers--spi--spi-tegra20-slink.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--net--irda--nsc-ircc.ko.cil.i","linux-3.14--drivers--net--irda--nsc-ircc.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-1.i","linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-1_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (svcomp_dir,"linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-2.i","linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-2_traces_rel.yml","../..","--enable ana.sv-comp.functions"),
+    (concrat_dir + "brubeck","brubeck.c","","../../.."),
+    (concrat_dir + "C-Thread-Pool","cThreadPool.c","","../../.."),
+    (concrat_dir + "cava","cava.c","","../../.."),
+    (concrat_dir + "dump1090","dump1090.c","","../../.."),
+    (concrat_dir + "EasyLogger","easyLogger.c","","../../.."),
+    (concrat_dir + "fzy","fzy.c","","../../.."),
+    (concrat_dir + "klib","klib.c","","../../.."),
+    (concrat_dir + "level-ip","level-ip.c","","../../.."),
+    (concrat_dir + "libaco","libaco.c","","../../.."),
+    (concrat_dir + "libfaketime","libfaketime.c","","../../.."),
+    (concrat_dir + "libfreenect","libfreenect.c","","../../.."),
+    (concrat_dir + "pingfs","pingfs.c","","../../.."),
+    (concrat_dir + "snoopy","snoopy.c","","../../.."),
+    (concrat_dir + "uthash","uthash.c","","../../.."),
+    (concrat_dir + "vanitygen","vanitygen.c","","../../.."),
+    (concrat_dir + "wrk","wrk.c","","../../..")
+]
 
-# svcomp
-os.chdir("/home/michael/Documents/goblint-cil/bench/svcomp")
-run_configuration("linux-3.14--drivers--usb--misc--iowarrior.ko.cil.i","linux-3.14--drivers--usb--misc--iowarrior.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--usb--misc--adutux.ko.cil.i","linux-3.14--drivers--usb--misc--adutux.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--net--irda--w83977af_ir.ko.cil.i","linux-3.14--drivers--net--irda--w83977af_ir.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--spi--spi-tegra20-slink.ko.cil.i","linux-3.14--drivers--spi--spi-tegra20-slink.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--net--irda--nsc-ircc.ko.cil.i","linux-3.14--drivers--net--irda--nsc-ircc.ko.cil_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-1.i","linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-1_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-run_configuration("linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-2.i","linux-3.14--drivers--media--platform--marvell-ccic--cafe_ccic.ko.cil-2_traces_rel.yml","../..","--enable ana.sv-comp.functions")
-
-# concrat
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/brubeck")
-run_configuration("brubeck.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/C-Thread-Pool")
-run_configuration("cThreadPool.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/cava")
-run_configuration("cava.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/dump1090")
-run_configuration("dump1090.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/EasyLogger")
-run_configuration("easyLogger.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/fzy")
-run_configuration("fzy.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/klib")
-run_configuration("klib.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/level-ip")
-run_configuration("level-ip.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/libaco")
-run_configuration("libaco.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/libfaketime")
-run_configuration("libfaketime.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/libfreenect")
-run_configuration("libfreenect.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/pingfs")
-run_configuration("pingfs.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/snoopy")
-run_configuration("snoopy.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/uthash")
-run_configuration("uthash.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/vanitygen")
-run_configuration("vanitygen.c","","../../..")
-os.chdir("/home/michael/Documents/goblint-cil/bench/concrat/wrk")
-run_configuration("wrk.c","","../../..")
+if __name__ == '__main__':
+    with Pool(10) as p:
+        p.map(run_configuration, tasks)
