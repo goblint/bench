@@ -251,7 +251,7 @@ end
 
 #Command line parameters
 
-timeout = 2000
+timeout = 4000
 timeout = ARGV[0].to_i unless ARGV[0].nil?
 only = ARGV[1] unless ARGV[1].nil?
 if only == "group" then
