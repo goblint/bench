@@ -5,7 +5,7 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/208-concurrency-witness-local
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/209-concurrency-witness-2.1
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 
@@ -31,4 +31,4 @@ table-generator -x table-generator.xml
 unzip -o goblint.*.logfiles.zip
 
 # Compress all witnesses containing location_invariant-s
-rg -l 'location_invariant' goblint.*.files/ | zip witnesses-loc-inv.zip -@
+rg -l 'type: location_invariant' goblint.*.files/ | zip witnesses-loc-inv.zip -@
