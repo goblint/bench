@@ -5,7 +5,7 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/209-concurrency-witness-2.1
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/213-concurrency-witness-2.1-content-format
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 
