@@ -5,7 +5,7 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/213-concurrency-witness-2.1-content-format
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/218-concurrency-witness-time
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 
@@ -20,7 +20,7 @@ sed -e "s|SV_BENCHMARKS_DIR|$SV_BENCHMARKS_DIR|" $BENCH_DIR/goblint.xml > goblin
 
 # Run verification
 cd $GOBLINT_DIR
-$BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $RESULTS_DIR/goblint.xml
+time $BENCHEXEC --numOfThreads $GOBLINT_PARALLEL $RESULTS_DIR/goblint.xml
 
 # Generate table with merged results and witness validation results
 cd $RESULTS_DIR
