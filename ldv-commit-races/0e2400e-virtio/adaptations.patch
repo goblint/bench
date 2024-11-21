@@ -1,0 +1,43 @@
+diff --git a/Makefile b/Makefile
+index 5bd9f7700eb9..55aa3df41209 100644
+--- a/Makefile
++++ b/Makefile
+@@ -569,6 +569,12 @@ endif # $(dot-config)
+ # Defaults to vmlinux, but the arch makefile usually adds further targets
+ all: vmlinux
+ 
++# force no-pie for distro compilers that enable pie by default
++KBUILD_CFLAGS += $(call cc-option, -fno-pie)
++KBUILD_CFLAGS += $(call cc-option, -no-pie)
++KBUILD_AFLAGS += $(call cc-option, -fno-pie)
++KBUILD_CPPFLAGS += $(call cc-option, -fno-pie)
++
+ ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
+ KBUILD_CFLAGS	+= -Os
+ else
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index 93fe929d1cee..b322c109401c 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -338,7 +338,7 @@ extern const char * const x86_power_flags[32];
+ 
+ #endif /* CONFIG_X86_64 */
+ 
+-#if __GNUC__ >= 4
++#if __GNUC__ >= 666
+ /*
+  * Static testing of CPU features.  Used the same as boot_cpu_has().
+  * These are only valid after alternatives have run, but will statically
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index 2dd9134faa27..9d1a8f811de3 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -39,7 +39,7 @@
+ #include <linux/module.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/kconfig.h>
+-#include "../tty/hvc/hvc_console.h"
++#include "headers/drivers/tty/hvc/hvc_console.h"
+ 
+ #define is_rproc_enabled IS_ENABLED(CONFIG_REMOTEPROC)
+ 
