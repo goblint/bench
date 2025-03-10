@@ -28,9 +28,9 @@ Crafty participated at several Computer Chess Tournaments, the WMCCC 1996, WMCCC
 77k raw lines of ANSI C Code.
 
 ```
-./goblint -v --set ana.context.gas_value 10 crafty-25.2.c
+./goblint -v --set ana.context.gas_value 10  --set ana.base.strings unit crafty-25.2.c
 ```
-cancelled after 1:30h
+cancelled after 6:30h with 32GB main memory and 1900 contexts for printf
 
 BrogueCE 1.14.1
 ---
