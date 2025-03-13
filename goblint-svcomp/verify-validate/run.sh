@@ -5,7 +5,7 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/142-concurrency-witnesses
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/247-all-validate-pr-1709-before
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 GOBLINT_VALIDATE_PARALLEL=4
@@ -50,5 +50,6 @@ cp $BENCH_DIR/table-generator.xml table-generator.xml
 table-generator -x table-generator.xml
 
 # Decompress all tool outputs for table HTML links
-unzip -o goblint.*.logfiles.zip
-unzip -o goblint-validate.*.logfiles.zip
+# Uncomment if not using https://github.com/sosy-lab/benchexec/blob/main/contrib/serveFileFromZIP.php
+# unzip -o goblint.*.logfiles.zip
+# unzip -o goblint-validate.*.logfiles.zip
