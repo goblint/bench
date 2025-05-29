@@ -9,6 +9,7 @@ pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 void* T1(void* arg) {
     while(0 == 0) {
         pthread_mutex_lock(&m);
+        assert(x == y);
         if (x > 0) {
             x = x - 1;
             y = y - 1;
@@ -21,6 +22,7 @@ void* T1(void* arg) {
 void* T2(void* arg) {
     while(0 == 0) {
         pthread_mutex_lock(&m);
+        assert(x == y);
         if (x < 10) {
             x = x + 1;
             y = y + 1;
