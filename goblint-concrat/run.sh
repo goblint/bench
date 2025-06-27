@@ -4,7 +4,7 @@ shopt -s extglob
 set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/concrat-1-issue-1758-before
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/concrat-2-issue-1758-after
 GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
 GOBLINT_PARALLEL=2
 
