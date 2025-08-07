@@ -75,7 +75,7 @@ def parse_benchmark_file():
         while True:
             line = f.readline()
             if line == "": # EOF
-                break 
+                break
             line = line.strip()
             if not line:
                 continue
@@ -270,7 +270,7 @@ class Result:
         self.analysis_params = analysis_params
         self.output_file = os.path.join(testresults, base + "." + analysis_name + ".txt")
         self.end = end
-        self.duration = (start - end).total_seconds()
+        self.duration = (end - start).total_seconds()
         self.status = status
         self.output = output
 
@@ -286,7 +286,7 @@ class Result:
             appended += f"TIMEOUT                    {timeout} s\n"
         elif self.status != 0:
             appended += f"EXITCODE                   {self.status}\n"
-        
+
         return appended
 
     def dump_output(self):
@@ -376,10 +376,10 @@ for p in projects:
             analysis_parameters,
             starttime,
             endtime,
-            subprocess_result.stdout, 
+            subprocess_result.stdout,
             subprocess_result.returncode
         )
-        
+
         project_result.dump_output()
         project_result.print_status()
         print_html_file(p.id)
@@ -407,4 +407,3 @@ with open(pickle_path, "wb") as f:
 # Make a copy of result.pickle with the current timestamp
 shutil.copy(pickle_path, os.path.join(testresults, f"results_{timestamp}.pickle"))
 print("Done.")
-
