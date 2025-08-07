@@ -159,7 +159,7 @@ def print_html_file(i):
 
             for a in analyses:
                 aname = a[0]
-                outfile = os.path.basename(p.path).replace(".c", f".{aname}.txt")
+                outfile = os.path.basename(p.path).replace(os.path.splitext(p.path)[1], f".{aname}.txt")
                 outpath = os.path.join(testresults, outfile)
 
                 if os.path.exists(outpath):
