@@ -62,7 +62,7 @@ def print_file_res (f, path)
   $analyses.each do |a|
     aname = a[0]
     outfile = File.basename(path,'.c') + ".#{aname}.txt"
-    if File.exists?($testresults + outfile)
+    if File.exist?($testresults + outfile)
       File.open($testresults + outfile, 'r') do |g|
         lines = g.readlines
         vars, evals = lines.grep(/vars = (\d*).*evals = (\d+)/) { |x| [$1.to_i, $2.to_i] } .first

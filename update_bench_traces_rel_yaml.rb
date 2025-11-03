@@ -91,7 +91,7 @@ def print_res (i)
       $analyses.each do |a|
         aname = a[0]
         outfile = File.basename(p.path,".c") + ".#{aname}.txt"
-        if File.exists?($testresults + outfile) then
+        if File.exist?($testresults + outfile) then
           File.open($testresults + outfile, "r") do |g|
             lines = g.readlines
             # safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
@@ -191,7 +191,7 @@ end
 skipgrp = []
 file = "bench.txt"
 $linuxroot = "https://elixir.bootlin.com/linux/v4.0/source/"
-File.symlink("index/traces-rel-yaml.txt",file) unless FileTest.exists? file
+File.symlink("index/traces-rel-yaml.txt",file) unless FileTest.exist? file
 
 FileUtils.cp(file,File.join($testresults, "bench.txt"))
 
