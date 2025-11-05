@@ -5,8 +5,8 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/247-all-validate-pr-1709-before
-GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/287-loops-validate-svcomp26-portfolio
+GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint/scripts/sv-comp
 GOBLINT_PARALLEL=2
 GOBLINT_VALIDATE_PARALLEL=4
 

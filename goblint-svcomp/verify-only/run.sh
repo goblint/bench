@@ -5,8 +5,8 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/246-all-pr-1654
-GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/279-all-pr-1818-after
+GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint/scripts/sv-comp
 GOBLINT_PARALLEL=2
 
 # read-only and overlay dirs for Value too large for defined data type workaround

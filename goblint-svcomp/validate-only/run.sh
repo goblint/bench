@@ -7,7 +7,7 @@ BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
 WITNESSES_DIR=/mnt/goblint-svcomp/benchexec/results/247-all-validate-pr-1709-before
 RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/248-all-validate-pr-1709-before2
-GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint
+GOBLINT_DIR=/mnt/goblint-svcomp/sv-comp/goblint/scripts/sv-comp
 GOBLINT_VALIDATE_PARALLEL=4
 
 # read-only and overlay dirs for Value too large for defined data type workaround
