@@ -1,0 +1,74 @@
+{
+	"kernel": true,
+	"pre": {
+		"kernel-root": "headers",
+		"cppflags": [
+			"-D KBUILD_MODNAME=\"drm\"",
+			"-D GOBLINT_NO_PTHREAD_ONCE"
+		],
+		"kernel_includes": [
+			"include/drm"
+		]
+	},
+	"mainfun": [
+		"ttm_dma_page_alloc_init"
+	],
+	"exitfun": [
+		"ttm_dma_pool_mm_shrink_fini"
+	],
+	"ana": {
+		"base": {
+			"partition-arrays": {
+				"enabled": true
+			}
+		},
+		"int": {
+			"def_exc": true,
+			"enums": false,
+			"interval": true
+		},
+		"activated": [
+			"base",
+			"threadid",
+			"threadflag",
+			"mallocWrapper",
+			"mutex",
+			"access",
+			"escape",
+			"expRelation",
+			"var_eq",
+			"symb_locks",
+			"region",
+			"thread"
+		],
+		"context": {
+			"widen": false
+		},
+		"malloc": {
+			"wrappers": [
+				"kmalloc",
+				"__kmalloc",
+				"usb_alloc_urb",
+				"__builtin_alloca",
+				"kzalloc",
+				"ldv_malloc",
+				"kzalloc_node",
+				"ldv_zalloc",
+				"kmalloc_array",
+				"kcalloc"
+			]
+		}
+	},
+	"exp": {
+		"region-offsets": true
+	},
+	"solver": "td3",
+	"sem": {
+		"unknown_function": {
+			"spawn": false
+		},
+		"int": {
+			"signed_overflow": "assume_none"
+		}
+	}
+}
