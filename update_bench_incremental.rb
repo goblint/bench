@@ -86,10 +86,10 @@ def print_file_res (f, path)
                 thenumbers << " <a href=\"#{outfile}.compare.messages.txt\">M</a>"
               end
             else
-              safely = lines.grep(/[^n]safe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-              vulner = lines.grep(/vulnerable:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-              unsafe = lines.grep(/unsafe:[ ]*([0-9]*)/) { |x| $1.to_i } .first
-              total = lines.grep(/total:[ ]*([0-9]*)/) { |x| $1.to_i } .first
+              safely = lines.grep(/\[Success\]\[Behavior > Undefined > ArrayOutOfBound/).size
+              vulner = lines.grep(/\[Warning\]\[Behavior > Undefined > ArrayOutOfBound/).size
+              unsafe = lines.grep(/\[Error\]\[Behavior > Undefined > ArrayOutOfBound/).size
+              total = lines.grep(/\[Behavior > Undefined > ArrayOutOfBounds/).size
               uncalled = lines.grep(/will never be called/).reject {|x| x =~ /__check/}.size
               deadlock = lines.grep(/\[Deadlock\]/).size
               thenumbers =  "<font color=\"green\">#{safely}</font>+"
@@ -256,7 +256,7 @@ def analyze_project(p, save)
     aparam = a[1]
     if first
       aparam += ' --enable incremental.save ' if save
-      aparam += ' --enable incremental.only-rename ' unless save
+      aparam += ' --enable incremental.only-rename ' if $incremental and not save
       aparam += ' --set save_run original ' if $compare
       aparam += ' --set outfile original.messages.json ' if $compare
     else
@@ -312,7 +312,7 @@ $projects.each do |p|
     gname = p.group
     puts gname
   end
-  analyze_project(p, true)
+  analyze_project(p, $incremental)
   path = File.expand_path(p.path, $bench_path)
   p.patches.each do |pfile|
     `patch -b #{path} #{pfile}`
