@@ -1539,10 +1539,6 @@ struct winsize;
 struct xbuf;
 struct xbuf_323746;
 struct z_stream_s;
-struct z_stream_s_338225;
-struct z_stream_s_344930;
-struct z_stream_s_364357;
-struct z_stream_s_371109;
 
 /* struct, union and typedefs */
 
@@ -1974,13 +1970,13 @@ typedef int wchar_t;
 typedef unsigned int wint_t;
 typedef struct xbuf xbuf;
 typedef unsigned int z_crc_t;
-typedef struct z_stream_s_338225 z_stream_338223;
-typedef struct z_stream_s_344930 z_stream_344946;
-typedef struct z_stream_s_364357 z_stream_364355;
-typedef struct z_stream_s_371109 z_stream_371125;
+typedef struct z_stream_s z_stream_338223;
+typedef struct z_stream_s z_stream_344946;
+typedef struct z_stream_s z_stream_364355;
+typedef struct z_stream_s z_stream_371125;
 typedef z_stream_344946 *z_streamp_338221;
 typedef z_stream_371125 *z_streamp_364353;
-typedef struct z_stream_s_371109 z_stream_371125;
+typedef struct z_stream_s z_stream_371125;
 typedef z_stream_371125 *z_streamp_371127;
 union anonymous_225 { /* sizeof: 4, alignof: 4 */
     unsigned int __wch;
@@ -2949,7 +2945,8 @@ struct gz_header_s_338249 { /* sizeof: 80, alignof: 8 */
     int hcrc;
     int done;
 };
-struct z_stream_s_371109 { /* sizeof: 112, alignof: 8 */
+
+struct z_stream_s { /* sizeof: 112, alignof: 8 */
     Bytef_338197 *next_in;
     uInt avail_in;
     uLong total_in;
@@ -2957,7 +2954,7 @@ struct z_stream_s_371109 { /* sizeof: 112, alignof: 8 */
     uInt avail_out;
     uLong total_out;
     char *msg;
-    struct internal_state_364366 *state;
+    struct internal_state_338234 *state;
     alloc_func zalloc;
     free_func zfree;
     voidpf opaque;
@@ -4113,70 +4110,6 @@ struct xbuf_323746 { /* sizeof: 32, alignof: 8 */
     size_t pos;
     size_t len;
     size_t size;
-};
-struct z_stream_s { /* sizeof: 112, alignof: 8 */
-    Bytef_338197 *next_in;
-    uInt avail_in;
-    uLong total_in;
-    Bytef_338197 *next_out;
-    uInt avail_out;
-    uLong total_out;
-    char *msg;
-    struct internal_state_338234 *state;
-    alloc_func zalloc;
-    free_func zfree;
-    voidpf opaque;
-    int data_type;
-    uLong adler;
-    uLong reserved;
-};
-struct z_stream_s_338225 { /* sizeof: 112, alignof: 8 */
-    Bytef_338197 *next_in;
-    uInt avail_in;
-    uLong total_in;
-    Bytef_338197 *next_out;
-    uInt avail_out;
-    uLong total_out;
-    char *msg;
-    struct internal_state_338234 *state;
-    alloc_func zalloc;
-    free_func zfree;
-    voidpf opaque;
-    int data_type;
-    uLong adler;
-    uLong reserved;
-};
-struct z_stream_s_344930 { /* sizeof: 112, alignof: 8 */
-    Bytef_338197 *next_in;
-    uInt avail_in;
-    uLong total_in;
-    Bytef_338197 *next_out;
-    uInt avail_out;
-    uLong total_out;
-    char *msg;
-    struct internal_state_338234 *state;
-    alloc_func zalloc;
-    free_func zfree;
-    voidpf opaque;
-    int data_type;
-    uLong adler;
-    uLong reserved;
-};
-struct z_stream_s_364357 { /* sizeof: 112, alignof: 8 */
-    Bytef_338197 *next_in;
-    uInt avail_in;
-    uLong total_in;
-    Bytef_338197 *next_out;
-    uInt avail_out;
-    uLong total_out;
-    char *msg;
-    struct internal_state_364366 *state;
-    alloc_func zalloc;
-    free_func zfree;
-    voidpf opaque;
-    int data_type;
-    uLong adler;
-    uLong reserved;
 };
 
 /* global variable declarations */
