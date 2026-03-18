@@ -1,0 +1,31 @@
+from pathlib import Path 
+
+CONFIGS_ROOT = config["configs_root"]
+
+# Find all files in configs_root that end with .json and extract the name without the extension
+print(CONFIGS_ROOT)
+print([f for f in Path(CONFIGS_ROOT).glob("*.json")])
+CONFIGS = [Path(f).stem for f in Path(CONFIGS_ROOT).glob("*.json")]
+print(CONFIGS)
+
+GOBLINT_EXECUTABLE = config["goblint"]
+TESTFILE = config["input_file"]
+
+rule all:
+	input:
+		expand("out/{conf}", conf=CONFIGS)
+
+rule run:
+	input:
+		expand("configs/{conf}.json", conf=CONFIGS)
+	output:
+		[directory("out/{conf}"), "out/{conf}-messages.json", "out/{conf}.out"]
+	benchmark: 
+		"out/benchmark/{conf}.txt"
+	shell:
+		"""
+		mkdir -p /tmp/{wildcards.conf};
+		{GOBLINT_EXECUTABLE} --goblint-dir /tmp/{wildcards.conf} --conf {CONFIGS_ROOT}/{wildcards.conf}.json --save_run out/{wildcards.conf} --result json-messages --outfile out/{wildcards.conf}-messages.json {TESTFILE} &> out/{wildcards.conf}.out
+		"""
+
+
