@@ -2,6 +2,9 @@
 | Program file | Goblint version | CIL version | Configuration file | Machine | Analysis time | Live/dead lines | Comment (changed what based on what) |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `rsync-v3.4.1-gcc.i` | `heads/master-0-ga13b7e196` | `2.0.9-72-g2243aad` | `unit` | Simmo's laptop | 4.452s | 23476/2494 | Example |
+| `rsync-v3.4.1-gcc.i` | `remotes/origin/loop-unrolling-dead-branch-7-gb909b8720` | `0913d6a` | `unit` | Tartu goblint-new server | 2.853s | 23476/2494 | |
+| `rsync-v3.4.1-gcc.i` | `remotes/origin/loop-unrolling-dead-branch-7-gb909b8720` | `0913d6a` | `large-program-string-unit` | Tartu goblint-new server | 2590.437s | 24005/1992 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc.i` | `remotes/origin/loop-unrolling-dead-branch-7-gb909b8720` | `0913d6a` | `large-program-string-unit` with `--disable ana.opt.hashcons` | Tartu goblint-new server | 2299.233s | 24005/1992 | Disabled hashconsing. With `perf -F 10` |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
