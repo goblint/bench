@@ -12,6 +12,8 @@
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `large-program-string-unit` with `--disable ana.opt.hashcons` | Tartu goblint-new server | 1798.548s | 24005/1992 | After `bitsOffset` caching. With memtrace |
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `large-program-string-unit` with `--disable ana.opt.hashcons` | Tartu goblint-new server | 1676.380s | 24005/1992 | After `bitsOffset` caching and `dep` fix. With `perf -F 10` |
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `large-program-string-unit` with `--disable ana.opt.hashcons` | Tartu goblint-new server | 1686.851s | 24005/1992 | After `bitsOffset` caching and `dep` fix. With memtrace |
+| `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `sim642-minimal` | Tartu goblint-new server | >06:29:01.529 (killed) | | After `bitsOffset` caching and `dep` fix. With `perf -F 10` |
+| `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `sim642-minimal` | Tartu goblint-new server | TODO | TODO | After `bitsOffset` caching and `dep` fix. With memtrace |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
