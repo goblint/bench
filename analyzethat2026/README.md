@@ -14,6 +14,18 @@
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `large-program-string-unit` with `--disable ana.opt.hashcons` | Tartu goblint-new server | 1686.851s | 24005/1992 | After `bitsOffset` caching and `dep` fix. With memtrace |
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `sim642-minimal` | Tartu goblint-new server | >06:29:01.529 (killed) | | After `bitsOffset` caching and `dep` fix. With `perf -F 10` |
 | `rsync-v3.4.1-gcc.i` | `heads/issue-1964-0-g591dc7602-dirty` | `2243aad` | `sim642-minimal` | Tartu goblint-new server | TODO | TODO | After `bitsOffset` caching and `dep` fix. With memtrace |
+| `rsync-v3.4.1-gcc.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons` | Tartu goblint-new server | 1686.162s | 24005/1992 | Rerun after merging `bitsOffset` caching and `dep` fix. With `perf -F 10` |
+| `rsync-v3.4.1-gcc.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons` | Tartu goblint-new server | 1643.806s | 24005/1992 | Rerun after merging `bitsOffset` caching and `dep` fix. With memtrace |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons` | Tartu goblint-new server | 1630.361s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons` | Tartu goblint-new server | 1636.592s | 23944/2020 | With memtrace |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-mutex` | Tartu goblint-new server | 1502.012s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-mutex` | Tartu goblint-new server | 1517.882s | 23944/2020 | With memtrace |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-mutexEvents` | Tartu goblint-new server | 1458.331s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-race` | Tartu goblint-new server | 1254.269s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-access` | Tartu goblint-new server | 1163.918s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-assert` | Tartu goblint-new server | 1119.239s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-threadflag` | Tartu goblint-new server | 1891.775s | 23944/2020 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-earlyglobs` | Tartu goblint-new server | TODO | TODO | With `perf -F 10` |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
