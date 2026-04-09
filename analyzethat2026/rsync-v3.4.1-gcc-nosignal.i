@@ -35054,8 +35054,8 @@ int open_socket_out(char *host, int port, const char *bind_addr, int af_hint)
             continue;
         }
         if (connect_timeout > 0) {
-            sigact_274681.__sigaction_handler.sa_handler = contimeout_handler_274706;
-            sigaction(14, &sigact_274681, (void*)0);
+            // sigact_274681.__sigaction_handler.sa_handler = contimeout_handler_274706;
+            // sigaction(14, &sigact_274681, (void*)0);
             alarm(connect_timeout);
         }
         set_socket_options(s, sockopts);
@@ -53531,8 +53531,8 @@ void start_accept_loop(int port, int (*fn)(int, int))
         if (fd < 0) {
             continue;
         }
-        sigact_274681.__sigaction_handler.sa_handler = sigchld_handler_274763;
-        sigaction(17, &sigact_274681, (void*)0);
+        // sigact_274681.__sigaction_handler.sa_handler = sigchld_handler_274763;
+        // sigaction(17, &sigact_274681, (void*)0);
         pid = fork();
         if (pid == 0) {
             int ret;
@@ -53910,9 +53910,9 @@ int start_daemon(int f_in, int f_out)
         io_printf(f_out, "@ERROR: Unknown module \'%s\'\n", line);
         return - 1;
     }
-    sigact_62189.sa_flags = 1;
-    sigact_62189.__sigaction_handler.sa_handler = remember_children;
-    sigaction(17, &sigact_62189, (void*)0);
+    // sigact_62189.sa_flags = 1;
+    // sigact_62189.__sigaction_handler.sa_handler = remember_children;
+    // sigaction(17, &sigact_62189, (void*)0);
     return rsync_module_62302(f_in, f_out, i, addr, host);
 }
 static int start_delete_delay_temp_106178()
