@@ -31,8 +31,9 @@
 | `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `large-program-string-unit-no-hashcons-no-earlyglobs` | Tartu goblint-new server | OOM after 41min with 30 GB | | With memtrace |
 | `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g8cfeedbfe` | `2243aad` | `sim642-minimal2` | Tartu goblint-new server | 9057.354s | 23957/2007 | With `perf -F 10` |
 | `rsync-v3.4.1-gcc-nosignal.i` | `heads/refine-pointer-by-pointee-option-0-g1104f8c3e` | `2243aad` | `sim642-minimal3` | Tartu goblint-new server | 5665.121s | 23957/2007 | With `perf -F 10` |
-| `rsync-v3.4.1-gcc-nosignal.i` | `heads/no-threadflag-0-gbb1e7aa6b` | `2243aad` | `sim642-minimal4` | Tartu goblint-new server | 44010.860s | TODO | With `perf -F 10` |
-| `rsync-v3.4.1-gcc-nosignal.i` | `heads/no-threadflag-0-gbb1e7aa6b` | `2243aad` | `sim642-minimal4` with `--set dbg.timeout 30m` | Tartu goblint-new server | TODO | TODO | Limited run for reasonable `perf` file. With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/no-threadflag-0-gbb1e7aa6b` | `2243aad` | `sim642-minimal4` | Tartu goblint-new server | 44010.860s | 23933/2029 | With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/no-threadflag-0-gbb1e7aa6b` | `2243aad` | `sim642-minimal4` with `--set dbg.timeout 30m` | Tartu goblint-new server | 1805.418s | | Limited run for reasonable `perf` file. With `perf -F 10` |
+| `rsync-v3.4.1-gcc-nosignal.i` | `heads/master-0-g5df7a366e` | `2243aad` | `sim642-minimal3b` | Tartu goblint-new server | 38371.600s | 23933/2029 | With `perf -F 10` |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
