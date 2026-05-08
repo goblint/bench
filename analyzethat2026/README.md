@@ -39,6 +39,10 @@
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/no-threadflag-0-gbb1e7aa6b-dirty` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 33781.901s | 23926/2029 | Removed threadflag and escape in favor of exp.single-threaded. With `perf -F 1` |
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/master-0-g5df7a366e` | `2243aad` | `large-program-string-unit-no-hashcons-no-earlyglobs` | Tartu goblint-new server | OOM? after 41min with 30 GB | TODO | Earlyglobs run for presentation narrative. With `perf -F 1` |
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/patricia-tree-0-g60401ca52` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 26231.639s | 23926/2029 | Patricia tree. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/patricia-tree-0-gfd266d18e` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 26101.143s | 23926/2029 | Patricia tree. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/patricia-tree2-0-gb911f6d52` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 26000.145s | TODO | More patricia tree. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/intdomain-no_ov-0-gaeb25d07c` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 33805.198s | TODO | PR #2020. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/valuedomain-do-offset-2-45-g40cae057f` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 34877.518s | TODO | Before PR #2020. With `perf -F 1` |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
