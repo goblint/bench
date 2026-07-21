@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE benchmark PUBLIC "+//IDN sosy-lab.org//DTD BenchExec benchmark 2.3//EN" "https://www.sosy-lab.org/benchexec/benchmark-2.3.dtd">
+<benchmark tool="goblint" displayName="Goblint" timelimit="60 s" hardtimelimit="66 s" memlimit="1 GB" cpuCores="1">
+<!-- <benchmark tool="goblint" displayName="Goblint" timelimit="15 min" hardtimelimit="16 min" memlimit="15 GB" cpuCores="4"> -->
+<!-- <benchmark tool="goblint" displayName="Goblint" timelimit="2 h" hardtimelimit="7300 s" memlimit="24 GB" cpuCores="8"> -->
+
+  <resultfiles></resultfiles>
+
+  <option name="--enable">ana.sv-comp.enabled</option>
+  <option name="--enable">ana.sv-comp.functions</option> <!-- for SvComp-Pthread.set -->
+
+  <!-- for Concrat -->
+  <option name="--set">lib.activated[+]</option>
+  <option>zlib</option>
+  <option name="--set">lib.activated[+]</option>
+  <option>pcre</option>
+  <option name="--set">lib.activated[+]</option>
+  <option>liblzma</option>
+
+  <option>-v</option> <!-- for evals and vars columns -->
+
+  <rundefinition name="td3">
+    <option name="--set">solver</option>
+    <option>td3</option>
+  </rundefinition>
+
+  <rundefinition name="qs_trivial">
+    <option name="--set">solver</option>
+    <option>qs_trivial</option>
+  </rundefinition>
+
+  <rundefinition name="qs_w">
+    <option name="--set">solver</option>
+    <option>qs_w</option>
+  </rundefinition>
+
+  <rundefinition name="qsi_w">
+    <option name="--set">solver</option>
+    <option>qsi_w</option>
+  </rundefinition>
+
+  <rundefinition name="qs_wnw">
+    <option name="--set">solver</option>
+    <option>qs_wnw</option>
+  </rundefinition>
+
+  <rundefinition name="qs_cwnw">
+    <option name="--set">solver</option>
+    <option>qs_cwnw</option>
+  </rundefinition>
+
+  <rundefinition name="qsi_wnw">
+    <option name="--set">solver</option>
+    <option>qsi_wnw</option>
+  </rundefinition>
+
+  <rundefinition name="qsi_cwnw">
+    <option name="--set">solver</option>
+    <option>qsi_cwnw</option>
+  </rundefinition>
+
+  <tasks name="no-data-race">
+    <includesfile>../Pthread.set</includesfile>
+    <includesfile>../SvComp-Pthread.set</includesfile>
+    <includesfile>../concrat/Concrat.set</includesfile>
+    <propertyfile>../concrat/properties/no-data-race.prp</propertyfile>
+  </tasks>
+</benchmark>
