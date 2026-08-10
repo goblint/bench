@@ -5,10 +5,10 @@ set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SV_BENCHMARKS_DIR=/mnt/goblint-svcomp/benchexec/sv-benchmarks
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-6-svcomp-all-level01
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-8-svcomp-all-level01-aug10
 GOBLINT_DIR=/mnt/ecoop/goblint-qsolver
 GOBLINT_PARALLEL=14
-GOBLINT_SOLVERS=(td3 qs_trivial qs_cwnw qsi_w qsi_wnw qsi_cwnw qsi_dead qsi_reset1 qsi_reset1_dead qsi_reset2 qsi_reset2_dead)
+GOBLINT_SOLVERS=(td3 slr3 slr3t qss_cwnw qsr qsri qso_cwnw qsr_dead qsr_nosides qsr_nosides_dead)
 
 # read-only and overlay dirs for Value too large for defined data type workaround
 BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTS_DIR --results-per-taskset"
