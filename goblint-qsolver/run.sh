@@ -4,10 +4,10 @@ shopt -s extglob
 set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-1
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-4-dead-15min
 GOBLINT_DIR=/mnt/ecoop/goblint-qsolver
 # GOBLINT_PARALLEL=2
-GOBLINT_PARALLEL=14
+GOBLINT_PARALLEL=5
 
 # read-only and overlay dirs for Value too large for defined data type workaround
 BENCHEXEC="benchexec --read-only-dir / --overlay-dir . --overlay-dir /home --outputpath $RESULTS_DIR"
