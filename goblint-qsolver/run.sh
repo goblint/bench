@@ -4,7 +4,7 @@ shopt -s extglob
 set -e
 
 BENCH_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-7-aug10-15min
+RESULTS_DIR=/mnt/goblint-svcomp/benchexec/results/qsolver-9-like-td3
 GOBLINT_DIR=/mnt/ecoop/goblint-qsolver
 # GOBLINT_PARALLEL=2
 GOBLINT_PARALLEL=5
