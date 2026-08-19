@@ -46,6 +46,8 @@
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/master-0-g5f8e1dbc9` | `2243aad` | `sim642-minimal4b` | Tartu goblint-new server | 25854.251s | TODO | Before PR #2050. With `perf -F 1` |
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/master-0-g5f8e1dbc9` | `2243aad` | `sim642-minimal4b-hc` | Tartu goblint-new server | >11:54:23.118 | TODO | With hashconsing. Before PR #2050. With `perf -F 1` |
 | `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/hashcons-batteries-0-g48f3d671e` | `2243aad` | `sim642-minimal4b-hc` | Tartu goblint-new server | >13:04:18.588 | TODO | With hashconsing. After PR #2050. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/memOutOfBounds-error-11-g80bbd45fe` | `f2f244e` | `sim642-minimal4b` | Tartu goblint-new server | 26215.442s | 23926/2029 | Before PR #2081. With `perf -F 1` |
+| `rsync-v3.4.1-gcc-nosignal.i` 5df7a366e | `heads/widen-no-leq-0-g70942f498` | `f2f244e` | `sim642-minimal4b` | Tartu goblint-new server | 18016.825s | 23926/2029 | After PR #2081. With `perf -F 1` |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `3bd3da151` |  | `large-program.json` | Jevgenij's laptop |  |  | Initial attempt at analysis, resulted in [#1955](https://github.com/goblint/analyzer/pull/1955) |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `bd3da151` |  | above + `strings: unit` | Jevgenij's laptop |  |  | First terminating attempt at analysis, ~30 minutes |
 | `rsync-v3.4.1-gcc.i` e46af7a2 | `2692a088e`  |  | above + extraspecials | Jevgenij's laptop |  |  | Stubbed `pool_alloc`, `pool_free`, resulted in [#1950](https://github.com/goblint/analyzer/issues/1950) and [#1951](https://github.com/goblint/analyzer/issues/1951) |
